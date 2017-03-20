@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+y<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <html>
 <head>
@@ -6,9 +6,12 @@
 </head>
 <body>
 <h1>
-afafaf kkkkkkk Hi HOW ARE YOU??
+bongbong
+dfdf
 </h1>
-
-<P>  The time on the server is ${serverTime}. </P>
+<ul>
+	
+	<li><a href="tourapi">tour</a></li>	
+</ul>
 </body>
 </html>
