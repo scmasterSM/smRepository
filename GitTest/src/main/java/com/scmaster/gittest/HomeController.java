@@ -35,5 +35,11 @@ public class HomeController {
 		
 		return "home";
 	}
+	 
+	@RequestMapping(value="tourapi",method=RequestMethod.GET)
+	public String tourapi(){
+		
+		return "tourapi";
+	}
 	
 }
