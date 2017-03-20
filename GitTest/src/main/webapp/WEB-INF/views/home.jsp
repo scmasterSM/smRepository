@@ -8,7 +8,9 @@
 <h1>
 bongbong
 </h1>
-
-<P>  The time on the server is ${serverTime}. </P>
+<ul>
+	
+	<li><a href="tourapi">tour</a></li>	
+</ul>
 </body>
 </html>
