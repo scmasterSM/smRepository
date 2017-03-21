@@ -42,4 +42,16 @@ public class HomeController {
 		return "tourapi";
 	}
 	
+	@RequestMapping(value="bootstrap",method=RequestMethod.GET)
+	public String bootstrap(){
+		
+		return "bootstrap";
+	}
+	
+	@RequestMapping(value="map",method=RequestMethod.GET)
+	public String map(){
+		
+		return "map";
+	}
+	
 }
