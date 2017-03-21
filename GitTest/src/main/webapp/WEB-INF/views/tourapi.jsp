@@ -9,8 +9,6 @@
 </head>
 <body>
 
-    <!-- 지도를 표시할 div 입니다 -->
-    <div id="map_canvas" style="width:100%;height:800px;"></div>
 
     <button type="button" id="btnKto" onClick="Javascript:l_Data();">위치기반조회</button>
     <button type="button" id="btnKto" onClick="Javascript:d_Data();">공통정보조회</button>
@@ -55,7 +53,7 @@
             $.getJSON(url, function(data) {
                 console.log('sucess', data);
                 for( var i = 0 ; i < data.response.body.totalCount ; i++){
-                    console.log( data.response.body.items.item[i] );
+                    console.log( data.response.body.items.item[i] ); // items.item[i]
                 }   
             });
         }
