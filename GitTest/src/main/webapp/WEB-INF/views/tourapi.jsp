@@ -140,7 +140,7 @@ html, body {
 		var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="
 				+ key;
 		url += "&contentId=" + contentid
-				+ "&defaultYN=Y&addrinfoYN=Y&overviewYN=Y";
+				+ "&defaultYN=Y&addrinfoYN=Y&firstImageYN=Y&overviewYN=Y";
 		url += "&MobileOS=ETC&MobileApp=AppTesting&_type=json";
 		
 		$.getJSON(url, function(data) {
@@ -148,6 +148,7 @@ html, body {
 			console.log(data.response.body.items.item);
 			var content = 
 				'<h2>'+ data.response.body.items.item.title+'</h2>'
+				+ '<img src='+data.response.body.items.item.firstimage+' width=400 height=240>'
 				+ '<h4>'+ data.response.body.items.item.overview+'</h4>'
 				+ '주소: ' + data.response.body.items.item.addr1+'('+data.response.body.items.item.zipcode+')<br>'
 				+ '전화번호: '+ data.response.body.items.item.tel+'<br>'
