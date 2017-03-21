@@ -54,4 +54,21 @@ public class HomeController {
 		return "map";
 	}
 	
+	@RequestMapping(value="tourapi2",method=RequestMethod.GET)
+	public String tourapi2(){
+		
+		return "tourapi2";
+	}
+	
+	@RequestMapping(value="sc_05",method=RequestMethod.GET)
+	public String sc_05(){
+		
+		return "sc_05";
+	}
+	
+	
+	
+	
+	
+	
 }

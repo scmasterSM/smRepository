@@ -14,6 +14,8 @@ dfdf
 	<li><a href="tourapi">tour</a></li>
 	<li><a href="bootstrap">bootstrap</a></li>	
 	<li><a href="map">map</a>
+	<li><a href="tourapi2">tour2</a></li>
+	<li><a href="sc_05">sc_05</a></li>
 </ul>
 </body>
 </html>
