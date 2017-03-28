@@ -67,8 +67,36 @@ public class HomeController {
 	}
 	
 	
+	@RequestMapping(value="practice",method=RequestMethod.GET)
+	public String practice(){
+		
+		return "practice";
+	}
 	
 	
+	@RequestMapping(value="apipractice",method=RequestMethod.GET)
+	public String apipractice(){
+		
+		return "apipractice";
+	}
 	
+	
+	@RequestMapping(value="login",method=RequestMethod.GET)
+	public String login(){
+		
+		return "login";
+	}
+	
+	@RequestMapping(value="design",method=RequestMethod.GET)
+	public String design(){
+		
+		return "design";
+	}
+	
+	@RequestMapping(value="home3",method=RequestMethod.GET)
+	public String home3(){
+		
+		return "home3";
+	}
 	
 }
