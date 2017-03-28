@@ -1,0 +1,57 @@
+@CHARSET "UTF-8";
+
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}  
+.wrap{
+	width : 800px;
+	
+}
+.placeName{
+	width : 400px;
+	float: left;
+}
+.btn{
+	width : 250px;	
+	text-align : right;
+	overflow: hidden;
+	
+}
+
+.wrap2{
+	width : 800px;
+	height: 260px;
+}
+.placeImg{
+	width : 420px;
+	height: 260px;
+	float: left;
+}
+
+.map {
+	
+	width : 200px;
+	height: 200px;
+	overflow: hidden;
+}
+.placeInfo{
+	width : 600px;
+	float : left;
+	border: 1px solid #000;
+	overflow: hidden;
+}
+.reviewWrite{
+	width : 565px;
+	height: 63px;
+	float :left;
+	resize:none;
+
+}
+.review{
+	width : 600px;
+	height : 300px;
+	overflow :hidden;
+	border: 1px solid #000;
+}

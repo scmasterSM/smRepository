@@ -5,11 +5,12 @@
 	<title>Home</title>
 </head>
 <body>
-<h1>
-bongbong
-dfdf
-</h1>
+
 <ul>
+	
+	<li><a href="sc_05">sc_05</a></li>
+	<li><a href="SC_07place">SC_07place</a></li>
+	<li><a href="SC_08">SC_08</a></li>
 	
 	<li><a href="tourapi">tour</a></li>
 	<li><a href="bootstrap">bootstrap</a></li>	
