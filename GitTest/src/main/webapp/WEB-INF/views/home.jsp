@@ -6,12 +6,12 @@ y<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 </head>
 <body>
 <h1>
-bongbong
-dfdf
+
 </h1>
-<ul>
-	
-	<li><a href="tourapi">tour</a></li>	
+<ul>	
+	<li><a href="tourapi">tourapi</a></li>	
+	<li><a href="new_schedule">new schedule</a></li>	
+	<li><a href="SC13">sc13</a></li>	
 </ul>
 </body>
 </html>
