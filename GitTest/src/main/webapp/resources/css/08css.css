@@ -1,6 +1,5 @@
 @CHARSET "UTF-8";
 
-
 .map {
 	
 	width : 220px;
@@ -44,9 +43,15 @@
 	float: left;
 }
 .eventInfo{
-	width: 710px;
-	height: 80px;
-	
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.4;
+}
+@media (min-width: 768px) {
+  .pInfo-div {
+    font-size: 15px;
+  }
 }
 .eventDate{
 	width: 610px;
@@ -56,3 +61,4 @@
 .addr{
 	padding-top: 58px;
 }
+

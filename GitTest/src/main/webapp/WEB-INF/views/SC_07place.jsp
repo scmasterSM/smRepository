@@ -21,7 +21,7 @@
 <script type="text/javascript"src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>장소화면</title>
-<link rel="stylesheet" type="text/css" href="./resources/css/07place.css">
+<link rel ="stylesheet" href ="./resources/css/07css.css">
 <script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8&callback=initMap"
 		async defer></script>
 <script type="text/javascript">
