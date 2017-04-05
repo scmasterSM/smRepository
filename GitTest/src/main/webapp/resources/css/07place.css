@@ -1,57 +1,69 @@
 @CHARSET "UTF-8";
 
-html, body {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}  
-.wrap{
-	width : 800px;
-	
-}
-.placeName{
-	width : 400px;
-	float: left;
-}
-.btn{
-	width : 250px;	
-	text-align : right;
-	overflow: hidden;
-	
-}
-
-.wrap2{
-	width : 800px;
-	height: 260px;
-}
-.placeImg{
-	width : 420px;
-	height: 260px;
-	float: left;
-}
 
 .map {
 	
-	width : 200px;
-	height: 200px;
+	width : 220px;
+	height: 220px;
 	overflow: hidden;
+	margin: auto;
 }
-.placeInfo{
-	width : 600px;
-	float : left;
-	border: 1px solid #000;
-	overflow: hidden;
-}
-.reviewWrite{
-	width : 565px;
-	height: 63px;
-	float :left;
-	resize:none;
 
+.rplace1{
+	width: 225px;
+	height : 80px;
+	float: left;	
 }
-.review{
-	width : 600px;
-	height : 300px;
-	overflow :hidden;
-	border: 1px solid #000;
+.rplaceImg1{
+	width: 65px;
+	height :65px;
+	float: left;
+}
+.rplace2{
+	width: 225px;
+	height : 80px;
+	float: left; 
+}
+.rplaceImg2{
+	width: 65px;
+	height :65px;
+	float: left;
+}
+
+.rplace3{
+	width: 225px;
+	height : 80px;
+	overflow :hidden;	
+}
+.rplaceImg3{
+	width: 65px;
+	height :65px;
+	float: left;
+}
+.pInfo-div {
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.4;
+}
+@media (min-width: 768px) {
+  .pInfo-div {
+    font-size: 15px;
+  }
+}
+.eventDate{
+	width: 610px;
+	height : 90px;
+	float: left;
+}
+.addr{
+	padding-top: 58px;
+}
+
+.form-control{
+	resize: none;
+}
+
+.row{
+	overflow: hidden;
 }

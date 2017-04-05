@@ -127,16 +127,17 @@ console.log(areacode);
           for (var i = 0; i < data.response.body.items.item.length; i++) {
         	 //컨텐트아이디 추출
         	 var con=data.response.body.items.item[i].contentid;
+        	 var conType=data.response.body.items.item[i].contenttypeid;
 	         console.log(con);
              content += '<div class="col-sm-4 col-lg-4 col-md-4">';
              content += '<div class="thumbnail">';
              if (typeof (data.response.body.items.item[i].firstimage2 !== 'undefined')) {
-             content += '<a href="SC_07place?PLACE_NM='+con+'"><img src='+data.response.body.items.item[i].firstimage2+' width=200 height=150></a>';
+             content += '<a href="SC_07place?PLACE_NM='+con+'&conType='+conType+'"><img src='+data.response.body.items.item[i].firstimage2+' width=200 height=150></a>';
              } else {
-             content += '<a href="SC_07place?PLACE_NM='+con+'"><img src="./resources/image/noimage.jpg"></a>';
+             content += '<a href="SC_07place?PLACE_NM='+con+'&conType='+conType+'"><img src="./resources/image/noimage.jpg"></a>';
              }
              content += '<div class="caption">';
-             content += '<a href="SC_07place?PLACE_NM='+con+'"><h4>'+data.response.body.items.item[i].title+'</h4></a>';
+             content += '<a href="SC_07place?PLACE_NM='+con+'&conType='+conType+'"><h4>'+data.response.body.items.item[i].title+'</h4></a>';
              content += '<p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>';
              content += '</div>';
              content += '</p>';
@@ -216,6 +217,7 @@ console.log(areacode);
                      for (var i = 0; i < data.response.body.items.item.length; i++) {
                     	//컨텐트아이디 추출
                     	 var con=data.response.body.items.item[i].contentid;
+                    	 var conType=data.response.body.items.item[i].contenttypeid;
             	         console.log(con);
                     	 
                     	content2 += '<div class="col-sm-4 col-lg-4 col-md-4">';
@@ -223,13 +225,13 @@ console.log(areacode);
                         if (typeof (data.response.body.items.item[i].firstimage2) !== "undefined") {
 
                            //console.log('테스트 if');
-                           content2 += '<a href="SC_07place?PLACE_NM='+con+'"><img src='+data.response.body.items.item[i].firstimage2+' width=200 height=150></a>';
+                           content2 += '<a href="SC_07place?PLACE_NM='+con+'&conType='+conType+'"><img src='+data.response.body.items.item[i].firstimage2+' width=200 height=150></a>';
                         } else {
                            //console.log('테스트 else');
-                           content2 += '<a href="SC_07place?PLACE_NM='+con+'"><img src="./resources/image/noimage.jpg"></a>';
+                           content2 += '<a href="SC_07place?PLACE_NM='+con+'&conType='+conType+'"><img src="./resources/image/noimage.jpg"></a>';
                         }
                         content2 += '<div class="caption">';
-                        content2 += '<h4><a href="SC_07place?PLACE_NM='+con+'">'
+                        content2 += '<h4><a href="SC_07place?PLACE_NM='+con+'&conType='+conType+'">'
                               + data.response.body.items.item[i].title
                               + '</a></h4>';
                         content2 += '<p> 뭐지 뭐지 ?</p>';
@@ -249,7 +251,7 @@ console.log(areacode);
                         content2 += '</div>';
                         content2 += '</div>';
                         
-                        modal1 += '<a href="SC_07place?PLACE_NM='+con+'"><h4>'+ data.response.body.items.item[i].title +'</h4></a>';   
+                        modal1 += '<a href="SC_07place?PLACE_NM='+con+'&conType='+conType+'"><h4>'+ data.response.body.items.item[i].title +'</h4></a>';   
                                 
                      }//for
 

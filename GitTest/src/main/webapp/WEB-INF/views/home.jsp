@@ -5,16 +5,16 @@
 	<title>Home</title>
 </head>
 <body>
-
+<h1>
+	Hello world!  
+</h1>
 <ul>
-	
+	<li><a href="map">map</a></li>
+	<li><a href="tourapi">tour</a></li>
 	<li><a href="sc_05">sc_05</a></li>
 	<li><a href="SC_07place">SC_07place</a></li>
 	<li><a href="SC_08">SC_08</a></li>
-	
-	<li><a href="tourapi">tour</a></li>
-	<li><a href="bootstrap">bootstrap</a></li>	
-	<li><a href="map">map</a>
+	<li><a href="SC_10">SC_10</a></li>
 </ul>
 </body>
 </html>

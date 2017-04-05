@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.scmaster.gittest.vo.Review" alias="Review" />
+		<typeAlias type="com.scmaster.gittest.vo.Clip" alias="Clip" />
+		<!-- <typeAlias type="com.bong.maptest.vo.Countent" alias="Countent" /> -->
+	</typeAliases>
+	<mappers>
+		<mapper resource="mappers/ReviewMapper.xml" />
+	</mappers>
+</configuration>

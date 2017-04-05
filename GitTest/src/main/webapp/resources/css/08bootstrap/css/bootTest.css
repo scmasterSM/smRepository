@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}  
+.map {
+	
+	width : 200px;
+	height: 200px;
+	overflow: hidden;
+}
+.addr{
+	overflow: hidden;
+	width : 571px;
+	text-align: right;
+	
+}
