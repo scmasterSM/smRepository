@@ -65,6 +65,17 @@
 			, sysdate
 			
 		)
-	</insert>		
+	</insert>
+	<!-- 클립 읽어오기 -->		
+	<select id="readCLip" parameterType="String" resultType="Clip">
+	select	CLIP_SQ,
+			USER_ID,
+			CONTENT_ID,
+			CONTENTTYPE_ID,
+			CLIP_YMD
+	from 	SM_CLIP_TB
+	where 	USER_ID=#{USER_ID}
+	
+	</select>
 
 </mapper>

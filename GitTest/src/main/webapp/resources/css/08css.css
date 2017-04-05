@@ -61,4 +61,6 @@
 .addr{
 	padding-top: 58px;
 }
-
+.col-lg-8, col-md-4{
+	padding-top: 20px;
+}

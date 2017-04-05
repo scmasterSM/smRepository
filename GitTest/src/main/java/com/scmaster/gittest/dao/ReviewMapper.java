@@ -17,4 +17,5 @@ public interface ReviewMapper {
 	
 	public int insertClip(Clip clip);
 	
+	public List<Clip> readCLip(String USER_ID);
 }

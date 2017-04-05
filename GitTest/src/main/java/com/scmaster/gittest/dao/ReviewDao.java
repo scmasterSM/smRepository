@@ -39,4 +39,10 @@ public class ReviewDao {
 		return result;
 	}
 	
+	public List<Clip> readCLip(String USER_ID){
+		ReviewMapper mapper =sqlsession.getMapper(ReviewMapper.class);
+		List<Clip>cList=mapper.readCLip(USER_ID);
+		return cList;
+	}
+	
 }

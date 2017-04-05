@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.scmaster.gittest.dao.ReviewDao;
+import com.scmaster.gittest.vo.Clip;
 import com.scmaster.gittest.vo.Review;
 
 
@@ -80,10 +84,24 @@ public class HomeController {
 		return "sc_05";
 	}
 	@RequestMapping(value="SC_10",method=RequestMethod.GET)
-	public String SC_10(){
-		
-		
+	public String SC_10(HttpSession session, Model model){
+		/*String id=session.getAttribute('USER_ID');*/
+		/*String USER_ID= "1111";
+		List<Clip>cList = dao.readCLip(USER_ID);
+		model.addAttribute("cList", cList);*/
 		return "sc_10";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="readClip",method=RequestMethod.GET)
+	public List<Clip> readClip(HttpSession session, Model model){
+		/*String id=session.getAttribute('USER_ID');*/
+		String USER_ID= "1111";
+		List<Clip>cList = dao.readCLip(USER_ID);
+		model.addAttribute("cList", cList); 
+		System.out.println(cList);
+		return cList;
+	}
+	
 	
 }

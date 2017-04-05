@@ -8,18 +8,38 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="company is a free job board template">
+    <meta name="keyword" content="html, css, bootstrap, job-board">
+    <meta name="author" content="Ohidul">
 
     <title>Blog Post - Start Bootstrap Template</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="./resources/css/08bootstrap/css/bootstrap.css" rel="stylesheet">
+      <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800' rel='stylesheet' type='text/css'>
 
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+        <link rel="stylesheet" href="./resources/css/normalize.css">
+        <link rel="stylesheet" href="./resources/css/font-awesome.min.css">
+        <link rel="stylesheet" href="./resources/css/fontello.css">
+        <link rel="stylesheet" href="./resources/css/animate.css">        
+        <link rel="stylesheet" href="./resources/css/bootstrap.css">
+        <link rel="stylesheet" href="./resources/css/owl.carousel.css">
+        <link rel="stylesheet" href="./resources/css/owl.theme.css">
+        <link rel="stylesheet" href="./resources/css/owl.transitions.css">
+        <link rel="stylesheet" href="./resources/css/style.css">
+        <link rel="stylesheet" href="./resources/css/responsive.css">
+        <script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
+        <script type="text/javascript"src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script>
+        
+    <link href="./resources/css/08bootstrap/css/bootstrap.css" rel="stylesheet">    
+	
     <!-- Custom CSS -->
     <link href="./resources/css/08bootstrap/css/blog-post.css" rel="stylesheet">
 
-<script type="text/javascript"src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script>
+
  
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>sc_08행사 상세 정보 화면</title>
@@ -324,36 +344,63 @@ ${reply.rev_TXT}
 <br> --%>
 
  <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
+        <div class="header-connect">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5 col-sm-8 col-xs-8">
+                        <div class="header-half header-call">
+                            <p>
+                                <span><i class="icon-cloud"></i>+019 4854 8817</span>
+                                <span><i class="icon-mail"></i>ohidul.islam951@gmail.com</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-md-offset-5  col-sm-3 col-sm-offset-1  col-xs-3  col-xs-offset-1">
+                        <div class="header-half header-social">
+                            <ul class="list-inline">
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-vine"></i></a></li>
+                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-default">
+          <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Start Bootstrap</a>
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#"><img src="./resources/img/logo.png" alt=""></a>
             </div>
+
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#">About</a>
-                    </li>
-                    <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+              <div class="button navbar-right">
+                  <button class="navbar-btn nav-button wow bounceInRight login" data-wow-delay="0.8s">Login</button>
+                  <button class="navbar-btn nav-button wow fadeInRight" data-wow-delay="0.6s">Sign up</button>
+              </div>
+              <ul class="main-nav nav navbar-nav navbar-right">
+                <li class="wow fadeInDown" data-wow-delay="0s"><a class="active" href="#">Home</a></li>
+                <li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">Job Seekers</a></li>
+                <li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">Employeers</a></li>
+                <li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">About us</a></li>
+                <li class="wow fadeInDown" data-wow-delay="0.4s"><a href="#">Blog</a></li>
+                <li class="wow fadeInDown" data-wow-delay="0.5s"><a href="SC_10">클립보드</a></li>
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
 
     <!-- Page Content -->
     <div class="container">
@@ -525,7 +572,13 @@ ${reply.rev_TXT}
     
 
     <!-- Bootstrap Core JavaScript -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="./resources/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+    <script src="./resources/js/bootstrap.min.js"></script>
+    <script src="./resources/js/owl.carousel.min.js"></script>
+    <script src="./resources/js/wow.js"></script>
+    <script src="./resources/js/main.js"></script>
     <script src="./resources/css/08bootstrap/js/bootstrap.js"></script>
-
+	
 </body>
 </html>

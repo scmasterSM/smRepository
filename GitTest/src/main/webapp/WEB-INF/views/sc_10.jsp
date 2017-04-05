@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="./resources/css/style.css">
         <link rel="stylesheet" href="./resources/css/responsive.css">
         <script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
-        <script type="text/javascript"src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script>
+        
     </head>
     <body>
 
@@ -136,20 +136,38 @@
                       <!-- Tab panes -->
                       <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active" id="job-seekers">
-                            <ul class="list-inline job-seeker">
+                            <ul class="list-inline job-seeker" id="clipInfo">
+                                
+                      <%--           <c:forEach var="reply" items="${rList}">
+                <div class="media">
+                    <a class="pull-left" href="#">
+                        <img class="media-object" src="http://placehold.it/64x64" alt="">
+                    </a>
+                    <div class="media-body">
+                        <div class="media-heading"><h4>${reply.USER_ID}
+                            <small>${reply.INP_YMD}</small>
+                        </h4></div>
+                        ${reply.REV_TXT}
+                    </div>
+                </div>
+				</c:forEach> --%>
+                              <%--   <c:forEach var="reply" items="${cList}"> --%>
+                                
                                 <li>
                                	<!-- 클립보드  -->
                                     <a href="">
-                                        <img src="./resources/img/team-small-5.jpg" alt="">
+                                        
                                         <div class="overlay"><h3>Ohidul Islam</h3><p>Web Designer</p></div>
                                     </a>
                                 </li>
+                             <%--    </c:forEach> --%>
                                 <li>
                                     <a href="">
                                         <img src="./resources/img/team-small-6.jpg" alt="">
                                         <div class="overlay"><h3>Mohidul Islam</h3><p>CEO</p></div>
                                     </a>
                                 </li>
+                                
                                 <li>
                                     <a href="">
                                         <img src="./resources/img/team-small-3.jpg" alt="">
@@ -432,5 +450,89 @@
         <script src="./resources/js/owl.carousel.min.js"></script>
         <script src="./resources/js/wow.js"></script>
         <script src="./resources/js/main.js"></script>
+        <script type="text/javascript"src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script>
     </body>
+<script type="text/javascript">
+var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
+
+//장소바꿀때 전 단계에서 contentId를 받아와서 바꾸면 될듯
+/* $.each(${cList}, function(index, item){
+	var contentid=item.CONTENT_ID;
+	console.log(contentid);
+}); */
+var contentId=""
+var contentTypeId=""
+ $(function(){
+
+	$.ajax({
+		type : "get",
+		url : "readClip",
+		success : function(data){
+			
+			$.each(data,function(index,item){
+				console.log(data);
+				contentId=item.content_ID;
+				contentTypeId=item.contenttype_ID;
+				l_Data(contentId,contentTypeId)
+			})
+				console.log(contentId);
+		},
+		error : function(e){
+			console.log(e);
+		}
+	})
+		
+	
+	}) 
+	/* for( var i = 0 ; i < ${cList.size} ; i++){
+		var contentId=${cList};
+		console.log(contentId);
+	} */
+
+	//행사 기본정보 가져오는 API
+
+//행사 날짜 가져오는 API	
+/* var url2= "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro?ServiceKey="+key;
+	url2 +=	"&contentTypeId=15&contentId="+contentId+"&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&introYN=Y&_type=json"; 
+	 */
+
+
+function l_Data(contentId,contentTypeId){
+
+	var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
+	url += "&mapX&mapY";
+	url += "&contentTypeId="+contentTypeId+"&contentId="+contentId+"&areaCode&sigunguCode&cat1=&cat2=&cat3=&listYN=Y";
+	url += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&transGuideYN=Y&_type=json";
+
+console.log(url);
+$.getJSON(url, function(data) {
+
+    console.log('success', data);
+    /* for( var i = 0 ; i < data.response.body.totalCount ; i++){
+        console.log( data.response.body.items.item[i] );
+    }    */
+     
+    console.log(data.response.body.items.item);
+    var html="";
+    html += '<li>';
+	html += '<a href="">';
+	html += ' <img src='+data.response.body.items.item.firstimage+' width=170 height=190 >';
+	html += '<div class="overlay"><h3>Ohidul Islam</h3><p>Web Designer</p></div>';
+	html += '</a>';
+	html += '</li>';
+	
+   	$("#clipInfo").html(html);
+    
+   
+}); 
+}
+	/*  <li>
+    	<!-- 클립보드  -->
+         <a href="">
+             <div class="clipImg" id="clipImg"></div>
+             <div class="overlay"><h3>Ohidul Islam</h3><p>Web Designer</p></div>
+         </a>
+     </li> */ 
+	 
+</script>    
 </html>
