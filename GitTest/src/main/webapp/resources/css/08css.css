@@ -47,6 +47,7 @@
   font-size: 16px;
   font-weight: 300;
   line-height: 1.4;
+  overflow: hidden;
 }
 @media (min-width: 768px) {
   .pInfo-div {
@@ -55,12 +56,18 @@
 }
 .eventDate{
 	width: 610px;
-	height : 90px;
-	float: left;
+	
+	
+	
 }
 .addr{
-	padding-top: 58px;
+	float: right;
+	
+	
 }
 .col-lg-8, col-md-4{
 	padding-top: 20px;
+}
+.img-responsive{
+	text-align: center;
 }

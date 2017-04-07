@@ -62,7 +62,7 @@ var PLACE_NM;
   	//선택된 장소의 이름, 대표 사진, 장소 설명, 좌표 불러오는API
     var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
     url += "&mapX&mapY";
-    url += "&contentTypeId&contentId="+contentId;
+    url += "&contentTypeId="+contentTypeId+"&contentId="+contentId;
     url += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&transGuideYN=Y&_type=json";
 	
     var url2= "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro?ServiceKey="+key;
@@ -84,9 +84,12 @@ function l_Data(){
     	}
     	
     	var PLACE_NM=data.response.body.items.item.title;
-    	
+    	var areacode=data.response.body.items.item.areacode;
     	console.log(PLACE_NM); 
     	console.log(contentTypeId); 
+    	
+    	 var addr=data.response.body.items.item.addr1;
+         var addr1=addr.split(" ",1);
     	
     	initMap(myLatLng,data);
         console.log('sucess', data);
@@ -103,7 +106,7 @@ function l_Data(){
         $("#placeImg").html('<img src="./resources/image/noimage.jpg">');	
         }
         $("#placeInfo").html(data.response.body.items.item.overview);
-        
+        $("#addr").html('<a href="sc_05?areacode='+areacode+'">'+addr1+'</a>');
    		html += "주소 : "+ data.response.body.items.item.addr1+"<br>";
    		if (typeof (data.response.body.items.item.tel) !== "undefined") {
         html += "전화번호 : " + data.response.body.items.item.tel;
@@ -131,6 +134,8 @@ function l_Data(){
   		html += data.response.body.items.item.expguide+"<br>";
   	}else if(typeof (data.response.body.items.item.infocenter) !== "undefined"){
   		html += "문의 및 안내 : "+ data.response.body.items.item.infocenter+"<br>";
+  	}else if(typeof (data.response.body.items.item.playtime) !== "undefined"){
+  		html += "축제기간 : "+ data.response.body.items.item.playtime+"<br>";
   	}
   		$("#pInfo2").html(html);
   		html="";
@@ -368,32 +373,7 @@ ${reply.REV_TXT}
 <body>
 
  <!-- Navigation -->
-   <div class="header-connect">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-5 col-sm-8 col-xs-8">
-                        <div class="header-half header-call">
-                            <p>
-                                <span><i class="icon-cloud"></i>+019 4854 8817</span>
-                                <span><i class="icon-mail"></i>ohidul.islam951@gmail.com</span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-md-offset-5  col-sm-3 col-sm-offset-1  col-xs-3  col-xs-offset-1">
-                        <div class="header-half header-social">
-                            <ul class="list-inline">
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-vine"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+   
 
         <nav class="navbar navbar-default">
           <div class="container">
@@ -452,7 +432,7 @@ ${reply.REV_TXT}
                 
                 <div class="pInfo" id="pInfo"></div>
                 <div class="pInfo2" id="pInfo2"></div>
-				
+				<div class="addr" id="addr"></div>
 				</div>
                 <hr>
 

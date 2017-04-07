@@ -56,6 +56,7 @@ var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2F
     //장소바꿀때 전 단계에서 contentId를 받아와서 바꾸면 될듯
 	
     var contentId=2376250;
+    var contentTypeId=15;
   	var areaCode;
   	var sigunguCode;
     var lat;
@@ -283,6 +284,34 @@ function f_Data(){
 		});
 		
 	})
+$(function(){
+		$("#clip").on("click",function(){
+				console.log(contentId);
+				var conID = contentId;
+				var conTypeID=contentTypeId;
+			$.ajax({
+				type : "POST",
+				url : "clipBoard",
+				data :{
+					CONTENT_ID : conID
+					,CONTENTTYPE_ID : conTypeID	
+				},
+				
+				success : function(data){
+					console.log(data);
+					alert('성공');
+					
+				},
+				error : function(e){
+					console.log(e);
+				}
+					
+				
+			})			
+		});
+		
+	});	
+
 function locationObj(){
     var offset = $("#reviewWrite").offset();
     $('html, body').animate({scrollTop : offset.top}, 400);
@@ -291,85 +320,10 @@ function locationObj(){
 
 </head>
 <body>
-<%-- <div class="wrap">
-<div class="placeName" id="placeName" ></div>
-<div class="btn">
-<a href="#" onclick="locationObj();">리뷰쓰기</a>
-<a href="">클립</a>
-</div>
-</div>
-
-<div class="wrap2">
-<div class="placeImg" id="placeImg"></div>
-<div class="map" id="map"></div>
-</div>
-
-
-<div class="placeInfo" id="placeInfo"></div> 
-
-<div class ="addr" id="addr"></div>
-
-
-<textarea  class="reviewWrite" id="reviewWrite"></textarea>
-<a href="#"  id="write">등록</a> 
-<!-- <a target="_blank"  id="write">등록</a> -->
-<div class ="review" id="review">
-
-<c:forEach var="reply" items="${rList}">
-${reply.inp_YMD}
-${reply.user_ID}
-${reply.rev_TXT}
-<br>
-</c:forEach>
-</div>
-<br>
-<br>
-<div class="wrap3" id="warp3">
-<div class="rplace1" id ="rplace1">
-<div class="rplaceImg1" id ="rplaceImg1"></div>
-<div class="rplacetitle1" id ="rplacetitle1"></div>
-<div class="rplaceaddr1" id ="rplaceaddr1"></div>
-</div>
-<div class="rplace2" id ="rplace2">
-<div class="rplaceImg2" id ="rplaceImg2"></div>
-<div class="rplacetitle2" id ="rplacetitle2"></div>
-<div class="rplaceaddr2" id ="rplaceaddr2"></div>
-</div>
-<div class="rplace3" id ="rplace3">
-<div class="rplaceImg3" id ="rplaceImg3"></div>
-<div class="rplacetitle3" id ="rplacetitle3"></div>
-<div class="rplaceaddr3" id ="rplaceaddr3"></div>
-</div>
-</div>
-<br> --%>
+ 
 
  <!-- Navigation -->
-        <div class="header-connect">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-5 col-sm-8 col-xs-8">
-                        <div class="header-half header-call">
-                            <p>
-                                <span><i class="icon-cloud"></i>+019 4854 8817</span>
-                                <span><i class="icon-mail"></i>ohidul.islam951@gmail.com</span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-md-offset-5  col-sm-3 col-sm-offset-1  col-xs-3  col-xs-offset-1">
-                        <div class="header-half header-social">
-                            <ul class="list-inline">
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-vine"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
 
         <nav class="navbar navbar-default">
           <div class="container">
@@ -426,7 +380,7 @@ ${reply.rev_TXT}
                 <!-- Date/Time -->
                 <div class="eventInfo" id="eventInfo">
                 <div class="eventDate" id="eventDate"></div> 
-                <p><div class="addr" id="addr"></div></p>
+                <div class="addr" id="addr"></div>
 				</div>
                 <hr>
 
@@ -485,7 +439,7 @@ ${reply.rev_TXT}
                 <div class="well">
                 <div class="well-head">
                 	<a href="#" onclick="locationObj(); return false">리뷰쓰기</a>&emsp;&emsp;
-					<a href=""> 클립 </a>
+					<a href="#" id="clip"> 클립 </a>
                     
                 </div>    
                     <!-- /.input-group -->

@@ -75,7 +75,7 @@
 			CLIP_YMD
 	from 	SM_CLIP_TB
 	where 	USER_ID=#{USER_ID}
-	
+	order by CLIP_SQ
 	</select>
 
 </mapper>

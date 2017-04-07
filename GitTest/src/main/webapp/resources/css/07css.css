@@ -45,19 +45,26 @@
   font-size: 16px;
   font-weight: 300;
   line-height: 1.4;
+ overflow: hidden;
 }
 @media (min-width: 768px) {
   .pInfo-div {
     font-size: 15px;
   }
 }
-.eventDate{
+.pInfo{
 	width: 610px;
-	height : 90px;
-	float: left;
+	
+
+}
+.pInfo2{
+	width: 610px;
+	
+	
 }
 .addr{
-	padding-top: 58px;
+	
+	float: right;
 }
 
 .form-control{
@@ -66,4 +73,8 @@
 
 .row{
 	overflow: hidden;
+}
+.img-responsive{
+	
+	text-align: center;
 }
