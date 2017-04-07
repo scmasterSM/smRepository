@@ -156,3 +156,5 @@ select	CLIP_SQ,
 	order by CLIP_SQ
 drop table SM_REVIEW_TB;
 
+select count(*)
+		from SM_REVIEW_TB

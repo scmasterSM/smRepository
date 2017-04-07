@@ -22,6 +22,12 @@
 			REV_SQ DESC
 	</select>
 	
+	<select id="tCount"  resultType="int">
+		select count(*)
+		from SM_REVIEW_TB
+		
+	</select>
+	
 
 	<!-- 2) Review 저장 -->
 	<insert id="writeReview" parameterType="Review">

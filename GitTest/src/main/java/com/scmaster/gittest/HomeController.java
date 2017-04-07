@@ -3,6 +3,7 @@ package com.scmaster.gittest;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -13,11 +14,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 import com.scmaster.gittest.dao.ReviewDao;
+import com.scmaster.gittest.util.PageNavigator;
 import com.scmaster.gittest.vo.Clip;
 import com.scmaster.gittest.vo.Review;
 
@@ -28,6 +33,11 @@ import com.scmaster.gittest.vo.Review;
 
 @Controller
 public class HomeController {
+	
+	
+	final int countPerPage = 10;	//페이지 당 글 수
+	final int pagePerGrop=5;		//페이지 이동 그룹 당 표시할 페이지수
+	
 	
 	@Autowired
 	private ReviewDao dao;
@@ -63,12 +73,22 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="SC_07place",method=RequestMethod.GET)
-	public String SC_07place(String PLACE_NM,String conType,Model model){ 
+	public String SC_07place(String PLACE_NM,String conType,Model model,@RequestParam
+			(value="page",defaultValue="1")	int page){ 
+		int count =dao.tCount();
+		PageNavigator navi= new PageNavigator(
+				countPerPage, pagePerGrop, page, count);
 		
-		List<Review>rList=dao.readReview(PLACE_NM);
+		/*ArrayList<HashMap<String, Object>>boardlist
+		//컨트롤러 -> dao(boardlist 함수) 호출
+		=dao.boardlist(navi.getStartRecord(),navi.getCountPerPage(),searchText);*/
+		
+		List<Review>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),PLACE_NM);
 		model.addAttribute("rList",rList);
 		model.addAttribute("contentid",PLACE_NM);
 		model.addAttribute("conType",conType);
+		model.addAttribute("count", count);
+		model.addAttribute("navi", navi);
 		return "SC_07place";
 	}
 	

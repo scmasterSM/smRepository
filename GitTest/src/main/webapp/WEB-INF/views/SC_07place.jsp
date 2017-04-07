@@ -47,6 +47,15 @@
 <script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8&callback=initMap"
 		async defer></script>
 <script type="text/javascript">
+function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어 온다
+	var form=document.getElementById("pagingForm");
+	var page=document.getElementById("page");
+	var PLACE_NM=document.getElementById("contentid").value;
+	console.log(PLACE_NM);
+	page.value=currentPage;
+	form.submit();
+}
+
 var map;
 var myLatLng;
 var PLACE_NM;
@@ -277,6 +286,7 @@ function f_Data(){
 					
 					console.log(data);
 					 var html ="";
+					 var html2 ="";
 					 $.each(data,function(index,item){
 						
 						html+= "<div class='media'>";
@@ -287,19 +297,30 @@ function f_Data(){
 						html+= '<small>'+item.inp_YMD+'</small>';
 						html+= '</h4></div>';
 						html+= item.rev_TXT;
-						html+= '</div>';
-						html+= '</div>'; 
-						
+						html+= '</div></div>';
 					 })
+						html2+='<div align="center">'; 
+						html2+='<a href ="javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})">◀◀</a>';
+						html2+='<a href ="javascript:pagingFormSubmit(${navi.currentPage -1})">◀</a>';
+						html2+='<c:forEach var="counter" begin="${navi.startPageGroup}" end="${navi.endPageGroup}">';
+						html2+='<a href="javascript:pagingFormSubmit(${counter})">${counter}</a>';
+						html2+='</c:forEach>';
+						html2+='<a href="javascript:pagingFormSubmit(${navi.currentPage + 1})">▶</a>';
+						html2+='<a href="javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})">▶▶</a></div>';
+						html2+='<form action="boardlist" method="get" id="pagingForm">';
+						html2+='<input type="hidden" id="page" name="page">';
+						html2+='<div align="center">제목 : <input type ="text" name="searchText" value="${searchText }">';
+						html2+='<input type ="button" value="검색" onclick="pagingFormSubmit(1)"></div>';
+						html2+='</form></div>';
+					 
 					 $("#review").html(html);
+					 $("#paging").html(html2);
 					 $('#reviewWrite').val('');		
 				},
 				error : function(e){
 					console.log(e);
-				}
-				
+				}   
 			});
-
 			});
 		});
 		
@@ -479,6 +500,26 @@ ${reply.REV_TXT}
                     </div>
                 </div>
 				</c:forEach>
+				</div>
+				<div id="paging">
+				<div align="center">
+					<a href ="javascript:pagingFormSubmit(
+						${navi.currentPage - navi.pagePerGroup})">◀◀</a>
+						<a href ="javascript:pagingFormSubmit(${navi.currentPage -1})">◀</a>
+					<c:forEach var="counter" begin="${navi.startPageGroup}" end="${navi.endPageGroup}">
+						<a href="javascript:pagingFormSubmit(${counter})">${counter}</a>
+			 		</c:forEach>
+						<a href="javascript:pagingFormSubmit(${navi.currentPage + 1})">▶</a>
+						<a href="javascript:pagingFormSubmit(
+						${navi.currentPage + navi.pagePerGroup})">▶▶</a>
+				</div>
+				<form action="SC_07place" method="get" id="pagingForm">
+			 	<!--boardlist컨트롤러의 id(page)와 같은  값(page)에 보낸다  -->
+				<input type="hidden" id="page" name="page">
+				<input type="hidden" id="contentid" value="${contentid}">
+				<%-- <div align="center">제목 : <input type ="text" name="searchText" value="${searchText }">
+				<input type ="button" value="검색" onclick="pagingFormSubmit(1)"></div> --%>
+				</form>				
 				</div>
                 <!-- Comment -->
             </div>
