@@ -1,0 +1,139 @@
+@CHARSET "UTF-8";
+
+.page.show {
+    display: block;
+}
+plan_sub.css:477
+.page {
+    margin-top: 30px;
+    padding-bottom: 60px;
+    display: none;
+}
+gnb.css?v=150805:63
+.wrap {
+    width: 1092px;
+    margin: 0 auto;
+    position: relative;
+}
+table {
+    border-collapse: collapse;
+}
+
+*{
+    font-family: '나눔바른고딕',NanumBarunGothic,'nanum','돋움',Dotum,'맑은고딕','Malgun Gothic','굴림',Gulim,Helvetica,sans-serif;
+}
+user agent stylesheet
+colgroup {
+    display: table-column-group;
+}
+
+col[Attributes Style] {
+    width: 20%;
+}
+col {
+    display: table-column;
+}
+
+
+.sch_table th {
+    background: #203341;
+    vertical-align: middle;
+    text-align: center;
+    color: white;
+    font-size: 13px;
+    height: 50px;
+    line-height: 50px;
+    border-right: 1px solid #374854;
+}
+.sch_table th div {
+    display: inline-block;
+    margin: 0 auto;
+}
+.sch_table th img {
+    float: left;
+    margin-top: 17px;
+    margin-right: 3px;
+}
+.sch_table th div {
+    display: inline-block;
+    margin: 0 auto;
+}
+reset.css?v=150805:62
+.clear {
+    clear: both;
+}
+
+.sch_table tr.white td {
+    background: white;
+}
+
+plan_sub.css:1002
+.sch_table td {
+    border-left: 1px solid #c8c8ca;
+    border-right: 1px solid #c8c8ca;
+    border-bottom: 1px solid #c8c8ca;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+plan_sub.css:1071
+.scht_vtop {
+    vertical-align: top;
+}
+
+
+.sch_table td {
+    border-left: 1px solid #c8c8ca;
+    border-right: 1px solid #c8c8ca;
+    border-bottom: 1px solid #c8c8ca;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.plan-menu{
+	text-align: right;
+}
+
+/* 폰트 css  */
+
+/* 날짜  */
+.scht_date {
+    font-size: 22px;
+    color: #555555;
+    font-weight: bold;
+    text-align: center;
+}
+
+.scht_day {
+    font-size: 22px;
+    color: #1a7ad9;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 17px;
+}
+/* 도시 */
+.scht_city {
+    padding-left: 15px;
+    font-size: 18px;
+    color: #555555;
+    font-weight: bold;
+    background: url(/res/img/mypage/plan/sub/scht_cityblit.png) no-repeat center left;
+}
+.scht_city_en {
+    padding-left: 15px;
+    font-size: 14px;
+    color: #b3b3b3;
+    font-weight: bold;
+    padding-top: 8px;
+}
+/* 일정  */
+.scht_spotname {
+    font-size: 15px;
+    color: #808080;
+    line-height: 24px;
+}
+
+
+
