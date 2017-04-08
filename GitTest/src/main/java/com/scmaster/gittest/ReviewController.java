@@ -40,28 +40,11 @@ public class ReviewController {
 				countPerPage, pagePerGrop, page, count);
 		review.setUSER_ID(id);
 		dao.writeReview(review); 
-		List<Review>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),review.getPLACE_NM());
+		List<Review>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),review.getCONTENT_ID());
 		System.out.println(rList+"30");
 		return rList;
 	}
 	
-	@ResponseBody
-	@RequestMapping(value="clipBoard", method=RequestMethod.POST)
-	public Clip clipBoard(Clip clip, HttpSession session){
-		String id= "1111";
-		clip.setUSER_ID(id);
-		dao.insertClip(clip);
-		return clip;
-	}
-	
-/*	@RequestMapping(value="" , method=RequestMethod.GET)
-	public String replyRead(Model model){
-		
-		List<Review> rList=dao.readReview();
-		System.out.println(rList+"42");
-		model.addAttribute("rList", rList);
-		
-		return "SC_07place";
-		
-	}*/
+
+
 }

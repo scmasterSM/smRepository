@@ -10,14 +10,14 @@
 		SELECT
 			REV_SQ
 			, USER_ID
-			, PLACE_NM
+			, CONTENT_ID
 			, REV_TXT
 			, INP_YMD
 			, UPD_YMD
 		FROM 
 			SM_REVIEW_TB
 		where 
-		PLACE_NM = #{PLACE_NM}
+		CONTENT_ID = #{CONTENT_ID}
 		ORDER BY
 			REV_SQ DESC
 	</select>
@@ -35,17 +35,18 @@
 		(
 			REV_SQ
 			, USER_ID
-			, PLACE_NM
+			, CONTENT_ID
 			, REV_TXT
 			, INP_YMD
-			
+			, UPD_YMD
 		)
 		VALUES
 		(
-			REV_SQ_seq.nextval
+			SM_REVIEW_TB_REV_SQ.nextval
 			, #{USER_ID}
-			, #{PLACE_NM}
+			, #{CONTENT_ID}
 			, #{REV_TXT}
+			, sysdate
 			, sysdate
 			
 		)
@@ -58,16 +59,16 @@
 			CLIP_SQ,
 			USER_ID,
 			CONTENT_ID,
-			CONTENTTYPE_ID,			
+			CONTENT_TYPE_ID,			
 			CLIP_YMD
 			
 		)
 		VALUES
 		(
-			CLIP_SQ_seq.nextval
+			SM_CLIP_TB_CLIP_SQ.nextval
 			, #{USER_ID}
 			, #{CONTENT_ID}
-			, #{CONTENTTYPE_ID}			
+			, #{CONTENT_TYPE_ID}			
 			, sysdate
 			
 		)
@@ -77,7 +78,7 @@
 	select	CLIP_SQ,
 			USER_ID,
 			CONTENT_ID,
-			CONTENTTYPE_ID,
+			CONTENT_TYPE_ID,
 			CLIP_YMD
 	from 	SM_CLIP_TB
 	where 	USER_ID=#{USER_ID}

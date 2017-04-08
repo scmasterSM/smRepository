@@ -50,7 +50,7 @@
 <script type="text/javascript">
 var map;
 var myLatLng;
-var PLACE_NM;
+var CONTENT_ID;
 var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 	
     //장소바꿀때 전 단계에서 contentId를 받아와서 바꾸면 될듯
@@ -88,7 +88,7 @@ function l_Data(){
     			lng : data.response.body.items.item.mapx
     	}
     	
-    	var PLACE_NM=data.response.body.items.item.title;
+    	var CONTENT_ID=data.response.body.items.item.title;
     	var areacode=data.response.body.items.item.areacode;
     	
     	initMap(myLatLng,data);
@@ -155,12 +155,12 @@ function r_Data(){
 					console.log(val);
 					console.log( data.response.body.items.item[val].title);
 					if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
-					$("#rplaceImg"+ j).html('<a href="SC_07place?PLACE_NM='+con+'&conType='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
+					$("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
 					}else{
-						$("#resImg"+ j).html('<a href="SC_07place?PLACE_NM='+con+'&conType='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
+						$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
 					}
 					
-					$("#rplacetitle"+ j).html('<a href="SC_07place?PLACE_NM='+con+'&conType='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
+					$("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
 					$("#rplaceaddr"+ j).html(data.response.body.items.item[val].addr1);
  		           	}
 		})
@@ -199,13 +199,13 @@ function f_Data(){
 				console.log(val);
 				console.log( data.response.body.items.item[val].title);
 				if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
-				$("#resImg"+ j).html('<a href="SC_07place?PLACE_NM='+con+'&conType='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
+				$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
 				}else{
-					$("#resImg"+ j).html('<a href="SC_07place?PLACE_NM='+con+'&conType='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
+					$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
 				}
 				
-				/* $("#rplaceImg"+ j).html('<a href="SC_07place?PLACE_NM=1131275"><img src='+data.response.body.items.item[val].firstimage+' width=200 height=180></a>'); */
-				$("#restitle"+ j).html('<a href="SC_07place?PLACE_NM='+con+'&conType='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
+				/* $("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID=1131275"><img src='+data.response.body.items.item[val].firstimage+' width=200 height=180></a>'); */
+				$("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
 				$("#resaddr"+ j).html(data.response.body.items.item[val].addr1);
 	           	}
 	})
@@ -236,9 +236,9 @@ function f_Data(){
 			$.getJSON(url, function(data) {
 			console.log(data.response.body.items.item)
 			var REV_TXT = $("#reviewWrite").val();
-			var PLACE_NM = data.response.body.items.item.contentid;
+			var CONTENT_ID = data.response.body.items.item.contentid;
 			
-			if(PLACE_NM.length ==0 || REV_TXT.length ==0) {
+			if(CONTENT_ID.length ==0 || REV_TXT.length ==0) {
 				alert("데이터를 입력해 주세요");
 				return;
 			} 
@@ -249,7 +249,7 @@ function f_Data(){
 				type : "post",
 				url : "writeReview",
 				data :{
-					PLACE_NM : PLACE_NM
+					CONTENT_ID : CONTENT_ID
 					,REV_TXT : REV_TXT	
 				},
 				
@@ -294,7 +294,7 @@ $(function(){
 				url : "clipBoard",
 				data :{
 					CONTENT_ID : conID
-					,CONTENTTYPE_ID : conTypeID	
+					,CONTENT_TYPE_ID : conTypeID	
 				},
 				
 				success : function(data){

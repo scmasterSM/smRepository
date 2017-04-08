@@ -27,10 +27,10 @@ public class ReviewDao {
 		return result;
 	}
 	
-	public List<Review> readReview(int startRecord, int countPerPage,String PLACE_NM){
+	public List<Review> readReview(int startRecord, int countPerPage,String CONTENT_ID){
 		ReviewMapper mapper = sqlsession.getMapper(ReviewMapper.class);
 		RowBounds rb= new RowBounds(startRecord, countPerPage);
-		List<Review>rList=mapper.readReview(rb,PLACE_NM); 
+		List<Review>rList=mapper.readReview(rb,CONTENT_ID); 
 		return rList;
 	}
 	

@@ -15,7 +15,7 @@ public interface ReviewMapper {
 	
 	public int writeReview(Review review);
 	
-	public List<Review> readReview(RowBounds rb,String PLACE_NM);
+	public List<Review> readReview(RowBounds rb,String CONTENT_ID);
 	
 	public int insertClip(Clip clip);
 	

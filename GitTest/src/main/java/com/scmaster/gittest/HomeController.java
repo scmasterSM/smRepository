@@ -73,20 +73,15 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="SC_07place",method=RequestMethod.GET)
-	public String SC_07place(String PLACE_NM,String conType,Model model,@RequestParam
+	public String SC_07place(String CONTENT_ID,String CONTENT_TYPE_ID,Model model,@RequestParam
 			(value="page",defaultValue="1")	int page){ 
 		int count =dao.tCount();
 		PageNavigator navi= new PageNavigator(
-				countPerPage, pagePerGrop, page, count);
-		
-		/*ArrayList<HashMap<String, Object>>boardlist
-		//컨트롤러 -> dao(boardlist 함수) 호출
-		=dao.boardlist(navi.getStartRecord(),navi.getCountPerPage(),searchText);*/
-		
-		List<Review>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),PLACE_NM);
+				countPerPage, pagePerGrop, page, count);  
+		List<Review>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),CONTENT_ID);
 		model.addAttribute("rList",rList);
-		model.addAttribute("contentid",PLACE_NM);
-		model.addAttribute("conType",conType);
+		model.addAttribute("contentid",CONTENT_ID);
+		model.addAttribute("contypeid",CONTENT_TYPE_ID);
 		model.addAttribute("count", count);
 		model.addAttribute("navi", navi);
 		return "SC_07place";
@@ -119,16 +114,7 @@ public class HomeController {
 		return "sc_10";
 	}
 	
-	@ResponseBody
-	@RequestMapping(value="readClip",method=RequestMethod.GET)
-	public List<Clip> readClip(HttpSession session, Model model){
-		/*String id=session.getAttribute('USER_ID');*/
-		String USER_ID= "1111";
-		List<Clip>cList = dao.readCLip(USER_ID);
-		model.addAttribute("cList", cList); 
-		System.out.println(cList);
-		return cList;
-	}
+
 	
 	
 }

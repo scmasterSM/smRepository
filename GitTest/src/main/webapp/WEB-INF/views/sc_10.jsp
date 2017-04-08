@@ -259,7 +259,7 @@ var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2F
 			    
 			    
 			    html += '<li>';
-				html += '<a href="SC_07place?PLACE_NM='+contentId+'&conType='+contentTypeId+'">';
+				html += '<a href="SC_07place?CONTENT_ID='+contentId+'&conType='+contentTypeId+'">';
 				
 				html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
 				html += '<div class="overlay"><h3>'+data.response.body.items.item.title+'</h3></div>';
