@@ -1,7 +1,32 @@
+/* @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css); */
+@import url(http://fonts.googleapis.com/earlyaccess/kopubbatang.css);
+
+
 body{
 	font-family: 'Open Sans', sans-serif;
+	overflow-x: hidden;  
+}
+.slide-image{
+	
+	margin: auto;
 }
 
+.row.carousel-holder{
+	width: 800px;
+	margin: auto;
+	
+	
+}
+
+#mainContent{
+	font-family : 'KoPub Batang', serif;
+	
+}
+
+ .tab-content{
+	margin-left: 10%;
+	
+} 
 .header-connect{
 	padding-top: 10px;
 }
@@ -154,9 +179,9 @@ background-color: #00aeef;
 	background: #fff
 }
 .search-form {
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 20px 0;
+  background-color: rgba(255, 255, 255, .1);
+  border-radius: 50px;
+  padding: 11px 0;
 }
 .form-inline .form-control, .form-inline .form-control {
   background: none repeat scroll 0 0 #eeeeee;
@@ -165,7 +190,7 @@ background-color: #00aeef;
   font-style: italic;
   height: 40px;
   margin-right: 10px;
-  width: 195px;
+  width: 300px;
 }
 .form-inline input[type=submit]{
 	background: #00AEEF;
@@ -278,7 +303,7 @@ background-color: #00aeef;
 }
 
 .job-posting{
-	padding: 10px 0
+	padding: 60px 0
 }
 .job-posting .tab-content{
 	margin-top: 30px
@@ -317,6 +342,16 @@ background-color: #00aeef;
 	-ms-transition: all 0.2s ease-in-out;
 	-o-transition: all 0.2s ease-in-out;
 	transition: all 0.2s ease-in-out;
+}
+
+#searchformap{
+	position: absolute;
+	top: 90%;
+    left: 65%;
+    /* margin-left: -585px; */
+    text-align: center;
+    
+	
 }
 .overlay > h3 {
   bottom: -50px;
