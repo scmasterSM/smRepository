@@ -180,7 +180,7 @@
 	                   content += '</div>';
 	                   content += '</div>';
             		} else {
-                   		i--;
+                   		
                    }
                 }
                 
