@@ -15,6 +15,7 @@
 	<li><a href="SC_07place">SC_07place</a></li>
 	<li><a href="SC_08">SC_08</a></li>
 	<li><a href="SC_10">SC_10</a></li>
+	<li><a href="SC_12">SC_12</a></li>
 </ul>
 </body>
 </html>

@@ -35,7 +35,7 @@ import com.scmaster.gittest.vo.Review;
 public class HomeController {
 	
 	
-	final int countPerPage = 10;	//페이지 당 글 수
+	final int countPerPage = 5;	//페이지 당 글 수
 	final int pagePerGrop=5;		//페이지 이동 그룹 당 표시할 페이지수
 	
 	
@@ -97,6 +97,13 @@ public class HomeController {
 		
 		return "SC_08";
 	}
+	
+	@RequestMapping(value="SC_12",method=RequestMethod.GET)
+	public String SC_12(){
+		
+		return "SC_12";
+	}
+	
 	@RequestMapping(value="sc_05",method=RequestMethod.GET)
 	public String sc_05(String areacode,Model model){
 		model.addAttribute("areacode",areacode);

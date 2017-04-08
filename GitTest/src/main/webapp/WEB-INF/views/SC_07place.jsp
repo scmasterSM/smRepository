@@ -49,10 +49,8 @@
 <script type="text/javascript">
 function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어 온다
 	var form=document.getElementById("pagingForm");
-	var page=document.getElementById("page");
-	var PLACE_NM=document.getElementById("contentid").value;
-	console.log(PLACE_NM);
-	page.value=currentPage;
+	var page=document.getElementById("page"); 
+	page.value=currentPage; 
 	form.submit();
 }
 
@@ -307,10 +305,10 @@ function f_Data(){
 						html2+='</c:forEach>';
 						html2+='<a href="javascript:pagingFormSubmit(${navi.currentPage + 1})">▶</a>';
 						html2+='<a href="javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})">▶▶</a></div>';
-						html2+='<form action="boardlist" method="get" id="pagingForm">';
+						html2+='<form action="SC_07place" method="get" id="pagingForm">';
 						html2+='<input type="hidden" id="page" name="page">';
-						html2+='<div align="center">제목 : <input type ="text" name="searchText" value="${searchText }">';
-						html2+='<input type ="button" value="검색" onclick="pagingFormSubmit(1)"></div>';
+						html2+='<input type="hidden" id="PLACE_NM" name="PLACE_NM" value="${contentid}">';
+						html2+='<input type="hidden" id="conType" name="conType" value="${conType}">';
 						html2+='</form></div>';
 					 
 					 $("#review").html(html);
@@ -361,35 +359,6 @@ function locationObj(){
 
 </head>
 <body>
-<%--  <div class="wrap">
-<div class="placeName" id="placeName" ></div>
-<div class="btn">
-<a href="#" onclick="locationObj();">리뷰쓰기</a>
-<a href="">클립</a>
-</div>
-</div>
-
-<div class="wrap2">
-<div class="placeImg" id="placeImg"></div>
-<div class="map" id="map"></div>
-</div>
-
-<div class="placeInfo" id="placeInfo"></div> 
-<br>
-<div class ="review" id="review">
-<c:forEach var="reply" items="${rList}">
-${reply.INP_YMD}
-${reply.USER_ID}
-${reply.REV_TXT}
-<br>
-</c:forEach>
-</div>
-
-
-<textarea  class="reviewWrite" id="reviewWrite"></textarea>
-<!-- <input type="text" class="reviewWrite" id="reviewWrite"> -->
-<!-- <a target="_blank"  id="write">등록</a> -->
-<a href="#"  id="write">등록</a>  --%>
 
 <body>
 
@@ -516,9 +485,9 @@ ${reply.REV_TXT}
 				<form action="SC_07place" method="get" id="pagingForm">
 			 	<!--boardlist컨트롤러의 id(page)와 같은  값(page)에 보낸다  -->
 				<input type="hidden" id="page" name="page">
-				<input type="hidden" id="contentid" value="${contentid}">
-				<%-- <div align="center">제목 : <input type ="text" name="searchText" value="${searchText }">
-				<input type ="button" value="검색" onclick="pagingFormSubmit(1)"></div> --%>
+				<input type="hidden" id="PLACE_NM" name="PLACE_NM" value="${contentid}">
+				<input type="hidden" id="conType" name="conType" value="${conType}">
+				
 				</form>				
 				</div>
                 <!-- Comment -->
