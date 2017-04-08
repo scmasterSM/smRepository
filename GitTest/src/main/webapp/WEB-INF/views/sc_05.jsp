@@ -167,7 +167,7 @@
 				 	console.log(val);	
 				 var con = data.response.body.items.item[val].contentid;
  		         	console.log(con);
-					
+ 		         var conType=data.response.body.items.item[val].contenttypeid;
       	           if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
       	        	   content += '<div class="col-sm-4 col-lg-4 col-md-4">';
                        content += '<div class="thumbnail">';
@@ -257,7 +257,7 @@
                           	
                           	//컨텐트아이디 추출
                   	       var con = data.response.body.items.item[val].contentid;
-                          	
+                  	       var conType=data.response.body.items.item[val].contenttypeid;
                   	     if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
                           	
                                   content2 += '<li><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width="300" height="200" alt="">';
