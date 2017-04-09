@@ -234,7 +234,7 @@
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
 
-				<a href="home2"><img src="./resources/image/logoicon.png" alt=""
+				<a href="home"><img src="./resources/image/logoicon.png" alt=""
 					width="80px" height="80px"></a>
 
 				<button type="button" class="navbar-toggle collapsed"
