@@ -51,7 +51,7 @@
 <!-- <script src="./resources/js/jquery-3.1.1.js"></script> -->
 
 <script type="text/javascript">
-     	var areacode = 1; /* ${areacode}; */
+     	var areacode = ${areacode};
      	console.log(areacode);
         
      	var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
