@@ -106,7 +106,7 @@
 		content2 += '<li><a href="sc_05?areacode=1"> <img src="./resources/image/main_city/city_seoul.jpg" alt="" width="300" height="200">';
 		content2 += '<div class="overlay">';
 		content2 +=	'<h3>서울</h3>';
-		content2 +=	'<p>가장 먼지많은 도시</p>';
+		content2 +=	'<p>가장 먼지 많은 도시</p>';
 		content2 +=	'</div></a></li><li><a href="sc_05?areacode=6"> <img src="./resources/image/main_city/city_busan.jpg" alt="" width="300" height="200">';
 		content2 +=	'<div class="overlay"><h3>부산</h3><p>무봤나~~</p></div></a></li>';
 		content2 +=  '<li><a href="sc_05?areacode=37"> <img src="./resources/image/main_city/city_junju.jpg" alt="" width="300" height="200">';
