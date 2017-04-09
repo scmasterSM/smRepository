@@ -5,7 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<title>Travle Maker</title>
+<title>Travel Maker</title>
 <meta name="description" content="company is a free job board template">
 <meta name="author" content="Ohidul">
 <meta name="keyword" content="html, css, bootstrap, job-board">
@@ -509,7 +509,7 @@
 					<ul class="main-nav nav navbar-nav navbar-right">
 					<li class="wow fadeInDown" data-wow-delay="0s"><a
 						class="active" href="#">여행지</a></li>
-					<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">일정만들기</a>
+					<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="new_schedule">일정만들기</a>
 					</li>
 					<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
 							Own Schedule</a></li>
@@ -577,7 +577,7 @@
 
 							<div id="searchformap">
 								<h5>
-									<a href="">지도에서 검색 > </a>
+									<a href="mapSearch">지도에서 검색 > </a>
 								</h5>
 							</div>
 
