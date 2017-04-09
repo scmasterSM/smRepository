@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.scmaster.gittest.vo.User" alias="User" />
+		<typeAlias type="com.scmaster.gittest.vo.Schedule" alias="Schedule" />
+		<typeAlias type="com.scmaster.gittest.vo.Daily_City" alias="Daily_City" />
+		<typeAlias type="com.scmaster.gittest.vo.Daily_Scd" alias="Daily_Scd" />
+		<typeAlias type="com.scmaster.gittest.vo.Dtl_Scd" alias="Dtl_Scd" />
+	</typeAliases>
+	<mappers>
+		<mapper resource="mapper/scheduleMapper.xml" />
+	</mappers> 
+</configuration>

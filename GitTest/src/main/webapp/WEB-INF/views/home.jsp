@@ -1,5 +1,6 @@
-y<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
 	<title>Home</title>
@@ -9,9 +10,8 @@ y<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 </h1>
 <ul>	
-	<li><a href="tourapi">tourapi</a></li>	
-	<li><a href="new_schedule">new schedule</a></li>	
-	<li><a href="SC13">sc13</a></li>	
+	<li><a href="mapSearch">map search</a></li>
+	<li><a href="new_schedule">new schedule</a></li>
 </ul>
 </body>
 </html>

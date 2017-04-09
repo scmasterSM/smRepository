@@ -111,17 +111,99 @@
 	    left: 25%;
 	}
 	
+	.labels {
+     color: #363636;
+     background-color: white;
+     font-family: "nanum";
+     font-size: 11px;
+     font-weight: bold;
+     text-align: center;
+     min-width: 40px;
+    padding:2px;
+     border: 1px solid black;
+     white-space: nowrap;
+   }
+   
+.item .img_box {
+  width: 60px;
+  height: 50px;
+  position: relative;
+  float: left;
+}
+
+.item .img_box img {
+  width: 60px;
+  height: 50px;
+}
+
+.item_sub_info_box{color:#707070;font-size:13px;position:absolute;bottom:0px;left:0px}
+.item .info_box{padding:1px;width:180px;}
+.item .info_title{font-size:15px;color:#363636;}
+.item .info_sub_title{font-size:12px;color:#b3b3b3;margin-top:5px;width:180px;}
+.back_btn{width:60px;height:50px;background:#00AEEF;margin-top:22px;cursor:pointer;}
+
+#changelist .item {
+  padding: 15px;
+  cursor: pointer;
+  border-bottom: solid #a7a7a7 1px;
+  background-color: #fff;
+  width: 100%;
+  position: relative;
+}
+#changelist .item:hover{
+   background-color:#00AEEF;
+}
+.item .info_title:hover{
+   color: white;
+}
+
 </style>
 	
 	
   <script>
   $(function(){
 	$("#add_day").on('click', function() {
-		var day = '<li class="day" value='+''+'>Day'+''+'</li>';
+		var order = parseInt($(".day:last").val()) + 1;
+  		var last = $('.ymd:last').val();
+  		var d = new Date(last);
+  		d.setDate(d.getDate() + 1);
+  		 var curr_date = '' + d.getDate();
+		 var curr_month = '' + (d.getMonth() + 1);
+		 var curr_year = d.getFullYear();
+		 if (curr_month.length < 2) curr_month = '0' + curr_month;
+		 if (curr_date.length < 2) curr_date = '0' + curr_date;
+		 var date = curr_year + "-" + curr_month + "-" + curr_date;
+		var day = '<div id="Day'+order+'" class="ordlist">'
+				+ '<input type="hidden" class="areaCode" value="">'
+				+ '<input type="hidden" class="sigunguCode" value="">'
+				+ '<input type="hidden" class="ymd" value='+date+'>' 
+				+ '<input type="hidden" class="day" value='+order+'>' 
+				+ 'DAY '+order+' <br> '+date+' <br> <hr /></div>';
 		$("#daylist").before(day);
+		var scd_sq = $('#scd_sq').val();
+		var daily_scd = {
+				scd_sq: scd_sq,
+				daily_ord: order,
+				daily_ymd: date
+			}
+			$.ajax({
+				type: "post",
+				url: "add_day",
+				data: daily_scd,
+				success: function(data){
+					console.log(data);
+				},
+				error: function(e){
+					console.log(e);
+				}		
+			})
+		$(".ordlist").off("click");
+	    ordclick();
 	});
 	  
     //auto_search();
+    
+    ordclick();
     
     $("#search").on("keyup", function(){
     	if($(this).val().length == 0){
@@ -143,15 +225,230 @@
     	theme_change(theme);
 	});
     
-    $("#sortable").sortable();
-    $("#sortable").disableSelection();
+    sortable();
     
     theme2_change('', '');
+    
+    openNav();
+    
+    initCitySearch();
   });
   
   var map;
   var myMarkers;
-
+  var sigungu = new Array;
+  var pop_cities = [{"index" : 0, "areaCode" : 1, "name" : '서울', "name_en" : "Seoul", "lat" : parseFloat(37.566535), "lng" : parseFloat(126.9779692), "is_state" : 0},
+      {"areaCode" : 6, "sigunguCode" : "", "name" : '부산', "name_en" : "Busan", "lat" : parseFloat(35.1795543), "lng" : parseFloat(129.0756416), "is_state" : 0},
+      {"areaCode" : 39, "sigunguCode" : "", "name" : '제주도', "name_en" : "Jeju", "lat" : parseFloat(33.4890113), "lng" : parseFloat(126.4983023), "is_state" : 0},
+      {"areaCode" : 2, "sigunguCode" : "", "name" : '인천', "name_en" : "Incheon", "lat" : parseFloat(37.4562557), "lng" : parseFloat(126.7052062), "is_state" : 0},
+      {"areaCode" : 3, "sigunguCode" : "", "name" : '대전', "name_en" : "Daejeon", "lat" : parseFloat(36.3504119), "lng" : parseFloat(127.3845475), "is_state" : 0},
+      {"areaCode" : 4, "sigunguCode" : "", "name" : '대구', "name_en" : "Daegu", "lat" : parseFloat(35.8714354), "lng" : parseFloat(128.601445), "is_state" : 0},
+      {"areaCode" : 5, "sigunguCode" : "", "name" : '광주', "name_en" : "Gwangju", "lat" : parseFloat(35.1595454), "lng" : parseFloat(126.8526012), "is_state" : 0},
+      {"areaCode" : 7, "sigunguCode" : "", "name" : '울산', "name_en" : "Ulsan", "lat" : parseFloat(35.5383773), "lng" : parseFloat(129.3113596), "is_state" : 0},
+      {"areaCode" : 8, "sigunguCode" : "", "name" : '세종시', "name_en" : "Sejong", "lat" : parseFloat(36.4800984), "lng" : parseFloat(127.2890354), "is_state" : 0},
+      {"areaCode" : 31, "sigunguCode" : "", "name" : '경기도', "name_en" : "Gyeonggi-do", "lat" : parseFloat(37.41379999999999), "lng" : parseFloat(127.5183), "is_state" : 1},
+      {"areaCode" : 32, "sigunguCode" : "", "name" : '강원도', "name_en" : "Gangwon-do", "lat" : parseFloat(37.8228), "lng" : parseFloat(128.1555), "is_state" : 1},
+      {"areaCode" : 33, "sigunguCode" : "", "name" : '충청북도', "name_en" : "Chungcheongbuk-do", "lat" : parseFloat(36.8), "lng" : parseFloat(127.7), "is_state" : 1},
+      {"areaCode" : 34, "sigunguCode" : "", "name" : '충청남도', "name_en" : "Chungcheongnam-do", "lat" : parseFloat(36.5184), "lng" : parseFloat(126.8), "is_state" : 1},
+      {"areaCode" : 35, "sigunguCode" : "", "name" : '경상북도', "name_en" : "Gyeongsangbuk-do", "lat" : parseFloat(36.4919), "lng" : parseFloat(128.8889), "is_state" : 1},
+      {"areaCode" : 36, "sigunguCode" : "", "name" : '경상남도', "name_en" : "Gyeongsangnam-do", "lat" : parseFloat(35.4606), "lng" : parseFloat(128.2132), "is_state" : 1},
+      {"areaCode" : 37, "sigunguCode" : "", "name" : '전라북도', "name_en" : "Jeollabuk", "lat" : parseFloat(35.71750000000001), "lng" : parseFloat(127.153), "is_state" : 1},
+      {"areaCode" : 38, "sigunguCode" : "", "name" : '전라남도', "name_en" : "Jeollanam-do", "lat" : parseFloat(34.8679), "lng" : parseFloat(126.991), "is_state" : 1}];
+   
+  function getSigungu(areaCode){
+	  var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
+	  var sigunguCode;
+      var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode?ServiceKey="
+           + key + "&areaCode=" + areaCode 
+           + "&numOfRows=100&MobileOS=ETC&MobileApp=AppTesting&_type=json";
+     $.ajax({
+        type : "GET",
+        url : url,
+        success : function(result){
+            $.each(result.response.body.items.item, function(index, val) {
+           	 gUrl = "https://maps.googleapis.com/maps/api/geocode/json?"
+                       + "address=" + encodeURI(val.name)
+                       + "+Korea&key=AIzaSyCgFBh9I4EcWgRNl5dRa93votTaRs_eE0A";
+                 $.ajax({
+                    type : "GET",
+                    url : gUrl,
+                    async : false,
+                    success : function(data){
+                       var location = data.results[0].geometry.location;
+                       sigungu.push({
+                          "areaCode" : areaCode,
+                          "sigunguCode" : val.code,
+                          "name" : val.name,
+                          "name_en" : "",
+                          "lat" : location.lat,
+                          "lng" : location.lng,
+                          "is_state" : 0
+                       });
+                    }, error : function(e){
+                       console.log(e);
+                    }
+                 });//ajax
+              });//each
+           }, error : function(e){
+              console.log(e);
+           }
+     });//ajax
+  }
+  	
+  	function initCitySearch(){
+  		var html = '';
+  		$.each(pop_cities, function(index, val){
+      	  html += '<div class="item" data="'+ val.areaCode +'" data-ci_name="'+ val.name +'" data-lat="'+ val.lat +'" data-lng="' + '" data-is_state="'+ val.is_state +'">';
+            html += '<div class="img_box fl"><img src="./resources/img/city/'+val.areaCode+'.jpg"></div>';
+            html += '<div class="info_box fl"><div class="info_title">'+val.name+'</div><div class="info_sub_title">'+val.name_en+'</div></div>';
+            html += '<div class="clear"></div></div>';
+            
+            if(val.is_state == 0){
+  				sigungu.push(val);
+  			}else{
+  				getSigungu(val.areaCode);
+  			}
+        });
+        $('#changelist').html(html);
+        console.log(sigungu);
+  	}
+  
+	function sortable(){
+		$("#sortable").sortable({
+        	update: function(event, ui) {
+        		var itemOrder = $('#sortable').sortable("toArray");
+        		console.log("sort change");
+        		   for (var i = 0; i < itemOrder.length-1; i++) {
+        		   		var target_span = '#'+itemOrder[i]+' > span';
+        		   		var target_ord = '#'+itemOrder[i];
+        		   		$(target_span).html(i+1);
+        		   		$(target_ord).attr('dtl_ord', (i+1));
+        		   }
+        	// update order in db
+        	$('.my_loc').each(function(){
+        		var dtl_sq = $(this).attr('dtl_sq');
+        		var dtl_ord = $(this).attr('dtl_ord');
+            	var sort_change = {
+                	dtl_sq: dtl_sq,
+        			dtl_ord: dtl_ord
+        		};
+            	$.ajax({
+        			type: "post",
+        			url: "sort_change",
+        			data: sort_change,
+        			success: function(data){
+        				console.log(data);
+        			},
+        			error: function(e){
+        				console.log(e);
+        			}
+        		})//ajax
+        	})//foreach
+		
+	        }//update
+        });
+        $("#sortable").disableSelection();
+	}
+	
+  function ordclick(){
+	  $(".ordlist").on("click", function(){
+			var div_id = $(this).attr('id');
+			var target = "#"+div_id;
+			var areaCode = $(target+" > .areaCode").val();
+			var sigunguCode = $(target+" > .sigunguCode").val();
+			var ymd = $(target+" > .ymd").val();
+			var day = "DAY " + $(target+" > .day").val();
+			var content = '<h1 id="section2_day">'+day+'</h1>'
+			+ '<div id="sortable">'
+			//add places here using before(); below
+			+ '<div id="my_location"></div>'
+			+ '</div>';
+			$('#section2').html(content);
+			sortable();
+			//ajax: get contents using scd_sq & daily_sq order by dtl_ord
+			var scd_sq = $('#scd_sq').val();
+			var daily_sq = parseInt($('#section2_day').text().match(/\d+/)[0], 10);
+			var sq = {
+				scd_sq: scd_sq,
+				daily_sq: daily_sq
+			}
+			$.ajax({
+				type: "post",
+				url: "get_places",
+				data: sq,
+				dataType: "json",
+				success: function(data){
+					set_places(data);
+				},
+				error: function(e){
+					console.log(e);
+				}		
+			})
+	    });
+  }
+  
+  function set_places(data){
+	  var my_content = '';
+	  $.each(data,function(index,item){
+		my_content += '<div class="my_loc" id="'+item.DTL_SQ+'" dtl_sq="'+item.DTL_SQ+'" dtl_ord="'+item.DTL_ORD+'" title="'+item.PLACE_NM+'" contentid="'+item.DTL_CONTENT_ID+'">'
+			+ '<span class="sec2_ord">'+item.DTL_ORD+'</span> '
+			+ '<input type="hidden" id="sec2_id" value="'+item.DTL_CONTENT_ID+'">'
+		 	+ item.PLACE_NM
+			+ '<img src='+item.DTL_IMAGE+' width=190 height=120><br>'
+			+ '<input type="button" value="삭제" onclick="javascript:delete_place('+item.DTL_SQ+');">'
+			+ '<hr />'
+			+ '</div>';
+	  });
+		$("#my_location").before(my_content);
+		my_loc_event();
+  }	
+  
+  function delete_place(dtl_sq){
+	  $.ajax({
+			type: "post",
+			url: "delete_place",
+			data: {	
+				dtl_sq: dtl_sq
+			},
+			success: function(data){
+				  $('div[class=my_loc][dtl_sq='+dtl_sq+']').trigger("mouseleave");
+				  $('div[class=my_loc][dtl_sq='+dtl_sq+']').remove();
+				  //$('#sortable').trigger('sortupdate');
+				  var itemOrder = $('#sortable').sortable("toArray");
+        			console.log("sort change");
+        		   for (var i = 0; i < itemOrder.length-1; i++) {
+        		   		var target_span = '#'+itemOrder[i]+' > span';
+        		   		var target_ord = '#'+itemOrder[i];
+        		   		$(target_span).html(i+1);
+        		   		$(target_ord).attr('dtl_ord', (i+1));
+        		   }
+	        	// update order in db
+	        	$('.my_loc').each(function(){
+	        		var dtl_sq = $(this).attr('dtl_sq');
+	        		var dtl_ord = $(this).attr('dtl_ord');
+	            	var sort_change = {
+	                	dtl_sq: dtl_sq,
+	        			dtl_ord: dtl_ord
+	        		};
+	            	$.ajax({
+	        			type: "post",
+	        			url: "sort_change",
+	        			data: sort_change,
+	        			success: function(data){
+	        				console.log(data);
+	        			},
+	        			error: function(e){
+	        				console.log(e);
+	        			}
+	        		})//ajax
+	        	})
+				},
+				error: function(e){
+					console.log(e);
+				}
+		})
+  }
+		
 	function initMap() {
 		var myLatLng = {
 			lat : 36.242072,
@@ -247,7 +544,7 @@
 				+ '<h3>'+data.response.body.items.item[i].title+'</h3>'
 				+ '<h5>'+data.response.body.items.item[i].addr1+'</h5>'
 				+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item[i].contentid + ')"> '
-				+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+data.response.body.items.item[i].firstimage+'\')">일정에 추가</button>'
+				+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+data.response.body.items.item[i].firstimage+'\',\''+data.response.body.items.item[i].contentid+'\')">일정에 추가</button>'
 				+ '</div>'; 
 
 			google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
@@ -288,23 +585,56 @@
 	}
 	
 
-	function add_place(title, firstimage) {
-			
-		var my_content = '';
-		my_content += '<div class="my_loc">'						
-		 	+ '<h4>'+ title+'</h4>'
-			+ '<img src='+firstimage+' width=190 height=120><br>'
-			//+ '주소: ' + data.response.body.items.item[i].addr1+'<br>'
-			+ '<hr />'
-			+ '</div>';
-		$("#my_location").before(my_content);
+	function add_place(title, firstimage, contentid) {
+		var dtl_ord = $('.sec2_ord:last').text();
+		if(dtl_ord == ""){
+			dtl_ord = 1;
+		}else{
+			dtl_ord = parseInt(dtl_ord) + 1;
+		}
+		
+		var scd_sq = $('#scd_sq').val();
+		var daily_sq = parseInt($('#section2_day').text().match(/\d+/)[0], 10);
+		if(typeof(firstimage) == 'undefined'){
+			firstimage = "";
+		}
+		
+		var dtl_place = {
+			scd_sq: scd_sq,
+			daily_sq: daily_sq,
+			dtl_ord: dtl_ord,
+			dtl_content_id: contentid,
+			place_nm: title,
+			dtl_image: firstimage
+		}
+		$.ajax({
+			type: "post",
+			url: "detail_place",
+			data: dtl_place,
+			success: function(data){
+				var my_content = '';
+				my_content += '<div class="my_loc" id="'+dtl_ord+'" dtl_sq="'+data+'" dtl_ord="'+dtl_ord+'" title="'+title+'" contentid="'+contentid+'">'
+					+ '<span class="sec2_ord">'+dtl_ord+'</span> '
+					+ '<input type="hidden" id="sec2_id" value="'+contentid+'">'
+				 	+ title
+					+ '<img src='+firstimage+' width=190 height=120><br>'
+					+ '<input type="button" value="삭제" onclick="javascript:delete_place('+data+');">'
+					+ '<hr />'
+					+ '</div>';
+				$("#my_location").before(my_content);
+				my_loc_event();
+			},
+			error: function(e){
+				console.log(e);
+			}
+		})
 	};  
   	
   function theme_change(theme) {
 		var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 
-		var areaCode = $('#areaCode').val();
-		var sigunguCode = $('#sigunguCode').val();
+		var areaCode = $(".areaCode").val();
+		var sigunguCode = $('.sigunguCode').val();
 		var theme2 = '';
 		
 		if(theme == 'A04'){
@@ -359,7 +689,7 @@
 						+' width=200 height=120><br>'
 						+ '주소: ' + data.response.body.items.item[i].addr1+'<br>'
 						+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item[i].contentid + ')"> '
-						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+data.response.body.items.item[i].firstimage+'\')">일정에 추가</button>'
+						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+data.response.body.items.item[i].firstimage+'\',\''+data.response.body.items.item[i].contentid+'\')">일정에 추가</button>'
 						+ '</div>'
 				}		
 				$("#location_info").html(content);	
@@ -373,8 +703,8 @@
   function theme2_change(theme, theme2) {      
 		var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 
-		var areaCode = $('#areaCode').val();
-		var sigunguCode = $('#sigunguCode').val();
+		var areaCode = $('.areaCode').val();
+		var sigunguCode = $('.sigunguCode').val();
 		
 		var theme3 = '';	
 
@@ -409,7 +739,7 @@
 						+' width=200 height=120><br>'
 						+ '주소: ' + data.response.body.items.item[i].addr1+'<br>'
 						+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item[i].contentid + ')"> '
-						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+data.response.body.items.item[i].firstimage+'\')">일정에 추가</button>'
+						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+data.response.body.items.item[i].firstimage+'\',\''+data.response.body.items.item[i].contentid+'\')">일정에 추가</button>'
 						+ '</div>'
 				}		
 				$("#location_info").html(content);	
@@ -435,7 +765,31 @@
 				+ '<img src='+data.response.body.items.item.firstimage+' width=340 height=220>'
 				+ '<h4>'+ data.response.body.items.item.overview+'</h4>'
 				+ '주소: ' + data.response.body.items.item.addr1+'('+data.response.body.items.item.zipcode+')<br>';
-				console.log(data.response.body.items.item.tel);
+				if(typeof(data.response.body.items.item.tel) != 'undefined')
+					content += '전화번호: '+ data.response.body.items.item.tel+'<br>';
+				if(typeof(data.response.body.items.item.homepage) != 'undefined')
+					content += '<h5>'+ data.response.body.items.item.homepage+'</h5>';
+			$("#infolist").html(content);
+			openDtl();
+		});
+	}
+  	
+  	function city_change() {
+		var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
+
+		var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="
+				+ key;
+		url += "&contentId=" + contentid
+				+ "&defaultYN=Y&addrinfoYN=Y&firstImageYN=Y&overviewYN=Y";
+		url += "&MobileOS=ETC&MobileApp=AppTesting&_type=json";
+		
+		$.getJSON(url, function(data) {
+			//console.log(data.response.body.items.item);
+			var content = 
+				'<h2>'+ data.response.body.items.item.title+'</h2>'
+				+ '<img src='+data.response.body.items.item.firstimage+' width=340 height=220>'
+				+ '<h4>'+ data.response.body.items.item.overview+'</h4>'
+				+ '주소: ' + data.response.body.items.item.addr1+'('+data.response.body.items.item.zipcode+')<br>';
 				if(typeof(data.response.body.items.item.tel) != 'undefined')
 					content += '전화번호: '+ data.response.body.items.item.tel+'<br>';
 				if(typeof(data.response.body.items.item.homepage) != 'undefined')
@@ -474,7 +828,32 @@
 	    	}
 	    });
   	}
-  
+  	
+  	function my_loc_event(){
+  		$(".my_loc").mouseenter(function(){
+	    	var title = $(this).attr("title");
+	    	for(var i=0;i<myMarkers.length;i++){
+	    	    if(myMarkers[i].title == title){
+	    	    	myMarkers[i].setAnimation(google.maps.Animation.BOUNCE);
+	    	        break;
+	    	    }
+	    	}
+	    });
+	    $(".my_loc").mouseleave(function(){
+	    	var title = $(this).attr("title");
+	    	for(var i=0;i<myMarkers.length;i++){
+	    	    if(myMarkers[i].title == title){
+	    	    	myMarkers[i].setAnimation(null);
+	    	        break;
+	    	    }
+	    	}
+	    });
+	    $(".my_loc img").on("click", function(){
+	    	var id = $(this).closest(".my_loc").attr("contentid");
+	    	d_Data(id);
+	    });
+  	}
+  	
   	function auto_fill(data){
 		$("#search").autocomplete({
 			source: ' ',
@@ -497,7 +876,7 @@
 								+' width=200 height=120><br>'
 								+ '주소: ' + data.response.body.items.item[i].addr1+'<br>'
 								+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item[i].contentid + ')"> '
-								+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+data.response.body.items.item[i].firstimage+'\')">일정에 추가</button>'
+								+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+data.response.body.items.item[i].firstimage+'\',\''+data.response.body.items.item[i].contentid+'\')">일정에 추가</button>'
 								+ '</div>'
 							for (var j = 0; j < myMarkers.length; j++) {
 								if(data.response.body.items.item[i].title == myMarkers[j].title){
@@ -562,21 +941,48 @@
   		$('#detail_info').css('width', '0');
   		$("#detail_info").attr("class","sidenav");
   	}
+
+  	function openCitySearch() {
+  		$('#map').css('left', '10%');
+  		$('#city_change').css('opacity', '100');
+  		$('#city_change').css('pointer-events', 'visible');
+  		$('#city_change').css('width', '20%');
+  		$("#city_change").attr("class","col-4 sidenav");
+  	}
+
+  	function closeCitySearch() {
+  		$('#map').css('left', '0');
+  		$('#city_change').css('opacity', '0');
+  		$('#city_change').css('pointer-events', 'none');
+  		$('#city_change').css('width', '0');
+  		$("#city_change").attr("class","sidenav");
+  	}
   </script>
 </head>
 <body>
+<input type="hidden" id="scd_sq" value="${schedule.scd_sq }">
 
 <div style="overflow:auto;" class="col-2 daylist" id="section1">
-<input type="hidden" id="areaCode" value="${areaCode }">
-<input type="hidden" id="sigunguCode" value="${sigunguCode }">
 <ul>
+<c:forEach var="daily" items="${dailyList }">
+<div id="Day${daily.DAILY_ORD }" class="ordlist">
+<input type="hidden" class="areaCode" value="${daily.AREA_CODE }">
+<input type="hidden" class="sigunguCode" value="${daily.SIGUNGU_CODE }">
+<input type="hidden" class="ymd" value=${daily.DAILY_YMD }>
+<input type="hidden" class="day" value=${daily.DAILY_ORD }>
+DAY ${daily.DAILY_ORD } <br>
+${daily.DAILY_YMD } <br>
+${daily.CITY_NM }
+<hr />
+</div>
+</c:forEach>
 <div id="daylist"></div>
 <li id="add_day" value="">DAY 추가</li>
 </ul>
 </div>
 
 <div style="overflow:auto;" class="col-3" id="section2">
-<h1>Day1</h1>
+<h1 id="section2_day">DAY 1</h1>
 <div id="sortable">
 <div id="my_location"></div>
 </div>
@@ -585,11 +991,15 @@
 <div class="sidenav" id="section3">
 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 <div id="search_menu" style="height:25%;">
+<div>
+${dailyList[0].CITY_NM }
+<input type="button" value="도시변경" onclick="javascript:openCitySearch();">
+</div>
 <div class="search_box">
   <label for="search">검색: </label>
   <input id="search">
+<br><br>
 </div>
-<br>
 <div class="theme_check">
     <label for="radio-1">자연</label>
     <input type="radio" class="radio" name="radio-1" id="radio-1" value="A01">
@@ -613,6 +1023,15 @@
 <div style="overflow:auto;" class="sidenav" id="detail_info">
 <a href="javascript:void(0)" class="closebtn" onclick="closeDtl()">&times;</a>
 <div id="infolist"></div>
+</div>
+
+<div style="overflow:auto;" class="sidenav" id="city_change">
+<a href="javascript:void(0)" class="closebtn" onclick="closeCitySearch()">&times;</a>
+<div style="overflow:auto; height:7%;" id="channge_search">
+<label for="searchCity">검색: </label>
+<input id="searchCity">
+</div>
+<div style="overflow:auto; height:93%;" id="changelist"></div>
 </div>
 
 <div id="openNav">
