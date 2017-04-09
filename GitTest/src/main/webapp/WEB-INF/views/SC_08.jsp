@@ -48,6 +48,21 @@
 <script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8&callback=initMap"
 		async defer></script>
 <script type="text/javascript">
+
+function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어 온다
+	var form=document.getElementById("pagingForm");
+	var page=document.getElementById("page"); 
+	page.value=currentPage; 
+	form.submit();
+}
+
+window.onload=function(){
+	l_Data();
+	r_Data();
+	f_Data()
+    }
+
+
 var map;
 var myLatLng;
 var CONTENT_ID;
@@ -72,11 +87,7 @@ var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2F
     var url2= "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro?ServiceKey="+key;
     	url2 +=	"&contentTypeId=15&contentId="+contentId+"&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&introYN=Y&_type=json"; 
     	
-    window.onload=function(){
-	l_Data();
-	r_Data();
-	f_Data()
-    }
+  
 
 function l_Data(){
 
@@ -118,7 +129,12 @@ function l_Data(){
 	    	
 	    	 console.log('success', data);
 	    	 console.log(data.response.body.items.item.playtime);
-	   	$("#eventDate").html("<h4>행사일정 : "+data.response.body.items.item.playtime+"</h4>");
+	    	console.log(data.response.body.items.item.eventstartdate);
+	    	 if (typeof (data.response.body.items.item.playtime) !== "undefined") {
+		   	$("#eventDate").html("<h4>행사일정 : "+data.response.body.items.item.playtime+"</h4>");	    		 
+	    	 }/* else  if (typeof (data.response.body.items.item.eventstartdate) !== "undefined") {
+	    	$("#eventDate").html("<h4>행사일정 : "+data.response.body.items.item.eventstartdate+" ~ "+data.response.body.items.item.eventenddate+"</h4>");
+	    	 } */
 	    }); 
     
 }
@@ -257,6 +273,7 @@ function f_Data(){
 					
 					console.log(data);
 					 var html ="";
+					 var html2 ="";
 					 $.each(data,function(index,item){
 						
 						html+= "<div class='media'>";
@@ -271,7 +288,22 @@ function f_Data(){
 						html+= '</div>';
 						
 					 })
+						html2+='<div align="center">'; 
+						html2+='<a href ="javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})">◀◀</a>';
+						html2+='<a href ="javascript:pagingFormSubmit(${navi.currentPage -1})">◀</a>';
+						html2+='<c:forEach var="counter" begin="${navi.startPageGroup}" end="${navi.endPageGroup}">';
+						html2+='<a href="javascript:pagingFormSubmit(${counter})">${counter}</a>';
+						html2+='</c:forEach>';
+						html2+='<a href="javascript:pagingFormSubmit(${navi.currentPage + 1})">▶</a>';
+						html2+='<a href="javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})">▶▶</a></div>';
+						html2+='<form action="SC_08" method="get" id="pagingForm">';
+						html2+='<input type="hidden" id="page" name="page">';
+						html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';
+						html2+='<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${conType}">';
+						html2+='</form></div>';
+					 
 					 $("#review").html(html);
+					 $("#paging").html(html2);
 					 $('#reviewWrite').val('');		
 				},
 				error : function(e){
@@ -428,6 +460,34 @@ function locationObj(){
                 </div>
 				</c:forEach>
 				</div>
+				<c:choose>
+				<c:when test="${rList.size() != 0 }">
+				<div id="paging">
+				<div align="center">
+					<a href ="javascript:pagingFormSubmit(
+						${navi.currentPage - navi.pagePerGroup})">◀◀</a>
+						<a href ="javascript:pagingFormSubmit(${navi.currentPage -1})">◀</a>
+					<c:forEach var="counter" begin="${navi.startPageGroup}" end="${navi.endPageGroup}">
+						<a href="javascript:pagingFormSubmit(${counter})">${counter}</a>
+			 		</c:forEach>
+						<a href="javascript:pagingFormSubmit(${navi.currentPage + 1})">▶</a>
+						<a href="javascript:pagingFormSubmit(
+						${navi.currentPage + navi.pagePerGroup})">▶▶</a>
+				</div>
+				<form action="SC_08" method="get" id="pagingForm">
+			 	<!--boardlist컨트롤러의 id(page)와 같은  값(page)에 보낸다  -->
+				<input type="hidden" id="page" name="page">
+				<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">
+				<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">
+				
+				</form>				
+				</div>
+				</c:when>
+				<c:otherwise>
+				<div id="paging">
+				</div>
+				</c:otherwise>
+				</c:choose>
                 <!-- Comment -->
             </div>
 			</div>
@@ -527,7 +587,7 @@ function locationObj(){
 
     <!-- Bootstrap Core JavaScript -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="./resources/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+    <!-- <script>window.jQuery || document.write('<script src="./resources/js/vendor/jquery-1.10.2.min.js"><\/script>')</script> -->
     <script src="./resources/js/bootstrap.min.js"></script>
     <script src="./resources/js/owl.carousel.min.js"></script>
     <script src="./resources/js/wow.js"></script>

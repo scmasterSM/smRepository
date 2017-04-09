@@ -36,9 +36,9 @@ public class ReviewDao {
 	
 
 	
-	public int tCount(){
+	public int tCount(String CONTENT_ID){
 		ReviewMapper mapper =sqlsession.getMapper(ReviewMapper.class);
-		int result =mapper.tCount();
+		int result =mapper.tCount(CONTENT_ID);
 		return result;
 	}
 	

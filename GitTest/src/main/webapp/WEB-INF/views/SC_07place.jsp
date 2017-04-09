@@ -180,14 +180,14 @@ function r_Data(){
  		           	console.log(con);
 					console.log(val);
 					console.log( data.response.body.items.item[val].title);
-					var conType=data.response.body.items.item[val].contenttypeid;
+					var contypeid=data.response.body.items.item[val].contenttypeid;
 					if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
-					$("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
+					$("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+contypeid+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
 					}else{
-						$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
+						$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+contypeid+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
 					}
 					
-					$("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
+					$("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+contypeid+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
 					$("#rplaceaddr"+ j).html(data.response.body.items.item[val].addr1);
  		           	}
 		})
@@ -224,15 +224,15 @@ function f_Data(){
 	           	console.log(con);
 				console.log(val);
 				console.log( data.response.body.items.item[val].title);
-				var conType=data.response.body.items.item[val].contenttypeid;
+				var contypeid=data.response.body.items.item[val].contenttypeid;
 				if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
-				$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
+				$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+contypeid+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
 				}else{
-					$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
+					$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+contypeid+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
 				}
 				
 				/* $("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID=1131275"><img src='+data.response.body.items.item[val].firstimage+' width=200 height=180></a>'); */
-				$("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
+				$("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+contypeid+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
 				$("#resaddr"+ j).html(data.response.body.items.item[val].addr1);
 	           	}
 	})
@@ -301,16 +301,14 @@ function f_Data(){
 						html2+='<a href ="javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})">◀◀</a>';
 						html2+='<a href ="javascript:pagingFormSubmit(${navi.currentPage -1})">◀</a>';
 						html2+='<c:forEach var="counter" begin="${navi.startPageGroup}" end="${navi.endPageGroup}">';
-						html2+='<a href="javascript:pagingFormSubmit(${counter})">${counter}</a>';
-						html2+='</c:forEach>';
+						html2+='<a href="javascript:pagingFormSubmit(${counter})">${counter}</a></c:forEach>';
 						html2+='<a href="javascript:pagingFormSubmit(${navi.currentPage + 1})">▶</a>';
-						html2+='<a href="javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})">▶▶</a></div>';
-						html2+='<form action="SC_07place" method="get" id="pagingForm">';
+						html2+='<a href="javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})">▶▶</a>';
+						html2+='</div><form action="SC_07place" method="get" id="pagingForm">';
 						html2+='<input type="hidden" id="page" name="page">';
 						html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';
-						html2+='<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${conType}">';
-						html2+='</form></div>';
-					 
+						html2+='<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}"></form>';
+						 
 					 $("#review").html(html);
 					 $("#paging").html(html2);
 					 $('#reviewWrite').val('');		
@@ -327,13 +325,13 @@ function f_Data(){
 		$("#clip").on("click",function(){
 				console.log(contentId);
 				var conID = contentId;
-				var conTypeID=contentTypeId;
+				var contypeidID=contentTypeId;
 			$.ajax({
 				type : "POST",
 				url : "clipBoard",
 				data :{
 					CONTENT_ID : conID
-					,CONTENT_TYPE_ID : conTypeID	
+					,CONTENT_TYPE_ID : contypeidID	
 				},
 				
 				success : function(data){
@@ -470,6 +468,8 @@ function locationObj(){
                 </div>
 				</c:forEach>
 				</div>
+				<c:choose>
+				<c:when test="${rList.size() != 0 }">
 				<div id="paging">
 				<div align="center">
 					<a href ="javascript:pagingFormSubmit(
@@ -490,6 +490,12 @@ function locationObj(){
 				
 				</form>				
 				</div>
+				</c:when>
+				</c:choose>
+				
+				<div id="paging">
+				</div>
+				
                 <!-- Comment -->
             </div>
 			</div>

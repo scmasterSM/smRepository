@@ -4,8 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!--구글 자동완성 기능 API -->
-<!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8&libraries=places"></script> -->
 
 <title>Travle Maker</title>
 <meta name="description" content="company is a free job board template">
@@ -35,6 +33,7 @@
 <!-- <script src="./resources/js/jquery-3.1.1.js"></script> -->
 <script src="./resources/js/jquery.min.js"></script>
 
+<!--모달 CSS  -->
 <style type="text/css">
 .nav-tabs {
 	margin-bottom: 15px;
@@ -45,7 +44,7 @@
 	padding: 20px;
 }
 
-div#OR {
+/* div#OR {
 	height: 30px;
 	width: 30px;
 	border: 1px solid #C2C2C2;
@@ -59,11 +58,9 @@ div#OR {
 	right: -16px;
 	top: 40%;
 	z-index: 1;
-	background: #DFDFDF;
+	background: #DFDFDF; */
 }
 </style>
-
-
 <script>
 	window.jQuery
 			|| document
@@ -73,36 +70,21 @@ div#OR {
 <script src="./resources/js/owl.carousel.min.js"></script>
 <script src="./resources/js/wow.js"></script>
 <script src="./resources/js/main.js"></script>
-<!-- <link rel="stylesheet" type="text/css" href="./resources/js/jquery.autocomplete.css" />  -->
-<!-- <script type="text/javascript" src="./resources/js/jquery.js"></script> -->
-<!--  <script type='text/javascript' src='./resources/js/jquery.bgiframe.min.js'></script> -->
-<!--  <script type='text/javascript' src='./resources/js/jquery.ajaxQueue.js'></script> -->
-<!-- <script type='text/javascript' src='./resources/js/jquery.autocomplete.js'></script> -->
 
-
-
-
-
-<!-- <script src="./resources/js/jquery-3.1.1.js"></script> -->
 
 <script type="text/javascript">
 	//관광API 키값 
 	var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 
 	$(function() {
-		$("#joinForm").on("click",function(){
-		
+		$("#joinForm").on("click",function(){ /* 조인버튼 클릭시 모달 처리   */
 			$("#regAtag").trigger("click");
-			
 		})
-		
-		$("#loginForm").on("click",function(){
-		
+		$("#loginForm").on("click",function(){  /*로그인 버튼 클릭시 모달 처리  */
 			$("#loginAtag").trigger("click");
 		})
-		
-		r_Data();
-
+		r_Data(); 
+		random_city();
 	});
 
 	//로그인& 조인 모달 
@@ -110,26 +92,38 @@ div#OR {
 	//정보수정 모달
 	$('#myModal_Edit').modal('show');
 	
+	//로그아웃 버튼 클릭시 처리 함수 
 	function logout(){
-		
 		location.href = "logout";
 	}
 	
-	/* Autocomplete 객체 생성 시 경계 설정 */
-/* 	var defaultBounds = new google.maps.LatLngBounds(
-			  new google.maps.LatLng(-33.8902, 151.1759),
-			  new google.maps.LatLng(-33.8474, 151.2631));
+	//추천 지역을 랜덤으로 보여주는 메소드
+	function random_city(){
+		var content2 = '';
+		
 
-			var input = document.getElementById('searchTextField');
-			var options = {
-			  bounds: defaultBounds,
-			  types: ['establishment']
-			};
-
-			autocomplete = new google.maps.places.Autocomplete(input, options);
-	 */
-
+		content2 += '<ul class="list-inline job-seeker">';
+		content2 += '<li><a href="sc_05?areacode=1"> <img src="./resources/image/main_city/city_seoul.jpg" alt="" width="300" height="200">';
+		content2 += '<div class="overlay">';
+		content2 +=	'<h3>서울</h3>';
+		content2 +=	'<p>가장 먼지많은 도시</p>';
+		content2 +=	'</div></a></li><li><a href="sc_05?areacode=6"> <img src="./resources/image/main_city/city_busan.jpg" alt="" width="300" height="200">';
+		content2 +=	'<div class="overlay"><h3>부산</h3><p>무봤나~~</p></div></a></li>';
+		content2 +=  '<li><a href="sc_05?areacode=37"> <img src="./resources/image/main_city/city_junju.jpg" alt="" width="300" height="200">';
+		content2 +=  '<div class="overlay">';
+		content2 +=	'<h3>전주</h3><p>아름다운 전주 전주</p></div></a></li>';
+		content2 +=   '<li><a href="39"> <img src="./resources/image/main_city/city_jeju.jpg" alt="" width="300" height="200">';
+		content2 += '<div class="overlay"><h3>제주도</h3><p>제주도 빠지면 섭하지</p></div></a></li>';
+		content2 += '<li><a href="sc_05?areacode=32"> <img src="./resources/image/main_city/city_kwd.jpg" alt="" width="300" height="200">';
+		content2 +=		'<div class="overlay"><h3>강원도</h3><p>강원도의 힘 감자 고구마~</p></div></a></li>';
+		content2 += '<li><a href="sc_05?areacode=35"> <img src="./resources/image/main_city/city_kj.jpg" alt="" width="300" height="200">';
+		content2 +=	'<div class="overlay"><h3>경주</h3><p>아름다운 고장</p></div></a></li></ul>';
+		
+		$("#tabtab").html(content2);
+		
+	}
 	
+
 	//행사 정보를 가져오는 메소드 
 	function r_Data() {
 		//$.getJSON(url, function(data) {
@@ -143,8 +137,7 @@ div#OR {
 		/* url2 ="&contentTypeId=15&areaCode=&sigunguCode=&cat1=&cat2=&cat3"; */
 		url2 += "&eventStartDate=20170401&eventEndDate=20170531&arrange=A&listYN=Y&pageNo=1&numOfRows=235&MobileOS=ETC&MobileApp=AppTesting&_type=json";
 
-		$
-				.getJSON(
+		$.getJSON(
 						url2,
 						function(data) {
 							console.log(data);
@@ -182,7 +175,7 @@ div#OR {
 							} //for
 							$("#job-seekers").html(content);
 						});
-	}
+}
 </script>
 </head>
 
@@ -211,14 +204,14 @@ div#OR {
 			<c:when test="${sessionScope.id == null }">
 					<div class="header-half header-social">
 						<ul class="list-inline">
-							<li><a href="http://www.facebook.com/minirem"><i
+							<!-- <li><a href="http://www.facebook.com/minirem"><i
 									class="fa fa-facebook"></i></a></li>
 							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
 							<li><a href="#"><i class="fa fa-vine"></i></a></li>
-							<!-- <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-							<li><a href="#"><i class="fa fa-dribbble"></i></a></li> -->
+							<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+							<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
 							<li><a href="http://www.instagram.com/remi0315"><i
-									class="fa fa-instagram"></i></a></li>
+									class="fa fa-instagram"></i></a></li> -->
 							<li><a href="autoLogin">연습</a></li>
 						</ul>
 					</div>
@@ -231,8 +224,6 @@ div#OR {
 			   </div>
 			</c:otherwise>		
 			</c:choose>		
-					
-					
 				</div>
 			</div>
 		</div>
@@ -509,10 +500,7 @@ div#OR {
 						</div>
 					</div>
 					
-					
-					
-					
-					
+		
 				</div>
 				
 				<c:choose>
@@ -575,7 +563,7 @@ div#OR {
 					<br>
 					<div id="mainContent">
 					<h2>
-						내가 살던 (_____)이 <br> 새롭게 보이기 시작했다
+						내가 사는 이 도시가 <br> 새롭게 보이기 시작했다
 					</h2>
 					</div>
 					<br> <br> <br> <br> <br>
@@ -606,30 +594,31 @@ div#OR {
 				data-wow-delay="1s">
 				<h3>Let's plan with Travel Maker!</h3>
 				<h2>여행은 하고 싶은데 어디를 가야할지 고민이라면?</h2>
-				<p>전국 163개 도시의 10,000개의 관광명소, 음식점, 쇼핑 정보를 확인하세요.</p>
+				<!-- <p>전국 163개 도시의 10,000개의 관광명소, 음식점, 쇼핑 정보를 확인하세요.</p> -->
 			</div>
-			<!-- <div class="row how-it-work text-center">
+			<div class="row how-it-work text-center">
 				<div class="col-md-4">
 					<div class="single-work wow fadeInUp" data-wow-delay="0.8s">
 						<img src="./resources/img/how-work1.png" alt="">
 						<h3>여행 정보</h3>
-						<p>전국 163개 도시, 10,000개?의 관광명소, 음식점, 쇼핑 정보를 확인하세요.</p>
+						<p>전국 163개 도시, 10,000개 이상의 관광명소, 음식점, 쇼핑 정보를 확인하세요</p>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="single-work  wow fadeInUp" data-wow-delay="0.9s">
 						<img src="./resources/img/how-work2.png" alt="">
 						<h3>여행 일정</h3>
-						<p>전국 10,000개 이상의 여행일정을 확인하고 나만의 일정을 계획해 보세요..</p>
+						<p>나만의 여행 일정을 짜보거나<br> 다른 사람들의 일정도 확인 해보세요</p>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="single-work wow fadeInUp" data-wow-delay="1s">
 						<img src="./resources/img/how-work3.png" alt="">
-						<h3>커뮤니티</h3>
-						<p>여행자들과 정보를 공유하고, 궁금한 것은 언제든 물어보세요..</p>
+						<h3>일정 공유</h3>
+						<p>내 일정을 공유하여 실시간으로 <br>친구와 함께 계획을 세워보세요</p>
+						
 					</div>
-				</div> -->
+				</div>
 		</div>
 	</div>
 
@@ -644,61 +633,10 @@ div#OR {
 						aria-controls="home" role="tab" data-toggle="tab">추천 도시
 					</a></li>
 				</ul>
-
 				<!-- Tab panes -->
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane fade in active" id="tabtab">
-						<ul class="list-inline job-seeker">
-
-							<li><a href=""> <img
-									src="./resources/image/main_city/city_seoul.jpg" alt=""
-									width="300" height="200">
-									<div class="overlay">
-										<h3>서울</h3>
-										<p>가장 먼지많은 도시</p>
-									</div>
-							</a></li>
-							<li><a href=""> <img
-									src="./resources/image/main_city/city_busan.jpg" alt=""
-									width="300" height="200">
-									<div class="overlay">
-										<h3>부산</h3>
-										<p>무봤나~~</p>
-									</div>
-							</a></li>
-							<li><a href=""> <img
-									src="./resources/image/main_city/city_junju.jpg" alt=""
-									width="300" height="200">
-									<div class="overlay">
-										<h3>전주</h3>
-										<p>아름다운 전주 전주</p>
-									</div>
-							</a></li>
-							<li><a href=""> <img
-									src="./resources/image/main_city/city_jeju.jpg" alt=""
-									width="300" height="200">
-									<div class="overlay">
-										<h3>제주도</h3>
-										<p>제주도 빠지면 섭하지</p>
-									</div>
-							</a></li>
-							<li><a href=""> <img
-									src="./resources/image/main_city/city_kwd.jpg" alt=""
-									width="300" height="200">
-									<div class="overlay">
-										<h3>강원도</h3>
-										<p>강원도의 힘 감자 고구마~</p>
-									</div>
-							</a></li>
-							<li><a href=""> <img
-									src="./resources/image/main_city/city_kj.jpg" alt=""
-									width="300" height="200">
-									<div class="overlay">
-										<h3>경주</h3>
-										<p>아름다운 고장</p>
-									</div>
-							</a></li>
-						</ul>
+						<!-- 도시 추천 자바스크립트로 옮겨진 부분  --> 
 					</div>
 				</div>
 
@@ -716,9 +654,8 @@ div#OR {
 					<li role="presentation" class="active"><a href="#job-seekers"
 						aria-controls="home" role="tab" data-toggle="tab">추천 행사</a></li>
 					<li role="presentation"><a href="#employeers"
-						aria-controls="profile" role="tab" data-toggle="tab">추천 일정</a></li>
+						aria-controls="profile" role="tab" data-toggle="tab">인기 여행 일정</a></li>
 				</ul>
-
 				<!-- Tab panes -->
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane fade in active"
@@ -730,41 +667,6 @@ div#OR {
 										<div class="overlay">
 											<h3>Ohidul Islam</h3>
 											<p>Web Designer</p>
-										</div>
-								</a></li>
-								<li><a href=""> <img
-										src="./resources/img/team-small-6.jpg" alt="">
-										<div class="overlay">
-											<h3>Mohidul Islam</h3>
-											<p>CEO</p>
-										</div>
-								</a></li>
-								<li><a href=""> <img
-										src="./resources/img/team-small-3.jpg" alt="">
-										<div class="overlay">
-											<h3>Unknown girl</h3>
-											<p>Graphic Designer</p>
-										</div>
-								</a></li>
-								<li><a href=""> <img
-										src="./resources/img/team-small-4.jpg" alt="">
-										<div class="overlay">
-											<h3>Eftakher Alam</h3>
-											<p>Graphic Designer</p>
-										</div>
-								</a></li>
-								<li><a href=""> <img
-										src="./resources/img/team-small-2.jpg" alt="">
-										<div class="overlay">
-											<h3>Mark Otto</h3>
-											<p>Founder</p>
-										</div>
-								</a></li>
-								<li><a href=""> <img
-										src="./resources/img/team-small-1.jpg" alt="">
-										<div class="overlay">
-											<h3>Rasel Ahmed</h3>
-											<p>Web Developer</p>
 										</div>
 								</a></li>
 							</ul> -->
@@ -971,7 +873,6 @@ div#OR {
 	<div class="container">
 		<div class="row page-title text-center  wow bounce"
 			data-wow-delay=".7s">
-			<h5>TESTIMONIALS</h5>
 			<h2>WHAT PEOPLES ARE SAYING</h2>
 		</div>
 		<div class="row testimonial">
@@ -1065,64 +966,13 @@ div#OR {
 
 	<div class="footer-area">
 		<div class="container">
-			<div class="row footer">
-				<div class="col-md-4">
-					<div class="single-footer">
-						<img src="./resources/img/footer-logo.png" alt=""
-							class="wow pulse" data-wow-delay="1s">
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-							Obcaecati architecto quaerat facere blanditiis tempora sequi
-							nulla accusamus, possimus cum necessitatibus suscipit quia autem
-							mollitia, similique quisquam molestias. Vel unde, blanditiis.</p>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="single-footer">
-						<h4>Twitter update</h4>
-						<div class="twitter-updates">
-							<div class="single-tweets">
-								<h5>ABOUT 9 HOURS</h5>
-								<p>
-									<strong>AGOMeet Aldous</strong> - a Brave New World for #rails
-									with more cohesion, less coupling and greater dev speed <a
-										href="http://t.co/rsekglotzs">http://t.co/rsekglotzs</a>
-								</p>
-							</div>
-							<div class="single-tweets">
-								<h5>ABOUT 9 HOURS</h5>
-								<p>
-									<strong>AGOMeet Aldous</strong> - a Brave New World for #rails
-									with more cohesion, less coupling and greater dev speed <a
-										href="http://t.co/rsekglotzs">http://t.co/rsekglotzs</a>
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="single-footer">
-						<h4>Useful lnks</h4>
-						<div class="footer-links">
-							<ul class="list-unstyled">
-								<li><a href="">About Us</a></li>
-								<li><a href="" class="active">Services</a></li>
-								<li><a href="">Work</a></li>
-								<li><a href="">Our Blog</a></li>
-								<li><a href="">Customers Testimonials</a></li>
-								<li><a href="">Affliate</a></li>
-								<li><a href="">Contact Us</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
+		<br><br>
+			
 			<div class="row footer-copy">
-				<p>
-					<span>(C) webstie, All rights reserved</span> | <span>Graphic
-						Designed by <a href="https://dribbble.com/siblu">Eftakher Alam</a>
-					</span> | <span> Web Designed by <a href="http://ohidul.me">Team
-							No.2</a></span>
-				</p>
+		<!-- 		<p>
+					<span id="span1">(C) webstie, All rights reserved</span>
+					
+				</p> -->
 			</div>
 		</div>
 	</div>

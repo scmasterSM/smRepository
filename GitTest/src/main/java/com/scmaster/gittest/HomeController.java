@@ -25,18 +25,13 @@ import com.scmaster.gittest.dao.ReviewDao;
 import com.scmaster.gittest.util.PageNavigator;
 import com.scmaster.gittest.vo.Clip;
 import com.scmaster.gittest.vo.Review;
-
-
-
-
-
-
+  
 @Controller
 public class HomeController {
 	
 	
 	final int countPerPage = 5;	//페이지 당 글 수
-	final int pagePerGrop=5;		//페이지 이동 그룹 당 표시할 페이지수
+	final int pagePerGrop = 5;		//페이지 이동 그룹 당 표시할 페이지수
 	
 	
 	@Autowired
@@ -75,7 +70,7 @@ public class HomeController {
 	@RequestMapping(value="SC_07place",method=RequestMethod.GET)
 	public String SC_07place(String CONTENT_ID,String CONTENT_TYPE_ID,Model model,@RequestParam
 			(value="page",defaultValue="1")	int page){ 
-		int count =dao.tCount();
+		int count =dao.tCount(CONTENT_ID);
 		PageNavigator navi= new PageNavigator(
 				countPerPage, pagePerGrop, page, count);  
 		List<Review>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),CONTENT_ID);
@@ -88,7 +83,15 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="SC_08",method=RequestMethod.GET)
-	public String SC_08(String CONTENT_ID, Model model){
+	public String SC_08(String CONTENT_ID, Model model,@RequestParam
+			(value="page",defaultValue="1")	int page){
+		int count =dao.tCount(CONTENT_ID);
+		PageNavigator navi= new PageNavigator(
+				countPerPage, pagePerGrop, page, count);  
+		List<Review>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),CONTENT_ID);
+		model.addAttribute("rList",rList);
+		model.addAttribute("count", count);
+		model.addAttribute("navi", navi);
 		model.addAttribute("contentid", CONTENT_ID);
 		return "SC_08";
 	}
