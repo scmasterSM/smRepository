@@ -10,5 +10,6 @@
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/ReviewMapper.xml" />
+		<mapper resource="mappers/ClipMapper.xml" />
 	</mappers>
 </configuration>

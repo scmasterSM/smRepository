@@ -88,8 +88,8 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="SC_08",method=RequestMethod.GET)
-	public String SC_08(){
-		
+	public String SC_08(String CONTENT_ID, Model model){
+		model.addAttribute("contentid", CONTENT_ID);
 		return "SC_08";
 	}
 	

@@ -167,7 +167,7 @@ div#OR {
 								console
 										.log(data.response.body.items.item[val].title);
 								if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
-									content += '<li><a href="SC_08?PLACE_NM='
+									content += '<li><a href="SC_08?CONTENT_ID='
 											+ con
 											+ '"><img src='+data.response.body.items.item[val].firstimage+' width="300" height="200" alt="">';
 									content += '<div class="overlay"><h3>'

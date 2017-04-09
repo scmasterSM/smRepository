@@ -22,6 +22,7 @@
 			REV_SQ DESC
 	</select>
 	
+	<!-- 페이징 관련 리뷰글수 -->
 	<select id="tCount"  resultType="int">
 		select count(*)
 		from SM_REVIEW_TB
@@ -52,37 +53,6 @@
 		)
 	</insert>
 	
-	<!-- 클립 저장 -->
-	<insert id="insertClip" parameterType="Clip">
-		INSERT INTO SM_CLIP_TB
-		(
-			CLIP_SQ,
-			USER_ID,
-			CONTENT_ID,
-			CONTENT_TYPE_ID,			
-			CLIP_YMD
-			
-		)
-		VALUES
-		(
-			SM_CLIP_TB_CLIP_SQ.nextval
-			, #{USER_ID}
-			, #{CONTENT_ID}
-			, #{CONTENT_TYPE_ID}			
-			, sysdate
-			
-		)
-	</insert>
-	<!-- 클립 읽어오기 -->		
-	<select id="readCLip" parameterType="String" resultType="Clip">
-	select	CLIP_SQ,
-			USER_ID,
-			CONTENT_ID,
-			CONTENT_TYPE_ID,
-			CLIP_YMD
-	from 	SM_CLIP_TB
-	where 	USER_ID=#{USER_ID}
-	order by CLIP_SQ
-	</select>
+	
 
 </mapper>

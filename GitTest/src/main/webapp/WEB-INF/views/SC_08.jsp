@@ -55,7 +55,7 @@ var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2F
 	
     //장소바꿀때 전 단계에서 contentId를 받아와서 바꾸면 될듯
 	
-    var contentId=2376250;
+    var contentId=${contentid};
     var contentTypeId=15;
   	var areaCode;
   	var sigunguCode;

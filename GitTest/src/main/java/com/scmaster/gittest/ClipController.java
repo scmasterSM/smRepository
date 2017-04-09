@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.scmaster.gittest.dao.ClipDao;
 import com.scmaster.gittest.dao.ReviewDao;
 import com.scmaster.gittest.vo.Clip;
 
@@ -18,7 +19,7 @@ import com.scmaster.gittest.vo.Clip;
 public class ClipController {
 
 	@Autowired
-	private ReviewDao dao;
+	private ClipDao dao;
 	
 	
 	@ResponseBody

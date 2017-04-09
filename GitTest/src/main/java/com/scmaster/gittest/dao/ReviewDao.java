@@ -34,18 +34,7 @@ public class ReviewDao {
 		return rList;
 	}
 	
-	public int insertClip(Clip clip){
-		ReviewMapper mapper =sqlsession.getMapper(ReviewMapper.class);
-		int result;
-		result = mapper.insertClip(clip);
-		return result;
-	}
-	
-	public List<Clip> readCLip(String USER_ID){
-		ReviewMapper mapper =sqlsession.getMapper(ReviewMapper.class);
-		List<Clip>cList=mapper.readCLip(USER_ID);
-		return cList;
-	}
+
 	
 	public int tCount(){
 		ReviewMapper mapper =sqlsession.getMapper(ReviewMapper.class);
