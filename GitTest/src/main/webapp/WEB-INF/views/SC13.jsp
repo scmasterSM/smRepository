@@ -215,6 +215,12 @@
     	}
     });
     
+    $("#searchCity").on("keyup", function(){
+    	if($(this).val().length == 0){
+    		initCitySearch();
+    	}
+    });
+    
     $(".radio").checkboxradio({
         icon: false
     });
@@ -232,6 +238,7 @@
     openNav();
     
     initCitySearch();
+    citySearch();
   });
   
   var map;
@@ -298,21 +305,21 @@
   	function initCitySearch(){
   		var html = '';
   		$.each(pop_cities, function(index, val){
-      	  html += '<div class="item" data="'+ val.areaCode +'" data-ci_name="'+ val.name +'" data-lat="'+ val.lat +'" data-lng="' + '" data-is_state="'+ val.is_state +'">';
+      	  html += '<div class="item" data="'+ val.areaCode +'" data-ci_name="'+ val.name +'" data-lat="'+ val.lat +'" data-lng="' + val.lng + '" data-is_state="'+ val.is_state +'">';
             html += '<div class="img_box fl"><img src="./resources/img/city/'+val.areaCode+'.jpg"></div>';
             html += '<div class="info_box fl"><div class="info_title">'+val.name+'</div><div class="info_sub_title">'+val.name_en+'</div></div>';
             html += '<div class="clear"></div></div>';
-            
-            if(val.is_state == 0){
-  				sigungu.push(val);
-  			}else{
-  				getSigungu(val.areaCode);
-  			}
+            if(sigungu.length < 100){
+	            if(val.is_state == 0){
+	  				sigungu.push(val);
+	  			}else{
+	  				getSigungu(val.areaCode);
+	  			}
+            }
         });
         $('#changelist').html(html);
-        console.log(sigungu);
   	}
-  
+  	  
 	function sortable(){
 		$("#sortable").sortable({
         	update: function(event, ui) {
@@ -633,8 +640,8 @@
   function theme_change(theme) {
 		var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 
-		var areaCode = $(".areaCode").val();
-		var sigunguCode = $('.sigunguCode').val();
+		var areaCode = $("#areaCode").val();
+		var sigunguCode = $('#sigunguCode').val();
 		var theme2 = '';
 		
 		if(theme == 'A04'){
@@ -703,9 +710,10 @@
   function theme2_change(theme, theme2) {      
 		var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 
-		var areaCode = $('.areaCode').val();
-		var sigunguCode = $('.sigunguCode').val();
-		
+		var areaCode = $('#areaCode').val();
+		var sigunguCode = $('#sigunguCode').val();
+		console.log(areaCode);
+		console.log(sigunguCode);
 		var theme3 = '';	
 
 		if(theme == 'A04'){
@@ -906,6 +914,41 @@
 		});
   	}
   	
+  	function citySearch(){
+		$("#searchCity").autocomplete({
+			source: ' ',
+			search: function(){
+				var searchText = $(this).val();
+				var content = '';
+		   		console.log(searchText);	  
+				//{"areaCode" : 6, "sigunguCode" : "", "name" : '부산', "name_en" : "Busan", "lat" : parseFloat(35.1795543), "lng" : parseFloat(129.0756416), "is_state" : 0},
+		   		for (var i in sigungu) {
+					if(sigungu[i].name.includes(searchText)){
+						content += '<div class="item" data="'+ sigungu[i].areaCode +'" data2="'+ sigungu[i].sigunguCode +'" data-ci_name="'+ sigungu[i].name +'" data-lat="'+ sigungu[i].lat +'" data-lng="' + sigungu[i].lng + '" data-is_state="'+ sigungu[i].is_state +'">'
+							+ '<div class="img_box fl"><img src="./resources/img/city/'+sigungu[i].areaCode+'.jpg"></div>'
+						 	+ '<div class="info_box fl"><div class="info_title">'+sigungu[i].name+'</div><div class="info_sub_title">'+sigungu[i].name_en+'</div></div>'
+							+ '<div class="clear"></div></div>';
+					}
+				}
+				$("#changelist").html(content);	
+				city_change_event();
+			}
+		});
+  	}
+  	
+  	function city_change_event(){
+  		$('.item').on('click', function(){
+  			var areaCode = $(this).attr('data');
+  			var sigunguCode = $(this).attr('data2');
+  			if(typeof(sigunguCode) == 'undefined'){
+  				sigunguCode = "";
+  			}
+  			$('#areaCode').val(areaCode);
+  			$('#sigunguCode').val(sigunguCode);
+  			theme2_change('', '');
+  		});
+  	}
+  	
   	function openNav() {
   		$('#map').css('left', '10%');
   		$('#openNav').css('opacity', '0');
@@ -961,9 +1004,11 @@
 </head>
 <body>
 <input type="hidden" id="scd_sq" value="${schedule.scd_sq }">
-
+<input type="hidden" id="areaCode" value="${dailyList[0].AREA_CODE }">
+<input type="hidden" id="sigunguCode" value="${dailyList[0].SIGUNGU_CODE }">
 <div style="overflow:auto;" class="col-2 daylist" id="section1">
 <ul>
+
 <c:forEach var="daily" items="${dailyList }">
 <div id="Day${daily.DAILY_ORD }" class="ordlist">
 <input type="hidden" class="areaCode" value="${daily.AREA_CODE }">
@@ -1027,7 +1072,7 @@ ${dailyList[0].CITY_NM }
 
 <div style="overflow:auto;" class="sidenav" id="city_change">
 <a href="javascript:void(0)" class="closebtn" onclick="closeCitySearch()">&times;</a>
-<div style="overflow:auto; height:7%;" id="channge_search">
+<div style="overflow:auto; height:7%;" id="change_search">
 <label for="searchCity">검색: </label>
 <input id="searchCity">
 </div>
