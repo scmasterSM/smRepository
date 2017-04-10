@@ -338,6 +338,3 @@ ALTER TABLE SM_BGT_TB
 	REFERENCES SM_DAILY_SCD_TB (DAILY_SQ)
 ;
 
-insert into SM_USER_TB
-	values ('1', '123123', 'jiny@naver.com', 'F', sysdate, null) ;
-
