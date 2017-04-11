@@ -17,5 +17,5 @@ public interface ReviewMapper {
 	
 	public List<Review> readReview(RowBounds rb,String CONTENT_ID);
 	 
-	public int tCount();
+	public int tCount(String CONTENT_ID);
 }
