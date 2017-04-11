@@ -123,6 +123,9 @@
 				,dtl_content_id
 				,place_nm
 				,dtl_image
+				,area_code
+				,sigungu_code
+				,city_nm
 			)values(
 				SM_DTL_SCD_TB_DTL_SQ.nextval
 				,#{scd_sq}
@@ -131,6 +134,9 @@
 				,#{dtl_content_id}
 				,#{place_nm}
 				,#{dtl_image}
+				,#{area_code}
+				,#{sigungu_code}
+				,#{city_nm}
 			)
 	</insert>
 	
@@ -179,5 +185,91 @@
  		where
  			dtl_sq = #{dtl_sq}
  	</delete>
+ 	
+ 	<!-- daily_sq 가져오기 -->
+	<select id="getDailySq" parameterType="Daily_City" resultType="int">
+		select
+			daily_sq
+		from
+			SM_DAILY_SCD_TB
+		where
+			scd_sq = #{scd_sq}
+		and
+			daily_ord = #{daily_sq}
+	</select>
+ 	
+ 	<!-- city_cnt 가져오기 -->
+	<select id="getDcityCnt" parameterType="Daily_City" resultType="int">
+		select
+			count(dcl_sq)
+		from
+			SM_DAILY_CITY_TB
+		where
+			scd_sq = #{scd_sq}
+		and
+			daily_sq = #{daily_sq}
+	</select>
+ 	
+ 	<!-- max city_ord 가져오기 -->
+	<select id="getMaxCityord" parameterType="Daily_City" resultType="int">
+		select
+			max(city_ord)
+		from
+			SM_DAILY_CITY_TB
+		where
+			scd_sq = #{scd_sq}
+		and
+			daily_sq = #{daily_sq}
+	</select>
+ 	
+ 	<!-- 일차별 도시 삭제 -->
+	<delete id="delete_dcity" parameterType="Daily_City">
+ 		delete from
+ 			SM_DAILY_CITY_TB
+ 		where
+ 			scd_sq = #{scd_sq}
+ 		and
+ 			daily_sq = #{daily_sq}
+ 		and
+ 			city_ord = #{max_ord}
+ 	</delete>
+ 	
+ 	<!-- 일차별 도시 수정 -->
+	<update id="update_dcity" parameterType="Daily_City">
+		update
+			SM_DAILY_CITY_TB
+		set
+			area_code = #{area_code}
+			,sigungu_code = #{sigungu_code}
+			,city_nm = #{city_nm}
+		where
+ 			scd_sq = #{scd_sq}
+ 		and
+ 			daily_sq = #{daily_sq}
+ 		and
+ 			city_ord = #{city_ord}
+	</update>
+	
+	<!-- 일차별 도시 추가 -->
+	<insert id="insert_dcity" parameterType="Daily_City">
+		insert into
+			SM_DAILY_CITY_TB(
+				dcl_sq
+				,scd_sq
+				,daily_sq
+				,city_ord
+				,area_code
+				,sigungu_code
+				,city_nm
+			)values(
+				SM_DAILY_CITY_TB_DCL_SQ.nextval
+				,#{scd_sq}
+				,#{daily_sq}
+				,#{city_ord}
+				,#{area_code}
+				,#{sigungu_code}
+				,#{city_nm}
+			)
+	</insert>
 	
  </mapper>
