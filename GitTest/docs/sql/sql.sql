@@ -62,7 +62,7 @@ CREATE TABLE SM_DAILY_CITY_TB
 	AREA_CODE varchar2(20) NOT NULL,
 	-- SIGUNGU_CODE
 	SIGUNGU_CODE varchar2(20),
-	CITY_NM varchar2(20),
+	CITY_NM varchar2(100),
 	PRIMARY KEY (DCL_SQ)
 );
 
@@ -218,6 +218,9 @@ CREATE TABLE SM_DTL_SCD_TB
 	DTL_MEMO varchar2(2000),
 	PLACE_NM varchar2(100),
 	DTL_IMAGE varchar2(100),
+	AREA_CODE varchar2(20),
+	SIGUNGU_CODE varchar2(20),
+	CITY_NM varchar2(100),
 	PRIMARY KEY (DTL_SQ)
 );
 
@@ -338,3 +341,7 @@ ALTER TABLE SM_BGT_TB
 	REFERENCES SM_DAILY_SCD_TB (DAILY_SQ)
 ;
 
+
+INSERT INTO SM_USER_TB values(
+	'1', '123123', 'sean@gmail.com', 'M', sysdate, null
+);

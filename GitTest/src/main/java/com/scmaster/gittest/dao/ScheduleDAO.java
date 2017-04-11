@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.scmaster.gittest.vo.Daily_City;
 import com.scmaster.gittest.vo.Daily_Scd;
 import com.scmaster.gittest.vo.Dtl_Scd;
 import com.scmaster.gittest.vo.Schedule;
@@ -79,5 +80,36 @@ public class ScheduleDAO {
 	public void delete_place(int dtl_sq){
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
 		mapper.delete_place(dtl_sq);
+	}
+	
+	//일차별 도시 업데이트
+	public void update_cities(Daily_City city){
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		int daily_sq = mapper.getDailySq(city);
+		city.setDaily_sq(daily_sq);
+		int city_cnt = mapper.getDcityCnt(city);
+		if(city_cnt == 0){
+			mapper.insert_dcity(city);
+			return;
+		}
+		if(city_cnt >= city.getCity_cnt()){
+			//delete
+			int delete_cnt = city_cnt - city.getCity_cnt();
+			for(int i=0; i < delete_cnt; i++){
+				int max_ord = mapper.getMaxCityord(city);
+				city.setMax_ord(max_ord);
+				mapper.delete_dcity(city);
+			}
+			//update
+			mapper.update_dcity(city);
+		}else{
+			if(city_cnt >= city.getCity_ord()){
+				//update
+				mapper.update_dcity(city);
+			}else{
+				//insert
+				mapper.insert_dcity(city);
+			}
+		}
 	}
 }
