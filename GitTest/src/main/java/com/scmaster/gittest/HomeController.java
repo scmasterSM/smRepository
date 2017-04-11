@@ -75,7 +75,7 @@ public class HomeController {
 	@RequestMapping(value="SC_07place",method=RequestMethod.GET)
 	public String SC_07place(String CONTENT_ID,String CONTENT_TYPE_ID,Model model,@RequestParam
 			(value="page",defaultValue="1")	int page){ 
-		int count =dao.tCount();
+		int count =dao.tCount(CONTENT_ID);
 		PageNavigator navi= new PageNavigator(
 				countPerPage, pagePerGrop, page, count);  
 		List<Review>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),CONTENT_ID);
@@ -88,8 +88,16 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="SC_08",method=RequestMethod.GET)
-	public String SC_08(String CONTENT_ID, Model model){
-		model.addAttribute("contentid", CONTENT_ID);
+	public String SC_08(String CONTENT_ID, Model model,@RequestParam
+			(value="page",defaultValue="1")	int page){ 
+		int count =dao.tCount(CONTENT_ID);
+		PageNavigator navi= new PageNavigator(
+				countPerPage, pagePerGrop, page, count);  
+		List<Review>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),CONTENT_ID);
+		model.addAttribute("rList",rList);
+		model.addAttribute("contentid",CONTENT_ID); 
+		model.addAttribute("count", count);
+		model.addAttribute("navi", navi);
 		return "SC_08";
 	}
 	
