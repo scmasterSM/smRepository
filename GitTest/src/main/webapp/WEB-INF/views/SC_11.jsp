@@ -6,7 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- <%@include file="joinForm.jsp"%> --%>
 
-<title>SC_05화면</title>
+<title>SC_11화면</title>
 <meta name="description" content="company is a free job board template">
 <meta name="author" content="Ohidul">
 <meta name="keyword" content="html, css, bootstrap, job-board">
@@ -44,15 +44,18 @@
    <!--  <script type='text/javascript' src='./resources/js/jquery.ajaxQueue.js'></script> -->
     <!-- <script type='text/javascript' src='./resources/js/jquery.autocomplete.js'></script> -->
 
-	
-	
+<!--버튼에 대한 자바스크립트  -->
+<!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	 -->
 	
 	
 <!-- <script src="./resources/js/jquery-3.1.1.js"></script> -->
 
 <script type="text/javascript">
-     	var areacode = ${areacode};
-     	console.log(areacode);
+     	/* var areacode = ${areacode}; */
+     	/* console.log(areacode); */
         
      	var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 		
@@ -71,62 +74,7 @@
     			$("#loginAtag").trigger("click");
     		})
         	
-        	theme_Data(areacode, "A01&cat2=");
-            popular_Data(areacode);
-            city_img(areacode);
-            
-          //자연
-            $('#bMenu0').on('click', 
-              function (){ 
-                  theme_Data(areacode, "A01&cat2="); 
-            } );
-           //역사
-            $('#bMenu1').on('click', 
-              function (){ 
-                  theme_Data(areacode,"A02&cat2=A0201"); 
-            } );
-            
-           //휴양      
-            $('#bMenu2').on('click', 
-                    function (){ 
-                        theme_Data(areacode, "A02&cat2=A0202"); 
-            } );
-           
-           //체험
-           
-            $('#bMenu3').on('click', 
-                    function (){ 
-                        theme_Data(areacode, "A02&cat2=A0203"); 
-            } );
-
-           //건축
-            $('#bMenu4').on('click', 
-                    function (){ 
-                        theme_Data(areacode, "A02&cat2=A0205"); 
-            } ); 
-           
-           
-           //문화시설
-            $('#bMenu5').on('click', 
-                    function (){ 
-                        theme_Data(areacode, "A02&cat2=A0206"); 
-            } ); 
-   
-           //레포츠
-            $('#bMenu6').on('click', 
-                    function (){ 
-                        theme_Data(areacode, "A03"); 
-            } ); 
-           //쇼핑
-            $('#bMenu7').on('click', 
-                    function (){ 
-                        theme_Data(areacode, "A04"); 
-            } ); 
-           //음식
-            $('#bMenu8').on('click', 
-                    function (){ 
-                        theme_Data(areacode, "A05"); 
-            } ); 
+        	
         }); //레디펑션 end
         
       //로그인& 조인 모달 
@@ -135,183 +83,9 @@
         function logout(){
     		
     		location.href = "logout_05";
-    	}
-        
+    	}   
  
-        
-        //지역별 테마를 담는 변수 
-        function theme_Data(areacode, themecode){
-            console.log(themecode);
-            
-        	var url2 ="";
-            url2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="
-                   +key;
-            url2 += "&contentTypeId=&areaCode="+areacode+"&sigunguCode=&cat1="+themecode+"&cat3=&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=11&pageNo=1";
-            url2 += "&_type=json";
 
-            
-            $.getJSON(url2,function(data) {
-               var content = ""; 
-               content += '<ul class="list-inline job-seeker">';
-               // var addr = data.response.body.items.item.addr1;
-                   // var addr1=addr.split(" ",1); //시의 정보를 가져오는 변수
-               // var cityname = "<h1>"+addr1+"</h1>";
-               var length=data.response.body.items.item.length;
-               console.log(data);   
-               
-                
-                for (var i = 0; i < 6; i++) {
-              	 //컨텐트아이디 추출
-      	         console.log(con);
-      	         var val = Math.floor( Math.random()*length);
-				 	console.log(val);	
-				 var con = data.response.body.items.item[val].contentid;
- 		         	console.log(con);
- 		         var conType=data.response.body.items.item[val].contenttypeid;
-      	           if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
-      	        	   
-      	        	 content += '<li><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width="300" height="200" alt="">';
-      	        	 content += '<div class="overlay"><h3>'
-							+ data.response.body.items.item[val].title
-							+ '</h3><p>'
-							+ data.response.body.items.item[val].addr1
-							+ '</p></div></a></li>'; 
-      	       
-            		} else {
-                   		
-                   }
-                }
-                
-                //자연
-                if(themecode === "A01&cat2="){
-                   $("#home").html(content); 
-               //역사 
-                }else if(themecode === "A02&cat2=A0201"){
-                    $("#home").html(content);
-                //휴양
-                }else if(themecode === "A02&cat2=A0202"){
-                   $("#home").html(content);
-                //체험
-                }else if(themecode === "A02&cat2=A0202"){
-                   $("#home").html(content);
-                //건축   
-                }else if(themecode === "A02&cat2=A0203"){
-                   $("#home").html(content);
-                //문화시설
-                }else if(themecode === "A02&cat2=A0206"){
-                   $("#home").html(content);
-                //레포츠
-                }else if(themecode === "A03" ){
-                   $("#home").html(content);
-                //쇼핑    
-                }else if(themecode === "A04" ){
-                   $("#home").html(content); 
-                //음식    
-                }else{
-                   $("#home").html(content);
-                }
-                
-            });         
-         }
-         
-        
-        /* 3장의 도시 이미지를 출력하는 메소드  */
-        function city_img(areacode){
-        	
-        	var imageArray = [];
-        	  
-            if (areacode == 1) { /*서울 */
-               imageArray.push("./resources/image/seoul/seoul.jpg");
-               imageArray.push("./resources/image/seoul/seoul2.jpg");
-               imageArray.push("./resources/image/seoul/seoul3.jpg");
-            } else if (areacode == 2) { /* 인천 */
-                imageArray.push("./resources/image/");
-                imageArray.push("./resources/image/");
-                imageArray.push("./resources/image/");
-             
-            } else if (areacode == 3) { /* 대전 */
-                imageArray.push("./resources/image/");
-                imageArray.push("./resources/image/");
-                imageArray.push("./resources/image/");
-         
-             } else if (areacode == 4) { /* 대구 */
-                 imageArray.push("./resources/image/");
-                 imageArray.push("./resources/image/");
-                 imageArray.push("./resources/image/");
-            
-              } else if (areacode == 5) { /* 광주 */
-                  imageArray.push("./resources/image/");
-                  imageArray.push("./resources/image/");
-                  imageArray.push("./resources/image/");
-             
-               }  else if (areacode == 6) { /* 부산  */
-               
-                   imageArray.push("./resources/image/busan/busan1.jpg");
-                   imageArray.push("./resources/image/busan/busan2.jpg");
-                   imageArray.push("./resources/image/busan/busan3.jpg");
-              
-                } else if (areacode == 7) { /*울산 */
-                    imageArray.push("./resources/image/");
-                    imageArray.push("./resources/image/");
-                    imageArray.push("./resources/image/");
-               
-                 } else if (areacode == 8) { /* 세종시  */
-                     imageArray.push("./resources/image/");
-                     imageArray.push("./resources/image/");
-                     imageArray.push("./resources/image/");
-                
-                  } else if (areacode == 31) { /* 경기도 */
-                      imageArray.push("./resources/image/");
-                      imageArray.push("./resources/image/");
-                      imageArray.push("./resources/image/");
-                 
-                   } else if (areacode == 32) { /* 강원도  */
-                       imageArray.push("./resources/image/");
-                       imageArray.push("./resources/image/");
-                       imageArray.push("./resources/image/");
-                  
-                    } else if (areacode == 33) { /* 충청북도  */
-                        imageArray.push("./resources/image/");
-                        imageArray.push("./resources/image/");
-                        imageArray.push("./resources/image/");
-                   
-                     } else if (areacode == 34) { /* 충남  */
-                         imageArray.push("./resources/image/");
-                         imageArray.push("./resources/image/");
-                         imageArray.push("./resources/image/");
-                    
-                      } else if (areacode == 35) { /* 경북 */
-                          imageArray.push("./resources/image/");
-                          imageArray.push("./resources/image/");
-                          imageArray.push("./resources/image/");
-                     
-                       } else if (areacode == 36) { /*경남 */
-                           imageArray.push("./resources/image/");
-                           imageArray.push("./resources/image/");
-                           imageArray.push("./resources/image/");
-                      
-                        }else if (areacode == 37) { /* 전북  */
-                            imageArray.push("./resources/image/");
-                            imageArray.push("./resources/image/");
-                            imageArray.push("./resources/image/");
-                       
-                         }else if (areacode == 38) { /*전남  */
-                             imageArray.push("./resources/image/");
-                             imageArray.push("./resources/image/");
-                             imageArray.push("./resources/image/");
-                        
-                          }else if (areacode == 39) { /*제주도  */
-                              imageArray.push("./resources/image/");
-                              imageArray.push("./resources/image/");
-                              imageArray.push("./resources/image/");
-                           }
-                 
-                 $.each($(".slide-image"), function(index, item) {
-                     $(this).attr("src", imageArray[index]);
-                  });
-        }
-      
-        
         
         //지역의 모든 장소를 가져오는 함수 
         function popular_Data(areacode) {
@@ -361,7 +135,6 @@
 </head>
 
 <body>
-
 	<div id="preloader">
 		<div id="status">&nbsp;</div>
 	</div>
@@ -683,7 +456,7 @@
 						class="active" href="SC_11">일정 만들기</a></li>
 					<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">나의 일정 보기</a>
 					</li>
-					<!-- <li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">나의 일정</a>
+				<!-- 	<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">나의 일정</a>
 					</li> -->
 					<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
 							Own Schedule</a></li>
@@ -700,21 +473,71 @@
 		<!-- /.container-fluid -->
 	</nav>
 
+<!-- 	<div class="plan_header">
+	<div class="wrap">
+		<div class="p_header_title">
+			누구나 쉽게 일정을 계획할 수 있습니다.		</div>
+		<div class="p_header_img">
+			<img src="./resources/image/bg_city/bg_korea.jpg" alt="" />
+		</div>
+		<div class="p_header_btn_box">
+			<a href="javascript:et_modal('365px','380px','1','0','/ko/member','2','1');" class="p_header_btn">
+				<div class="p_header_btn_inner">
+					<img src="/res/img/main/plan/p_header_btn_img1.jpg" alt="" />
+					<span>새로운 일정 만들기</span>
+					<a href="new_schedule" class="btn btn-info" role="button">새로운 일정 만들기</a>
+					<div class="clear"></div>
+				</div>
+			</a>
+			<a href="javascript:et_modal('365px','380px','1','0','/ko/member','2','1');" class="p_header_btn">
+				<div class="p_header_btn_inner">
+					<img src="/res/img/main/plan/p_header_btn_img2.jpg" alt="" />
+					<span>나의 일정 보기</span>
+					<a href="#" class="btn btn-info" role="button">나의 일정 보기</a>
+					<div class="clear"></div>
+				</div>
+			</a>
+
+			<div class="clear"></div>
+		</div>
+		<img class="p_header_hide_bg" src="/res/img/main/plan/hide_bg.png" />
+	</div>
+</div> -->
+	
+
+
+
+	<!-- <a href="new_schedule" class="btn btn-info" role="button">새로운 일정 만들기</a>
+	<a href="#" class="btn btn-info" role="button">나의 일정 보기</a> -->
+
+
 
 	<div class="content-area">
 		<div class="container">
 			<div class="row page-title text-center wow zoomInDown"
 				data-wow-delay="1s">
-				<h1>SEOUL</h1>
-				<h2>서울은 먼지가 많다많다많다 </h2>
-				<p>서울은 가장 아름 다운 도시입니다.</p>
+					          
+					          
+					  <a href="new_schedule" class="btn btn-info" role="button">새로운 일정 만들기</a>       
+					  <a href="#" class="btn btn-info" role="button">나의 일정 보기</a>        
+					          
+ <!-- <button type="button" class="btn btn-primary">Primary</button>
+  <button type="button" class="btn btn-success">Success</button> -->
+
+
+				
 			</div>
 			</div>
 		</div>
 	
+	
+	
+	<h5>여행 자들의 일정 보기 </h5>
+	
+
 
 		<!--도시 이미지  -->
-		    <div class="row carousel-holder">
+		  <!--   <div class="row carousel-holder">
 
                <div class="col-md-12">
                   <div id="carousel-example-generic" class="carousel slide"
@@ -752,274 +575,7 @@
                   </div>
                </div>
 
-            </div>
-
-		
-		
-				
-		<div class="container">
-			<div class="row job-posting wow fadeInUp" data-wow-delay="1s"
-				id="rowjob">
-				<div role="tabpanel">
-					<!-- Nav tabs -->
-					<ul class="nav nav-tabs" role="tablist">
-						<li id="bMenu0" role="presentation" class="active"><a href="#job-seekers"
-							aria-controls="home" role="tab" data-toggle="tab">자연</a></li>
-						<li id="bMenu1" role="presentation"><a href="#employeers"
-							aria-controls="profile" role="tab" data-toggle="tab">역사</a></li>
-						<li id="bMenu2" role="presentation"><a href="#"
-							aria-controls="profile" role="tab" data-toggle="tab">휴양</a></li>
-						<li id="bMenu3" role="presentation"><a href="#"
-							aria-controls="profile" role="tab" data-toggle="tab">체험</a></li>
-						<li id="bMenu4" role="presentation"><a href="#"
-							aria-controls="profile" role="tab" data-toggle="tab">건축</a></li>
-						<li id="bMenu5" role="presentation"><a href="#"
-							aria-controls="profile" role="tab" data-toggle="tab">문화시설</a></li>
-						<li id="bMenu6" role="presentation"><a href="#"
-							aria-controls="profile" role="tab" data-toggle="tab">레포츠</a></li>
-						<li id="bMenu7" role="presentation"><a href="#"
-							aria-controls="profile" role="tab" data-toggle="tab">쇼핑</a></li>
-						<li id="bMenu8" role="presentation"><a href="#"
-							aria-controls="profile" role="tab" data-toggle="tab">음식</a></li>
-					</ul>
-
-					<!-- Tab panes -->
-					<div class="tab-content">
-					<!--자연-->
-						<div role="tabpanel" class="tab-pane fade in active"
-							id="home">
-						 <!-- 행사정보  -->	
-						</div>
-				<!-- 		<div role="tabpanel" class="tab-pane fade" id="employeers">
-							<ul class="list-inline">
-								<li><a href=""> <img
-										src="./resources/img/employee4.png" alt="">
-										<div class="overlay">
-											<h3>Instagram</h3>
-										</div>
-								</a></li>
-							</ul>
-						</div> -->
-						<div role="tabpanel" class="tab-pane fade" id="menu1">
-						</div>
-						<div role="tabpanel" class="tab-pane fade" id="menu2">
-						</div>
-						<div role="tabpanel" class="tab-pane fade" id="menu3">
-						</div>
-						<div role="tabpanel" class="tab-pane fade" id="menu4">
-						</div>
-						<div role="tabpanel" class="tab-pane fade" id="menu5">
-						</div>
-						<div role="tabpanel" class="tab-pane fade" id="menu6">
-						</div>
-						<div role="tabpanel" class="tab-pane fade" id="menu7">
-						</div>
-						<div role="tabpanel" class="tab-pane fade" id="menu8">
-						</div>
-						
-					</div>
-				</div>
-			</div>
-		</div>
-	
-
-	   <div class="container">
-		<div class="row job-posting wow fadeInUp" data-wow-delay="1s"
-			id="rowjob">
-			<div role="tabpanel">
-				<!-- Nav tabs -->
-				<ul class="nav nav-tabs" role="tablist">
-					<li role="presentation" class="active"><a href="#tabtab"
-						aria-controls="home" role="tab" data-toggle="tab">추천 장소</a></li>
-				</ul>
-
-				<!-- Tab panes -->
-				<div class="tab-content">
-					<div role="tabpanel" class="tab-pane fade in active"
-						id="tabtab">
-						<!-- <ul class="list-inline job-seeker">
-
-								<li><a href=""> <img
-										src="./resources/img/team-small-5.jpg" alt="">
-										<div class="overlay">
-											<h3>Ohidul Islam</h3>
-											<p>Web Designer</p>
-										</div>
-								</a></li>
-								<li><a href=""> <img
-										src="./resources/img/team-small-6.jpg" alt="">
-										<div class="overlay">
-											<h3>Mohidul Islam</h3>
-											<p>CEO</p>
-										</div>
-								</a></li>
-								<li><a href=""> <img
-										src="./resources/img/team-small-3.jpg" alt="">
-										<div class="overlay">
-											<h3>Unknown girl</h3>
-											<p>Graphic Designer</p>
-										</div>
-								</a></li>
-								<li><a href=""> <img
-										src="./resources/img/team-small-4.jpg" alt="">
-										<div class="overlay">
-											<h3>Eftakher Alam</h3>
-											<p>Graphic Designer</p>
-										</div>
-								</a></li>
-								<li><a href=""> <img
-										src="./resources/img/team-small-2.jpg" alt="">
-										<div class="overlay">
-											<h3>Mark Otto</h3>
-											<p>Founder</p>
-										</div>
-								</a></li>
-								<li><a href=""> <img
-										src="./resources/img/team-small-1.jpg" alt="">
-										<div class="overlay">
-											<h3>Rasel Ahmed</h3>
-											<p>Web Developer</p>
-										</div>
-								</a></li>
-							</ul> -->
-					</div>
-					<!-- <div role="tabpanel" class="tab-pane fade" id="employeers">
-						<ul class="list-inline">
-							<li><a href=""> <img src="./resources/img/employee4.png"
-									alt="">
-									<div class="overlay">
-										<h3>Instagram</h3>
-									</div>
-							</a></li>
-							<li><a href=""> <img src="./resources/img/employee5.png"
-									alt="">
-									<div class="overlay">
-										<h3>Microsoft</h3>
-									</div>
-							</a></li>
-							<li><a href=""> <img src="./resources/img/employee6.png"
-									alt="">
-									<div class="overlay">
-										<h3>Dribbble</h3>
-									</div>
-							</a></li>
-							<li><a href=""> <img src="./resources/img/employee1.png"
-									alt="">
-									<div class="overlay">
-										<h3>Beats Music</h3>
-									</div>
-							</a></li>
-							<li><a href=""> <img src="./resources/img/employee2.png"
-									alt="">
-									<div class="overlay">
-										<h3>Facebook</h3>
-									</div>
-							</a></li>
-							<li><a href=""> <img src="./resources/img/employee3.png"
-									alt="">
-									<div class="overlay">
-										<h3>Twitter</h3>
-									</div>
-							</a></li>
-						</ul>
-					</div> -->
-				</div>
-			</div>
-		</div>
-	</div>
-
-		<!-- <hr>
-		<div class="container">
-			<div class="row page-title text-center  wow bounce"
-				data-wow-delay=".7s">
-				<h5>TESTIMONIALS</h5>
-				<h2>WHAT PEOPLES ARE SAYING</h2>
-			</div>
-			<div class="row testimonial">
-				<div class="col-md-12">
-					<div id="testimonial-slider">
-						<div class="item">
-							<div class="client-text">
-								<p>Jobify offer an amazing service and I couldn’t be
-									happier! They are dedicated to helping recruiters find great
-									candidates, wonderful service!</p>
-								<h4>
-									<strong>Ohidul Islam, </strong><i>Web Designer</i>
-								</h4>
-							</div>
-							<div class="client-face wow fadeInRight" data-wow-delay=".9s">
-								<img src="./resources/img/client-face1.png" alt="">
-							</div>
-						</div>
-						<div class="item">
-							<div class="client-text">
-								<p>Jobify offer an amazing service and I couldn’t be
-									happier! They are dedicated to helping recruiters find great
-									candidates, wonderful service!</p>
-								<h4>
-									<strong>Ohidul Islam, </strong><i>Web Designer</i>
-								</h4>
-							</div>
-							<div class="client-face">
-								<img src="./resources/img/client-face2.png" alt="">
-							</div>
-						</div>
-						<div class="item">
-							<div class="client-text">
-								<p>Jobify offer an amazing service and I couldn’t be
-									happier! They are dedicated to helping recruiters find great
-									candidates, wonderful service!</p>
-								<h4>
-									<strong>Ohidul Islam, </strong><i>Web Designer</i>
-								</h4>
-							</div>
-							<div class="client-face">
-								<img src="./resources/img/client-face1.png" alt="">
-							</div>
-						</div>
-						<div class="item">
-							<div class="client-text">
-								<p>Jobify offer an amazing service and I couldn’t be
-									happier! They are dedicated to helping recruiters find great
-									candidates, wonderful service!</p>
-								<h4>
-									<strong>Ohidul Islam, </strong><i>Web Designer</i>
-								</h4>
-							</div>
-							<div class="client-face">
-								<img src="./resources/img/client-face2.png" alt="">
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> -->
-
-	</div>
-
-	<!-- Modal -->
-<%--  	<div class="modal fade" id="myModal" role="dialog">
-		<div class="modal-dialog">
-
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"></h4>
-				</div>
-				<div class="modal-body">
-					<div class="modal fade" id="userView" role="dialog">
-						<div class="modal-dialog">
-							<jsp:include page="/WEB-INF/views/joinForm.jsp" />
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>  --%>
+            </div> -->
 
 
 	<!-- footer -->
