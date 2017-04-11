@@ -60,7 +60,7 @@ var CONTENT_ID;
     var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 	
     //장소바꿀때 전 단계에서 contentId를 받아와서 바꾸면 될듯
-    var contentTypeId = ${contypeid};
+    var contentTypeId = ${contypeid}; 
     var contentId = ${contentid};
     
   	var lat;
@@ -285,8 +285,10 @@ function f_Data(){
 					console.log(data);
 					 var html ="";
 					 var html2 ="";
-					 $.each(data,function(index,item){
-						
+					 $.each(data.rList,function(index,item){
+						 console.log(item);
+						 console.log(data.navi);
+						 console.log(data.navi.endPageGroup);
 						html+= "<div class='media'>";
 						html+= "<a class='pull-left' href='#'>";
 						html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
@@ -295,21 +297,26 @@ function f_Data(){
 						html+= '<small>'+item.inp_YMD+'</small>';
 						html+= '</h4></div>';
 						html+= item.rev_TXT;
-						html+= '</div></div>';
+						html+= '</div></div>'; 
 					 })
-						html2+='<div align="center">'; 
-						html2+='<a href ="javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})">◀◀</a>';
-						html2+='<a href ="javascript:pagingFormSubmit(${navi.currentPage -1})">◀</a>';
-						html2+='<c:forEach var="counter" begin="${navi.startPageGroup}" end="${navi.endPageGroup}">';
-						html2+='<a href="javascript:pagingFormSubmit(${counter})">${counter}</a>';
-						html2+='</c:forEach>';
-						html2+='<a href="javascript:pagingFormSubmit(${navi.currentPage + 1})">▶</a>';
-						html2+='<a href="javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})">▶▶</a></div>';
+						html2+='<div align="center">';
+						var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+						html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀</a>';
+						var onepageback=data.navi.currentPage -1
+						html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀</a>';
+						var j=0;
+						 for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
+							j=j+1;
+							console.log(j);
+							 html2+='<a href="javascript:pagingFormSubmit('+data.navi.startPageGroup + 1+')">'+j+'</a>'; 
+						} 
+						html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + 1+')">▶</a>';
+						html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + data.navi.pagePerGroup+')">▶▶</a></div>';
 						html2+='<form action="SC_07place" method="get" id="pagingForm">';
 						html2+='<input type="hidden" id="page" name="page">';
 						html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';
-						html2+='<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${conType}">';
-						html2+='</form></div>';
+						html2+='<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">';
+						html2+='</form></div>'; 
 					 
 					 $("#review").html(html);
 					 $("#paging").html(html2);
@@ -471,13 +478,17 @@ function locationObj(){
 				</c:forEach>
 				</div>
 				<div id="paging">
+				
 				<div align="center">
 					<a href ="javascript:pagingFormSubmit(
 						${navi.currentPage - navi.pagePerGroup})">◀◀</a>
 						<a href ="javascript:pagingFormSubmit(${navi.currentPage -1})">◀</a>
+					<c:if test="${rList.size() > 0}">	
 					<c:forEach var="counter" begin="${navi.startPageGroup}" end="${navi.endPageGroup}">
 						<a href="javascript:pagingFormSubmit(${counter})">${counter}</a>
 			 		</c:forEach>
+			 		</c:if>
+			 		<c:if test="${rList.size() == 0}"><a href="#">1</a></c:if>
 						<a href="javascript:pagingFormSubmit(${navi.currentPage + 1})">▶</a>
 						<a href="javascript:pagingFormSubmit(
 						${navi.currentPage + navi.pagePerGroup})">▶▶</a>

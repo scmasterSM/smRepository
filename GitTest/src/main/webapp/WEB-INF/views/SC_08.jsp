@@ -48,6 +48,19 @@
 <script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8&callback=initMap"
 		async defer></script>
 <script type="text/javascript">
+
+window.onload=function(){
+	l_Data();
+	r_Data();
+	f_Data()
+    }
+function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어 온다
+	var form=document.getElementById("pagingForm");
+	var page=document.getElementById("page"); 
+	page.value=currentPage; 
+	form.submit();
+}
+ 
 var map;
 var myLatLng;
 var CONTENT_ID;
@@ -72,11 +85,7 @@ var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2F
     var url2= "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro?ServiceKey="+key;
     	url2 +=	"&contentTypeId=15&contentId="+contentId+"&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&introYN=Y&_type=json"; 
     	
-    window.onload=function(){
-	l_Data();
-	r_Data();
-	f_Data()
-    } 
+    
 
 function l_Data(){
 
@@ -257,8 +266,11 @@ function f_Data(){
 					
 					console.log(data);
 					 var html ="";
-					 $.each(data,function(index,item){
-						
+					 var html2 ="";
+					 $.each(data.rList,function(index,item){
+						 console.log(item);
+						 console.log(data.navi);
+						 console.log(data.navi.endPageGroup);
 						html+= "<div class='media'>";
 						html+= "<a class='pull-left' href='#'>";
 						html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
@@ -267,11 +279,31 @@ function f_Data(){
 						html+= '<small>'+item.inp_YMD+'</small>';
 						html+= '</h4></div>';
 						html+= item.rev_TXT;
-						html+= '</div>';
-						html+= '</div>';
-						
+						html+= '</div></div>'; 
 					 })
+						html2+='<div align="center">';
+						var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+						html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀</a>';
+						var onepageback=data.navi.currentPage -1
+						html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀</a>';
+						var j=0;
+						 for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
+							j=j+1;
+							console.log(j);
+							 html2+='<a href="javascript:pagingFormSubmit('+data.navi.startPageGroup + 1+')">'+j+'</a>'; 
+						} 
+						html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + 1+')">▶</a>';
+						html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + data.navi.pagePerGroup+')">▶▶</a></div>';
+						html2+='<form action="SC_08" method="get" id="pagingForm">';
+						html2+='<input type="hidden" id="page" name="page">';
+						html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';
+						
+						html2+='</form></div>';
+					 
+					 
+					 
 					 $("#review").html(html);
+					 $("#paging").html(html2);
 					 $('#reviewWrite').val('');		
 				},
 				error : function(e){
@@ -428,6 +460,30 @@ function locationObj(){
                 </div>
 				</c:forEach>
 				</div>
+				<div id="paging">
+				
+				<div align="center">
+					<a href ="javascript:pagingFormSubmit(
+						${navi.currentPage - navi.pagePerGroup})">◀◀</a>
+						<a href ="javascript:pagingFormSubmit(${navi.currentPage -1})">◀</a>
+					<c:if test="${rList.size() > 0}">	
+					<c:forEach var="counter" begin="${navi.startPageGroup}" end="${navi.endPageGroup}">
+						<a href="javascript:pagingFormSubmit(${counter})">${counter}</a>
+			 		</c:forEach>
+			 		</c:if>
+			 		<c:if test="${rList.size() == 0}"><a href="#">1</a></c:if>
+						<a href="javascript:pagingFormSubmit(${navi.currentPage + 1})">▶</a>
+						<a href="javascript:pagingFormSubmit(
+						${navi.currentPage + navi.pagePerGroup})">▶▶</a>
+				</div>
+				<form action="SC_08" method="get" id="pagingForm">
+			 	<!--boardlist컨트롤러의 id(page)와 같은  값(page)에 보낸다  -->
+				<input type="hidden" id="page" name="page">
+				<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">
+				<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">
+				
+				</form>				
+				</div>
                 <!-- Comment -->
             </div>
 			</div>
@@ -527,7 +583,7 @@ function locationObj(){
 
     <!-- Bootstrap Core JavaScript -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="./resources/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+    
     <script src="./resources/js/bootstrap.min.js"></script>
     <script src="./resources/js/owl.carousel.min.js"></script>
     <script src="./resources/js/wow.js"></script>

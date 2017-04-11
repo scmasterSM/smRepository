@@ -23,10 +23,10 @@
 	</select>
 	
 	<!-- 페이징 관련 리뷰글수 -->
-	<select id="tCount"  resultType="int">
+	<select id="tCount" parameterType="String" resultType="int">
 		select count(*)
 		from SM_REVIEW_TB
-		
+		where CONTENT_ID = #{CONTENT_ID}
 	</select>
 	
 
