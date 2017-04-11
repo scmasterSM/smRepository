@@ -122,7 +122,17 @@ public class HomeController {
 		return "sc_10";
 	}
 	
-
+	@RequestMapping(value="SC_11",method=RequestMethod.GET)
+	public String SC_11(){
+		
+		return "SC_11";
+	}
+	
+	@RequestMapping(value="home",method=RequestMethod.GET)
+	public String home(){
+		
+		return "home";
+	}
 	
 	
 }

@@ -350,9 +350,13 @@ background-color: #00aeef;
     left: 65%;
     /* margin-left: -585px; */
     text-align: center;
-    
 	
 }
+#searchbymap{
+	
+	 color : white;
+}
+
 .overlay > h3 {
   bottom: -50px;
   margin: 0;
