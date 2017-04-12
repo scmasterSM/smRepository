@@ -176,9 +176,10 @@
 		var day = '<div id="Day'+order+'" class="ordlist">'
 				+ '<input type="hidden" class="areaCode" value="">'
 				+ '<input type="hidden" class="sigunguCode" value="">'
+				+ '<input type="hidden" class="day_city_name" value="">'
 				+ '<input type="hidden" class="ymd" value='+date+'>' 
 				+ '<input type="hidden" class="day" value='+order+'>' 
-				+ 'DAY '+order+' <br> '+date+' <br> <hr /></div>';
+				+ 'DAY '+order+' <br> '+date+' <br> <span id="city_names"></span><hr /></div>';
 		$("#daylist").before(day);
 		var scd_sq = $('#scd_sq').val();
 		var daily_scd = {
@@ -318,6 +319,7 @@
             }
         });
         $('#changelist').html(html);
+        city_change_event();
   	}
   	  
 	function sortable(){
@@ -331,6 +333,7 @@
         		   		$(target_span).html(i+1);
         		   		$(target_ord).attr('dtl_ord', (i+1));
         		   }
+        		check_cities();
         	// update order in db
         	$('.my_loc').each(function(){
         		var dtl_sq = $(this).attr('dtl_sq');
@@ -363,16 +366,22 @@
 			var target = "#"+div_id;
 			var areaCode = $(target+" > .areaCode").val();
 			var sigunguCode = $(target+" > .sigunguCode").val();
+			var name = $(target+" > .day_city_name").val();
 			var ymd = $(target+" > .ymd").val();
 			var day = "DAY " + $(target+" > .day").val();
-			var content = '<h1 id="section2_day">'+day+'</h1>'
+			if(name != "" || areaCode != ""){
+				$('#city_name').text(name);
+				$('#day_city_name').val(name);
+				$('#areaCode').val(areaCode);
+				$('#sigunguCode').val(sigunguCode);
+				theme2_change('', '');
+			}
+			var content = '<h1 id="section2_day">'+day+'</h1>'	
 			+ '<div id="sortable">'
-			//add places here using before(); below
 			+ '<div id="my_location"></div>'
 			+ '</div>';
 			$('#section2').html(content);
 			sortable();
-			//ajax: get contents using scd_sq & daily_sq order by dtl_ord
 			var scd_sq = $('#scd_sq').val();
 			var daily_sq = parseInt($('#section2_day').text().match(/\d+/)[0], 10);
 			var sq = {
@@ -397,7 +406,8 @@
   function set_places(data){
 	  var my_content = '';
 	  $.each(data,function(index,item){
-		my_content += '<div class="my_loc" id="'+item.DTL_SQ+'" dtl_sq="'+item.DTL_SQ+'" dtl_ord="'+item.DTL_ORD+'" title="'+item.PLACE_NM+'" contentid="'+item.DTL_CONTENT_ID+'">'
+		my_content += '<div class="my_loc" id="'+item.DTL_SQ+'" dtl_sq="'+item.DTL_SQ+'" dtl_ord="'+item.DTL_ORD+'" title="'+item.PLACE_NM+'" contentid="'+item.DTL_CONTENT_ID+'" '
+			+ 'areaCode="'+item.AREA_CODE+'" sigunguCode="'+item.SIGUNGU_CODE+'" city_name="'+item.CITY_NM+'">'
 			+ '<span class="sec2_ord">'+item.DTL_ORD+'</span> '
 			+ '<input type="hidden" id="sec2_id" value="'+item.DTL_CONTENT_ID+'">'
 		 	+ item.PLACE_NM
@@ -408,6 +418,7 @@
 	  });
 		$("#my_location").before(my_content);
 		my_loc_event();
+		check_cities();
   }	
   
   function delete_place(dtl_sq){
@@ -417,10 +428,10 @@
 			data: {	
 				dtl_sq: dtl_sq
 			},
+			async: false,
 			success: function(data){
 				  $('div[class=my_loc][dtl_sq='+dtl_sq+']').trigger("mouseleave");
 				  $('div[class=my_loc][dtl_sq='+dtl_sq+']').remove();
-				  //$('#sortable').trigger('sortupdate');
 				  var itemOrder = $('#sortable').sortable("toArray");
         			console.log("sort change");
         		   for (var i = 0; i < itemOrder.length-1; i++) {
@@ -454,6 +465,7 @@
 					console.log(e);
 				}
 		})
+		check_cities();
   }
 		
 	function initMap() {
@@ -467,15 +479,6 @@
 			zoom : zoom
 		});
 	} 
-	
-	/* function moveMap(Lat, Lng, zoom, data) {
-		 map = new google.maps.Map(document.getElementById('map'), {
-			center : {lat: Lat, 
-					  lng: Lng},
-			zoom : zoom
-		}); 
-		showMarker(data);
-	} */
 	
 	function showMarker(data, autofill) {
 		map = new google.maps.Map(document.getElementById('map'));
@@ -495,7 +498,6 @@
 			if(typeof(data.response.body.items.item[i])!='undefined'){
 				var lat = parseFloat(data.response.body.items.item[i].mapy);
 				var lng = parseFloat(data.response.body.items.item[i].mapx);
-				//console.log(data.response.body.items.item[i]);
 				if(!isNaN(lat) && !isNaN(lng)){
 					if(firstAvgData){
 						latAvg += lat;
@@ -509,16 +511,12 @@
 				}
 			}
 		}
-		//console.log(latAvg);
-		//console.log(lngAvg);
 		for (var i = 0; i < totalCount; i++) {
 			if(typeof(data.response.body.items.item[i])!='undefined'){
-				//console.log(data.response.body.items.item[i]);
 			var latLng = {
 				lat : parseFloat(data.response.body.items.item[i].mapy),
 				lng : parseFloat(data.response.body.items.item[i].mapx)
 			}
-			//console.log(latLng);
 			var marker = new google.maps.Marker({
 				draggable : false,
 				position : latLng,
@@ -528,20 +526,14 @@
 			});
 			if(!isNaN(latLng.lat) && !isNaN(latLng.lng)){
 				if((latAvg-0.3) < latLng.lat && latLng.lat < (latAvg+0.3) && (lngAvg-0.3)< latLng.lng && latLng.lng < (lngAvg+0.3)){
-					//console.log(data.response.body.items.item[i].title);
-					//console.log(latLng);
 					myMarkers.push(marker);
 					bounds.extend(marker.position);
 				}else{
-					//console.log(data.response.body.items.item[i].title);
 					var target = '#'+data.response.body.items.item[i].contentid;
-					//console.log(target);
 					$(target).html('');
 				}
 			}else{
-				//console.log(data.response.body.items.item[i].title);
 				var target = '#'+data.response.body.items.item[i].contentid;
-				//console.log(target);
 				$(target).html('');
 			}
 			var content = '<div class="content">'
@@ -558,13 +550,9 @@
 			    return function() {
 			        infowindow.setContent(content);
 			        infowindow.open(map,marker);
-			        /* var container = document.getElementById('location_info');
-			        var rowToScrollTo = document.getElementById(marker.id);
-			        container.scrollTop = rowToScrollTo.offsetTop; */
 			        var target = "#" + marker.id;
 			        $('#location_info').scrollTop(0);
 			      	$('#location_info').animate({ scrollTop: $(target).offset().top - 200}, 2000);
-			       	//console.log(target);
 			    }; 	
 			})(marker,content,infowindow));
 			google.maps.event.addListener(marker,'dblclick', (function(marker,content,infowindow){ 
@@ -573,16 +561,9 @@
 			        infowindow.open(map,marker);
 			    };
 			})(marker,content,infowindow));
-			/* marker.addListener('mouseover', function() {
-				
-			});
-			marker.addListener('mouseout', function() {
-			    
-			});*/
 			} 
 		}
 		map.fitBounds(bounds);
-		//console.log(myMarkers);
 		google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
 			if (this.getZoom() > 15) {
 			    this.setZoom(15);
@@ -606,21 +587,30 @@
 			firstimage = "";
 		}
 		
+		var areaCode = $('#areaCode').val();
+		var sigunguCode = $('#sigunguCode').val();
+		var city_name = $('#day_city_name').val();
+		
 		var dtl_place = {
 			scd_sq: scd_sq,
 			daily_sq: daily_sq,
 			dtl_ord: dtl_ord,
 			dtl_content_id: contentid,
 			place_nm: title,
-			dtl_image: firstimage
+			dtl_image: firstimage,
+			area_code: areaCode,
+			sigungu_code: sigunguCode,
+			city_nm: city_name
 		}
 		$.ajax({
 			type: "post",
 			url: "detail_place",
 			data: dtl_place,
+			async: false,
 			success: function(data){
 				var my_content = '';
-				my_content += '<div class="my_loc" id="'+dtl_ord+'" dtl_sq="'+data+'" dtl_ord="'+dtl_ord+'" title="'+title+'" contentid="'+contentid+'">'
+				my_content += '<div class="my_loc" id="'+dtl_ord+'" dtl_sq="'+data+'" dtl_ord="'+dtl_ord+'" title="'+title+'" contentid="'+contentid+'" '
+					+ 'areaCode="'+areaCode+'" sigunguCode="'+sigunguCode+'" city_name="'+city_name+'">'
 					+ '<span class="sec2_ord">'+dtl_ord+'</span> '
 					+ '<input type="hidden" id="sec2_id" value="'+contentid+'">'
 				 	+ title
@@ -635,7 +625,70 @@
 				console.log(e);
 			}
 		})
+		check_cities();
 	};  
+	
+	function check_cities(){
+		var cities = [];
+		var scd_sq = $('#scd_sq').val();
+		var daily_sq = parseInt($('#section2_day').text().match(/\d+/)[0], 10);
+		var city_ord = 1;
+		$('.my_loc').each(function(index, item){
+			var areaCode = $(this).attr('areaCode');
+			var sigunguCode = $(this).attr('sigunguCode');
+			var city_name = $(this).attr('city_name');
+			var city = {
+					scd_sq: scd_sq,
+					daily_sq: daily_sq,
+					city_ord: city_ord,					
+					area_code: areaCode,
+					sigungu_code: sigunguCode,
+					city_nm: city_name
+				}
+			if(cities.length == 0){
+				city_ord++;
+				cities.push(city);
+			}
+			var dup_check = true;
+			for(var i=0; i < cities.length; i++){
+				if(cities[i].area_code == areaCode && cities[i].sigungu_code == sigunguCode && cities[i].city_nm == city_name)
+					dup_check = false;
+			}
+			if(dup_check){
+				city_ord++;
+				cities.push(city);
+			}
+		})
+		var city_names = '';
+		for(var i=0; i < cities.length; i++){
+			cities[i].city_cnt = cities.length;
+			$.ajax({
+				type: "post",
+				url: "update_cities",
+				async: false,
+				data: cities[i],
+				success: function(data){
+					console.log(data);
+				},
+				error: function(e){
+					console.log(e);
+				}
+			})
+			
+			if(i == 0){
+				city_names += cities[i].city_nm;
+			}else{
+				city_names += ', ' + cities[i].city_nm;
+			}
+		}
+		var target = '#Day' + daily_sq;
+		$(target + ' > span').text(city_names);
+		sgg = $('div[class=my_loc]:last').attr('sigunguCode');
+		$(target + ' > input[class=areaCode]').val($('div[class=my_loc]:last').attr('areaCode'));
+		if(typeof(sgg) != 'undefined' && sgg != 'undefined') 
+			$(target + ' > input[class=sigunguCode]').val($('div[class=my_loc]:last').attr('sigunguCode'));
+		$(target + ' > input[class=day_city_name]').val($('div[class=my_loc]:last').attr('city_name'));
+	}
   	
   function theme_change(theme) {
 		var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
@@ -656,22 +709,17 @@
 				+ "&pageNo=1&numOfRows=10000&listYN=Y&arrange=A&MobileOS=ETC&MobileApp=AppTesting&_type=json";
 			
 			$.getJSON(url, function(data) {
-				//console.log(data.response.body.totalCount);
 				
 				var content = '<select name="select-1" id="select-1">' + '<option value="">선택</option>';
 				for (var i = 0; i < data.response.body.totalCount; i++) {
-					//console.log(data.response.body.items.item[i]);
 					content += '<option value='+data.response.body.items.item[i].code+'>'
 					+ data.response.body.items.item[i].name+'</option>';
 				}
 				content += '</select>'
 				$("#theme2_select").html(content);
-				//$("#select-1").selectmenu();
 				$('#select-1').on('change', function() {
 					var theme = $('input[type=radio][name=radio-1]:checked').val();
-					//alert(theme);
 			    	var theme2 = $(this).val();
-			    	//alert(theme2);
 			    	theme2_change(theme, theme2);
 				});
 			});
@@ -687,7 +735,6 @@
 
 			var content = '';
 			for (var i = 0; i < 50; i++) {
-				//console.log(data.response.body.items.item[i]);
 				if(typeof(data.response.body.items.item[i])!='undefined'){
 					content += '<div class="location" id="'+data.response.body.items.item[i].contentid
 						+'" value="'+data.response.body.items.item[i].title+'">'							
@@ -712,8 +759,6 @@
 
 		var areaCode = $('#areaCode').val();
 		var sigunguCode = $('#sigunguCode').val();
-		console.log(areaCode);
-		console.log(sigunguCode);
 		var theme3 = '';	
 
 		if(theme == 'A04'){
@@ -738,7 +783,6 @@
 				return;
 			}
 			for (var i = 0; i < 50; i++) {
-				//console.log(data.response.body.items.item[i]);
 				if(typeof(data.response.body.items.item[i])!='undefined'){
 					content += '<div class="location" id="'+data.response.body.items.item[i].contentid
 						+'" value="'+data.response.body.items.item[i].title+'">'							
@@ -767,7 +811,6 @@
 		url += "&MobileOS=ETC&MobileApp=AppTesting&_type=json";
 		
 		$.getJSON(url, function(data) {
-			//console.log(data.response.body.items.item);
 			var content = 
 				'<h2>'+ data.response.body.items.item.title+'</h2>'
 				+ '<img src='+data.response.body.items.item.firstimage+' width=340 height=220>'
@@ -792,7 +835,6 @@
 		url += "&MobileOS=ETC&MobileApp=AppTesting&_type=json";
 		
 		$.getJSON(url, function(data) {
-			//console.log(data.response.body.items.item);
 			var content = 
 				'<h2>'+ data.response.body.items.item.title+'</h2>'
 				+ '<img src='+data.response.body.items.item.firstimage+' width=340 height=220>'
@@ -870,13 +912,10 @@
 				var content = '';
 				var bounds = new google.maps.LatLngBounds();
 				var result = false;
-		   		//console.log(title);	    
 				showMarker(data, true);
-				//console.log(data.response.body.totalCount);
 		   		for (var i = 0; i < data.response.body.totalCount; i++) {
 					if(typeof(data.response.body.items.item[i])!='undefined'){
 						if(data.response.body.items.item[i].title.includes(title)){
-							//console.log(data.response.body.items.item[i].title);
 							content += '<div class="location" id="'+data.response.body.items.item[i].title
 								+'" value="'+data.response.body.items.item[i].title+'">'	
 							 	+ '<h4>'+ data.response.body.items.item[i].title+'</h4>'
@@ -896,7 +935,6 @@
 						else{
 							for (var j = 0; j < myMarkers.length; j++) {
 								if(data.response.body.items.item[i].title == myMarkers[j].title){
-									//console.log(myMarkers[j].title);
 			    	    			myMarkers[j].setMap(null);
 								}
 							}
@@ -921,7 +959,6 @@
 				var searchText = $(this).val();
 				var content = '';
 		   		console.log(searchText);	  
-				//{"areaCode" : 6, "sigunguCode" : "", "name" : '부산', "name_en" : "Busan", "lat" : parseFloat(35.1795543), "lng" : parseFloat(129.0756416), "is_state" : 0},
 		   		for (var i in sigungu) {
 					if(sigungu[i].name.includes(searchText)){
 						content += '<div class="item" data="'+ sigungu[i].areaCode +'" data2="'+ sigungu[i].sigunguCode +'" data-ci_name="'+ sigungu[i].name +'" data-lat="'+ sigungu[i].lat +'" data-lng="' + sigungu[i].lng + '" data-is_state="'+ sigungu[i].is_state +'">'
@@ -940,12 +977,31 @@
   		$('.item').on('click', function(){
   			var areaCode = $(this).attr('data');
   			var sigunguCode = $(this).attr('data2');
-  			if(typeof(sigunguCode) == 'undefined'){
+  			var name = $(this).attr('data-ci_name');
+  			var state = $(this).attr('data-is_state');
+  			if(typeof(sigunguCode) == "undefined" || sigunguCode == "undefined"){
   				sigunguCode = "";
   			}
-  			$('#areaCode').val(areaCode);
-  			$('#sigunguCode').val(sigunguCode);
-  			theme2_change('', '');
+  			if(state == 1){
+				var html = '';
+  				for(var i in sigungu){
+  					if(sigungu[i].areaCode == areaCode){
+  						html += '<div class="item" data="'+ sigungu[i].areaCode +'" data2="'+ sigungu[i].sigunguCode +'" data-ci_name="'+ sigungu[i].name +'" data-lat="'+ sigungu[i].lat +'" data-lng="' + sigungu[i].lng + '" data-is_state="'+ sigungu[i].is_state +'">';
+  			            html += '<div class="img_box fl"><img src="./resources/img/city/'+sigungu[i].areaCode+'.jpg"></div>';
+  			            html += '<div class="info_box fl"><div class="info_title">'+sigungu[i].name+'</div><div class="info_sub_title">'+sigungu[i].name_en+'</div></div>';
+  			            html += '<div class="clear"></div></div>';
+  					}
+  				}
+		        $('#changelist').html(html);
+		        city_change_event();
+  			}else{
+	  			$('#areaCode').val(areaCode);
+	  			$('#sigunguCode').val(sigunguCode);
+	  			$('#day_city_name').val(name);
+	  			theme2_change('', '');
+	  			closeCitySearch();
+	  			$('#city_name').text(name);
+  			}
   		});
   	}
   	
@@ -1006,6 +1062,7 @@
 <input type="hidden" id="scd_sq" value="${schedule.scd_sq }">
 <input type="hidden" id="areaCode" value="${dailyList[0].AREA_CODE }">
 <input type="hidden" id="sigunguCode" value="${dailyList[0].SIGUNGU_CODE }">
+<input type="hidden" id="day_city_name" value="${dailyList[0].CITY_NM }">
 <div style="overflow:auto;" class="col-2 daylist" id="section1">
 <ul>
 
@@ -1013,11 +1070,12 @@
 <div id="Day${daily.DAILY_ORD }" class="ordlist">
 <input type="hidden" class="areaCode" value="${daily.AREA_CODE }">
 <input type="hidden" class="sigunguCode" value="${daily.SIGUNGU_CODE }">
+<input type="hidden" class="day_city_name" value="${daily.CITY_NM }">
 <input type="hidden" class="ymd" value=${daily.DAILY_YMD }>
 <input type="hidden" class="day" value=${daily.DAILY_ORD }>
 DAY ${daily.DAILY_ORD } <br>
 ${daily.DAILY_YMD } <br>
-${daily.CITY_NM }
+<span id="city_names">${daily.CITY_NM }</span>
 <hr />
 </div>
 </c:forEach>
@@ -1037,7 +1095,7 @@ ${daily.CITY_NM }
 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 <div id="search_menu" style="height:25%;">
 <div>
-${dailyList[0].CITY_NM }
+<span id="city_name">${dailyList[0].CITY_NM }</span>
 <input type="button" value="도시변경" onclick="javascript:openCitySearch();">
 </div>
 <div class="search_box">

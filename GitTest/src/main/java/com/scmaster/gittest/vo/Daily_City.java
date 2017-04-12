@@ -7,10 +7,13 @@ public class Daily_City {
 	private int city_ord;
 	private String area_code;
 	private String sigungu_code;
+	private String city_nm;
+	private int city_cnt;
+	private int max_ord;
 	
 	public Daily_City(){}
 	
-	public Daily_City(int dcl_sq, int scd_sq, int daily_sq, int city_ord, String area_code, String sigungu_code) {
+	public Daily_City(int dcl_sq, int scd_sq, int daily_sq, int city_ord, String area_code, String sigungu_code, String city_nm, int city_cnt, int max_ord) {
 		super();
 		this.dcl_sq = dcl_sq;
 		this.scd_sq = scd_sq;
@@ -18,6 +21,9 @@ public class Daily_City {
 		this.city_ord = city_ord;
 		this.area_code = area_code;
 		this.sigungu_code = sigungu_code;
+		this.city_nm = city_nm;
+		this.city_cnt = city_cnt;
+		this.max_ord = max_ord;
 	}
 
 	public int getDcl_sq() {
@@ -68,11 +74,37 @@ public class Daily_City {
 		this.sigungu_code = sigungu_code;
 	}
 
+	public String getCity_nm() {
+		return city_nm;
+	}
+
+	public void setCity_nm(String city_nm) {
+		this.city_nm = city_nm;
+	}
+
+	public int getCity_cnt() {
+		return city_cnt;
+	}
+
+	public void setCity_cnt(int city_cnt) {
+		this.city_cnt = city_cnt;
+	}
+
+	public int getMax_ord() {
+		return max_ord;
+	}
+
+	public void setMax_ord(int max_ord) {
+		this.max_ord = max_ord;
+	}
+
 	@Override
 	public String toString() {
 		return "Daily_City [dcl_sq=" + dcl_sq + ", scd_sq=" + scd_sq + ", daily_sq=" + daily_sq + ", city_ord="
-				+ city_ord + ", area_code=" + area_code + ", sigungu_code=" + sigungu_code + "]";
+				+ city_ord + ", area_code=" + area_code + ", sigungu_code=" + sigungu_code + ", city_nm=" + city_nm
+				+ ", city_cnt=" + city_cnt + ", max_ord=" + max_ord + "]";
 	}
+
 	
 	
 }
