@@ -108,8 +108,9 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="sc_05",method=RequestMethod.GET)
-	public String sc_05(String areacode,Model model){
+	public String sc_05(String areacode, String sigungucode, Model model){
 		model.addAttribute("areacode",areacode);
+		model.addAttribute("sigungucode",sigungucode);
 		
 		return "sc_05";
 	}
