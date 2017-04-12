@@ -561,7 +561,7 @@
 							<input type="submit" class="btn" value="Search"><br>
 
 							<div id="searchformap">
-									<a href=""><button type="button" class="btn btn-default btn-xs">지도에서 검색</button></a>
+									<a href="mapSearch"><button type="button" class="btn btn-default btn-xs">지도에서 검색</button></a>
 							</div>
 
 						</form>
