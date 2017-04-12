@@ -5,7 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<title>Travel Maker</title>
+<title>Travle Maker</title>
 <meta name="description" content="company is a free job board template">
 <meta name="author" content="Ohidul">
 <meta name="keyword" content="html, css, bootstrap, job-board">
@@ -106,76 +106,77 @@
 		content2 += '<li><a href="sc_05?areacode=1"> <img src="./resources/image/main_city/city_seoul.jpg" alt="" width="300" height="200">';
 		content2 += '<div class="overlay">';
 		content2 +=	'<h3>서울</h3>';
-		content2 +=	'<p>가장 먼지 많은 도시</p>';
+		content2 +=	'<p>쇼핑,관광등 없는게 없는 "Soul of Asia!"</p>';
 		content2 +=	'</div></a></li><li><a href="sc_05?areacode=6"> <img src="./resources/image/main_city/city_busan.jpg" alt="" width="300" height="200">';
-		content2 +=	'<div class="overlay"><h3>부산</h3><p>무봤나~~</p></div></a></li>';
-		content2 +=  '<li><a href="sc_05?areacode=37"> <img src="./resources/image/main_city/city_junju.jpg" alt="" width="300" height="200">';
+		content2 +=	'<div class="overlay"><h3>부산</h3><p>탁트인 바다,맛있는 음식 exciting city! </p></div></a></li>';
+		content2 +=  '<li><a href="sc_05?areacode=38"> <img src="./resources/image/main_city/city_junju.jpg" alt="" width="300" height="200">';
 		content2 +=  '<div class="overlay">';
-		content2 +=	'<h3>전주</h3><p>아름다운 전주 전주</p></div></a></li>';
+		content2 +=	'<h3>전주</h3><p>옛것을 고수하는 아름다운  slow city! </p></div></a></li>';
 		content2 +=   '<li><a href="sc_05?areacode=39"> <img src="./resources/image/main_city/city_jeju.jpg" alt="" width="300" height="200">';
-		content2 += '<div class="overlay"><h3>제주도</h3><p>제주도 빠지면 섭하지</p></div></a></li>';
+		content2 += '<div class="overlay"><h3>제주도</h3><p>4계절 내내 다채로운 대표 관광 city!</p></div></a></li>';
 		content2 += '<li><a href="sc_05?areacode=32"> <img src="./resources/image/main_city/city_kwd.jpg" alt="" width="300" height="200">';
-		content2 +=		'<div class="overlay"><h3>강원도</h3><p>강원도의 힘 감자 고구마~</p></div></a></li>';
+		content2 +=		'<div class="overlay"><h3>강원도</h3><p>바다와 산 모두 즐길 수 있는 곳!</p></div></a></li>';
 		content2 += '<li><a href="sc_05?areacode=35"> <img src="./resources/image/main_city/city_kj.jpg" alt="" width="300" height="200">';
-		content2 +=	'<div class="overlay"><h3>경주</h3><p>아름다운 고장</p></div></a></li></ul>';
+		content2 +=	'<div class="overlay"><h3>경주</h3><p>역사를 품은 색다른 매력이 있는 곳! </p></div></a></li></ul>';
 		
 		$("#tabtab").html(content2);
- 		
+		
 	}
 	
 
 	//행사 정보를 가져오는 메소드 
-	function r_Data() {
-		//$.getJSON(url, function(data) {
-		//areacode=data.response.body.items.item.areacode;
-		//sigungucode=data.response.body.items.item.sigungucode;
-		//console.log(areacode); 
-		//console.log(sigungucode); 
+	 function r_Data() {
+		var url =""
+			url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?ServiceKey="
+	            + key;
+		if(false){
+	      /* url2 ="&contentTypeId=15&areaCode=&sigunguCode=&cat1=&cat2=&cat3"; */
+	      url += "&eventStartDate=20170501&eventEndDate=20170531&arrange=A&listYN=Y&pageNo=1&numOfRows=50&MobileOS=ETC&MobileApp=AppTesting&_type=json";
+		}else{
+			url += "&eventStartDate=20170401&eventEndDate=20170430&arrange=A&listYN=Y&pageNo=1&numOfRows=199&MobileOS=ETC&MobileApp=AppTesting&_type=json";
+		}
+	
+      $.getJSON(
+                  url,
+                  function(data) {
+                     console.log(data);
 
-		var url2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?ServiceKey="
-				+ key;
-		/* url2 ="&contentTypeId=15&areaCode=&sigunguCode=&cat1=&cat2=&cat3"; */
-		url2 += "&eventStartDate=20170401&eventEndDate=20170531&arrange=A&listYN=Y&pageNo=1&numOfRows=235&MobileOS=ETC&MobileApp=AppTesting&_type=json";
+                     var content = "";
+                     var length = data.response.body.items.item.length;
+                     console.log('success', data);
 
-		$.getJSON(
-						url2,
-						function(data) {
-							console.log(data);
+                     content += '<ul class="list-inline job-seeker">';
+                     
+                     console.log(data.response.body.items.item.length);
 
-							var content = "";
-							var length = data.response.body.items.item.length;
-							console.log('success', data);
+                     for (var i = 0; i < 9; i++) {
+                        console
+                              .log(data.response.body.items.item.length);
 
-							content += '<ul class="list-inline job-seeker">';
-							console.log(data.response.body.items.item.length);
-
-							for (var i = 0; i < 9; i++) {
-								console
-										.log(data.response.body.items.item.length);
-
-								var val = Math.floor(Math.random() * length);
-								console.log(val);
-								var con = data.response.body.items.item[val].contentid;
-								console.log(con);
-								console
-										.log(data.response.body.items.item[val].title);
-								if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
-									content += '<li><a href="SC_08?CONTENT_ID='
-											+ con
-											+ '"><img src='+data.response.body.items.item[val].firstimage+' width="300" height="200" alt="">';
-									content += '<div class="overlay"><h3>'
-											+ data.response.body.items.item[val].title
-											+ '</h3><p>'
-											+ data.response.body.items.item[val].addr1
-													.split(" ", 2)
-											+ '</p></div></a></li>';
-								} else {
-									i--;
-								}
-							} //for
-							$("#job-seekers").html(content);
-						});
+                        var val = Math.floor(Math.random() * length);
+                        console.log(val);
+                        var con = data.response.body.items.item[val].contentid;
+                        console.log(con);
+                        console
+                              .log(data.response.body.items.item[val].title);
+                        if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
+                           content += '<li><a href="SC_08?CONTENT_ID='
+                                 + con
+                                 + '"><img src='+data.response.body.items.item[val].firstimage+' width="300" height="200" alt="">';
+                           content += '<div class="overlay"><h3>'
+                                 + data.response.body.items.item[val].title
+                                 + '</h3><p>'
+                                 + data.response.body.items.item[val].addr1
+                                       .split(" ", 2)
+                                 + '</p></div></a></li>';
+                        } else {
+                           i--;
+                        }
+                     } //for
+                     $("#job-seekers").html(content);
+                  });
 }
+      
 </script>
 </head>
 
@@ -185,41 +186,27 @@
 		<div id="status">&nbsp;</div>
 	</div>
 	<!-- Body content -->
-
 	<div class="header-connect">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-5 col-sm-8 col-xs-8">
 					<div class="header-half header-call">
-						<!-- <p>
-							<span><i class="icon-cloud"></i>+81 10 2518 7374</span> <span><i
-								class="icon-mail"></i>hardworkingremi@gmail.com</span>
-						</p> -->
 					</div>
 				</div>
 				<div
 					class="col-md-2 col-md-offset-5  col-sm-3 col-sm-offset-1  col-xs-3  col-xs-offset-1">
-
 		<c:choose>
 			<c:when test="${sessionScope.id == null }">
-					<div class="header-half header-social">
-						<ul class="list-inline">
-							<!-- <li><a href="http://www.facebook.com/minirem"><i
-									class="fa fa-facebook"></i></a></li>
-							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-							<li><a href="#"><i class="fa fa-vine"></i></a></li>
-							<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-							<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-							<li><a href="http://www.instagram.com/remi0315"><i
-									class="fa fa-instagram"></i></a></li> -->
+			<div class="header-half header-social">
+					<!-- 	<ul class="list-inline">
 							<li><a href="autoLogin">연습</a></li>
-						</ul>
-					</div>
+						</ul> -->
+					</div> 
 			</c:when>
 			<c:otherwise>
 				<div class="header-half header-social">
 						<ul class="list-inline">
-							<li>${sessionScope.id }님 환영합니다</li>
+							<li><img src="./resources/image/login_img.png">${sessionScope.id }님 환영합니다</li>
 						</ul>
 			   </div>
 			</c:otherwise>		
@@ -234,8 +221,8 @@
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
 
-				<a href="home"><img src="./resources/image/logoicon.png" alt=""
-					width="80px" height="80px"></a>
+				<a href="home2"><img src="./resources/image/logoicon.png" alt=""
+					width="80px" height="80px"></a><img src="./resources/image/main_logo.png" alt="">
 
 				<button type="button" class="navbar-toggle collapsed"
 					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -252,8 +239,6 @@
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<div class="button navbar-right">
-					
-					
 			<c:choose>
 			<c:when test="${sessionScope.id == null }">
 					<button type="button" id="loginForm"
@@ -431,7 +416,7 @@
 															<div class="col-sm-10">
 																<div class="row">
 																	<div class="col-md-3">
-																		<select class="form-control">
+														<select class="form-control">
 																			<option>남성</option>
 																			<option>여성</option>
 																		</select>
@@ -508,8 +493,8 @@
 				
 					<ul class="main-nav nav navbar-nav navbar-right">
 					<li class="wow fadeInDown" data-wow-delay="0s"><a
-						class="active" href="#">여행지</a></li>
-					<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="new_schedule">일정만들기</a>
+						class="active" href="SC_11">일정 만들기</a></li>
+					<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">나의 일정 보기</a>
 					</li>
 					<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
 							Own Schedule</a></li>
@@ -520,11 +505,11 @@
 				<c:otherwise>
 					<ul class="main-nav nav navbar-nav navbar-right">
 					<li class="wow fadeInDown" data-wow-delay="0s"><a
-						class="active" href="#">여행지</a></li>
-					<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">일정만들기</a>
+						class="active" href="SC_11">일정 만들기</a></li>
+					<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">나의 일정 보기</a>
 					</li>
-					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">내 일정리스트</a>
-					</li>
+					<!-- <li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">나의 일정</a>
+					</li> -->
 					<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
 							Own Schedule</a></li>
 					<li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">City
@@ -544,14 +529,14 @@
 			<div id="bg-slider" class="owl-carousel owl-theme">
 
 				<div class="item">
-					<img src="./resources/image/bg_city/bg_korea.jpg" alt="Mirror Edge">
+					<img src="./resources/image/bg_city/bg_korea.jpg" alt="">
 				</div>
 				<div class="item">
-					<img src="./resources/image/bg_city/bg_korea1.jpg"
+					<img src="./resources/image/bg_city/bg_korea2.jpg"
 						alt="The Last of us">
 				</div>
 				<div class="item">
-					<img src="./resources/image/bg_city/bg_korea2.jpg" alt="GTA V">
+					<img src="./resources/image/bg_city/bg_korea111.jpg" alt="">
 				</div>
 
 			</div>
@@ -576,9 +561,7 @@
 							<input type="submit" class="btn" value="Search"><br>
 
 							<div id="searchformap">
-								<h5>
-									<a href="mapSearch">지도에서 검색 > </a>
-								</h5>
+									<a href=""><button type="button" class="btn btn-default btn-xs">지도에서 검색</button></a>
 							</div>
 
 						</form>
@@ -630,7 +613,7 @@
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active"><a href="#tabtab"
-						aria-controls="home" role="tab" data-toggle="tab">추천 도시
+						aria-controls="home" role="tab" data-toggle="tab">인기 도시
 					</a></li>
 				</ul>
 				<!-- Tab panes -->
@@ -652,9 +635,9 @@
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active"><a href="#job-seekers"
-						aria-controls="home" role="tab" data-toggle="tab">추천 행사</a></li>
+						aria-controls="home" role="tab" data-toggle="tab">이번 달 추천 행사 </a></li>
 					<li role="presentation"><a href="#employeers"
-						aria-controls="profile" role="tab" data-toggle="tab">인기 여행 일정</a></li>
+						aria-controls="profile" role="tab" data-toggle="tab">다음 달 추천 행사 </a></li>
 				</ul>
 				<!-- Tab panes -->
 				<div class="tab-content">
@@ -672,35 +655,11 @@
 							</ul> -->
 					</div>
 					<div role="tabpanel" class="tab-pane fade" id="employeers">
-						<ul class="list-inline">
+						<!-- <ul class="list-inline">
 							<li><a href=""> <img src="./resources/img/employee4.png"
 									alt="">
 									<div class="overlay">
 										<h3>Instagram</h3>
-									</div>
-							</a></li>
-							<li><a href=""> <img src="./resources/img/employee5.png"
-									alt="">
-									<div class="overlay">
-										<h3>Microsoft</h3>
-									</div>
-							</a></li>
-							<li><a href=""> <img src="./resources/img/employee6.png"
-									alt="">
-									<div class="overlay">
-										<h3>Dribbble</h3>
-									</div>
-							</a></li>
-							<li><a href=""> <img src="./resources/img/employee1.png"
-									alt="">
-									<div class="overlay">
-										<h3>Beats Music</h3>
-									</div>
-							</a></li>
-							<li><a href=""> <img src="./resources/img/employee2.png"
-									alt="">
-									<div class="overlay">
-										<h3>Facebook</h3>
 									</div>
 							</a></li>
 							<li><a href=""> <img src="./resources/img/employee3.png"
@@ -709,7 +668,7 @@
 										<h3>Twitter</h3>
 									</div>
 							</a></li>
-						</ul>
+						</ul> -->
 					</div>
 				</div>
 			</div>
@@ -880,11 +839,12 @@
 				<div id="testimonial-slider">
 					<div class="item">
 						<div class="client-text">
-							<p>Jobify offer an amazing service and I couldn’t be happier!
-								They are dedicated to helping recruiters find great candidates,
-								wonderful service!</p>
+							<p>낮에는 아름다운 기와와 단청, 궁궐의 고즈넉한 모습이 아름답습니다. 
+							데이트를 하는 연인과 외국인 관광객이 많으며 한복을 입으면 입장료가 무료입니다. 
+							주변에 한복을 대여하는 곳이 있으니 이용해보세요. 뒤에 높은 건물이 없어 파란 하늘과 어우러진 아름다운 기와를 볼 수도 있습니다. 
+							밤에 바라보는 경회루는 낭만적이니 밤에도 꼭 보길 바랍니다.</p>
 							<h4>
-								<strong>Ohidul Islam, </strong><i>Web Designer</i>
+								<strong>서울 경복궁 / </strong><i>Pearl K</i>
 							</h4>
 						</div>
 						<div class="client-face wow fadeInRight" data-wow-delay=".9s">
@@ -893,11 +853,12 @@
 					</div>
 					<div class="item">
 						<div class="client-text">
-							<p>Jobify offer an amazing service and I couldn’t be happier!
-								They are dedicated to helping recruiters find great candidates,
-								wonderful service!</p>
+							<p>제주의 자연을 가장 잘 느낄수 있는 장소라고 생각합니다. 
+							바다가 보이는 풍경이나 해변가도 좋고 버스 투어를 하거나 스쿠터, 
+							도보 등으로 즐기기에도 부담없는 여행지입니다. 우도로 가는 접근성도 나쁘지 않고 
+							주변의 성산일출봉이나 섭지코지를 함께 볼수있어 개인적으로 가장 선호하는 코스입니다.</p>
 							<h4>
-								<strong>Ohidul Islam, </strong><i>Web Designer</i>
+								<strong>제주도 우도 / </strong><i>2013tessie </i>
 							</h4>
 						</div>
 						<div class="client-face">
@@ -906,11 +867,12 @@
 					</div>
 					<div class="item">
 						<div class="client-text">
-							<p>Jobify offer an amazing service and I couldn’t be happier!
-								They are dedicated to helping recruiters find great candidates,
-								wonderful service!</p>
+							<p>비내리는 날이라 산책하기 좋진 않았지만 
+							신선한 공기와 대나무의 초록이 어울려 운치있는 하루였습니다. 
+							날씨만 좋았다면 정말 좋았을텐데. 
+							입장료가 있지만 이번달엔 안에 있는 전시장 무료입장이 가능해서 좋았습니다.</p>
 							<h4>
-								<strong>Ohidul Islam, </strong><i>Web Designer</i>
+								<strong>전남 담양군 죽녹원 / </strong><i>민재 성</i>
 							</h4>
 						</div>
 						<div class="client-face">
@@ -919,11 +881,12 @@
 					</div>
 					<div class="item">
 						<div class="client-text">
-							<p>Jobify offer an amazing service and I couldn’t be happier!
-								They are dedicated to helping recruiters find great candidates,
-								wonderful service!</p>
+							<p>오래전 추억을 떠올릴수 있는 장소 입니다.도심에서 조금만 벗어나면 높은곳에 위치한 
+							아주 오래된듯한 마을이 나타납니다.겉으로 보는모습과는 
+							다르게 마을안으로 들어서면 아기자기하고 이쁜 벽화와 조형물을 만날수있습니다.
+							어린왕자는 사진찍는 필수 코스 입니다</p>
 							<h4>
-								<strong>Ohidul Islam, </strong><i>Web Designer</i>
+								<strong>부산 감천문화마을 / </strong><i>seoulbangi</i>
 							</h4>
 						</div>
 						<div class="client-face">

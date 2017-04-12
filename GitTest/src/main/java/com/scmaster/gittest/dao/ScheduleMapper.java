@@ -3,6 +3,7 @@ package com.scmaster.gittest.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import com.scmaster.gittest.vo.Daily_City;
 import com.scmaster.gittest.vo.Daily_Scd;
 import com.scmaster.gittest.vo.Dtl_Scd;
 import com.scmaster.gittest.vo.Schedule;
@@ -19,4 +20,11 @@ public interface ScheduleMapper {
 	public List<HashMap<String, Object>> getDtlList(Dtl_Scd dtl_scd);
 	public void sort_change(Dtl_Scd dtl_scd);
 	public void delete_place(int dtl_sq);
+	public void update_dcity(Daily_City city);
+	public int getDcitycnt(Daily_City city);
+	public void delete_dcity(Daily_City city);
+	public void insert_dcity(Daily_City city);
+	public int getMaxCityord(Daily_City city);
+	public int getDcityCnt(Daily_City city);
+	public int getDailySq(Daily_City city);
 }
