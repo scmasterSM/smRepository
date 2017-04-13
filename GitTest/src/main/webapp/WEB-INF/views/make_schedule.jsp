@@ -343,17 +343,19 @@ html, body {
 				var s_name = 'sigunguCode'+city_count;
 				var c_name = 'city'+city_count;
 				var days = 'days'+city_count;
-			   var city = '<div class="city" id="city'+city_count+'">'
-		   			+ '&nbsp &nbsp &nbsp <input type="button" value="x" onclick="javascript:deleteCity('+city_count+');">'
-		   			+ '&nbsp '+title+' &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp'
-		   			+ '<input type="button" value="-" onclick="javascript:minusDays('+city_count+');">'
-		   			+ ' <span id="'+days+'">2</span>일 '
-		   			+ '<input type="button" value="+" onclick="javascript:plusDays('+city_count+');">'
-		   			+ '<input type="hidden" name="'+a_name+'" value="'+marker.areaCode+'">'
-		   			+ '<input type="hidden" name="'+s_name+'" value="'+marker.sigunguCode+'">'
-		   			+ '<input type="hidden" name="'+c_name+'" value="'+title+'">'
-		   			+ '</div>';
+			    var city = '';
+			    city += '<div class="city" id="city'+city_count+'">'
+			    city += '&nbsp &nbsp &nbsp <input type="button" value="x" onclick="javascript:deleteCity('+city_count+');">'
+			    city +=	'&nbsp '+title+' &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp'
+			    city +=	'<input type="button" value="-" onclick="javascript:minusDays('+city_count+');">'
+			    city +=	' <span id="'+days+'">2</span>일 '
+			    city +=	'<input type="button" value="+" onclick="javascript:plusDays('+city_count+');">'
+			    city +=	'<input type="hidden" name="'+a_name+'" value="'+marker.areaCode+'">'
+		   		city +=	'<input type="hidden" name="'+s_name+'" value="'+marker.sigunguCode+'">'
+		   		city +=	'<input type="hidden" name="'+c_name+'" value="'+title+'">'
+		   		city +=	'</div>';
   			$('#flag').before(city);
+  			$('#flag').text("");
 		   }
 		   $(".item").each(function(index,item){
 				if($(this).attr('data-ci_name') == marker.title){
@@ -454,17 +456,22 @@ html, body {
 	<h3>여행도시</h3>
 	<br>
 	<div id="city_day_box">
-		<div class="city" id="city1">
-		&nbsp &nbsp &nbsp <input type="button" value="x" onclick="javascript:deleteCity(1);">
-		 &nbsp ${name } &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-		<input type="button" value="-" onclick="javascript:minusDays(1);">
-		<span id="days1">2</span>일
-		<input type="button" value="+" onclick="javascript:plusDays(1);">
-		<input type="hidden" name="areaCode1" value="${areaCode }">
-		<input type="hidden" name="sigunguCode1" value="${sigunguCode }">
-		<input type="hidden" name="city1" value="${name }">
-		</div>
-		<div id="flag"></div>
+		<c:if test="${name != null}">
+			<div class="city" id="city1">
+			&nbsp &nbsp &nbsp <input type="button" value="x" onclick="javascript:deleteCity(1);">
+			 &nbsp ${name } &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+			<input type="button" value="-" onclick="javascript:minusDays(1);">
+			<span id="days1">2</span>일
+			<input type="button" value="+" onclick="javascript:plusDays(1);">
+			<input type="hidden" name="areaCode1" value="${areaCode }">
+			<input type="hidden" name="sigunguCode1" value="${sigunguCode }">
+			<input type="hidden" name="city1" value="${name }">
+			</div>
+			<div id="flag"></div>
+		</c:if>
+		<c:if test="${name == null}">
+			<div id="flag">도시를 선택해 주세요.</div>
+		</c:if>
 		<br>
 		<input type="button" value="세부정보 입력" onclick="javascript:open_scd();">
 	</div>
