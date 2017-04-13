@@ -18,5 +18,6 @@
 		<mapper resource="mappers/ReviewMapper.xml" />
 		<mapper resource="mappers/ClipMapper.xml" />
 		<mapper resource="mappers/scheduleMapper.xml" />
+	    <mapper resource="mappers/UserMapper.xml" />
 	</mappers>
 </configuration>

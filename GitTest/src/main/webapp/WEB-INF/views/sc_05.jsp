@@ -52,8 +52,7 @@
 
 <script type="text/javascript">
      	var areacode = ${areacode};
-     	console.log(areacode);
-        
+     	var sigungucode = "";
      	var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 		
      	//정보수정 모달
@@ -74,7 +73,7 @@
         	theme_Data(areacode, "A01&cat2=");
             popular_Data(areacode);
             city_img(areacode);
-            
+           
           //자연
             $('#bMenu0').on('click', 
               function (){ 
@@ -141,12 +140,13 @@
         
         //지역별 테마를 담는 변수 
         function theme_Data(areacode, themecode){
-            console.log(themecode);
+            
+            sigungucode = eval($("#test1").val());
             
         	var url2 ="";
             url2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="
                    +key;
-            url2 += "&contentTypeId=&areaCode="+areacode+"&sigunguCode=&cat1="+themecode+"&cat3=&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=11&pageNo=1";
+            url2 += "&contentTypeId=&areaCode="+areacode+"&sigunguCode="+sigungucode+"&cat1="+themecode+"&cat3=&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=11&pageNo=1";
             url2 += "&_type=json";
 
             
@@ -157,12 +157,12 @@
                    // var addr1=addr.split(" ",1); //시의 정보를 가져오는 변수
                // var cityname = "<h1>"+addr1+"</h1>";
                var length=data.response.body.items.item.length;
-               console.log(data);   
+               //console.log(data);   
                
                 
-                for (var i = 0; i < 6; i++) {
+                for (var i = 0; i < 3; i++) {
               	 //컨텐트아이디 추출
-      	         console.log(con);
+      	         //console.log(con);
       	         var val = Math.floor( Math.random()*length);
 				 	console.log(val);	
 				 var con = data.response.body.items.item[val].contentid;
@@ -219,33 +219,87 @@
         function city_img(areacode){
         	
         	var imageArray = [];
-        	  
+        	var city_info = "";  
             if (areacode == 1) { /*서울 */
-               imageArray.push("./resources/image/seoul/seoul.jpg");
+               
+            	city_info += '<div class="container">';
+            	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+            	city_info += '<h2>ソウル</h2>';
+            	city_info += '<h1>SEOUL</h1>';
+            	city_info += '</div></div>';
+            	
+            	$("#city_info").html(city_info);
+            	
+            	imageArray.push("./resources/image/seoul/seoul.jpg");
                imageArray.push("./resources/image/seoul/seoul2.jpg");
                imageArray.push("./resources/image/seoul/seoul3.jpg");
+               
             } else if (areacode == 2) { /* 인천 */
-                imageArray.push("./resources/image/");
-                imageArray.push("./resources/image/");
-                imageArray.push("./resources/image/");
+            	
+            	city_info += '<div class="container">';
+            	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+            	city_info += '<h2>インチョン</h2>';
+            	city_info += '<h1>인천</h1>';
+            	city_info += '</div></div>';
+            	
+            	$("#city_info").html(city_info);
+            	
+                imageArray.push("./resources/image/05_city/incheon770.jpg");
+                imageArray.push("./resources/image/05_city/incheon770.jpg");
+                imageArray.push("./resources/image/05_city/incheon770.jpg");
              
             } else if (areacode == 3) { /* 대전 */
+            	
+            	city_info += '<div class="container">';
+            	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+            	city_info += '<h2>大田(テジョン)</h2>';
+            	city_info += '<h1>DAEJOEN</h1>';
+            	city_info += '</div></div>';
+            	
+            	$("#city_info").html(city_info);
+            	
                 imageArray.push("./resources/image/");
                 imageArray.push("./resources/image/");
                 imageArray.push("./resources/image/");
          
              } else if (areacode == 4) { /* 대구 */
+            	 
+            	city_info += '<div class="container">';
+             	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+             	city_info += '<h2>大邱(テグ)</h2>';
+             	city_info += '<h1>DAEGU</h1>';
+             	city_info += '</div></div>';
+             	
+             	$("#city_info").html(city_info);
+            	 
                  imageArray.push("./resources/image/");
                  imageArray.push("./resources/image/");
                  imageArray.push("./resources/image/");
             
               } else if (areacode == 5) { /* 광주 */
+            	  
+            	  city_info += '<div class="container">';
+               	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+               	city_info += '<h2>光州(クァンジュ)</h2>';
+               	city_info += '<h1>GWANGJU</h1>';
+               	city_info += '</div></div>';
+               	
+               	$("#city_info").html(city_info);
+            	  
                   imageArray.push("./resources/image/");
                   imageArray.push("./resources/image/");
                   imageArray.push("./resources/image/");
              
                }  else if (areacode == 6) { /* 부산  */
+            	   
+            	   city_info += '<div class="container">';
+                  	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+                  	city_info += '<h2>釜山(プサン)</h2>';
+                  	city_info += '<h1>BUSAN</h1>';
+                  	city_info += '</div></div>';
                
+                  	$("#city_info").html(city_info);
+                  	
                    imageArray.push("./resources/image/busan/busan1.jpg");
                    imageArray.push("./resources/image/busan/busan2.jpg");
                    imageArray.push("./resources/image/busan/busan3.jpg");
@@ -261,46 +315,128 @@
                      imageArray.push("./resources/image/");
                 
                   } else if (areacode == 31) { /* 경기도 */
+                	   city_info += '<div class="container">';
+                     	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+                     	city_info += '<h2>キョンギ・ド</h2>';
+                     	city_info += '<h1>경기도</h1>';
+                     	city_info += '</div></div>';
+                	  
+                      	$("#city_info").html(city_info);
+                	  
                       imageArray.push("./resources/image/");
                       imageArray.push("./resources/image/");
                       imageArray.push("./resources/image/");
                  
                    } else if (areacode == 32) { /* 강원도  */
+                	   
+                	   city_info += '<div class="container">';
+                    	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+                    	city_info += '<h2>カンウォン・ド</h2>';
+                    	city_info += '<h1>강원도</h1>';
+                    	city_info += '</div></div>';
+               	  
+                     	$("#city_info").html(city_info);
+                	   
                        imageArray.push("./resources/image/");
                        imageArray.push("./resources/image/");
                        imageArray.push("./resources/image/");
                   
                     } else if (areacode == 33) { /* 충청북도  */
+                    	
+                    	city_info += '<div class="container">';
+                    	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+                    	city_info += '<h2>チュンチョンブク・ト</h2>';
+                    	city_info += '<h1>충청북도</h1>';
+                    	city_info += '</div></div>';
+               	  
+                     	$("#city_info").html(city_info);
+                    	
                         imageArray.push("./resources/image/");
                         imageArray.push("./resources/image/");
                         imageArray.push("./resources/image/");
                    
                      } else if (areacode == 34) { /* 충남  */
+                    	 
+                    	   	city_info += '<div class="container">';
+                        	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+                        	city_info += '<h2></h2>';
+                        	city_info += '<h1>충청남도</h1>';
+                        	city_info += '</div></div>';
+                   	  
+                         	$("#city_info").html(city_info);
+                    	 
                          imageArray.push("./resources/image/");
                          imageArray.push("./resources/image/");
                          imageArray.push("./resources/image/");
                     
                       } else if (areacode == 35) { /* 경북 */
+                    	  
+                    	 	city_info += '<div class="container">';
+                        	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+                        	city_info += '<h2></h2>';
+                        	city_info += '<h1>경상북도</h1>';
+                        	city_info += '</div></div>';
+                   	  
+                         	$("#city_info").html(city_info);
+                    	  
                           imageArray.push("./resources/image/");
                           imageArray.push("./resources/image/");
                           imageArray.push("./resources/image/");
                      
                        } else if (areacode == 36) { /*경남 */
+                    	   
+                    		city_info += '<div class="container">';
+                        	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+                        	city_info += '<h2></h2>';
+                        	city_info += '<h1>경상남도</h1>';
+                        	city_info += '</div></div>';
+                   	  
+                         	$("#city_info").html(city_info);
+                    	   
+                    	   
                            imageArray.push("./resources/image/");
                            imageArray.push("./resources/image/");
                            imageArray.push("./resources/image/");
                       
                         }else if (areacode == 37) { /* 전북  */
+                        	
+                        	city_info += '<div class="container">';
+                        	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+                        	city_info += '<h2></h2>';
+                        	city_info += '<h1>전라북도</h1>';
+                        	city_info += '</div></div>';
+                   	  
+                         	$("#city_info").html(city_info);
+                        	
                             imageArray.push("./resources/image/");
                             imageArray.push("./resources/image/");
                             imageArray.push("./resources/image/");
                        
                          }else if (areacode == 38) { /*전남  */
+                        	 
+                        		city_info += '<div class="container">';
+                            	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+                            	city_info += '<h2></h2>';
+                            	city_info += '<h1>전라남도</h1>';
+                            	city_info += '</div></div>';
+                       	  
+                             	$("#city_info").html(city_info);
+                        	 
                              imageArray.push("./resources/image/");
                              imageArray.push("./resources/image/");
                              imageArray.push("./resources/image/");
                         
                           }else if (areacode == 39) { /*제주도  */
+                        	  
+                        	  
+                      		city_info += '<div class="container">';
+                          	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
+                          	city_info += '<h2>JEJUDO</h2>';
+                          	city_info += '<h1>제주도</h1>';
+                          	city_info += '</div></div>';
+                     	  
+                           	$("#city_info").html(city_info);
+                        	  
                               imageArray.push("./resources/image/");
                               imageArray.push("./resources/image/");
                               imageArray.push("./resources/image/");
@@ -310,27 +446,28 @@
                      $(this).attr("src", imageArray[index]);
                   });
         }
-      
         
         
         //지역의 모든 장소를 가져오는 함수 
         function popular_Data(areacode) {
 
-
+        	sigungucode = eval($("#test1").val());
             //지역별 인기 장소를 담는 변수
             var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="
                   + key;
             url += "&contentTypeId=&areaCode="
                   + areacode
-                  + "&sigunguCode=&cat1=&cat2=&cat3=&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=8&pageNo=1";
+                  + "&sigunguCode="+sigungucode+"&cat1=&cat2=&cat3=&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=500&pageNo=";
             url += "&_type=json";
             
+        	console.log(url);
             $.getJSON(url,function(data) {
+            	console.log(data);
+            			console.log(data);
                            var content2 =""
-                  	         console.log(con);
                            content2 += '<ul class="list-inline job-seeker">';
                   	       	 var length=data.response.body.items.item.length;
-                           for (var i = 0; i < 9; i++) {
+                           for (var i = 0; i < 6; i++) {
                   	       	 var val = Math.floor(Math.random() * length);  
                           	
                           	//컨텐트아이디 추출
@@ -359,7 +496,6 @@
                      }
         </script>
 </head>
-
 <body>
 
 	<div id="preloader">
@@ -701,15 +837,15 @@
 	</nav>
 
 
-	<div class="content-area">
-		<div class="container">
+	<div class="content-area" id="city_info">
+		<!-- <div class="container">
 			<div class="row page-title text-center wow zoomInDown"
 				data-wow-delay="1s">
 				<h1>SEOUL</h1>
 				<h2>서울은 먼지가 많다많다많다 </h2>
 				<p>서울은 가장 아름 다운 도시입니다.</p>
 			</div>
-			</div>
+			</div> -->
 		</div>
 	
 
@@ -1021,7 +1157,7 @@
 		</div>
 	</div>  --%>
 
-
+    <input type="hidden" id="test1" value="${sigungucode}">
 	<!-- footer -->
 	<div class="footer-area">
 		<div class="container">
