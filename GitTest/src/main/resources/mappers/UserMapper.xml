@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.scmaster.gittest.dao.UserMapper">
+	
+
+	
+	<select id="login_User" parameterType="String" resultType="User">
+		select
+			user_id
+			,password
+			,email
+			,user_sex
+			,reg_ymd
+		from
+			sm_user_tb
+		where
+			user_id = #{user_id}
+	</select>
+	
+	<insert id="join_User" parameterType="User">
+		insert into
+			sm_user_tb(
+				user_id
+				,password
+				,email
+				,user_sex
+				,reg_ymd
+				,upd_ymd
+			)values(
+				#{user_id}
+				,#{password}
+				,#{email}
+				,#{user_sex}
+				,sysdate
+				,null
+			)
+	</insert>
+<!-- 	<select id="" parameterType="Member">
+		select
+			custid
+			,password
+			,name
+			,email
+			,division
+			,idno
+			,address
+		from
+			where custid = #{custid}
+	</select> -->
+	<update id="edit_User" parameterType="User">
+		update sm_user_tb
+			set
+		password = #{password}
+		,email = #{email}
+		,upd_ymd = sysdate
+		where
+			user_id = #{user_id}
+	</update>
+	
+</mapper>
