@@ -191,9 +191,6 @@
 				type: "post",
 				url: "add_day",
 				data: daily_scd,
-				success: function(data){
-					console.log(data);
-				},
 				error: function(e){
 					console.log(e);
 				}		
@@ -240,12 +237,14 @@
     
     initCitySearch();
     citySearch();
+    
+    $('.ordlist:first').trigger('click');
   });
   
   var map;
   var myMarkers;
   var sigungu = new Array;
-  var pop_cities = [{"index" : 0, "areaCode" : 1, "name" : '서울', "name_en" : "Seoul", "lat" : parseFloat(37.566535), "lng" : parseFloat(126.9779692), "is_state" : 0},
+  var pop_cities = [{"areaCode" : 1, "sigunguCode" : "", "name" : '서울', "name_en" : "Seoul", "lat" : parseFloat(37.566535), "lng" : parseFloat(126.9779692), "is_state" : 0},
       {"areaCode" : 6, "sigunguCode" : "", "name" : '부산', "name_en" : "Busan", "lat" : parseFloat(35.1795543), "lng" : parseFloat(129.0756416), "is_state" : 0},
       {"areaCode" : 39, "sigunguCode" : "", "name" : '제주도', "name_en" : "Jeju", "lat" : parseFloat(33.4890113), "lng" : parseFloat(126.4983023), "is_state" : 0},
       {"areaCode" : 2, "sigunguCode" : "", "name" : '인천', "name_en" : "Incheon", "lat" : parseFloat(37.4562557), "lng" : parseFloat(126.7052062), "is_state" : 0},
@@ -264,7 +263,7 @@
       {"areaCode" : 38, "sigunguCode" : "", "name" : '전라남도', "name_en" : "Jeollanam-do", "lat" : parseFloat(34.8679), "lng" : parseFloat(126.991), "is_state" : 1}];
    
   function getSigungu(areaCode){
-	  var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
+	  var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
 	  var sigunguCode;
       var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode?ServiceKey="
            + key + "&areaCode=" + areaCode 
@@ -326,7 +325,6 @@
 		$("#sortable").sortable({
         	update: function(event, ui) {
         		var itemOrder = $('#sortable').sortable("toArray");
-        		console.log("sort change");
         		   for (var i = 0; i < itemOrder.length-1; i++) {
         		   		var target_span = '#'+itemOrder[i]+' > span';
         		   		var target_ord = '#'+itemOrder[i];
@@ -346,9 +344,6 @@
         			type: "post",
         			url: "sort_change",
         			data: sort_change,
-        			success: function(data){
-        				console.log(data);
-        			},
         			error: function(e){
         				console.log(e);
         			}
@@ -376,7 +371,8 @@
 				$('#sigunguCode').val(sigunguCode);
 				theme2_change('', '');
 			}
-			var content = '<h1 id="section2_day">'+day+'</h1>'	
+			var content = '<h2 id="section2_day">'+day+'</h2>'	
+			+ '예산: <span id="daily_budget"></span>'
 			+ '<div id="sortable">'
 			+ '<div id="my_location"></div>'
 			+ '</div>';
@@ -394,7 +390,9 @@
 				data: sq,
 				dataType: "json",
 				success: function(data){
-					set_places(data);
+					get_daily_budget();
+					get_budget_total();
+					if(data.length != 0) set_places(data);
 				},
 				error: function(e){
 					console.log(e);
@@ -406,12 +404,15 @@
   function set_places(data){
 	  var my_content = '';
 	  $.each(data,function(index,item){
-		my_content += '<div class="my_loc" id="'+item.DTL_SQ+'" dtl_sq="'+item.DTL_SQ+'" dtl_ord="'+item.DTL_ORD+'" title="'+item.PLACE_NM+'" contentid="'+item.DTL_CONTENT_ID+'" '
-			+ 'areaCode="'+item.AREA_CODE+'" sigunguCode="'+item.SIGUNGU_CODE+'" city_name="'+item.CITY_NM+'">'
+		var sigunguCode = item.SIGUNGU_CODE;
+		if(typeof(sigunguCode) == 'undefined') sigunguCode = "";
+		  my_content += '<div class="my_loc" id="'+item.DTL_SQ+'" dtl_sq="'+item.DTL_SQ+'" dtl_ord="'+item.DTL_ORD+'" title="'+item.PLACE_NM+'" contentid="'+item.DTL_CONTENT_ID+'" '
+			+ 'areaCode="'+item.AREA_CODE+'" sigunguCode="'+sigunguCode+'" city_name="'+item.CITY_NM+'">'
 			+ '<span class="sec2_ord">'+item.DTL_ORD+'</span> '
 			+ '<input type="hidden" id="sec2_id" value="'+item.DTL_CONTENT_ID+'">'
 		 	+ item.PLACE_NM
 			+ '<img src='+item.DTL_IMAGE+' width=190 height=120><br>'
+			+ '<input type="button" value="예산/메모" onclick="javascript:budget_memo(\''+item.DTL_SQ+'\',\''+item.DTL_CONTENT_ID+'\');"> '
 			+ '<input type="button" value="삭제" onclick="javascript:delete_place('+item.DTL_SQ+');">'
 			+ '<hr />'
 			+ '</div>';
@@ -433,7 +434,6 @@
 				  $('div[class=my_loc][dtl_sq='+dtl_sq+']').trigger("mouseleave");
 				  $('div[class=my_loc][dtl_sq='+dtl_sq+']').remove();
 				  var itemOrder = $('#sortable').sortable("toArray");
-        			console.log("sort change");
         		   for (var i = 0; i < itemOrder.length-1; i++) {
         		   		var target_span = '#'+itemOrder[i]+' > span';
         		   		var target_ord = '#'+itemOrder[i];
@@ -452,9 +452,6 @@
 	        			type: "post",
 	        			url: "sort_change",
 	        			data: sort_change,
-	        			success: function(data){
-	        				console.log(data);
-	        			},
 	        			error: function(e){
 	        				console.log(e);
 	        			}
@@ -466,6 +463,8 @@
 				}
 		})
 		check_cities();
+		get_daily_budget();
+		get_budget_total();
   }
 		
 	function initMap() {
@@ -607,15 +606,16 @@
 			url: "detail_place",
 			data: dtl_place,
 			async: false,
-			success: function(data){
+			success: function(dtl_sq){
 				var my_content = '';
-				my_content += '<div class="my_loc" id="'+dtl_ord+'" dtl_sq="'+data+'" dtl_ord="'+dtl_ord+'" title="'+title+'" contentid="'+contentid+'" '
+				my_content += '<div class="my_loc" id="'+dtl_ord+'" dtl_sq="'+dtl_sq+'" dtl_ord="'+dtl_ord+'" title="'+title+'" contentid="'+contentid+'" '
 					+ 'areaCode="'+areaCode+'" sigunguCode="'+sigunguCode+'" city_name="'+city_name+'">'
 					+ '<span class="sec2_ord">'+dtl_ord+'</span> '
 					+ '<input type="hidden" id="sec2_id" value="'+contentid+'">'
 				 	+ title
 					+ '<img src='+firstimage+' width=190 height=120><br>'
-					+ '<input type="button" value="삭제" onclick="javascript:delete_place('+data+');">'
+					+ '<input type="button" value="예산/메모" onclick="javascript:budget_memo(\''+dtl_sq+'\',\''+contentid+'\');"> '
+					+ '<input type="button" value="삭제" onclick="javascript:delete_place('+dtl_sq+');">'
 					+ '<hr />'
 					+ '</div>';
 				$("#my_location").before(my_content);
@@ -626,7 +626,98 @@
 			}
 		})
 		check_cities();
-	};  
+	};
+	
+	function budget_memo(dtl_sq, contentid){
+		var scd_sq = $('#scd_sq').val();
+		var daily_sq = parseInt($('#section2_day').text().match(/\d+/)[0], 10);
+		
+		var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
+
+		var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="
+				+ key;
+		url += "&contentId=" + contentid
+				+ "&defaultYN=Y&addrinfoYN=Y&firstImageYN=Y&overviewYN=Y";
+		url += "&MobileOS=ETC&MobileApp=AppTesting&_type=json";
+		
+		$.getJSON(url, function(data) {
+			var content = '';
+				content += '<h2>'+ data.response.body.items.item.title+'</h2>';
+				content += '<img src='+data.response.body.items.item.firstimage+' width=340 height=220>';
+				$.ajax({
+					type: "post",
+					url: "get_budget_memo",
+					data: {
+						dtl_sq: dtl_sq
+					},
+					async: false,
+					success: function(data){
+						var budget = data.dtl_budget;
+						var memo = data.dtl_memo;
+						if(typeof(budget) == 'undefined') budget = "";
+						if(typeof(memo) == 'undefined') memo = "";
+						content += '<input type="hidden" id="place_scd_sq" value="'+scd_sq+'">';
+						content += '<input type="hidden" id="place_daily_sq" value="'+daily_sq+'">';
+						content += '<input type="hidden" id="place_dtl_sq" value="'+dtl_sq+'">';
+						content += '<h4>예산</h4> <input type="text" id="place_budget" value="'+budget+'" placeholder="예산을 입력하세요">';
+						content += '<h4>메모</h4> <textarea rows="5" cols="50" id="place_memo" placeholder="메모를 입력하세요">'+memo+'</textarea>';
+					},
+					error: function(e){
+						console.log(e);
+					}		
+				})
+				content += '<h4>'+ data.response.body.items.item.overview+'</h4>';
+				content += '주소: ' + data.response.body.items.item.addr1+'('+data.response.body.items.item.zipcode+')<br>';
+				if(typeof(data.response.body.items.item.tel) != 'undefined')
+					content += '전화번호: '+ data.response.body.items.item.tel+'<br>';
+				if(typeof(data.response.body.items.item.homepage) != 'undefined')
+					content += '<h5>'+ data.response.body.items.item.homepage+'</h5>';
+			$("#bmlist").html(content);
+			openBgtMemo();
+		});
+	}
+	
+	function get_daily_budget(){
+		var scd_sq = $('#scd_sq').val();
+		var daily_sq = parseInt($('#section2_day').text().match(/\d+/)[0], 10);
+		$.ajax({
+			type: "post",
+			url: "get_daily_budget",
+			async: false,
+			data: {
+				scd_sq: scd_sq
+				,daily_sq: daily_sq
+			},
+			success: function(data){
+				var daily_budget = data.dtl_budget;
+				if(typeof(daily_budget) == 'undefined') daily_budget = 0;
+				$('#daily_budget').text(daily_budget);
+			},
+			error: function(e){
+				console.log(e);
+			}
+		})
+	}
+	
+	function get_budget_total(){
+		var scd_sq = $('#scd_sq').val();
+		$.ajax({
+			type: "post",
+			url: "get_budget_total",
+			async: false,
+			data: {
+				scd_sq: scd_sq
+			},
+			success: function(data){
+				var budget_total = data.dtl_budget;
+				if(typeof(budget_total) == 'undefined') budget_total = 0;
+				$('#budget_total').text(budget_total);
+			},
+			error: function(e){
+				console.log(e);
+			}
+		})
+	}
 	
 	function check_cities(){
 		var cities = [];
@@ -667,9 +758,6 @@
 				url: "update_cities",
 				async: false,
 				data: cities[i],
-				success: function(data){
-					console.log(data);
-				},
 				error: function(e){
 					console.log(e);
 				}
@@ -731,8 +819,6 @@
 		
 		$.getJSON(url2, function(data) {
 			auto_fill(data);
-			console.log(data.response.body.totalCount);
-
 			var content = '';
 			for (var i = 0; i < 50; i++) {
 				if(typeof(data.response.body.items.item[i])!='undefined'){
@@ -825,7 +911,7 @@
 		});
 	}
   	
-  	function city_change() {
+  	/* function city_change() {
 		var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 
 		var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="
@@ -847,7 +933,7 @@
 			$("#infolist").html(content);
 			openDtl();
 		});
-	}
+	} */
   	
   	function location_event(){
   		$(".location").mouseenter(function(){
@@ -958,7 +1044,6 @@
 			search: function(){
 				var searchText = $(this).val();
 				var content = '';
-		   		console.log(searchText);	  
 		   		for (var i in sigungu) {
 					if(sigungu[i].name.includes(searchText)){
 						content += '<div class="item" data="'+ sigungu[i].areaCode +'" data2="'+ sigungu[i].sigunguCode +'" data-ci_name="'+ sigungu[i].name +'" data-lat="'+ sigungu[i].lat +'" data-lng="' + sigungu[i].lng + '" data-is_state="'+ sigungu[i].is_state +'">'
@@ -1006,7 +1091,7 @@
   	}
   	
   	function openNav() {
-  		$('#map').css('left', '10%');
+  		//$('#map').css('left', '10%');
   		$('#openNav').css('opacity', '0');
   		$('#openNav').css('pointer-events', 'none');
   		$('#section3').css('pointer-events', 'visible');
@@ -1016,7 +1101,7 @@
   	}
 
   	function closeNav() {
-  		$('#map').css('left', '0');
+  		//$('#map').css('left', '0');
   		$('#openNav').css('opacity', '100');
   		$('#openNav').css('pointer-events', 'visible');
   		$('#section3').css('pointer-events', 'none');
@@ -1026,7 +1111,7 @@
   	}
   	
   	function openDtl() {
-  		$('#map').css('left', '12.5%');
+  		//$('#map').css('left', '12.5%');
   		$('#detail_info').css('opacity', '100');
   		$('#detail_info').css('pointer-events', 'visible');
   		$('#detail_info').css('width', '25%');
@@ -1034,15 +1119,54 @@
   	}
 
   	function closeDtl() {
-  		$('#map').css('left', '0');
+  		//$('#map').css('left', '0');
   		$('#detail_info').css('opacity', '0');
   		$('#detail_info').css('pointer-events', 'none');
   		$('#detail_info').css('width', '0');
   		$("#detail_info").attr("class","sidenav");
   	}
+  	
+  	function openBgtMemo() {
+  		//$('#map').css('left', '12.5%');
+  		$('#budget_memo').css('opacity', '100');
+  		$('#budget_memo').css('pointer-events', 'visible');
+  		$('#budget_memo').css('width', '25%');
+  		$("#budget_memo").attr("class","col-4 sidenav");
+  	}
+
+  	function closeBgtMemo() {
+		var scd_sq = $('#place_scd_sq').val();
+		var daily_sq = $('#place_daily_sq').val();
+		var dtl_sq = $('#place_dtl_sq').val();
+		var budget = $('#place_budget').val();
+		var memo = $('#place_memo').val();
+		$.ajax({
+			type: "post",
+			url: "update_bgt",
+			data: {
+				scd_sq: scd_sq
+				,daily_sq: daily_sq
+				,dtl_sq: dtl_sq
+				,dtl_budget: budget
+				,dtl_memo: memo
+			},
+			success: function(data){
+				get_daily_budget();
+				get_budget_total();
+			},
+			error: function(e){
+				console.log(e);
+			}		
+		})
+  		//$('#map').css('left', '0');
+  		$('#budget_memo').css('opacity', '0');
+  		$('#budget_memo').css('pointer-events', 'none');
+  		$('#budget_memo').css('width', '0');
+  		$("#budget_memo").attr("class","sidenav");
+  	}
 
   	function openCitySearch() {
-  		$('#map').css('left', '10%');
+  		//$('#map').css('left', '10%');
   		$('#city_change').css('opacity', '100');
   		$('#city_change').css('pointer-events', 'visible');
   		$('#city_change').css('width', '20%');
@@ -1050,7 +1174,7 @@
   	}
 
   	function closeCitySearch() {
-  		$('#map').css('left', '0');
+  		//$('#map').css('left', '0');
   		$('#city_change').css('opacity', '0');
   		$('#city_change').css('pointer-events', 'none');
   		$('#city_change').css('width', '0');
@@ -1064,8 +1188,9 @@
 <input type="hidden" id="sigunguCode" value="${dailyList[0].SIGUNGU_CODE }">
 <input type="hidden" id="day_city_name" value="${dailyList[0].CITY_NM }">
 <div style="overflow:auto;" class="col-2 daylist" id="section1">
+총 예산: <span id="budget_total"></span>
+<hr />
 <ul>
-
 <c:forEach var="daily" items="${dailyList }">
 <div id="Day${daily.DAILY_ORD }" class="ordlist">
 <input type="hidden" class="areaCode" value="${daily.AREA_CODE }">
@@ -1085,7 +1210,6 @@ ${daily.DAILY_YMD } <br>
 </div>
 
 <div style="overflow:auto;" class="col-3" id="section2">
-<h1 id="section2_day">DAY 1</h1>
 <div id="sortable">
 <div id="my_location"></div>
 </div>
@@ -1126,6 +1250,11 @@ ${daily.DAILY_YMD } <br>
 <div style="overflow:auto;" class="sidenav" id="detail_info">
 <a href="javascript:void(0)" class="closebtn" onclick="closeDtl()">&times;</a>
 <div id="infolist"></div>
+</div>
+
+<div style="overflow:auto;" class="sidenav" id="budget_memo">
+<a href="javascript:void(0)" class="closebtn" onclick="closeBgtMemo()">&times;</a>
+<div id="bmlist"></div>
 </div>
 
 <div style="overflow:auto;" class="sidenav" id="city_change">

@@ -272,4 +272,93 @@
 			)
 	</insert>
 	
+	<!-- budget/memo 가져오기 -->
+	<select id="getBudgetMemo" parameterType="int" resultType="Budget">
+		select
+			b.dtl_sq, b.dtl_budget, d.dtl_memo
+		from
+			SM_DTL_SCD_TB d, SM_BGT_TB b
+		where
+			d.dtl_sq = b.dtl_sq
+		and
+			d.dtl_sq = #{dtl_sq}
+	</select>
+	
+	<!-- budget data 유무확인 -->
+	<select id="getBgtUpdateCheck" parameterType="Budget" resultType="int">
+		select
+			count(bgt_sq)
+		from
+			SM_BGT_TB
+		where
+			dtl_sq = #{dtl_sq}
+	</select>
+	
+	<!-- budget 신규등록 -->
+	<insert id="insert_bgt" parameterType="Budget">
+		insert into
+			SM_BGT_TB(
+				bgt_sq
+				,scd_sq
+				,daily_sq
+				,dtl_sq
+				,dtl_budget
+			)values(
+				SM_BGT_TB_BGT_SQ.nextval
+				,#{scd_sq}
+				,#{daily_sq}
+				,#{dtl_sq}
+				,#{dtl_budget}
+			)
+	</insert>
+	
+	<!-- budget 수정 -->
+	<update id="update_bgt" parameterType="Budget">
+		update
+			SM_BGT_TB
+		set
+			dtl_budget = #{dtl_budget}
+		where
+ 			scd_sq = #{scd_sq}
+ 		and
+ 			daily_sq = #{daily_sq}
+ 		and
+ 			dtl_sq = #{dtl_sq}
+	</update>
+	
+	<!-- memo 수정 -->
+	<update id="update_memo" parameterType="Budget">
+		update
+			SM_DTL_SCD_TB
+		set
+			dtl_memo = #{dtl_memo}
+		where
+ 			scd_sq = #{scd_sq}
+ 		and
+ 			daily_sq = #{daily_sq}
+ 		and
+ 			dtl_sq = #{dtl_sq}
+	</update>
+	
+	<!-- 일차별 예산 가져오기 -->
+	<select id="get_daily_budget" parameterType="Budget" resultType="Budget">
+		select
+			sum(dtl_budget) dtl_budget
+		from
+			SM_BGT_TB
+		where
+			scd_sq = #{scd_sq}
+		and
+			daily_sq = #{daily_sq}
+	</select>
+	
+	<!-- 일정 총 예산 가져오기 -->
+	<select id="get_budget_total" parameterType="Budget" resultType="Budget">
+		select
+			sum(dtl_budget) dtl_budget
+		from
+			SM_BGT_TB
+		where
+			scd_sq = #{scd_sq}
+	</select>
  </mapper>

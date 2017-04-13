@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.scmaster.gittest.dao.ScheduleDAO;
+import com.scmaster.gittest.vo.Budget;
 import com.scmaster.gittest.vo.Daily_City;
 import com.scmaster.gittest.vo.Daily_Scd;
 import com.scmaster.gittest.vo.Dtl_Scd;
@@ -122,5 +123,35 @@ public class ScheduleController {
 	public void update_cities(Daily_City city) {
 		dao.update_cities(city);
 	}
+	
+	// 장소 예산 및 메모 가져오기
+	@ResponseBody
+	@RequestMapping(value = "get_budget_memo", method = RequestMethod.POST)
+	public Budget get_budget_memo(int dtl_sq) {
+		Budget budget = dao.getBudgetMemo(dtl_sq);
+		return budget;
+	}
+	
+	// 장소 예산 및 메모 업데이트
+	@ResponseBody
+	@RequestMapping(value = "update_bgt", method = RequestMethod.POST)
+	public void update_bgt(Budget budget) {
+		dao.update_bgt(budget);
+	}
+	
+	// 일차별 예산 가져오기
+	@ResponseBody
+	@RequestMapping(value = "get_daily_budget", method = RequestMethod.POST)
+	public Budget get_daily_budget(Budget budget) {
+		Budget result = dao.get_daily_budget(budget);
+		return result;
+	}
 
+	// 일정 총 예산 가져오기
+	@ResponseBody
+	@RequestMapping(value = "get_budget_total", method = RequestMethod.POST)
+	public Budget get_budget_total(Budget budget) {
+		Budget result = dao.get_budget_total(budget);
+		return result;
+	}
 }

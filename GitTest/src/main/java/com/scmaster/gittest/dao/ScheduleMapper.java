@@ -3,6 +3,7 @@ package com.scmaster.gittest.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import com.scmaster.gittest.vo.Budget;
 import com.scmaster.gittest.vo.Daily_City;
 import com.scmaster.gittest.vo.Daily_Scd;
 import com.scmaster.gittest.vo.Dtl_Scd;
@@ -27,4 +28,11 @@ public interface ScheduleMapper {
 	public int getMaxCityord(Daily_City city);
 	public int getDcityCnt(Daily_City city);
 	public int getDailySq(Daily_City city);
+	public Budget getBudgetMemo(int dtl_sq);
+	public int getBgtUpdateCheck(Budget budget);
+	public void insert_bgt(Budget budget);
+	public void update_bgt(Budget budget);
+	public void update_memo(Budget budget);
+	public Budget get_daily_budget(Budget budget);
+	public Budget get_budget_total(Budget budget);
 }
