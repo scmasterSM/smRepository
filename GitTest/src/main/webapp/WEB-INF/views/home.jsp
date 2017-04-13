@@ -92,6 +92,20 @@
 		random_city();
 		
 		initCitySearch();
+		
+		
+		$("#submit_button").on("click",function(){ 
+		
+			
+		/* 	var user_id = 
+			var password =  */
+				
+				
+			
+		})
+		
+		
+		
 	});
 	
 	  var sigungu = new Array;
@@ -175,7 +189,7 @@
 			      source: city_names,
 			      select: function(event, selected) {
 			          $.each(sigungu, function(index, val){
-			        	  if(val.name == selected.item.value) location.href = "sc_05?areacode='"+val.areaCode+"'&sigungucode='"+val.sigunguCode+"'";
+			        	  if(val.name == selected.item.value) location.href = "sc_05?areacode='"+val.areaCode+"'&sigungucode='"+val.sigunguCode+"'"; 
 			          });
 			      }
 		    });
@@ -184,7 +198,7 @@
 	  	function city_search(){
 	  		var input = $('#searchTextField').val();
 	  		$.each(sigungu, function(index, val){
-	        	  if(val.name == input) location.href = "sc_05?areacode='"+val.areaCode+"'&sigungucode='"+val.sigunguCode+"'";
+	        	  if(val.name == input) location.href = "sc_05?areacode='"+val.areaCode+"'&sigungucode='"+val.sigunguCode+"'"; /* 이부분 확인 필요  */
 	        });
 	  		return false;
 	  	}
@@ -205,20 +219,20 @@
 		
 
 		content2 += '<ul class="list-inline job-seeker">';
-		content2 += '<li><a href="sc_05?areacode=1"> <img src="./resources/image/main_city/city_seoul.jpg" alt="" width="300" height="200">';
+		content2 += '<li><a href="sc_05?areacode=1&sigungucode=%27%27"> <img src="./resources/image/main_city/city_seoul.jpg" alt="" width="300" height="200">';
 		content2 += '<div class="overlay">';
 		content2 +=	'<h3>서울</h3>';
 		content2 +=	'<p>쇼핑,관광등 없는게 없는 "Soul of Asia!"</p>';
-		content2 +=	'</div></a></li><li><a href="sc_05?areacode=6"> <img src="./resources/image/main_city/city_busan.jpg" alt="" width="300" height="200">';
+		content2 +=	'</div></a></li><li><a href="sc_05?areacode=6&sigungucode=%27%27"> <img src="./resources/image/main_city/city_busan.jpg" alt="" width="300" height="200">';
 		content2 +=	'<div class="overlay"><h3>부산</h3><p>탁트인 바다,맛있는 음식 exciting city! </p></div></a></li>';
-		content2 +=  '<li><a href="sc_05?areacode=38"> <img src="./resources/image/main_city/city_junju.jpg" alt="" width="300" height="200">';
+		content2 +=  '<li><a href="sc_05?areacode=37&sigungucode=%2712%27"> <img src="./resources/image/main_city/city_junju.jpg" alt="" width="300" height="200">';
 		content2 +=  '<div class="overlay">';
 		content2 +=	'<h3>전주</h3><p>옛것을 고수하는 아름다운  slow city! </p></div></a></li>';
-		content2 +=   '<li><a href="sc_05?areacode=39"> <img src="./resources/image/main_city/city_jeju.jpg" alt="" width="300" height="200">';
+		content2 +=   '<li><a href="sc_05?areacode=39&sigungucode=%27%27"> <img src="./resources/image/main_city/city_jeju.jpg" alt="" width="300" height="200">';
 		content2 += '<div class="overlay"><h3>제주도</h3><p>4계절 내내 다채로운 대표 관광 city!</p></div></a></li>';
-		content2 += '<li><a href="sc_05?areacode=32"> <img src="./resources/image/main_city/city_kwd.jpg" alt="" width="300" height="200">';
+		content2 += '<li><a href="sc_05?areacode=32&sigungucode=%27%27"> <img src="./resources/image/main_city/city_kwd.jpg" alt="" width="300" height="200">';
 		content2 +=		'<div class="overlay"><h3>강원도</h3><p>바다와 산 모두 즐길 수 있는 곳!</p></div></a></li>';
-		content2 += '<li><a href="sc_05?areacode=35"> <img src="./resources/image/main_city/city_kj.jpg" alt="" width="300" height="200">';
+		content2 += '<li><a href="sc_05?areacode=35&sigungucode=%272%27"> <img src="./resources/image/main_city/city_kj.jpg" alt="" width="300" height="200">';
 		content2 +=	'<div class="overlay"><h3>경주</h3><p>역사를 품은 색다른 매력이 있는 곳! </p></div></a></li></ul>';
 		
 		$("#tabtab").html(content2);
@@ -241,24 +255,22 @@
       $.getJSON(
                   url,
                   function(data) {
-                     console.log(data);
-
                      var content = "";
                      var length = data.response.body.items.item.length;
                      console.log('success', data);
 
                      content += '<ul class="list-inline job-seeker">';
                      
-                     console.log(data.response.body.items.item.length);
+                     //console.log(data.response.body.items.item.length);
 
-                     for (var i = 0; i < 9; i++) {
+                     for (var i = 0; i < 6; i++) {
                         console
                               .log(data.response.body.items.item.length);
 
                         var val = Math.floor(Math.random() * length);
-                        console.log(val);
+                        //console.log(val);
                         var con = data.response.body.items.item[val].contentid;
-                        console.log(con);
+                        //console.log(con);
                         console
                               .log(data.response.body.items.item[val].title);
                         if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
@@ -278,6 +290,70 @@
                      $("#job-seekers").html(content);
                   });
 }
+	
+	function login(){
+		
+		var user_id = document.getElementById("user_id").value;
+		var password = document.getElementById("password").value;
+		
+		if(user_id.length == 0){
+			alert("아이디를 입력해주세요");
+			return false;
+		}
+		
+		if(password.length == 0){
+			alert("비밀번호를 입력해주세요");
+			return false;
+		}
+		
+		
+		return true;
+	}
+	
+	function joinCheck(){
+		
+		if(document.getElementById("user_id1").value.length == 0){
+			alert("id를 입력해주세요");
+			return false;
+		}
+		
+		if(document.getElementById("email").value.length == 0){
+			alert("email을 입력해주세요");
+			return false;
+		}
+		
+		if(document.getElementById("password1").value.length == 0){
+			alert("password 를 입력해주세요");
+			return false;
+		}
+		
+		if(document.getElementById("password2").value.length == 0){
+			alert("password 확인부분을  입력해주세요 ");
+			return false;
+		}
+		
+		
+		if(document.getElementById("user_id1").value.length < 1){
+			alert("id는 1글자 이상 입력하세요.");
+			return false;
+		}
+		
+		var password = document.getElementById("password1").value;
+		var password1 = document.getElementById("password2").value;		
+		
+		if(password != password1){
+			alert("비밀번호가 일치하지 않습니다");
+			return false;
+		}
+		
+		if(document.getElementById("email").value.length < 1){
+			alert("email은 5글자 이상 입력하세요.");
+			return false;
+		}
+		
+		return true;
+	}
+	
       
 </script>
 </head>
@@ -298,7 +374,7 @@
 				<div
 					class="col-md-2 col-md-offset-5  col-sm-3 col-sm-offset-1  col-xs-3  col-xs-offset-1">
 		<c:choose>
-			<c:when test="${sessionScope.id == null }">
+			<c:when test="${sessionScope.user_id == null }">
 			<div class="header-half header-social">
 					<!-- 	<ul class="list-inline">
 							<li><a href="autoLogin">연습</a></li>
@@ -308,7 +384,7 @@
 			<c:otherwise>
 				<div class="header-half header-social">
 						<ul class="list-inline">
-							<li><img src="./resources/image/login_img.png">${sessionScope.id }님 환영합니다</li>
+							<li><img src="./resources/image/login_img.png">${sessionScope.user_id }님 환영합니다</li>
 						</ul>
 			   </div>
 			</c:otherwise>		
@@ -342,7 +418,7 @@
 				id="bs-example-navbar-collapse-1">
 				<div class="button navbar-right">
 			<c:choose>
-			<c:when test="${sessionScope.id == null }">
+			<c:when test="${sessionScope.user_id == null }">
 					<button type="button" id="loginForm"
 						class="navbar-btn nav-button wow bounceInRight login"
 						data-toggle="modal" data-target="#myModal" id="loginForm" data-wow-delay="0.8s">Login</button>
@@ -383,12 +459,12 @@
 											<!-- Tab panes -->
 											<div class="tab-content">
 												<div class="tab-pane active" id="Login">
-													<form role="form" class="form-horizontal">
+													<form action="login" role="form" method="post" class="form-horizontal" onsubmit="return login()">
 														<div class="form-group">
 															<label for="email" class="col-sm-2 control-label">
 																ID</label>
 															<div class="col-sm-10">
-																<input type="text" class="form-control" id="email1"
+																<input type="text" name="user_id" class="form-control" id="user_id"
 																	placeholder="ID" />
 															</div>
 														</div>
@@ -396,36 +472,37 @@
 															<label for="exampleInputPassword1"
 																class="col-sm-2 control-label"> Password</label>
 															<div class="col-sm-10">
-																<input type="text" class="form-control"
-																	id="exampleInputPassword1" placeholder="Password" />
+																<input type="text" name="password" class="form-control"
+																	id="password" placeholder="Password" />
 															</div>
 														</div>
 														<div class="row">
 															<div class="col-sm-2"></div>
 															<div class="col-sm-10">
-																<button type="submit" class="btn btn-primary btn-sm">
-																	Submit</button>
+																<button type="button" class="btn btn-primary btn-sm" value="submit" id="submit_button">
+																</button>
 																<a href="javascript:;">Forgot your password?</a>
 															</div>
 														</div>
 													</form>
 												</div>
 												<div class="tab-pane" id="Registration">
-													<form role="form" class="form-horizontal">
+													<form action="join" role="form" method="post" class="form-horizontal" onsubmit="return joinCheck()">
 														<div class="form-group">
 															<label for="email" class="col-sm-2 control-label">
 																ID</label>
 															<div class="col-sm-10">
 																<div class="row">
 																	<div class="col-md-3">
-																		<select class="form-control">
-																			<option>남성</option>
-																			<option>여성</option>
+																		<select class="form-control" name="user_sex" id="user_sex">
+																			<option>선택</option>
+																			<option value="m">남성</option>
+																			<option value="f">여성</option>
 																		</select>
 																	</div>
 																	<div class="col-md-9">
 																		<input type="text" class="form-control"
-																			placeholder="ID" />
+																			placeholder="ID" name="user_id" id="user_id1"/>
 																	</div>
 																</div>
 															</div>
@@ -434,7 +511,7 @@
 															<label for="email" class="col-sm-2 control-label">
 																Email</label>
 															<div class="col-sm-10">
-																<input type="email" class="form-control" id="email"
+																<input type="email" class="form-control" name="email" id="email"
 																	placeholder="Email" />
 															</div>
 														</div>
@@ -443,7 +520,7 @@
 																Password</label>
 															<div class="col-sm-10">
 																<input type="password" class="form-control"
-																	id="password1" placeholder="Password" />
+																	id="password1" name="password" placeholder="Password" />
 															</div>
 														</div>
 														<div class="form-group">
@@ -451,16 +528,14 @@
 															</label>
 															<div class="col-sm-10">
 																<input type="password" class="form-control"
-																	id="password2" placeholder="Password 확인" />
+																	id="password2" name="password2" placeholder="Password 확인" />
 															</div>
 														</div>
 														<div class="row">
 															<div class="col-sm-2"></div>
 															<div class="col-sm-10">
-																<button type="button" class="btn btn-primary btn-sm">
-																	Save & Continue</button>
-																<button type="button" class="btn btn-default btn-sm">
-																	Cancel</button>
+																<input type="submit" class="btn btn-primary btn-sm" value="Save & Continue" />
+																<input type="reset" class="btn btn-default btn-sm" value="Cancel" />
 															</div>
 														</div>
 													</form>
@@ -524,7 +599,7 @@
 																		</select>
 																	</div>
 																	<div class="col-md-9">
-																		<input type="text" class="form-control"
+																		<input type="text" class="form-control" id="user_id1" name="user_id1" 
 																			placeholder="ID" />
 																	</div>
 																</div>

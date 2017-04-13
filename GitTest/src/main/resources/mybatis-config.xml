@@ -11,11 +11,13 @@
 		<typeAlias type="com.scmaster.gittest.vo.Daily_City" alias="Daily_City" />
 		<typeAlias type="com.scmaster.gittest.vo.Daily_Scd" alias="Daily_Scd" />
 		<typeAlias type="com.scmaster.gittest.vo.Dtl_Scd" alias="Dtl_Scd" />
+		<typeAlias type="com.scmaster.gittest.vo.Budget" alias="Budget" />
 		<!-- <typeAlias type="com.bong.maptest.vo.Countent" alias="Countent" /> -->
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/ReviewMapper.xml" />
 		<mapper resource="mappers/ClipMapper.xml" />
 		<mapper resource="mappers/scheduleMapper.xml" />
+	    <mapper resource="mappers/UserMapper.xml" />
 	</mappers>
 </configuration>
