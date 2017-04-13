@@ -8,16 +8,15 @@ public class User {
 	private String reg_ymd;
 	private String upd_ymd;
 	
-	public User(){};
-	
-	public User(String user_id, String password, String email, String sex, String reg_date, String upd_date) {
-		super();
+	public User(){}
+
+	public User(String user_id, String password, String email, String user_sex, String reg_ymd, String upd_ymd) {
 		this.user_id = user_id;
 		this.password = password;
 		this.email = email;
-		this.user_sex = sex;
-		this.reg_ymd = reg_date;
-		this.upd_ymd = upd_date;
+		this.user_sex = user_sex;
+		this.reg_ymd = reg_ymd;
+		this.upd_ymd = upd_ymd;
 	}
 
 	public String getUser_id() {
@@ -44,35 +43,35 @@ public class User {
 		this.email = email;
 	}
 
-	public String getSex() {
+	public String getUser_sex() {
 		return user_sex;
 	}
 
-	public void setSex(String sex) {
-		this.user_sex = sex;
+	public void setUser_sex(String user_sex) {
+		this.user_sex = user_sex;
 	}
 
-	public String getReg_date() {
+	public String getReg_ymd() {
 		return reg_ymd;
 	}
 
-	public void setReg_date(String reg_date) {
-		this.reg_ymd = reg_date;
+	public void setReg_ymd(String reg_ymd) {
+		this.reg_ymd = reg_ymd;
 	}
 
-	public String getUpd_date() {
+	public String getUpd_ymd() {
 		return upd_ymd;
 	}
 
-	public void setUpd_date(String upd_date) {
-		this.upd_ymd = upd_date;
+	public void setUpd_ymd(String upd_ymd) {
+		this.upd_ymd = upd_ymd;
 	}
 
 	@Override
 	public String toString() {
-		return "User [user_id=" + user_id + ", password=" + password + ", email=" + email + ", sex=" + user_sex
-				+ ", reg_date=" + reg_ymd + ", upd_date=" + upd_ymd + "]";
-	}
+		return "User [user_id=" + user_id + ", password=" + password + ", email=" + email + ", user_sex=" + user_sex
+				+ ", reg_ymd=" + reg_ymd + ", upd_ymd=" + upd_ymd + "]";
+	};
 	
 	
 }	
