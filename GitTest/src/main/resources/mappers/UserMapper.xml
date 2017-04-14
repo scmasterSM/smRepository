@@ -14,6 +14,7 @@
 			,email
 			,user_sex
 			,reg_ymd
+			,upd_ymd
 		from
 			sm_user_tb
 		where
@@ -38,18 +39,7 @@
 				,null
 			)
 	</insert>
-<!-- 	<select id="" parameterType="Member">
-		select
-			custid
-			,password
-			,name
-			,email
-			,division
-			,idno
-			,address
-		from
-			where custid = #{custid}
-	</select> -->
+
 	<update id="edit_User" parameterType="User">
 		update sm_user_tb
 			set

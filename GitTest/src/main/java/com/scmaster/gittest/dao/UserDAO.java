@@ -15,8 +15,8 @@ public class UserDAO {
 	
     public User login_User(String user_id){
     	UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-    	User user = mapper.login_User(user_id);
-    	return user;
+    	User user2 = mapper.login_User(user_id);
+    	return user2;
     }
 	
 	public int join_User(User user){

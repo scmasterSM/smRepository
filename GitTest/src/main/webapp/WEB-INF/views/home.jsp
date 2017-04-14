@@ -82,31 +82,134 @@
 	var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 
 	$(function() {
-		$("#joinForm").on("click",function(){ /* 조인버튼 클릭시 모달 처리   */
+		$("#joinForm").on("click",function(){ /* 조인버튼 클릭시 모달   */
 			$("#regAtag").trigger("click");
 		})
-		$("#loginForm").on("click",function(){  /*로그인 버튼 클릭시 모달 처리  */
+		$("#loginForm").on("click",function(){  /*로그인 버튼 클릭시 모달 */
 			$("#loginAtag").trigger("click");
 		})
-		r_Data(); 
-		random_city();
 		
+		$("#this-recommend").on("click",function(){  /*이번달 추천탭 */
+			r_Data('this'); 
+		})
+		
+		$("#next-recommend").on("click",function(){  /*다음달 추천탭  */
+			r_Data('next'); 
+		})
+		
+		r_Data('this'); 
+		random_city();
 		initCitySearch();
 		
 		
+		//로그인 
 		$("#submit_button").on("click",function(){ 
-		
 			
-		/* 	var user_id = 
-			var password =  */
-				
-				
+			var user_id1 = $("#user_id").val();
+			var password1 = $("#password").val();
 			
-		})
+			if(user_id1.length == 0){
+				alert('아이디를 입력해주세요');
+				return false;
+			}
+			if(password1.length ==0){
+				alert('비밀번호를 입력해주세요');
+				return false;
+			} 
+
+			$.ajax({
+				type:"post",
+				url:"login",
+				data : {
+					user_id : user_id1,
+					password : password1
+				},
+				dataType : 'text',
+				
+				success : function(data){
+					if(data == "success"){
+						$('#myModal').modal('hide');
+						window.location.href = "./";
+						
+					}else{
+						alert("비밀번호가 맞지 않습니다.");
+					}
+				},
+				error : function(e){
+					console(e);
+				}
+			})
+		});
+		
+		//조인
+		
+		$("#submit_join").on("click",function(){
+			
+			var user_id2 = $("#user_id1").val();
+			var password2 = $("#password1").val();
+			var password3 = $("#password2").val();
+			var email1 = $("#email").val();
+			var user_sex1 = $("#user_sex").val();
+			
+			alert(user_sex1);
+				//$('#user_sex option:selected').val();
+				//$('select[name=user_sex]').val();
+			
+			if(user_id2.length == 0){
+				alert('아이디를 입력해주세요');
+				return false;
+			}
+			if(password2.length ==0){
+				alert('비밀번호를 입력해주세요');
+				return false;
+			} 
+			if(email1.length == 0){
+				alert('이메일을 입력해주세요');
+				return false;
+			}
+			
+		/* 	if(user_sex1 !== "m"){
+				alert('성별을 입력해주세요');
+				return false;
+			}else if(user_sex1 !== "f"){
+				alert('성별을 입력해주세요');
+				return false;
+			} */
+			
+			if(password2 != password3){
+				alert('비밀번호 확인 시 비밀번호가 일치하지 않습니다.');
+				return false;
+			} 
+			
+			$.ajax({
+				type:"post",
+				url:"join",
+				data : {
+					user_id : user_id2,
+					password : password2,
+					email : email1,
+					user_sex : user_sex1
+				},
+				dataType : 'text',
+				
+				success : function(data){
+					console.log(data);
+					if(data == "success"){
+						alert("가입처리가 완료 되었습니다.");
+						$('#myModal').modal('hide');
+						window.location.href = "./";
+					}else{
+						alert("가입 처리가 되지 않았습니다.");
+					}
+				},
+				error : function(e){
+					console(e);
+				}
+			})
+		});
 		
 		
-		
-	});
+	});//레디펑션
 	
 	  var sigungu = new Array;
 	  var city_names = new Array;
@@ -241,11 +344,11 @@
 	
 
 	//행사 정보를 가져오는 메소드 
-	 function r_Data() {
+	 function r_Data(month) {
 		var url =""
 			url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?ServiceKey="
 	            + key;
-		if(false){
+		if(month=='next'){
 	      /* url2 ="&contentTypeId=15&areaCode=&sigunguCode=&cat1=&cat2=&cat3"; */
 	      url += "&eventStartDate=20170501&eventEndDate=20170531&arrange=A&listYN=Y&pageNo=1&numOfRows=50&MobileOS=ETC&MobileApp=AppTesting&_type=json";
 		}else{
@@ -257,22 +360,35 @@
                   function(data) {
                      var content = "";
                      var length = data.response.body.items.item.length;
-                     console.log('success', data);
+                     //console.log('success', data);
 
                      content += '<ul class="list-inline job-seeker">';
                      
                      //console.log(data.response.body.items.item.length);
-
+					var outputArray = [];
                      for (var i = 0; i < 6; i++) {
-                        console
-                              .log(data.response.body.items.item.length);
-
-                        var val = Math.floor(Math.random() * length);
+                    	  var val = Math.floor(Math.random() * length);
+                    	 var repeat = false; 
+                    	 var j = 0;
+                    	 for(j = 0; j < outputArray.length; j++){
+                    		 if(outputArray[j] == data.response.body.items.item[val].title){
+								repeat = true;
+                    			 break; 
+                    		 }
+                    	 }
+                    	 if(repeat){
+                    		 i--;
+                    		 continue;
+                    	 }else{
+                    		 outputArray[j] = data.response.body.items.item[val].title;
+                    	 }
+                    	 
+                        //console.log(data.response.body.items.item.length);
                         //console.log(val);
                         var con = data.response.body.items.item[val].contentid;
                         //console.log(con);
-                        console
-                              .log(data.response.body.items.item[val].title);
+                        //console.log(data.response.body.items.item[val].title);
+                        
                         if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
                            content += '<li><a href="SC_08?CONTENT_ID='
                                  + con
@@ -286,7 +402,7 @@
                         } else {
                            i--;
                         }
-                     } //for
+                     } //outer for
                      $("#job-seekers").html(content);
                   });
 }
@@ -352,7 +468,7 @@
 		}
 		
 		return true;
-	}
+	} 
 	
       
 </script>
@@ -384,7 +500,7 @@
 			<c:otherwise>
 				<div class="header-half header-social">
 						<ul class="list-inline">
-							<li><img src="./resources/image/login_img.png">${sessionScope.user_id }님 환영합니다</li>
+							<li><img src="./resources/image/login_img.png">welcome! [ ${sessionScope.user_id } ]</li>
 						</ul>
 			   </div>
 			</c:otherwise>		
@@ -480,7 +596,7 @@
 															<div class="col-sm-2"></div>
 															<div class="col-sm-10">
 																<button type="button" class="btn btn-primary btn-sm" value="submit" id="submit_button">
-																</button>
+																Submit</button>
 																<a href="javascript:;">Forgot your password?</a>
 															</div>
 														</div>
@@ -534,8 +650,10 @@
 														<div class="row">
 															<div class="col-sm-2"></div>
 															<div class="col-sm-10">
-																<input type="submit" class="btn btn-primary btn-sm" value="Save & Continue" />
-																<input type="reset" class="btn btn-default btn-sm" value="Cancel" />
+																<button type="button" class="btn btn-primary btn-sm" id="submit_join">
+																Save & Continue
+																</button>
+																<input type="reset" class="btn btn-default btn-sm" value="Reset" />
 															</div>
 														</div>
 													</form>
@@ -593,13 +711,13 @@
 															<div class="col-sm-10">
 																<div class="row">
 																	<div class="col-md-3">
-														<select class="form-control">
-																			<option>남성</option>
-																			<option>여성</option>
+														<select class="form-control" id="user_sex_ed">
+																			<option value="m">남성</option>
+																			<option value ="f">여성</option>
 																		</select>
 																	</div>
 																	<div class="col-md-9">
-																		<input type="text" class="form-control" id="user_id1" name="user_id1" 
+																		<input type="text" class="form-control" id="user_id_ed" name="user_id_ed" 
 																			placeholder="ID" />
 																	</div>
 																</div>
@@ -609,7 +727,7 @@
 															<label for="email" class="col-sm-2 control-label">
 																Email</label>
 															<div class="col-sm-10">
-																<input type="email" class="form-control" id="email"
+																<input type="email" class="form-control" id="email_ed"
 																	placeholder="Email" />
 															</div>
 														</div>
@@ -618,7 +736,7 @@
 																Password</label>
 															<div class="col-sm-10">
 																<input type="password" class="form-control"
-																	id="password1" placeholder="Password" />
+																	id="password_ed" placeholder="Password" />
 															</div>
 														</div>
 														<div class="form-group">
@@ -626,7 +744,7 @@
 															</label>
 															<div class="col-sm-10">
 																<input type="password" class="form-control"
-																	id="password2" placeholder="Password 확인" />
+																	id="password2_ed" placeholder="Password 확인" />
 															</div>
 														</div>
 														<div class="row">
@@ -811,10 +929,10 @@
 			<div role="tabpanel">
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs" role="tablist">
-					<li role="presentation" class="active"><a href="#job-seekers"
-						aria-controls="home" role="tab" data-toggle="tab">이번 달 추천 행사 </a></li>
-					<li role="presentation"><a href="#employeers"
-						aria-controls="profile" role="tab" data-toggle="tab">다음 달 추천 행사 </a></li>
+					<li role="presentation" class="active"><a id='this-recommend' 
+						aria-controls="home" role="tab" data-toggle="tab" style="cursor:pointer">이번 달 추천 행사 </a></li>
+					<li role="presentation"><a id='next-recommend'
+						aria-controls="profile" role="tab" data-toggle="tab" style="cursor:pointer">다음 달 추천 행사 </a></li>
 				</ul>
 				<!-- Tab panes -->
 				<div class="tab-content">
