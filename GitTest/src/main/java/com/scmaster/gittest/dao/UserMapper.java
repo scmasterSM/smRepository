@@ -9,7 +9,4 @@ public interface UserMapper {
 	public int join_User(User user);
 	
 	public int edit_User(User user);
-	
-	
-	
 }
