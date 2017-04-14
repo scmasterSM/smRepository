@@ -19,5 +19,6 @@
 		<mapper resource="mappers/ClipMapper.xml" />
 		<mapper resource="mappers/scheduleMapper.xml" />
 	    <mapper resource="mappers/UserMapper.xml" />
+	    <mapper resource="mappers/MyScheduleMapper.xml" />
 	</mappers>
 </configuration>

@@ -102,8 +102,8 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="SC_12",method=RequestMethod.GET)
-	public String SC_12(){
-		
+	public String SC_12(int scd_sq,Model model){
+		model.addAttribute("scd_sq", scd_sq);
 		return "SC_12";
 	}
 	

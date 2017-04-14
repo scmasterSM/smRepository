@@ -305,7 +305,7 @@ function f_Data(){
 						var onepageback=data.navi.currentPage -1
 						html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀</a>';
 						var j=0;
-						 for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
+						for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
 							j=j+1;
 							console.log(j);
 							 html2+='<a href="javascript:pagingFormSubmit('+data.navi.startPageGroup + 1+')">'+j+'</a>'; 
@@ -489,6 +489,7 @@ function locationObj(){
 			 		</c:forEach>
 			 		</c:if>
 			 		<c:if test="${rList.size() == 0}"><a href="#">1</a></c:if>
+			 		
 						<a href="javascript:pagingFormSubmit(${navi.currentPage + 1})">▶</a>
 						<a href="javascript:pagingFormSubmit(
 						${navi.currentPage + navi.pagePerGroup})">▶▶</a>
