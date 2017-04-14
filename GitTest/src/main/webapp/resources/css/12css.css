@@ -1,5 +1,12 @@
 @CHARSET "UTF-8";
 
+.map {
+	
+	width : 220px;
+	height: 220px;
+	overflow: hidden;
+	margin: auto;
+} 
 .page.show {
     display: block;
 }
@@ -19,9 +26,9 @@ table {
     border-collapse: collapse;
 }
 
-*{
+/* *{
     font-family: '나눔바른고딕',NanumBarunGothic,'nanum','돋움',Dotum,'맑은고딕','Malgun Gothic','굴림',Gulim,Helvetica,sans-serif;
-}
+} */
 user agent stylesheet
 colgroup {
     display: table-column-group;
