@@ -35,6 +35,8 @@
         <script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
         <link rel ="stylesheet" href ="./resources/css/10css.css">
         <script type="text/javascript"src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script>
+        <script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8&callback=initMap"
+		async defer></script>
     </head>
     <body>
 
@@ -122,42 +124,9 @@
                         <div role="tabpanel" class="tab-pane fade" id="employeers">
                             <ul class="list-inline">
                             <!-- 여행일정 -->
-                                <li>
-                                    <a href="">
-                                        <img src="./resources/img/employee4.png" alt="">
-                                        <div class="overlay"><h3>Instagram</h3></div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <img src="./resources/img/employee5.png" alt="">
-                                        <div class="overlay"><h3>Microsoft</h3></div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <img src="./resources/img/employee6.png" alt="">
-                                        <div class="overlay"><h3>Dribbble</h3></div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <img src="./resources/img/employee1.png" alt="">
-                                        <div class="overlay"><h3>Beats Music</h3></div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <img src="./resources/img/employee2.png" alt="">
-                                        <div class="overlay"><h3>Facebook</h3></div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <img src="./resources/img/employee3.png" alt="">
-                                        <div class="overlay"><h3>Twitter</h3></div>
-                                    </a>
-                                </li>
+                                <div id="myPlan" class="myPlan"></div>
+                                
+                                
                             </ul>
                         </div>
                       </div>
@@ -225,9 +194,15 @@
         
     </body>
 <script type="text/javascript">
-var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
-
-
+var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
+var url;
+function ReadApi(contentId,contentTypeId) { /* currentPage가 어디서 호출되어 온다 */
+	url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
+	url += "&mapX&mapY";
+	url += "&contentTypeId"+contentTypeId+"&contentId="+contentId+"&areaCode&sigunguCode&cat1=&cat2=&cat3=&listYN=Y";
+	url += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&transGuideYN=Y&_type=json";
+	
+}
 
 
  $(function(){
@@ -241,21 +216,15 @@ var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2F
 				console.log(data);
 				var contentId=item.content_ID;
 				var contentTypeId=item.content_TYPE_ID;
-			
-				var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
+				ReadApi(contentId,contentTypeId);
+				/* var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
 				url += "&mapX&mapY";
 				url += "&contentTypeId="+contentTypeId+"&contentId="+contentId+"&areaCode&sigunguCode&cat1=&cat2=&cat3=&listYN=Y";
-				url += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&transGuideYN=Y&_type=json";
-
+				url += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&transGuideYN=Y&_type=json"; */
 			console.log(url);
 			$.getJSON(url, function(data) {
 
 			    console.log('success', data);
-			    /* for( var i = 0 ; i < data.response.body.totalCount ; i++){
-			        console.log( data.response.body.items.item[i] );
-			    }    */
-			     
-			    console.log(data.response.body.items.item);
 			    
 			    
 			    html += '<li>';
@@ -268,6 +237,74 @@ var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2F
 			
 			$("#clipInfo").html(html);
 			}); 
+			})
+				
+		},
+		error : function(e){
+			console.log(e);
+		}
+	}) 
+	}) 
+	
+$(function(){
+
+	$.ajax({
+		type : "get",
+		url : "read_scd",
+		success : function(data){
+			var html="";
+			console.log(data);
+			$.each(data,function(index,item){
+				console.log(item);
+				var contentId=item.DTL_CONTENT_ID; 
+				/* var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
+				url += "&mapX&mapY";
+				url += "&contentTypeId&contentId="+contentId+"&areaCode&sigunguCode&cat1=&cat2=&cat3=&listYN=Y";
+				url += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&transGuideYN=Y&_type=json"; */
+			     ReadApi(contentId);
+			console.log(url);
+			$.getJSON(url, function(data) {
+				
+			    console.log('success1', data);
+			    var scd_sq=item.SCD_SQ;
+			    console.log(scd_sq);
+			    if (typeof (data.response.body.items.item.firstimage) !== "undefined") {
+			    	
+			    	html += '<li>';
+					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+						}else{
+							html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+						}					
+					html += '</a>';
+					html += '</li>';
+				
+				$("#myPlan").html(html);
+			    }else if (typeof (data.response.body.items.item.firstimage) == "undefined") {
+			    	contentId=item.DTL_CONTENT_ID2;
+			    	ReadApi(contentId);
+			    $.getJSON(url, function(data) {
+			    	html += '<li>';
+					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+					}else{
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+					}
+					html += '</a>';
+					html += '</li>';
+				
+				$("#myPlan").html(html);
+			    	
+			    })
+			    	
+			    }
+			    console.log(data.response.body.items.item); 
+			 });
+			
 			})
 				
 		},
