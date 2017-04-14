@@ -151,7 +151,9 @@
 			var email1 = $("#email").val();
 			var user_sex1 = $("#user_sex").val();
 			
-			alert(user_sex1);
+			var sung = "선택";
+			
+			//alert(user_sex1);
 				//$('#user_sex option:selected').val();
 				//$('select[name=user_sex]').val();
 			
@@ -168,13 +170,10 @@
 				return false;
 			}
 			
-		/* 	if(user_sex1 !== "m"){
+		    if(user_sex1 == sung ){
 				alert('성별을 입력해주세요');
 				return false;
-			}else if(user_sex1 !== "f"){
-				alert('성별을 입력해주세요');
-				return false;
-			} */
+			} 
 			
 			if(password2 != password3){
 				alert('비밀번호 확인 시 비밀번호가 일치하지 않습니다.');
@@ -406,70 +405,6 @@
                      $("#job-seekers").html(content);
                   });
 }
-	
-	function login(){
-		
-		var user_id = document.getElementById("user_id").value;
-		var password = document.getElementById("password").value;
-		
-		if(user_id.length == 0){
-			alert("아이디를 입력해주세요");
-			return false;
-		}
-		
-		if(password.length == 0){
-			alert("비밀번호를 입력해주세요");
-			return false;
-		}
-		
-		
-		return true;
-	}
-	
-	function joinCheck(){
-		
-		if(document.getElementById("user_id1").value.length == 0){
-			alert("id를 입력해주세요");
-			return false;
-		}
-		
-		if(document.getElementById("email").value.length == 0){
-			alert("email을 입력해주세요");
-			return false;
-		}
-		
-		if(document.getElementById("password1").value.length == 0){
-			alert("password 를 입력해주세요");
-			return false;
-		}
-		
-		if(document.getElementById("password2").value.length == 0){
-			alert("password 확인부분을  입력해주세요 ");
-			return false;
-		}
-		
-		
-		if(document.getElementById("user_id1").value.length < 1){
-			alert("id는 1글자 이상 입력하세요.");
-			return false;
-		}
-		
-		var password = document.getElementById("password1").value;
-		var password1 = document.getElementById("password2").value;		
-		
-		if(password != password1){
-			alert("비밀번호가 일치하지 않습니다");
-			return false;
-		}
-		
-		if(document.getElementById("email").value.length < 1){
-			alert("email은 5글자 이상 입력하세요.");
-			return false;
-		}
-		
-		return true;
-	} 
-	
       
 </script>
 </head>
@@ -588,7 +523,7 @@
 															<label for="exampleInputPassword1"
 																class="col-sm-2 control-label"> Password</label>
 															<div class="col-sm-10">
-																<input type="text" name="password" class="form-control"
+																<input type="password" name="password" class="form-control"
 																	id="password" placeholder="Password" />
 															</div>
 														</div>
@@ -611,7 +546,7 @@
 																<div class="row">
 																	<div class="col-md-3">
 																		<select class="form-control" name="user_sex" id="user_sex">
-																			<option>선택</option>
+																			<option value="선택">선택</option>
 																			<option value="m">남성</option>
 																			<option value="f">여성</option>
 																		</select>
