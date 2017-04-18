@@ -354,8 +354,6 @@
         	update: function(event, ui) {
         		var itemOrder = $('#sortable').sortable("toArray");
         		   for (var i = 0; i < itemOrder.length-1; i++) {
-               			console.log('sort_change');
-               			console.log(itemOrder);
         		   		var target_span = '#'+itemOrder[i]+' > span';
         		   		var target_ord = '#'+itemOrder[i];
         		   		$(target_span).html(i+1);
@@ -411,7 +409,7 @@
 				$('#sigunguCode').val(sigunguCode);
 			}
 			var content = '<h2 id="section2_day">'+day+'</h2>'	
-			+ '예산: <span id="daily_budget"></span>'
+			+ 'KRW <span id="daily_budget"></span>'
 			+ '<div id="sortable">'
 			+ '<div id="my_location"></div>'
 			+ '</div>';
@@ -708,10 +706,12 @@
 						var memo = data.dtl_memo;
 						if(typeof(budget) == 'undefined') budget = "";
 						if(typeof(memo) == 'undefined') memo = "";
+						console.log(budget);
+						console.log(memo);
 						content += '<input type="hidden" id="place_scd_sq" value="'+scd_sq+'">';
 						content += '<input type="hidden" id="place_daily_sq" value="'+daily_sq+'">';
 						content += '<input type="hidden" id="place_dtl_sq" value="'+dtl_sq+'">';
-						content += '<h4>예산</h4> <input type="text" id="place_budget" value="'+budget+'" placeholder="예산을 입력하세요">';
+						content += '<h4>예산</h4> KRW <input type="number" step="1000" id="place_budget" value="'+budget+'" placeholder="예산을 입력하세요">';
 						content += '<h4>메모</h4> <textarea rows="5" cols="50" id="place_memo" placeholder="메모를 입력하세요">'+memo+'</textarea>';
 					},
 					error: function(e){
@@ -729,6 +729,10 @@
 		});
 	}
 	
+	function formatNumber (num) {
+	    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+	}
+	
 	function get_daily_budget(){
 		var scd_sq = $('#scd_sq').val();
 		var daily_sq = parseInt($('#section2_day').text().match(/\d+/)[0], 10);
@@ -743,7 +747,7 @@
 			success: function(data){
 				var daily_budget = data.dtl_budget;
 				if(typeof(daily_budget) == 'undefined') daily_budget = 0;
-				$('#daily_budget').text(daily_budget);
+				$('#daily_budget').text(formatNumber(daily_budget));
 			},
 			error: function(e){
 				console.log(e);
@@ -763,7 +767,7 @@
 			success: function(data){
 				var budget_total = data.dtl_budget;
 				if(typeof(budget_total) == 'undefined') budget_total = 0;
-				$('#budget_total').text(budget_total);
+				$('#budget_total').text(formatNumber(budget_total));
 			},
 			error: function(e){
 				console.log(e);
@@ -1175,6 +1179,7 @@
 		$.ajax({
 			type: "post",
 			url: "update_bgt",
+			async: false,
 			data: {
 				scd_sq: scd_sq
 				,daily_sq: daily_sq
@@ -1259,9 +1264,6 @@
 					,daily_ord: index + 1
 					,daily_ymd: date_ymd
 				},
-				success: function(data){
-					console.log(data);
-				},
 				error: function(e){
 					console.log(e);
 				}	
@@ -1280,10 +1282,7 @@
 			},
 			async: false,
 			success: function(data){
-				console.log(data);
 				set_dailylist(data);
-				//get_daily_budget();
-				//get_budget_total();
 			},
 			error: function(e){
 				console.log(e);
@@ -1324,7 +1323,6 @@
 			},
 			async: false,
 			success: function(data){
-				console.log(data);
 				set_alterlist(data);
 			},
 			error: function(e){
@@ -1389,9 +1387,6 @@
 			     			url: "day_sort_change",
 			     			data: sort_change,
 			     			async: false,
-			     			success: function(data){
-			     				console.log(data);
-			     			},
 			     			error: function(e){
 			     				console.log(e);
 			     			}
@@ -1428,9 +1423,6 @@
         			url: "day_sort_change",
         			data: sort_change,
         			async: false,
-        			success: function(data){
-        				console.log(data);
-        			},
         			error: function(e){
         				console.log(e);
         			}
@@ -1451,7 +1443,7 @@
 
 <div style="overflow:auto;" class="col-2 daylist" id="section1">
 <input type="button" value="일정 수정하기" onclick="openAlt();" size="20"> <br>
-총 예산: <span id="budget_total"></span>
+KRW <span id="budget_total"></span>
 <hr />
 <div id="days">
 <div id="daylist"></div>

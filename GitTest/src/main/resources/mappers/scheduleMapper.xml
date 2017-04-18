@@ -302,13 +302,17 @@
 				,scd_sq
 				,daily_sq
 				,dtl_sq
+				<if test="dtl_budget != null">
 				,dtl_budget
+				</if>
 			)values(
 				SM_BGT_TB_BGT_SQ.nextval
 				,#{scd_sq}
 				,#{daily_sq}
 				,#{dtl_sq}
+				<if test="dtl_budget != null">
 				,#{dtl_budget}
+				</if>
 			)
 	</insert>
 	

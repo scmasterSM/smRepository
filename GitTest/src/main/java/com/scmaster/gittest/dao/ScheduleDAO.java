@@ -119,6 +119,10 @@ public class ScheduleDAO {
 	public Budget getBudgetMemo(int dtl_sq) {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
 		Budget budget = mapper.getBudgetMemo(dtl_sq);
+		if(budget != null){
+			if(budget.getDtl_budget() == null) budget.setDtl_budget("");
+			if(budget.getDtl_memo() == null) budget.setDtl_memo("");
+		}
 		return budget;
 	}
 
@@ -136,6 +140,7 @@ public class ScheduleDAO {
 		} else {
 			mapper.update_bgt(budget);
 		}
+		if(budget.getDtl_memo() != null)
 		mapper.update_memo(budget);
 	}
 

@@ -412,9 +412,6 @@ html, body {
 					type: "post",
 					url: "set_citylist",
 					data: day_city,
-					success: function(data){
-						console.log(data);
-					},
 					error: function(e){
 						console.log(e);
 					}		
