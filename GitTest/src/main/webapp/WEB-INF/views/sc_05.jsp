@@ -131,9 +131,10 @@
       //로그인& 조인 모달 
         $('#myModal').modal('show');
         
+        //로그아웃
         function logout(){
     		
-    		location.href = "logout_05";
+    		location.href = "logout";
     	}
         
  
@@ -153,34 +154,47 @@
             $.getJSON(url2,function(data) {
                var content = ""; 
                content += '<ul class="list-inline job-seeker">';
+               var length=data.response.body.items.item.length;
+               
                // var addr = data.response.body.items.item.addr1;
                    // var addr1=addr.split(" ",1); //시의 정보를 가져오는 변수
                // var cityname = "<h1>"+addr1+"</h1>";
-               var length=data.response.body.items.item.length;
                //console.log(data);   
                
-                
-                for (var i = 0; i < 3; i++) {
+               var outputArray = [];
+                for (var i = 0; i < 6; i++) {
               	 //컨텐트아이디 추출
       	         //console.log(con);
-      	         var val = Math.floor( Math.random()*length);
-				 	console.log(val);	
-				 var con = data.response.body.items.item[val].contentid;
- 		         	console.log(con);
- 		         var conType=data.response.body.items.item[val].contenttypeid;
-      	           if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
+      	         	var val = Math.floor( Math.random()*length);
+				 	var repeat = false;
+				 	var j = 0;
+				 	 for(j = 0; j < outputArray.length; j++){
+                		 if(outputArray[j] == data.response.body.items.item[val].title){
+							repeat = true;
+                			 break; 
+                		 }
+                	 }
+				 	 if(repeat){
+                		 i--;
+                		 continue;
+                	 }else{
+                		 outputArray[j] = data.response.body.items.item[val].title;
+                	 }
+				 	var con = data.response.body.items.item[val].contentid;
+				    var conType=data.response.body.items.item[val].contenttypeid;
+      	           
+				    if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
       	        	   
-      	        	 content += '<li><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width="300" height="200" alt="">';
-      	        	 content += '<div class="overlay"><h3>'
-							+ data.response.body.items.item[val].title
-							+ '</h3><p>'
-							+ data.response.body.items.item[val].addr1
-							+ '</p></div></a></li>'; 
-      	       
+      	        		 content += '<li><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width="300" height="200" alt="">';
+      	        	 	 content += '<div class="overlay"><h3>'
+								+ data.response.body.items.item[val].title
+								+ '</h3><p>'
+								+ data.response.body.items.item[val].addr1
+								+ '</p></div></a></li>'; 
             		} else {
-                   		
+                   		i--;
                    }
-                }
+                }//outer for
                 
                 //자연
                 if(themecode === "A01&cat2="){
@@ -460,33 +474,49 @@
                   + "&sigunguCode="+sigungucode+"&cat1=&cat2=&cat3=&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=500&pageNo=";
             url += "&_type=json";
             
-        	console.log(url);
+        	//console.log(url);
             $.getJSON(url,function(data) {
             	console.log(data);
             			console.log(data);
                            var content2 =""
                            content2 += '<ul class="list-inline job-seeker">';
                   	       	 var length=data.response.body.items.item.length;
-                           for (var i = 0; i < 6; i++) {
-                  	       	 var val = Math.floor(Math.random() * length);  
-                          	
-                          	//컨텐트아이디 추출
-                  	       var con = data.response.body.items.item[val].contentid;
-                  	       var conType=data.response.body.items.item[val].contenttypeid;
-                  	     if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
-                          	
-                                  content2 += '<li><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width="300" height="200" alt="">';
-                                  content2 += '<div class="overlay"><h3>'
-										+ data.response.body.items.item[val].title
-										+ '</h3><p>'
-										+ data.response.body.items.item[val].addr1
-										+ '</p></div></a></li>'; 
-                              
-                              } else {
-                    			i--;
-                              }
-                                      
-                           }//for
+                           
+                  	         var outputArray = [];
+                  	       	 for (var i = 0; i < 6; i++) {
+                  	       	 	var val = Math.floor(Math.random() * length);  
+                  	       	    var repeat = false; 
+                  	       		var j = 0;
+                       	 		for(j = 0; j < outputArray.length; j++){
+                       				 if(outputArray[j] == data.response.body.items.item[val].title){
+   									 repeat = true;
+                       			 	 break; 
+                       		 		}
+                       			 }
+                       	 		if(repeat){
+                       				 i--;
+                       		 	continue;
+                       	 		}else{
+                       		 		outputArray[j] = data.response.body.items.item[val].title;
+                       	 		}
+  
+		                          	//컨텐트아이디 추출
+		                  	       var con = data.response.body.items.item[val].contentid;
+		                  	       var conType=data.response.body.items.item[val].contenttypeid;
+		                  	       if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
+		                          	
+		                                  content2 += '<li><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width="300" height="200" alt="">';
+		                                  content2 += '<div class="overlay"><h3>'
+												+ data.response.body.items.item[val].title
+												+ '</h3><p>'
+												+ data.response.body.items.item[val].addr1
+												+ '</p></div></a></li>'; 
+		                              
+		                              } else {
+		                    			i--;
+		                              }
+		                                      
+		                           }//for
                            /*  $("#tabtab").html(function(index,content){
                                return content2;                      
                             }); */
@@ -513,14 +543,14 @@
 				<div
 					class="col-md-2 col-md-offset-5  col-sm-3 col-sm-offset-1  col-xs-3  col-xs-offset-1">
 			<c:choose>
-			<c:when test="${sessionScope.id == null }">	
+			<c:when test="${sessionScope.user_id == null }">	
 					<div class="header-half header-social">
 					</div>
 			</c:when>
 			<c:otherwise>
 				<div class="header-half header-social">
 						<ul class="list-inline">
-							<li><img src="./resources/image/login_img.png">${sessionScope.id }님 환영합니다</li>
+							<li><img src="./resources/image/login_img.png">welcome! [ ${sessionScope.user_id } ]</li>
 						</ul>
 			   </div>
 			</c:otherwise>		
@@ -553,7 +583,7 @@
 				<div class="button navbar-right">
 				
 			<c:choose>
-			<c:when test="${sessionScope.id == null }">
+			<c:when test="${sessionScope.user_id == null }">
 					<button type="button" id="loginForm"
 						class="navbar-btn nav-button wow bounceInRight login"
 						data-toggle="modal" data-target="#myModal" id="loginForm" data-wow-delay="0.8s">Login</button>

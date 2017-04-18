@@ -1,13 +1,14 @@
 @CHARSET "UTF-8";
 
-.clipInfo> li {
+.clipInfo> li, .myPlan>li {
     display: inline-block;
     padding-right: 5px;
     padding-left: 5px;
 }
-.clipInfo{
+.clipInfo, myPlan{
 	text-align: center;
 }
+
 
 /* .sample_image  img {
     -webkit-transform:scale(1);

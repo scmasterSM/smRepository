@@ -25,7 +25,7 @@ public class ClipController {
 	@ResponseBody
 	@RequestMapping(value="clipBoard", method=RequestMethod.POST)
 	public Clip clipBoard(Clip clip, HttpSession session){
-		String id= "1111";
+		String id= "1";
 		clip.setUSER_ID(id);
 		dao.insertClip(clip);
 		return clip;
@@ -35,10 +35,8 @@ public class ClipController {
 	@RequestMapping(value="readClip",method=RequestMethod.GET)
 	public List<Clip> readClip(HttpSession session, Model model){
 		/*String id=session.getAttribute('USER_ID');*/
-		String USER_ID= "1111";
-		List<Clip>cList = dao.readCLip(USER_ID);
-		model.addAttribute("cList", cList); 
-		System.out.println(cList);
+		String USER_ID= "1";
+		List<Clip>cList = dao.readCLip(USER_ID); 
 		return cList;
 	}
 	
