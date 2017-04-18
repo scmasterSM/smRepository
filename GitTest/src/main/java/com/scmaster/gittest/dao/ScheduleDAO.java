@@ -1,6 +1,7 @@
 package com.scmaster.gittest.dao;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -136,7 +137,6 @@ public class ScheduleDAO {
 			mapper.update_bgt(budget);
 		}
 		mapper.update_memo(budget);
-		System.out.println(budget);
 	}
 
 	// 일차별 예산 가져오기
@@ -156,5 +156,45 @@ public class ScheduleDAO {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
 		Budget result = mapper.get_budget_total(budget);
 		return result;
+	}
+
+	// 삭제용 리스트 가져오기
+	public List<HashMap<String, Object>> get_daily_list(int scd_sq) {
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		List<HashMap<String, Object>> dailyList = mapper.getDailyList(scd_sq);
+		List<HashMap<String, Object>> new_dailyList = new LinkedList<>();
+		for (int i = 0; i < dailyList.size(); i++) {
+			HashMap<String, Object> daily = dailyList.get(i);
+			int daily_sq = Integer.parseInt(String.valueOf(daily.get("DAILY_SQ")));
+			List<HashMap<String, Object>> cityList = mapper.get_city_list(daily_sq);
+			String city_nm = "";
+			for (int j = 0; j < cityList.size(); j++) {
+				if (j == 0)
+					city_nm += cityList.get(j).get("CITY_NM");
+				else
+					city_nm += ", " + cityList.get(j).get("CITY_NM");
+			}
+			daily.put("CITY_NM", city_nm);
+			new_dailyList.add(daily);
+		}
+		return new_dailyList;
+	}
+
+	// 일자 삭제
+	public void delete_day(int daily_sq) {
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		mapper.delete_day(daily_sq);
+	}
+
+	// 일차 순서 변경
+	public void day_sort_change(Daily_Scd daily) {
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		mapper.day_sort_change(daily);
+	}
+
+	// 일차 날짜 변경
+	public void day_change(Daily_Scd daily) {
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		mapper.day_change(daily);
 	}
 }

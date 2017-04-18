@@ -11,7 +11,7 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script async defer
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_azK-PpKrUbRSAlyccxLXpUGnwagdJhQ"></script>
-<title>SC13</title>
+<title>Edit Schedule</title>
 <style>
 	* {
 	    box-sizing: border-box;
@@ -104,6 +104,21 @@
 	    opacity: 0;
 	}
 	
+	#alter_schedule{
+		padding: 15px 15px 15px 15px;
+	    height: 100%;
+	    width: 0;
+	    position: fixed;
+	    pointer-events: none;
+	    z-index: 1;
+	    top: 0;
+	    left: 0%;
+	    background-color: white;
+	    overflow-x: hidden;	
+	    transition: 0.5s;
+	    opacity: 0;
+	}
+	
 	#openNav {
 		padding-left: 1px;
 	    position: fixed;
@@ -156,51 +171,14 @@
 .item .info_title:hover{
    color: white;
 }
-
 </style>
 	
 	
   <script>
   $(function(){
-	$("#add_day").on('click', function() {
-		var order = parseInt($(".day:last").val()) + 1;
-  		var last = $('.ymd:last').val();
-  		var d = new Date(last);
-  		d.setDate(d.getDate() + 1);
-  		 var curr_date = '' + d.getDate();
-		 var curr_month = '' + (d.getMonth() + 1);
-		 var curr_year = d.getFullYear();
-		 if (curr_month.length < 2) curr_month = '0' + curr_month;
-		 if (curr_date.length < 2) curr_date = '0' + curr_date;
-		 var date = curr_year + "-" + curr_month + "-" + curr_date;
-		var day = '<div id="Day'+order+'" class="ordlist">'
-				+ '<input type="hidden" class="areaCode" value="">'
-				+ '<input type="hidden" class="sigunguCode" value="">'
-				+ '<input type="hidden" class="day_city_name" value="">'
-				+ '<input type="hidden" class="ymd" value='+date+'>' 
-				+ '<input type="hidden" class="day" value='+order+'>' 
-				+ 'DAY '+order+' <br> '+date+' <br> <span id="city_names"></span><hr /></div>';
-		$("#daylist").before(day);
-		var scd_sq = $('#scd_sq').val();
-		var daily_scd = {
-				scd_sq: scd_sq,
-				daily_ord: order,
-				daily_ymd: date
-			}
-			$.ajax({
-				type: "post",
-				url: "add_day",
-				data: daily_scd,
-				error: function(e){
-					console.log(e);
-				}		
-			})
-		$(".ordlist").off("click");
-	    ordclick();
-	});
-	  
-    //auto_search();
+	add_day();
     
+    init_daily_list();
     ordclick();
     
     $("#search").on("keyup", function(){
@@ -219,26 +197,29 @@
     	}
     });
     
-    $(".radio").checkboxradio({
+    /* $(".radio").checkboxradio({
         icon: false
-    });
+    }); */
     
     $('input[type=radio][name=radio-1]').on('change', function() {
     	var theme = $(this).val();
-   		//alert(theme);
     	theme_change(theme);
 	});
     
     sortable();
-    
-    theme2_change('', '');
+	alter_sortable();
     
     openNav();
     
     initCitySearch();
     citySearch();
     
+    $("#start_ymd").datepicker({
+  	  dateFormat: "yy-mm-dd"
+    });
+
     $('.ordlist:first').trigger('click');
+    
   });
   
   var map;
@@ -302,6 +283,53 @@
      });//ajax
   }
   	
+  	function add_day(){
+  		$("#add_day").on('click', function() {
+  			var order = parseInt($(".day:last").val()) + 1;
+  	  		var last = $('.ymd:last').val();
+  	  		var d = new Date(last);
+  	  		d.setDate(d.getDate() + 1);
+  	  		 var curr_date = '' + d.getDate();
+  			 var curr_month = '' + (d.getMonth() + 1);
+  			 var curr_year = d.getFullYear();
+  			 if (curr_month.length < 2) curr_month = '0' + curr_month;
+  			 if (curr_date.length < 2) curr_date = '0' + curr_date;
+  			 var date = curr_year + "-" + curr_month + "-" + curr_date;
+  			 var areacode = $('.areaCode:last').val();
+  			 var sigungucode = $('.sigunguCode:last').val();
+  			 var cityname = $('.day_city_name:last').val();
+  			var day = '<div id="Day'+order+'" class="ordlist">'
+  					+ '<input type="hidden" class="areaCode" value="'+areacode+'">'
+  					+ '<input type="hidden" class="sigunguCode" value="'+sigungucode+'">'
+  					+ '<input type="hidden" class="day_city_name" value="'+cityname+'">'
+  					+ '<input type="hidden" class="ymd" value="'+date+'">' 
+  					+ '<input type="hidden" class="day" value="'+order+'">' 
+  					+ 'DAY '+order+' <br> '+date+' <br> <span id="city_names">'+cityname+'</span><hr /></div>';
+  			$("#daylist").before(day);
+  			var scd_sq = $('#scd_sq').val();
+  			var daily_scd = {
+  					scd_sq: scd_sq,
+  					daily_ord: order,
+  					daily_ymd: date,
+  					area_code: areacode,
+  					sigungu_code: sigungucode,
+  					city_nm: cityname,
+  					city_ord: 1
+  				}
+  				$.ajax({
+  					type: "post",
+  					url: "add_day",
+  					data: daily_scd,
+  					async: false,
+  					error: function(e){
+  						console.log(e);
+  					}		
+  				})
+  			$(".ordlist").off("click");
+  		    ordclick();
+  		});
+  	}
+  	
   	function initCitySearch(){
   		var html = '';
   		$.each(pop_cities, function(index, val){
@@ -326,6 +354,8 @@
         	update: function(event, ui) {
         		var itemOrder = $('#sortable').sortable("toArray");
         		   for (var i = 0; i < itemOrder.length-1; i++) {
+               			console.log('sort_change');
+               			console.log(itemOrder);
         		   		var target_span = '#'+itemOrder[i]+' > span';
         		   		var target_ord = '#'+itemOrder[i];
         		   		$(target_span).html(i+1);
@@ -355,8 +385,18 @@
         $("#sortable").disableSelection();
 	}
 	
+	function init_search_menu(){
+		$('#search').val("");
+	 	$('#select-1').remove();
+		$('input[type=radio][name=radio-1]').each(function(){
+	 		$(this).attr('checked',false);
+	 	})
+	}
+	
   function ordclick(){
 	  $(".ordlist").on("click", function(){
+			init_search_menu();
+			
 			var div_id = $(this).attr('id');
 			var target = "#"+div_id;
 			var areaCode = $(target+" > .areaCode").val();
@@ -364,12 +404,11 @@
 			var name = $(target+" > .day_city_name").val();
 			var ymd = $(target+" > .ymd").val();
 			var day = "DAY " + $(target+" > .day").val();
-			if(name != "" || areaCode != ""){
+			if((name != "" || areaCode != "") && name.length < 4){
 				$('#city_name').text(name);
 				$('#day_city_name').val(name);
 				$('#areaCode').val(areaCode);
 				$('#sigunguCode').val(sigunguCode);
-				theme2_change('', '');
 			}
 			var content = '<h2 id="section2_day">'+day+'</h2>'	
 			+ '예산: <span id="daily_budget"></span>'
@@ -378,6 +417,7 @@
 			+ '</div>';
 			$('#section2').html(content);
 			sortable();
+			$("#sortable").sortable("enable");
 			var scd_sq = $('#scd_sq').val();
 			var daily_sq = parseInt($('#section2_day').text().match(/\d+/)[0], 10);
 			var sq = {
@@ -388,11 +428,12 @@
 				type: "post",
 				url: "get_places",
 				data: sq,
-				dataType: "json",
+				async: false,
 				success: function(data){
 					get_daily_budget();
 					get_budget_total();
 					if(data.length != 0) set_places(data);
+					else theme2_change('', '');
 				},
 				error: function(e){
 					console.log(e);
@@ -418,6 +459,16 @@
 			+ '</div>';
 	  });
 		$("#my_location").before(my_content);
+		var areaCode = $('.my_loc:last').attr('areacode');
+		var sigunguCode = $('.my_loc:last').attr('sigungucode');
+		var name = $('.my_loc:last').attr('city_name');
+		if(name != "" || areaCode != ""){
+			$('#city_name').text(name);
+			$('#day_city_name').val(name);
+			$('#areaCode').val(areaCode);
+			$('#sigunguCode').val(sigunguCode);
+		}
+		theme2_change('', '');
 		my_loc_event();
 		check_cities();
   }	
@@ -608,7 +659,7 @@
 			async: false,
 			success: function(dtl_sq){
 				var my_content = '';
-				my_content += '<div class="my_loc" id="'+dtl_ord+'" dtl_sq="'+dtl_sq+'" dtl_ord="'+dtl_ord+'" title="'+title+'" contentid="'+contentid+'" '
+				my_content += '<div class="my_loc" id="'+dtl_sq+'" dtl_sq="'+dtl_sq+'" dtl_ord="'+dtl_ord+'" title="'+title+'" contentid="'+contentid+'" '
 					+ 'areaCode="'+areaCode+'" sigunguCode="'+sigunguCode+'" city_name="'+city_name+'">'
 					+ '<span class="sec2_ord">'+dtl_ord+'</span> '
 					+ '<input type="hidden" id="sec2_id" value="'+contentid+'">'
@@ -625,6 +676,7 @@
 				console.log(e);
 			}
 		})
+		sortable();
 		check_cities();
 	};
 	
@@ -632,7 +684,7 @@
 		var scd_sq = $('#scd_sq').val();
 		var daily_sq = parseInt($('#section2_day').text().match(/\d+/)[0], 10);
 		
-		var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
+		var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
 
 		var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="
 				+ key;
@@ -783,6 +835,7 @@
 
 		var areaCode = $("#areaCode").val();
 		var sigunguCode = $('#sigunguCode').val();
+		if(typeof(sigunguCode) == 'undefined' || sigunguCode == 'undefined') sigunguCode = "";
 		var theme2 = '';
 		
 		if(theme == 'A04'){
@@ -845,6 +898,7 @@
 
 		var areaCode = $('#areaCode').val();
 		var sigunguCode = $('#sigunguCode').val();
+		if(typeof(sigunguCode) == 'undefined' || sigunguCode == 'undefined') sigunguCode = "";
 		var theme3 = '';	
 
 		if(theme == 'A04'){
@@ -910,30 +964,6 @@
 			openDtl();
 		});
 	}
-  	
-  	/* function city_change() {
-		var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
-
-		var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="
-				+ key;
-		url += "&contentId=" + contentid
-				+ "&defaultYN=Y&addrinfoYN=Y&firstImageYN=Y&overviewYN=Y";
-		url += "&MobileOS=ETC&MobileApp=AppTesting&_type=json";
-		
-		$.getJSON(url, function(data) {
-			var content = 
-				'<h2>'+ data.response.body.items.item.title+'</h2>'
-				+ '<img src='+data.response.body.items.item.firstimage+' width=340 height=220>'
-				+ '<h4>'+ data.response.body.items.item.overview+'</h4>'
-				+ '주소: ' + data.response.body.items.item.addr1+'('+data.response.body.items.item.zipcode+')<br>';
-				if(typeof(data.response.body.items.item.tel) != 'undefined')
-					content += '전화번호: '+ data.response.body.items.item.tel+'<br>';
-				if(typeof(data.response.body.items.item.homepage) != 'undefined')
-					content += '<h5>'+ data.response.body.items.item.homepage+'</h5>';
-			$("#infolist").html(content);
-			openDtl();
-		});
-	} */
   	
   	function location_event(){
   		$(".location").mouseenter(function(){
@@ -1060,6 +1090,7 @@
   	
   	function city_change_event(){
   		$('.item').on('click', function(){
+  			init_search_menu();
   			var areaCode = $(this).attr('data');
   			var sigunguCode = $(this).attr('data2');
   			var name = $(this).attr('data-ci_name');
@@ -1068,7 +1099,7 @@
   				sigunguCode = "";
   			}
   			if(state == 1){
-				var html = '';
+				var html = '<input type="button" value="돌아가기" onclick="initCitySearch();">';
   				for(var i in sigungu){
   					if(sigungu[i].areaCode == areaCode){
   						html += '<div class="item" data="'+ sigungu[i].areaCode +'" data2="'+ sigungu[i].sigunguCode +'" data-ci_name="'+ sigungu[i].name +'" data-lat="'+ sigungu[i].lat +'" data-lng="' + sigungu[i].lng + '" data-is_state="'+ sigungu[i].is_state +'">';
@@ -1078,6 +1109,7 @@
   					}
   				}
 		        $('#changelist').html(html);
+		        $('#changelist').scrollTop(0);
 		        city_change_event();
   			}else{
 	  			$('#areaCode').val(areaCode);
@@ -1162,7 +1194,7 @@
   		$('#budget_memo').css('opacity', '0');
   		$('#budget_memo').css('pointer-events', 'none');
   		$('#budget_memo').css('width', '0');
-  		$("#budget_memo").attr("class","sidenav");
+  		$('#budget_memo').attr("class","sidenav");
   	}
 
   	function openCitySearch() {
@@ -1170,7 +1202,7 @@
   		$('#city_change').css('opacity', '100');
   		$('#city_change').css('pointer-events', 'visible');
   		$('#city_change').css('width', '20%');
-  		$("#city_change").attr("class","col-4 sidenav");
+  		$('#city_change').attr("class","col-4 sidenav");
   	}
 
   	function closeCitySearch() {
@@ -1178,35 +1210,266 @@
   		$('#city_change').css('opacity', '0');
   		$('#city_change').css('pointer-events', 'none');
   		$('#city_change').css('width', '0');
-  		$("#city_change").attr("class","sidenav");
+  		$('#city_change').attr("class","sidenav");
+  		$('#searchCity').val("");
+  		initCitySearch();
   	}
+  	
+  	function openAlt() {
+  		//$('#map').css('left', '10%');
+  		alter_schedule();
+  		$('#alter_schedule').css('opacity', '100');
+  		$('#alter_schedule').css('pointer-events', 'visible');
+  		$('#alter_schedule').css('width', '10%');
+  		$('#alter_schedule').attr("class","col-2 sidenav");
+  	}
+
+  	function closeAlt() {
+  		daily_date_change();
+  		//$('#map').css('left', '0');
+  		$('#alter_schedule').css('opacity', '0');
+  		$('#alter_schedule').css('pointer-events', 'none');
+  		$('#alter_schedule').css('width', '0');
+  		$('#alter_schedule').attr("class","sidenav");
+  		init_daily_list();
+		$(".ordlist").off("click");
+	    ordclick();
+  		$("#alterlist").sortable("disable");
+  		$("#sortable").sortable("enable");
+	  	$('.ordlist:first').trigger('click');
+		init_search_menu();
+  	}
+  	
+  	function daily_date_change(){
+  		var scd_sq = $('#scd_sq').val();
+  		var d = new Date($('#start_ymd').val());
+  		$('.alterDaylist').each(function(index, item){
+  			 var curr_date = d.getDate();
+			 if(curr_date < 10) curr_date = '0'+curr_date;
+			 var curr_month = d.getMonth() + 1;
+			 if(curr_month < 10) curr_month = '0'+curr_month;
+			 var curr_year = d.getFullYear();
+			 var date_ymd = curr_year + "-" + curr_month + "-" + curr_date;
+  			$.ajax({
+				type: "post",
+				url: "updateDates",
+				async: false,
+				data: {
+					scd_sq: scd_sq
+					,daily_ord: index + 1
+					,daily_ymd: date_ymd
+				},
+				success: function(data){
+					console.log(data);
+				},
+				error: function(e){
+					console.log(e);
+				}	
+			})
+			d.setDate(d.getDate() + 1);	
+  		});
+  	}
+  	
+  	function init_daily_list(){
+  		var scd_sq = $('#scd_sq').val();
+  		$.ajax({
+			type: "post",
+			url: "get_daily_list",
+			data: {
+				scd_sq: scd_sq
+			},
+			async: false,
+			success: function(data){
+				console.log(data);
+				set_dailylist(data);
+				//get_daily_budget();
+				//get_budget_total();
+			},
+			error: function(e){
+				console.log(e);
+			}		
+		})
+  	}
+  	
+  	function set_dailylist(data){
+    	  var my_content = '';
+    	  $.each(data, function(index,item){
+    		var city_nm = item.CITY_NM;
+    		if(index == 0) $('#start_ymd').val(item.DAILY_YMD);
+    		if(typeof(city_nm) == 'undefined') city_nm = "";
+    		  my_content += '<div id="Day'+item.DAILY_ORD+'" class="ordlist">'
+    		    + '<input type="hidden" class="daily_sq" value="'+item.DAILY_SQ+'">'
+    		    + '<input type="hidden" class="areaCode" value="'+item.AREA_CODE+'">'
+    		    + '<input type="hidden" class="sigunguCode" value="'+item.SIGUNGU_CODE+'">'
+    		    + '<input type="hidden" class="day_city_name" value="'+item.CITY_NM+'">'
+    		    + '<input type="hidden" class="ymd" value="'+item.DAILY_YMD+'">'
+    		    + '<input type="hidden" class="day" value="'+item.DAILY_ORD+'">'
+    			+ 'DAY '+item.DAILY_ORD+' <br>'
+    		 	+ item.DAILY_YMD+' <br>'
+    			+ '<span id="city_names">'+item.CITY_NM+'</span>'
+    			+ '<hr />'
+    			+ '</div>';
+    	  	});
+    	  	my_content += '<div id="daylist"></div>';
+    	  	$('#days').html(my_content); 
+      }	
+  	
+  	function alter_schedule(){
+		var scd_sq = $('#scd_sq').val();
+  		$.ajax({
+			type: "post",
+			url: "get_daily_list",
+			data: {
+				scd_sq: scd_sq
+			},
+			async: false,
+			success: function(data){
+				console.log(data);
+				set_alterlist(data);
+			},
+			error: function(e){
+				console.log(e);
+			}		
+		})
+  	}
+  	
+  	function set_alterlist(data){
+  	  var my_content = '';
+  	  $.each(data, function(index,item){
+  		var city_nm = item.CITY_NM;
+  		if(typeof(city_nm) == 'undefined') city_nm = "";
+  		  my_content += '<div class="alterDaylist" id="'+item.DAILY_ORD+'" daily_sq="'+item.DAILY_SQ+'" daily_ord="'+item.DAILY_ORD+'" daily_ymd="'+item.DAILY_YMD+'" city_nm="'+item.CITY_NM+'">'
+  			+ 'DAY<span id="alter_day">'+item.DAILY_ORD+'</span><br>'
+  		 	+ '<div id="daily_date">'+item.DAILY_YMD+'</div>'
+  			+ '<div id="city_names">'+item.CITY_NM+'</div>'
+  			+ '<input type="button" value="삭제" onclick="javascript:delete_day(\''+item.DAILY_SQ+'\',\''+item.DAILY_ORD+'\');">'
+  			+ '<hr />'
+  			+ '</div>';
+  	  });
+  		$('.alterDaylist').each(function(){
+  			$(this).remove();
+  		});
+  		$("#alterflag").before(my_content);
+  		$("#sortable").sortable("disable");
+  		$("#alterlist").sortable("enable");
+    }	
+  	
+  	function delete_day(daily_sq, daily_ord){
+  		var check = confirm("정말 삭제하시겠습니까?");
+  		if(!check) return;
+  		
+  		var targetsq = "#"+daily_ord;
+  		$(targetsq).remove();
+  		
+  		$.ajax({
+			type: "post",
+			url: "delete_day",
+			async: false,
+			data: {
+				daily_sq: daily_sq
+			},
+				success: function(data){
+					var itemOrder = $('#alterlist').sortable("toArray");
+	     		   for (var i = 0; i < itemOrder.length-1; i++) {
+	     			   var target_span = '#'+itemOrder[i]+' > span';
+	    		   			var target_ord = '#'+itemOrder[i];
+	    		   			$(target_span).html(i+1);
+	    		   			$(target_ord).attr('daily_ord', (i+1));
+	     		   }
+			     	// update order in db
+			     	$('.alterDaylist').each(function(){
+			     		var daily_sq = $(this).attr('daily_sq');
+			     		var daily_ord = $(this).attr('daily_ord');
+			         	var sort_change = {
+			         		daily_sq: daily_sq,
+			         		daily_ord: daily_ord
+			     		};
+			         	$.ajax({
+			     			type: "post",
+			     			url: "day_sort_change",
+			     			data: sort_change,
+			     			async: false,
+			     			success: function(data){
+			     				console.log(data);
+			     			},
+			     			error: function(e){
+			     				console.log(e);
+			     			}
+			     		})//ajax
+			     	})//foreach
+			},
+			error: function(e){
+				console.log(e);
+			}		
+		}) 
+	}
+
+	function alter_sortable(){
+		$("#alterlist").sortable({
+        	update: function(event, ui) {
+        		var itemOrder = $('#alterlist').sortable("toArray");
+        		   for (var i = 0; i < itemOrder.length-1; i++) {
+        			    //var target_span = '#'+itemOrder[i]+' > span';
+       		   			var target_ord = '#'+itemOrder[i];
+       		   			//$(target_span).html(i+1);
+       		   			$(target_ord).attr('daily_ord', (i+1));
+        		   }
+        		//check_cities();
+        	// update order in db
+        	$('.alterDaylist').each(function(){
+        		var daily_sq = $(this).attr('daily_sq');
+        		var daily_ord = $(this).attr('daily_ord');
+            	var sort_change = {
+            		daily_sq: daily_sq,
+            		daily_ord: daily_ord
+        		};
+            	$.ajax({
+        			type: "post",
+        			url: "day_sort_change",
+        			data: sort_change,
+        			async: false,
+        			success: function(data){
+        				console.log(data);
+        			},
+        			error: function(e){
+        				console.log(e);
+        			}
+        		})//ajax
+        	})//foreach
+    		daily_date_change();
+	        }//update
+        });
+        $("#alterlist").disableSelection();
+	}
   </script>
 </head>
 <body>
-<input type="hidden" id="scd_sq" value="${schedule.scd_sq }">
-<input type="hidden" id="areaCode" value="${dailyList[0].AREA_CODE }">
-<input type="hidden" id="sigunguCode" value="${dailyList[0].SIGUNGU_CODE }">
-<input type="hidden" id="day_city_name" value="${dailyList[0].CITY_NM }">
+<input type="hidden" id="scd_sq" value="${scd_sq }">
+<input type="hidden" id="areaCode" value="">
+<input type="hidden" id="sigunguCode" value="">
+<input type="hidden" id="day_city_name" value="">
+
 <div style="overflow:auto;" class="col-2 daylist" id="section1">
+<input type="button" value="일정 수정하기" onclick="openAlt();" size="20"> <br>
 총 예산: <span id="budget_total"></span>
 <hr />
-<ul>
-<c:forEach var="daily" items="${dailyList }">
-<div id="Day${daily.DAILY_ORD }" class="ordlist">
-<input type="hidden" class="areaCode" value="${daily.AREA_CODE }">
-<input type="hidden" class="sigunguCode" value="${daily.SIGUNGU_CODE }">
-<input type="hidden" class="day_city_name" value="${daily.CITY_NM }">
-<input type="hidden" class="ymd" value=${daily.DAILY_YMD }>
-<input type="hidden" class="day" value=${daily.DAILY_ORD }>
-DAY ${daily.DAILY_ORD } <br>
-${daily.DAILY_YMD } <br>
-<span id="city_names">${daily.CITY_NM }</span>
-<hr />
-</div>
-</c:forEach>
+<div id="days">
 <div id="daylist"></div>
+</div>
+<ul>
 <li id="add_day" value="">DAY 추가</li>
 </ul>
+</div>
+
+<div style="overflow:auto;" class="sidenav" id="alter_schedule">
+<span>여행 시작일</span>
+<input type="text" id="start_ymd" name="start_ymd" value="" style="width:100%">
+<br>
+<div id="alterlist">
+<div id="alterflag"></div>
+</div>
+<br>
+<input type="button" id="alter_complete" value="수정 완료" style="width:100%" onclick="closeAlt()">
 </div>
 
 <div style="overflow:auto;" class="col-3" id="section2">
@@ -1217,15 +1480,14 @@ ${daily.DAILY_YMD } <br>
 
 <div class="sidenav" id="section3">
 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-<div id="search_menu" style="height:25%;">
+<div id="search_menu" style="height:20%;">
 <div>
-<span id="city_name">${dailyList[0].CITY_NM }</span>
+<span id="city_name"></span>
 <input type="button" value="도시변경" onclick="javascript:openCitySearch();">
 </div>
 <div class="search_box">
   <label for="search">검색: </label>
   <input id="search">
-<br><br>
 </div>
 <div class="theme_check">
     <label for="radio-1">자연</label>
@@ -1244,7 +1506,7 @@ ${daily.DAILY_YMD } <br>
 <br>
 <div id="theme2_select"></div>
 </div>
-<div style="overflow:auto; height:75%;" id="location_info"></div>
+<div style="overflow:auto; height:80%;" id="location_info"></div>
 </div>
 
 <div style="overflow:auto;" class="sidenav" id="detail_info">

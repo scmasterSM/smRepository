@@ -361,4 +361,59 @@
 		where
 			scd_sq = #{scd_sq}
 	</select>
+	
+ 	<!-- daily list 가져오기 -->
+	<select id="get_daily_list" parameterType="int" resultType="Hashmap">
+		select
+			daily_sq, scd_sq, daily_ord, to_char(daily_ymd, 'YYYY-MM-DD') daily_ymd
+		from
+			SM_DAILY_SCD_TB
+		where
+			scd_sq = #{scd_sq}
+		order by
+			daily_ord
+	</select>
+	
+ 	<!-- daily city list 가져오기 -->
+	<select id="get_city_list" parameterType="int" resultType="Hashmap">
+		select
+			city_nm
+		from
+			SM_DAILY_CITY_TB
+		where
+			daily_sq = #{daily_sq}
+		order by
+			city_ord
+	</select>
+	
+	<!-- 일자 삭제 -->
+	<delete id="delete_day" parameterType="int">
+ 		delete from
+ 			SM_DAILY_SCD_TB
+ 		where
+ 			daily_sq = #{daily_sq}
+ 	</delete>
+ 	
+	<!-- 일차 순서 변경 -->
+	<update id="day_sort_change" parameterType="Daily_Scd">
+		update
+			SM_DAILY_SCD_TB
+		set
+			daily_ord = #{daily_ord}
+		where
+			daily_sq = #{daily_sq}
+	</update>
+ 	
+	<!-- 일차 날자 변경 -->
+	<update id="day_change" parameterType="Daily_Scd">
+		update
+			SM_DAILY_SCD_TB
+		set
+			daily_ymd = #{daily_ymd}
+		where
+			scd_sq = #{scd_sq}
+		and
+			daily_ord = #{daily_ord}
+	</update>
+	
  </mapper>

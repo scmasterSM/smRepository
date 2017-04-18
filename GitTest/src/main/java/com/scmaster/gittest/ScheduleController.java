@@ -1,8 +1,12 @@
 package com.scmaster.gittest;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.PageContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,21 +46,23 @@ public class ScheduleController {
 		dailyList.add(scd);
 	}
 
-	// 일정 만들기에서 받아온 정보들을 db에 저장하고 model에 넣어 13번 화면으로 이동
+	// 일정 만들기에서 받아온 정보들을 db에 저장하고 13번 화면으로 이동
 	@RequestMapping(value = "create_schedule", method = RequestMethod.POST)
-	public String create_schedule(Model model, Schedule schedule) {
+	public String create_schedule(Schedule schedule) {
 		int scd_sq = dao.insert_scd(schedule);
-		schedule.setScd_sq(scd_sq);
-		model.addAttribute("schedule", schedule);
 		for (int i = 0; i < dailyList.size(); i++) {
 			dailyList.get(i).setScd_sq(scd_sq);
 			dailyList.get(i).setCity_ord(1);
 			dao.insert_daily(dailyList.get(i));
 		}
-		List<HashMap<String, Object>> new_dailyList = dao.getDailyList(scd_sq);
-		model.addAttribute("dailyList", new_dailyList);
-		System.out.println(new_dailyList);
 		dailyList.clear();
+		return "redirect:edit_schedule?scd_sq="+scd_sq;
+	}
+
+	// 지도에서 검색
+	@RequestMapping(value = "edit_schedule", method = RequestMethod.GET)
+	public String edit_schedule(int scd_sq, HttpSession session) {
+		session.setAttribute("scd_sq", scd_sq);
 		return "SC13";
 	}
 
@@ -123,7 +129,7 @@ public class ScheduleController {
 	public void update_cities(Daily_City city) {
 		dao.update_cities(city);
 	}
-	
+
 	// 장소 예산 및 메모 가져오기
 	@ResponseBody
 	@RequestMapping(value = "get_budget_memo", method = RequestMethod.POST)
@@ -131,14 +137,14 @@ public class ScheduleController {
 		Budget budget = dao.getBudgetMemo(dtl_sq);
 		return budget;
 	}
-	
+
 	// 장소 예산 및 메모 업데이트
 	@ResponseBody
 	@RequestMapping(value = "update_bgt", method = RequestMethod.POST)
 	public void update_bgt(Budget budget) {
 		dao.update_bgt(budget);
 	}
-	
+
 	// 일차별 예산 가져오기
 	@ResponseBody
 	@RequestMapping(value = "get_daily_budget", method = RequestMethod.POST)
@@ -153,5 +159,34 @@ public class ScheduleController {
 	public Budget get_budget_total(Budget budget) {
 		Budget result = dao.get_budget_total(budget);
 		return result;
+	}
+
+	// 삭제용 리스트 가져오기
+	@ResponseBody
+	@RequestMapping(value = "get_daily_list", method = RequestMethod.POST)
+	public List<HashMap<String, Object>> get_daily_list(int scd_sq) {
+		List<HashMap<String, Object>> dailyList = dao.get_daily_list(scd_sq);
+		return dailyList;
+	}
+
+	// 일자 삭제
+	@ResponseBody
+	@RequestMapping(value = "delete_day", method = RequestMethod.POST)
+	public void delete_day(int daily_sq) {
+		dao.delete_day(daily_sq);
+	}
+
+	// 일차 순서 변경
+	@ResponseBody
+	@RequestMapping(value = "day_sort_change", method = RequestMethod.POST)
+	public void day_sort_change(Daily_Scd daily) {
+		dao.day_sort_change(daily);
+	}
+
+	// 일차 날짜 변경
+	@ResponseBody
+	@RequestMapping(value = "updateDates", method = RequestMethod.POST)
+	public void updateDates(Daily_Scd daily) {
+		dao.day_change(daily);
 	}
 }
