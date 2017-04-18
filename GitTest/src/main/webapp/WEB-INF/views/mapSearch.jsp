@@ -114,7 +114,7 @@ html, body {
       {"index" : 5, "areaCode" : 4, "name" : '대구', "name_en" : "Daegu", "lat" : parseFloat(35.8714354), "lng" : parseFloat(128.601445), "is_state" : 0},
       {"index" : 6, "areaCode" : 5, "name" : '광주', "name_en" : "Gwangju", "lat" : parseFloat(35.1595454), "lng" : parseFloat(126.8526012), "is_state" : 0},
       {"index" : 7, "areaCode" : 7, "name" : '울산', "name_en" : "Ulsan", "lat" : parseFloat(35.5383773), "lng" : parseFloat(129.3113596), "is_state" : 0},
-      {"index" : 8, "areaCode" : 8, "name" : '세종특별자치시', "name_en" : "Sejong", "lat" : parseFloat(36.4800984), "lng" : parseFloat(127.2890354), "is_state" : 0},
+      {"index" : 8, "areaCode" : 8, "name" : '세종시', "name_en" : "Sejong", "lat" : parseFloat(36.4800984), "lng" : parseFloat(127.2890354), "is_state" : 0},
       {"index" : 9, "areaCode" : 31, "name" : '경기도', "name_en" : "Gyeonggi-do", "lat" : parseFloat(37.41379999999999), "lng" : parseFloat(127.5183), "is_state" : 1},
       {"index" : 10, "areaCode" : 32, "name" : '강원도', "name_en" : "Gangwon-do", "lat" : parseFloat(37.8228), "lng" : parseFloat(128.1555), "is_state" : 1},
       {"index" : 11, "areaCode" : 33, "name" : '충청북도', "name_en" : "Chungcheongbuk-do", "lat" : parseFloat(36.8), "lng" : parseFloat(127.7), "is_state" : 1},
@@ -162,30 +162,54 @@ html, body {
           makeMarker(val);
       });
       $(where).html(html);
-	   $('.back_btn').on('click',function(){
-		   initMap();
-		   makeSide('#pop_city_list_box', pop_cities);
-	   });
+      location_event();
+	  $(where).off("click");
       $(where).on('click','.item',function(){
          var index = $(this).attr('data-no');
          var is_state = $(this).attr('data-is_state');
-         
-         var focusMarker = new google.maps.LatLng(city[index].lat, city[index].lng);
-         map.setCenter(focusMarker);
-         map.setZoom(9);
+         var title = $(this).attr("data-ci_name");
          
          if(is_state == 1){
+        	 var focusMarker = new google.maps.LatLng(city[index].lat, city[index].lng);
+             map.setCenter(focusMarker);
+             map.setZoom(9);
         	deleteMarkers();
             getDetail(city[index].areaCode);
-            makeSide("#city_list_box", sigungu);
-         }
-         
-         else{
-            var marker = makeMarker(city[index]);
-            selectSigungu(city[index], marker);
+         }else{
+ 	    	for(var i=0;i<markers.length;i++){
+ 	    	    if(markers[i].title == title){
+ 	    	    	selectSigungu(city[index], markers[i]);
+ 	    	        break;
+ 	    	    }
+ 	    	}
          }
       });
    }
+   
+   function location_event(){
+	    $('.back_btn').on('click',function(){
+		    initMap();
+	 	    makeSide('#pop_city_list_box', pop_cities);
+	    });
+ 		$(".item").mouseenter(function(){
+	    	var title = $(this).attr("data-ci_name");
+	    	for(var i=0;i<markers.length;i++){
+	    	    if(markers[i].title == title){
+	    	    	markers[i].setAnimation(google.maps.Animation.BOUNCE);
+	    	        break;
+	    	    }
+	    	}
+	    });
+	    $(".item").mouseleave(function(){
+	    	var title = $(this).attr("data-ci_name");
+	    	for(var i=0;i<markers.length;i++){
+	    	    if(markers[i].title == title){
+	    	    	markers[i].setAnimation(null);
+	    	        break;
+	    	    }
+	    	}
+	    });
+ 	}
    
    function makeMarker(city){
         var marker = new google.maps.Marker({
@@ -228,6 +252,7 @@ html, body {
    }
    
    function getDetail(areaCode){
+	   var sigunguCode;
       var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode?ServiceKey="
             + tourKey + "&areaCode=" + areaCode 
             + "&numOfRows=100&MobileOS=ETC&MobileApp=AppTesting&_type=json";
@@ -236,6 +261,8 @@ html, body {
          url : url,
          async : false,
          success : function(result){
+        	 var cities = [];
+      	   var html='<div class=back_btn id=back_btn><img scr="./resources/img/city/back_btn">전국으로</div>'; 
              $.each(result.response.body.items.item, function(index, val) {
             	 gUrl = "https://maps.googleapis.com/maps/api/geocode/json?"
                         + "address=" + encodeURI(val.name)
@@ -243,37 +270,45 @@ html, body {
                   $.ajax({
                      type : "GET",
                      url : gUrl,
-                     async : false,
                      success : function(data){
                         var location = data.results[0].geometry.location;
-                        sigungu.push({
-                           "index" : val.rnum,
-                           "areaCode" : areaCode,
-                           "sigunguCode" : val.code,
-                           "name" : val.name,
-                           "name_en" : "",
-                           "lat" : location.lat,
-                           "lng" : location.lng,
-                           "is_state" : 0
-                        });
-                        var marker = new google.maps.Marker({
-                        	position: new google.maps.LatLng(location.lat, location.lng),
-                            map: map,
-                            title: val.name,
-                            lat:location.lat,
-                            lng:location.lng,
-                            labelContent: val.name,
-                            labelAnchor: new google.maps.Point(-11, 30),
-                            labelClass: "labels", // the CSS class for the label
-                            labelStyle: {opacity: 0.75}
-                        });
-                        markers.push(marker);
-                        addMarkerListener(marker);
+                        var city = {
+                                "index" : val.rnum,
+                                "areaCode" : areaCode,
+                                "sigunguCode" : val.code,
+                                "name" : val.name,
+                                "name_en" : "",
+                                "lat" : location.lat,
+                                "lng" : location.lng,
+                                "is_state" : 0
+                             };
+                        cities.push(city);
+                        html += '<div class="item" data-no="'+ val.rnum +'" data="'+ areaCode +'" data-ci_name="'+ val.name +'" data-lat="'+ location.lat +'" data-lng="'+ location.lng +'" data-is_state="'+ 0 +'">';
+                        html += '<div class="img_box fl"><img src="./resources/img/city/'+areaCode+'.jpg"></div>';
+                        html += '<div class="info_box fl"><div class="info_title">'+val.name+'</div><div class="info_sub_title">'+""+'</div></div>';
+                        html += '<div class="clear"></div></div>';
+                        $('#city_list_box').html(html);
+                        makeMarker(city);
+             		   	location_event();
+             		  	$('.item').on('click',function(){
+             		        var index = $(this).attr('data-no');
+             		    	var title = $(this).attr("data-ci_name");
+	             		 	for(var i=0;i<markers.length;i++){
+	           	    	   	 if(markers[i].title == title){
+	           	    	    		selectSigungu(cities[index-1], markers[i]);
+	           	    	    	    break;
+	           	    	  	  }
+	           	    		}
+             		  	});
                      }, error : function(e){
                         console.log(e);
                      }
                   });//ajax
                });//each
+               $('#pop_city_list_box').hide();
+    		   $('#city_list_box').show();
+    		   $('#back_btn').show();
+    		   nowSide = '#city_list_box';	
             }, error : function(e){
                console.log(e);
             }
@@ -281,9 +316,9 @@ html, body {
    }
    
    function selectSigungu(city, marker){
-	   var focusMarker = new google.maps.LatLng(city.lat, city.lng);
+	   /* var focusMarker = new google.maps.LatLng(city.lat, city.lng);
        map.setCenter(focusMarker);
-       map.setZoom(11);
+       map.setZoom(11); */
        var content = '<div class="content">'
            + '<div id="image">'
            +'<img src=./resources/img/city/'+city.areaCode+'.jpg width=200 height=120>'
