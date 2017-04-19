@@ -169,9 +169,8 @@ html, body {
       {"index" : 15, "areaCode" : 37, "name" : '전라북도', "name_en" : "Jeollabuk", "lat" : parseFloat(35.71750000000001), "lng" : parseFloat(127.153), "is_state" : 1},
       {"index" : 16, "areaCode" : 38, "name" : '전라남도', "name_en" : "Jeollanam-do", "lat" : parseFloat(34.8679), "lng" : parseFloat(126.991), "is_state" : 1}];
    
-   var markers = new Array;
-   var sigungu = new Array;
-   var infowindows = new Array;
+   var markers = [];
+   var sigungu = [];
    var nowSide;
    
    function initMap() {
@@ -199,9 +198,8 @@ html, body {
 		   $('#city_list_box').show();
 		   html += '<div class=back_btn id=back_btn><img scr="./resources/img/city/back_btn">전국으로</div>'; 
 		   $('#back_btn').show();
-		   nowSide = '#city_list_box';
+		   nowSide = '#city_list_box';	
 	   }
-      
       $.each(city, function(index, val){
     	  html += '<div class="item" data-no="'+ index +'" data="'+ val.areaCode +'" data-ci_name="'+ val.name +'" data-lat="'+ val.lat +'" data-lng="' + '" data-is_state="'+ val.is_state +'">';
           html += '<div class="img_box fl"><img src="./resources/img/city/'+val.areaCode+'.jpg"></div>';
@@ -210,10 +208,8 @@ html, body {
           makeMarker(val);
       });
       $(where).html(html);
-	   $('.back_btn').on('click',function(){
-		   initMap();
-		   makeSide('#pop_city_list_box', pop_cities);
-	   });
+      location_event();
+	  $(where).off("click");
       $(where).on('click','.item',function(){
          var index = $(this).attr('data-no');
          var is_state = $(this).attr('data-is_state');
@@ -222,12 +218,8 @@ html, body {
              var focusMarker = new google.maps.LatLng(city[index].lat, city[index].lng);
              map.setCenter(focusMarker);
              map.setZoom(9);
-        	deleteMarkers();
-            getDetail(city[index].areaCode);
-            makeSide("#city_list_box", sigungu);
-         }         
-         else{
-            var marker = makeMarker(city[index]);
+        	 deleteMarkers();
+             getDetail(city[index].areaCode);
          }
       });
    }
@@ -244,16 +236,50 @@ html, body {
             lat:city.lat,
             lng:city.lng,
             labelContent: city.name,
-          labelAnchor: new google.maps.Point(-11, 30),
-         labelClass: "labels", // the CSS class for the label
-          labelStyle: {opacity: 0.75},
-          areaCode: city.areaCode,
-          sigunguCode: sigunguCode
+            labelAnchor: new google.maps.Point(-11, 30),
+            labelClass: "labels", // the CSS class for the label
+            labelStyle: {opacity: 0.75},
+            areaCode: city.areaCode,
+            sigunguCode: sigunguCode
         });
         markers.push(marker);
         addMarkerListener(marker);
         return marker;
    }
+   
+   function location_event(){
+	   $('.back_btn').on('click',function(){
+		   initMap();
+		   makeSide('#pop_city_list_box', pop_cities);
+	   });
+ 		$(".item").mouseenter(function(){
+	    	var title = $(this).attr("data-ci_name");
+	    	for(var i=0;i<markers.length;i++){
+	    	    if(markers[i].title == title){
+	    	    	markers[i].setAnimation(google.maps.Animation.BOUNCE);
+	    	        break;
+	    	    }
+	    	}
+	    });
+	    $(".item").mouseleave(function(){
+	    	var title = $(this).attr("data-ci_name");
+	    	for(var i=0;i<markers.length;i++){
+	    	    if(markers[i].title == title){
+	    	    	markers[i].setAnimation(null);
+	    	        break;
+	    	    }
+	    	}
+	    });
+	    $(".item").on("click", function(){
+ 	    	var title = $(this).closest(".item").attr("data-ci_name");
+ 	    	for(var i=0;i<markers.length;i++){
+ 	    	    if(markers[i].title == title){
+ 	    	    	google.maps.event.trigger(markers[i], "click");
+ 	    	        break;
+ 	    	    }
+ 	    	}
+ 	    });
+ 	}
    
    function deleteMarkers() {
       clearMarkers();
@@ -278,7 +304,9 @@ html, body {
       $.ajax({
          type : "GET",
          url : url,
+         async : false,
          success : function(result){
+      	   var html='<div class=back_btn id=back_btn><img scr="./resources/img/city/back_btn">전국으로</div>'; 
              $.each(result.response.body.items.item, function(index, val) {
             	 gUrl = "https://maps.googleapis.com/maps/api/geocode/json?"
                         + "address=" + encodeURI(val.name)
@@ -286,39 +314,34 @@ html, body {
                   $.ajax({
                      type : "GET",
                      url : gUrl,
-                     async : false,
                      success : function(data){
                         var location = data.results[0].geometry.location;
-                        sigungu.push({
-                           "index" : val.rnum,
-                           "areaCode" : areaCode,
-                           "sigunguCode" : val.code,
-                           "name" : val.name,
-                           "name_en" : "",
-                           "lat" : location.lat,
-                           "lng" : location.lng,
-                           "is_state" : 0
-                        });
-                        var marker = new google.maps.Marker({
-                        	position: new google.maps.LatLng(location.lat, location.lng),
-                            map: map,
-                            title: val.name,
-                            lat:location.lat,
-                            lng:location.lng,
-                            labelContent: val.name,
-                            labelAnchor: new google.maps.Point(-11, 30),
-                            labelClass: "labels", // the CSS class for the label
-                            labelStyle: {opacity: 0.75},
-	                        areaCode : areaCode,
-	                        sigunguCode : val.code
-                        });
-                        markers.push(marker);
-                        addMarkerListener(marker);
+                        var city = {
+                                "index" : val.rnum,
+                                "areaCode" : areaCode,
+                                "sigunguCode" : val.code,
+                                "name" : val.name,
+                                "name_en" : "",
+                                "lat" : location.lat,
+                                "lng" : location.lng,
+                                "is_state" : 0
+                             };
+                        html += '<div class="item" data-no="'+ val.rnum +'" data="'+ areaCode +'" data-ci_name="'+ val.name +'" data-lat="'+ location.lat +'" data-lng="'+ location.lng +'" data-is_state="'+ 0 +'">';
+                        html += '<div class="img_box fl"><img src="./resources/img/city/'+areaCode+'.jpg"></div>';
+                        html += '<div class="info_box fl"><div class="info_title">'+val.name+'</div><div class="info_sub_title">'+""+'</div></div>';
+                        html += '<div class="clear"></div></div>';
+                        $('#city_list_box').html(html);
+             		   location_event();
+                        makeMarker(city);
                      }, error : function(e){
                         console.log(e);
                      }
                   });//ajax
                });//each
+               $('#pop_city_list_box').hide();
+    		   $('#city_list_box').show();
+    		   $('#back_btn').show();
+    		   nowSide = '#city_list_box';	
             }, error : function(e){
                console.log(e);
             }
@@ -343,23 +366,20 @@ html, body {
 				var s_name = 'sigunguCode'+city_count;
 				var c_name = 'city'+city_count;
 				var days = 'days'+city_count;
-			   var city = '<div class="city" id="city'+city_count+'">'
-		   			+ '&nbsp &nbsp &nbsp <input type="button" value="x" onclick="javascript:deleteCity('+city_count+');">'
-		   			+ '&nbsp '+title+' &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp'
-		   			+ '<input type="button" value="-" onclick="javascript:minusDays('+city_count+');">'
-		   			+ ' <span id="'+days+'">2</span>일 '
-		   			+ '<input type="button" value="+" onclick="javascript:plusDays('+city_count+');">'
-		   			+ '<input type="hidden" name="'+a_name+'" value="'+marker.areaCode+'">'
-		   			+ '<input type="hidden" name="'+s_name+'" value="'+marker.sigunguCode+'">'
-		   			+ '<input type="hidden" name="'+c_name+'" value="'+title+'">'
-		   			+ '</div>';
+			    var city = '';
+			    city += '<div class="city" id="city'+city_count+'">'
+			    city += '&nbsp &nbsp &nbsp <input type="button" value="x" onclick="javascript:deleteCity('+city_count+');">'
+			    city +=	'&nbsp '+title+' &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp'
+			    city +=	'<input type="button" value="-" onclick="javascript:minusDays('+city_count+');">'
+			    city +=	' <span id="'+days+'">2</span>일 '
+			    city +=	'<input type="button" value="+" onclick="javascript:plusDays('+city_count+');">'
+			    city +=	'<input type="hidden" name="'+a_name+'" value="'+marker.areaCode+'">'
+		   		city +=	'<input type="hidden" name="'+s_name+'" value="'+marker.sigunguCode+'">'
+		   		city +=	'<input type="hidden" name="'+c_name+'" value="'+title+'">'
+		   		city +=	'</div>';
   			$('#flag').before(city);
+  			$('#flag').text("");
 		   }
-		   $(".item").each(function(index,item){
-				if($(this).attr('data-ci_name') == marker.title){
-					$(this).trigger("click");
-				}
-			})
         });
    }
    
@@ -392,9 +412,6 @@ html, body {
 					type: "post",
 					url: "set_citylist",
 					data: day_city,
-					success: function(data){
-						console.log(data);
-					},
 					error: function(e){
 						console.log(e);
 					}		
@@ -454,17 +471,22 @@ html, body {
 	<h3>여행도시</h3>
 	<br>
 	<div id="city_day_box">
-		<div class="city" id="city1">
-		&nbsp &nbsp &nbsp <input type="button" value="x" onclick="javascript:deleteCity(1);">
-		 &nbsp ${name } &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-		<input type="button" value="-" onclick="javascript:minusDays(1);">
-		<span id="days1">2</span>일
-		<input type="button" value="+" onclick="javascript:plusDays(1);">
-		<input type="hidden" name="areaCode1" value="${areaCode }">
-		<input type="hidden" name="sigunguCode1" value="${sigunguCode }">
-		<input type="hidden" name="city1" value="${name }">
-		</div>
-		<div id="flag"></div>
+		<c:if test="${name != null}">
+			<div class="city" id="city1">
+			&nbsp &nbsp &nbsp <input type="button" value="x" onclick="javascript:deleteCity(1);">
+			 &nbsp ${name } &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+			<input type="button" value="-" onclick="javascript:minusDays(1);">
+			<span id="days1">2</span>일
+			<input type="button" value="+" onclick="javascript:plusDays(1);">
+			<input type="hidden" name="areaCode1" value="${areaCode }">
+			<input type="hidden" name="sigunguCode1" value="${sigunguCode }">
+			<input type="hidden" name="city1" value="${name }">
+			</div>
+			<div id="flag"></div>
+		</c:if>
+		<c:if test="${name == null}">
+			<div id="flag">도시를 선택해 주세요.</div>
+		</c:if>
 		<br>
 		<input type="button" value="세부정보 입력" onclick="javascript:open_scd();">
 	</div>
