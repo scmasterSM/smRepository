@@ -40,4 +40,5 @@ public interface ScheduleMapper {
 	public void delete_day(int daily_sq);
 	public void day_sort_change(Daily_Scd daily);
 	public void day_change(Daily_Scd daily);
+	public List<HashMap<String, Object>> get_cliplist(String user_id);
 }
