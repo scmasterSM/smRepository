@@ -1,6 +1,7 @@
 package com.scmaster.gittest.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
@@ -27,11 +28,30 @@ public class ReviewDao {
 		return result;
 	}
 	
-	public List<Review> readReview(int startRecord, int countPerPage,String CONTENT_ID){
+	public ArrayList<HashMap<String, Object>> readReview(int startRecord, int countPerPage,Review review){
 		ReviewMapper mapper = sqlsession.getMapper(ReviewMapper.class);
 		RowBounds rb= new RowBounds(startRecord, countPerPage);
-		List<Review>rList=mapper.readReview(rb,CONTENT_ID); 
+		ArrayList<HashMap<String, Object>>rList=mapper.readReview(rb,review); 
 		return rList;
+	}
+	
+	public ArrayList<HashMap<String, Object>> readReview(Review review){
+		ReviewMapper mapper = sqlsession.getMapper(ReviewMapper.class);
+		ArrayList<HashMap<String, Object>>rList=mapper.readReview(review); 
+		return rList;
+
+	}
+	
+	public int updateReview(Review review){
+		ReviewMapper mapper = sqlsession.getMapper(ReviewMapper.class);
+		int result = mapper.updateReview(review);
+		return result;
+	}
+	
+	public int deleteReview(Review review){
+		ReviewMapper mapper =sqlsession.getMapper(ReviewMapper.class);
+		int result =mapper.deleteReview(review);
+		return result;
 	}
 	
 
@@ -41,5 +61,7 @@ public class ReviewDao {
 		int result =mapper.tCount(CONTENT_ID);
 		return result;
 	}
+	
+	
 	
 }

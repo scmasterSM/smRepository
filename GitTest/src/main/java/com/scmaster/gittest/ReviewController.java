@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.scmaster.gittest.dao.ReviewDao;
+import com.scmaster.gittest.dao.ReviewMapper;
 import com.scmaster.gittest.util.PageNavigator;
 import com.scmaster.gittest.vo.Clip;
 import com.scmaster.gittest.vo.Review;
@@ -30,40 +31,51 @@ public class ReviewController {
 	@Autowired
 	private ReviewDao dao;
 	
-	
-	/*@ResponseBody
-	@RequestMapping(value="writeReview", method=RequestMethod.POST)
-	public List<Review> writeReview(Review review, HttpSession session,Model model,@RequestParam
-			(value="page",defaultValue="1")	int page){
-		String id= "1";
-		review.setUSER_ID(id);
-		dao.writeReview(review); 
-		int count =dao.tCount(review.getCONTENT_ID()); 
-		PageNavigator navi= new PageNavigator(
-				countPerPage, pagePerGrop, page, count);
-		List<Review>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),review.getCONTENT_ID());
-		System.out.println(rList+"30");
-		model.addAttribute("navi", navi);
-		return rList;
-	}*/
-	
+	 
 	@ResponseBody
 	@RequestMapping(value="writeReview", method=RequestMethod.POST)
-	public HashMap<String, Object> writeReview(Review review, HttpSession session,Model model,@RequestParam
+	public HashMap<String, Object> writeReview(Review review, HttpSession session,@RequestParam
 			(value="page",defaultValue="1")	int page){
-		String id= "1";
-		review.setUSER_ID(id);
+		String user_id=(String)session.getAttribute("user_id");
+		review.setUSER_ID(user_id);
 		dao.writeReview(review); 
 		int count =dao.tCount(review.getCONTENT_ID()); 
 		PageNavigator navi= new PageNavigator(
 				countPerPage, pagePerGrop, page, count);
-		List<Review>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),review.getCONTENT_ID());
+		ArrayList<HashMap<String, Object>>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),review);
 		HashMap<String, Object> hList = new HashMap<String, Object>();
 		hList.put("rList", rList);
 		hList.put("navi", navi);
-		System.out.println(hList+"30");
-		/*model.addAttribute("navi", navi);*/
+		 
 		return hList;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="updateReview", method=RequestMethod.POST)
+	public ArrayList<HashMap<String, Object>> updateReview(Review review,HttpSession session){
+		String user_id=(String)session.getAttribute("user_id");
+		review.setUSER_ID(user_id);
+		dao.updateReview(review);
+		ArrayList<HashMap<String, Object>>rList=dao.readReview(review);
+		return rList; 
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="deleteReview", method=RequestMethod.POST)
+	public HashMap<String, Object> deleteReview(Review review, HttpSession session,@RequestParam
+			(value="page",defaultValue="1")	int page){
+		String user_id=(String)session.getAttribute("user_id");
+		review.setUSER_ID(user_id);
+		dao.deleteReview(review);
+		int count =dao.tCount(review.getCONTENT_ID()); 
+		PageNavigator navi= new PageNavigator(
+				countPerPage, pagePerGrop, page, count);
+		ArrayList<HashMap<String, Object>>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),review);
+		 
+		HashMap<String, Object> hList = new HashMap<String, Object>();
+		hList.put("rList", rList);
+		hList.put("navi", navi);
+		return hList; 
 	}
 
 }

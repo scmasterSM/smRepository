@@ -52,7 +52,7 @@
 
 <script type="text/javascript">
      	var areacode = ${areacode};
-     	var sigungucode = "";
+     	var sigungucode = ${sigungucode};
      	var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 		
      	//정보수정 모달
@@ -140,9 +140,9 @@
  
         
         //지역별 테마를 담는 변수 
-        function theme_Data(areacode, themecode){
+        function theme_Data(areacode,themecode){
             
-            sigungucode = eval($("#test1").val());
+          	sigungucode = eval($("#test1").val()); 
             
         	var url2 ="";
             url2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="

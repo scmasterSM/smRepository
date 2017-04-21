@@ -21,10 +21,17 @@ public class ClipDao {
 		return result;
 	}
 	
-	public List<Clip> readCLip(String USER_ID){
+	public List<Clip> readCLip(String user_id){
 		ClipMapper mapper =sqlsession.getMapper(ClipMapper.class);
-		List<Clip>cList=mapper.readCLip(USER_ID);
+		List<Clip>cList=mapper.readCLip(user_id);
 		return cList;
+	}
+	
+	public int deleteClip(Clip clip){
+		ClipMapper mapper =sqlsession.getMapper(ClipMapper.class);
+		int result;
+		result = mapper.deleteClip(clip);
+		return result;
 	}
 	
 }

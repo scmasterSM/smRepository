@@ -24,19 +24,25 @@ public class ClipController {
 	
 	@ResponseBody
 	@RequestMapping(value="clipBoard", method=RequestMethod.POST)
-	public Clip clipBoard(Clip clip, HttpSession session){
-		String id= "1";
-		clip.setUSER_ID(id);
-		dao.insertClip(clip);
-		return clip;
+	public int clipBoard(Clip clip, HttpSession session){
+		String user_id=(String)session.getAttribute("user_id");
+		clip.setUSER_ID(user_id);
+		int result=0;
+			
+		result=dao.deleteClip(clip);		
+		if(result == 1){
+			result=0;	
+		}else{
+			result=dao.insertClip(clip);
+		}
+		return result;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="readClip",method=RequestMethod.GET)
 	public List<Clip> readClip(HttpSession session, Model model){
-		/*String id=session.getAttribute('USER_ID');*/
-		String USER_ID= "1";
-		List<Clip>cList = dao.readCLip(USER_ID); 
+		String user_id=(String)session.getAttribute("user_id"); 
+		List<Clip>cList = dao.readCLip(user_id); 
 		return cList;
 	}
 	

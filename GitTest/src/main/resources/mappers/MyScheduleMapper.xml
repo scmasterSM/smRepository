@@ -10,15 +10,15 @@
 			from (select scd_sq, max(DTL_CONTENT_ID)q, min(DTL_CONTENT_ID) w
 			from sm_dtl_scd_tb group by scd_sq) d, sm_scd_tb c
 			where d.scd_sq=c.scd_sq and USER_ID=#{USER_ID}
-			order by q desc
+			order by c.scd_sq desc
 	</select>
 	 
 	<select id="scd_daily_ymd" parameterType="int" resultType="HashMap"> 
-	select 	to_char(d.daily_ymd,'YYYY/MM/DD DAY')as"daily_ymd" , t.city_nm,c.DAY_CNT,d.DAILY_ORD,o as daily_cnt 
-	from 	sm_daily_scd_tb d,sm_scd_tb c,(select daily_sq,city_nm,scd_sq,count(daily_sq) o
-  	from sm_dtl_scd_tb group by daily_sq,city_nm,scd_sq)t
+	select 	to_char(d.daily_ymd,'YYYY/MM/DD DAY')as"daily_ymd" , t.city_nm,c.DAY_CNT,d.DAILY_ORD,o as daily_cnt, t.area_code, m as dtl_content_id 
+	from 	sm_daily_scd_tb d,sm_scd_tb c,(select daily_sq,city_nm,scd_sq,area_code,max(DTL_CONTENT_ID) m,count(daily_sq) o
+  	from sm_dtl_scd_tb group by daily_sq,city_nm,scd_sq,area_code)t
 	where 	d.scd_sq=#{scd_sq} and t.daily_sq= d.daily_sq and c.scd_sq = d.scd_sq
-	order by d.DAILY_YMD 
+	order by d.DAILY_YMD
 
 	</select>
 	<select id="scd_info" parameterType="int" resultType="Dtl_Scd">

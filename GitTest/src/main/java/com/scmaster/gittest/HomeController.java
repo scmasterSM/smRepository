@@ -73,14 +73,14 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="SC_07place",method=RequestMethod.GET)
-	public String SC_07place(String CONTENT_ID,String CONTENT_TYPE_ID,Model model,@RequestParam
+	public String SC_07place(Review review,String CONTENT_TYPE_ID,Model model,@RequestParam
 			(value="page",defaultValue="1")	int page){ 
-		int count =dao.tCount(CONTENT_ID);
+		int count =dao.tCount(review.getCONTENT_ID());
 		PageNavigator navi= new PageNavigator(
 				countPerPage, pagePerGrop, page, count);  
-		List<Review>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),CONTENT_ID);
+		ArrayList<HashMap<String, Object>>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),review);
 		model.addAttribute("rList",rList);
-		model.addAttribute("contentid",CONTENT_ID);
+		model.addAttribute("contentid",review.getCONTENT_ID());
 		model.addAttribute("contypeid",CONTENT_TYPE_ID);
 		model.addAttribute("count", count);
 		model.addAttribute("navi", navi);
@@ -88,14 +88,14 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="SC_08",method=RequestMethod.GET)
-	public String SC_08(String CONTENT_ID, Model model,@RequestParam
+	public String SC_08(Review review, Model model,@RequestParam
 			(value="page",defaultValue="1")	int page){ 
-		int count =dao.tCount(CONTENT_ID);
+		int count =dao.tCount(review.getCONTENT_ID());
 		PageNavigator navi= new PageNavigator(
 				countPerPage, pagePerGrop, page, count);  
-		List<Review>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),CONTENT_ID);
+		ArrayList<HashMap<String, Object>>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),review);
 		model.addAttribute("rList",rList);
-		model.addAttribute("contentid",CONTENT_ID); 
+		model.addAttribute("contentid",review.getCONTENT_ID()); 
 		model.addAttribute("count", count);
 		model.addAttribute("navi", navi);
 		return "SC_08";

@@ -36,8 +36,7 @@
         <link rel="stylesheet" href="./resources/css/responsive.css">
         <script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
        	<link rel="stylesheet" href="./resources/css/12css.css">
-  		<script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8&callback=initMap"
-		async defer></script>     	 
+  		<script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8"></script>     	 
 
 <script type="text/javascript"
 	src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script>
@@ -405,16 +404,12 @@
 <script>
 var scd_sq=${scd_sq};
 var info_List=[];
-var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
+var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 var url;
 var myLatLng;
+var markers = [];
 
-var myMarkers=[];
-window.onload=function(){
-	info();
-}
-function info() {
-	
+$(function(){ 
   $(function(){
 	  $.ajax({
 			type : "POST",
@@ -448,10 +443,16 @@ function info() {
 			},
 			dataType: "json",
 			success : function(data){
+				 
 				console.log(data);
+				//여행일수 카운트 
 				var cnt=0;
+				//여행 일정 카운트
 				var j=0;
+				//맵 생성 카운트
 				var mapcount=1;
+				var day_cnt;
+				var DAILY_CNT;
 				var html=""; 
 						html += '<table class="sch_table" width="100%"><colgroup>';
 						html += '<col width="20%" /><col width="20%" /><col width="20%" /><col width="20%" />';
@@ -468,52 +469,71 @@ function info() {
 																	
 						
 					$.each(data,function(index,item){
-						var day_cnt= item.DAY_CNT;
+						
+						day_cnt= item.DAY_CNT;
+						DAILY_CNT=item.DAILY_CNT;
+						var areacode=item.AREA_CODE;
+						/* var contentId=item.DTL_CONTENT_ID;
+						console.log(contentId);
+						var sigungucode;
+						ReadApi(contentId); */
+						
+						 
 						
 						html += '<tr class="white">';
 						html += '<td><div class="scht_date">'+ item.daily_ymd +'</div>';
 						html += '<div class="scht_day">DAY '+ item.DAILY_ORD +'</div></td>';							
 						html += '<td class="scht_vtop">';
-						html += '<div class="scht_city">'+ item.CITY_NM +'</div>';
-						html += '<div class="scht_city_en">Dubrovnik</div>';
+						html += '<div class="scht_city"><a href="sc_05?areacode='+areacode+'">'+ item.CITY_NM +'</a></div>'; 
 						html += '<div class="scht_city_blank"></div></td>';
 						html += '<td class="scht_vtop">';							
-						
-						
-						for(var i=0;i<item.DAILY_CNT;i++){
+						 
+						console.log(DAILY_CNT);
+						for(var i=0;i<item.DAILY_CNT-1;i++){
+							
 							console.log(info_List);
 							
+							console.log(info_List[i].dtl_content_id);
 							
-							 console.log(info_List[j].dtl_content_id);
-							 var contentId=info_List[j].dtl_content_id;
-							 ReadApi(contentId);
-							 $.getJSON(url, function(data){
-								 console.log('success', data);
-								  myLatLng={
-								 			lat : parseFloat(data.response.body.items.item.mapy),
-								 			lng : parseFloat(data.response.body.items.item.mapx)
-								 	}  
+							var contentId=info_List[j].dtl_content_id;
+							console.log(contentId);
+							ReadApi(contentId); 
+						/* $.each(info_List,function(DAILY_CNT,item){
+							console.log(item);	
+							console.log(DAILY_CNT);
+							 */
+							$.getJSON(url, function(data){ 
 								 	
-							 })
+							 }) 
 							 
-						console.log(myLatLng);
+						  
 						html += '<div class="scht_spotname">';
-						html += '<b>1.</b>'+info_List[j].place_nm+'</div>'; 
+						html += '<b>1.</b>'+info_List[j].place_nm+'</div>';
+						/* html += '<b>1.</b>'+item.place_nm+'</div>';  */
 						j=j+1;
 						}
-						$.getJSON(url, function(data){
-							
-							initMap(myLatLng,day_cnt);
-						})
+						/* })	 */
+						 
 						console.log("map    "+mapcount);
 						html += '</td>';
 						html += '<td class="scht_vtop">';
 						html += '<div class="scht_htname"><div class="map" id="map'+mapcount+'"></div></div></td>';						
 						html += '</tr>';
 						mapcount=mapcount+1
+						
 					})
+					$.getJSON(url, function(data){
+						 console.log('success', data);	  
+						myLatLng={
+					 			lat : parseFloat(data.response.body.items.item.mapy),
+					 			lng : parseFloat(data.response.body.items.item.mapx)
+					 	}   
+							 initMap(myLatLng,day_cnt);
+							 	
+						 })
 					html += '</div></table></div>'; 
-					$("#scd_info").html(html); 
+					$("#scd_info").html(html);
+					
 			},
 			error : function(e){
 				console.log(e);
@@ -521,7 +541,7 @@ function info() {
 		});			
 			
 	}); 
- }  
+ })  
 
 function ReadApi(contentId) { /* currentPage가 어디서 호출되어 온다 */
 	url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
@@ -530,19 +550,17 @@ function ReadApi(contentId) { /* currentPage가 어디서 호출되어 온다 */
 	url += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&transGuideYN=Y&_type=json";
 	
 }
+
 var map=[];
 
 function initMap(myLatLng,day_cnt) {
-	console.log(day_cnt);
+	console.log(myLatLng);
 	
 	var count=0;
 	for(var i=0;i<day_cnt;i++){	
-		myLatLng = {
-		lat : 36.242072,
-		lng : 127.655798
-	};
+		
 	var zoom = 7;
-	map = new google.maps.Map(document.getElementById('map'+(1+count)), {
+	map[i] = new google.maps.Map(document.getElementById('map'+(1+count)), {
 		center : myLatLng,
 		zoom : zoom
 	});
@@ -550,12 +568,28 @@ function initMap(myLatLng,day_cnt) {
 	count=count+1;
 	}
 	
-} 
-	 
+	console.log(map[0]);
+	console.log(map[1]);
+	console.log(map[2]); 	
 	
+}  
 
-
-
+function makeMarker(city){
+    var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(city.lat, city.lng),
+        map: map,
+       /*  title: city.name, */
+        /* lat:city.lat,
+        lng:city.lng,
+        labelContent: city.name,
+      labelAnchor: new google.maps.Point(-11, 30),
+     labelClass: "labels", // the CSS class for the label
+      labelStyle: {opacity: 0.75} */
+    });
+    markers.push(marker);
+    /* addMarkerListener(marker); */
+    return marker;
+}
 </script>
 
 </html>
