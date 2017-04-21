@@ -29,48 +29,29 @@ public class MyScheduleController {
 	@ResponseBody
 	@RequestMapping(value="read_scd",method=RequestMethod.GET)
 	public ArrayList<HashMap<String, Object>> read_scd(HttpSession session, Model model){
-		/*String id=session.getAttribute('USER_ID');*/
-		String user_id= "1"; 
+		String user_id=(String)session.getAttribute("user_id");  
 		ArrayList<HashMap<String, Object>>scdList = dao.read_scd(user_id); 
 		return scdList;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="read_scd_info",method=RequestMethod.POST)
-	public ArrayList<HashMap<String, Object>> read_scd_info(HttpSession session, Model model,int scd_sq){
-		//String id=session.getAttribute('USER_ID');
-		String user_id= "1"; 
-		ArrayList<HashMap<String, Object>>daily_List = dao.scd_daily_ymd(scd_sq);
-		
-		
+	public ArrayList<HashMap<String, Object>> read_scd_info(HttpSession session,int scd_sq){
+		/*String user_id=(String)session.getAttribute("user_id");
+		schedule.setUser_id(user_id);*/
+		ArrayList<HashMap<String, Object>>daily_List = dao.scd_daily_ymd(scd_sq); 
 		System.out.println(daily_List);
 		return daily_List; 
 	}
 	@ResponseBody
 	@RequestMapping(value="scd_info",method=RequestMethod.POST)
-	public ArrayList<Dtl_Scd> scd_info(HttpSession session, Model model,int scd_sq){		
+	public ArrayList<Dtl_Scd> scd_info(HttpSession session,int scd_sq){
+		/*String user_id=(String)session.getAttribute("user_id");
+		schedule.setUser_id(user_id);*/
 		ArrayList<Dtl_Scd> d_scdList = dao.scd_info(scd_sq);
 		System.out.println(d_scdList);
 		return d_scdList; 
-	}
-	
-	
-	/*@ResponseBody
-	@RequestMapping(value="scd_daily_ymd",method=RequestMethod.POST)
-	public ArrayList<Daily_Scd> scd_daily_ymd(HttpSession session, Model model,int scd_sq){		
-		ArrayList<Daily_Scd> d_scdList = dao.scd_daily_ymd(scd_sq); 
-		return d_scdList; 
-	}*/
-	
-	/*@RequestMapping(value="read_scd_info",method=RequestMethod.GET)
-	public String read_scd_info(int scd_sq,Model model){
-		ArrayList<HashMap<String, Object>>daily_List=dao.scd_daily_ymd(scd_sq);
-		int day_cnt=dao.day_cnt(scd_sq);
-		System.out.println(daily_List);
-		model.addAttribute("day_cnt", day_cnt);
-		model.addAttribute("daily_List", daily_List);
-		return "SC_12";
-	}*/
+	} 
 	
 	
 }

@@ -12,54 +12,196 @@
     <meta name="keyword" content="html, css, bootstrap, job-board">
     <meta name="author" content="Ohidul">
 
-    <title>Blog Post - Start Bootstrap Template</title>
+<!-- Bootstrap Core CSS -->
+<link
+	href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800'
+	rel='stylesheet' type='text/css'>
 
-    <!-- Bootstrap Core CSS -->
-      <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800' rel='stylesheet' type='text/css'>
+<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
 
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-        <link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="./resources/css/normalize.css">
+<link rel="stylesheet" href="./resources/css/font-awesome.min.css">
+<link rel="stylesheet" href="./resources/css/fontello.css">
+<link rel="stylesheet" href="./resources/css/animate.css">
+<link rel="stylesheet" href="./resources/css/bootstrap.css">
+<link rel="stylesheet" href="./resources/css/owl.carousel.css">
+<link rel="stylesheet" href="./resources/css/owl.theme.css">
+<link rel="stylesheet" href="./resources/css/owl.transitions.css">
+<link rel="stylesheet" href="./resources/css/style.css">
+<link rel="stylesheet" href="./resources/css/responsive.css">
+<!--Stylesheets-->
+<link href="./resources/css/jquery.modal.css" type="text/css" rel="stylesheet" />
+<script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
+<!-- Custom CSS -->
+<link href="./resources/css/08bootstrap/css/bootstrap.css" rel="stylesheet">    
+<link href="./resources/css/08bootstrap/css/blog-post.css" rel="stylesheet">
+<!-- <script src="./resources/js/jquery-3.1.1.js"></script> -->
+<script src="./resources/js/jquery.min.js"></script>
+<%-- <script type="text/javascript"src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script> --%>
+<!-- jQuery -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="./resources/js/jquery.modal.js"></script> 
 
-        <link rel="stylesheet" href="./resources/css/normalize.css">
-        <link rel="stylesheet" href="./resources/css/font-awesome.min.css">
-        <link rel="stylesheet" href="./resources/css/fontello.css">
-        <link rel="stylesheet" href="./resources/css/animate.css">        
-        <link rel="stylesheet" href="./resources/css/bootstrap.css">
-        <link rel="stylesheet" href="./resources/css/owl.carousel.css">
-        <link rel="stylesheet" href="./resources/css/owl.theme.css">
-        <link rel="stylesheet" href="./resources/css/owl.transitions.css">
-        <link rel="stylesheet" href="./resources/css/style.css">
-        <link rel="stylesheet" href="./resources/css/responsive.css">
-        <script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
-        <script type="text/javascript"src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script>
-        
-    <link href="./resources/css/08bootstrap/css/bootstrap.css" rel="stylesheet">    
-	
-    <!-- Custom CSS -->
-    <link href="./resources/css/08bootstrap/css/blog-post.css" rel="stylesheet">
-
-
+  	
+<link rel ="stylesheet" href ="./resources/css/08css.css"> 
  
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>sc_08행사 상세 정보 화면</title>
 <link rel ="stylesheet" href ="./resources/css/08css.css">
  
-<script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8&callback=initMap"
-		async defer></script>
+<script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8"></script>
+<script src="./resources/js/bootstrap.min.js"></script>
+<script src="./resources/js/owl.carousel.min.js"></script>
+<script src="./resources/js/wow.js"></script>
+<script src="./resources/js/main.js"></script>  		
 <script type="text/javascript">
 
 window.onload=function(){
 	l_Data();
 	r_Data();
 	f_Data()
-    }
+    };
 function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어 온다
 	var form=document.getElementById("pagingForm");
 	var page=document.getElementById("page"); 
 	page.value=currentPage; 
 	form.submit();
 }
+
+var check = 0;
+var inner = null;
+var updatenum = 0;
+
+function replyUpdateForm(REV_SQ, CONTENT_ID){
+   
+   if(check == 1 && REV_SQ == updatenum){
+      document.getElementById(REV_SQ).innerHTML = inner;
+      check=0;
+      return;
+   }
+   
+   if(updatenum != REV_SQ && updatenum != ''){
+      document.getElementById(updatenum).innerHTML = inner;
+   }
+   
+   
+   updatenum = REV_SQ;
+   inner = document.getElementById(REV_SQ).innerHTML;
+   
+   document.getElementById(REV_SQ).innerHTML = 
+      "<input type='text' name='text' id='reply' class='replyUpdate' value='"+inner+"'>"
+      +"<input type='button' value='수정' onclick='replyUpdate("+REV_SQ+","+CONTENT_ID+")'>";
+      
+   check = 1;
+}
+
+function replyUpdate(REV_SQ, CONTENT_ID){
+   
+   text = $("#reply").val();
+   console.log(text);
+   $.ajax({
+      
+      type : "post",
+      url : "updateReview",
+      data : {
+    	 REV_TXT : text,
+         REV_SQ : REV_SQ,
+         CONTENT_ID : CONTENT_ID
+      },
+      success : function(data){
+         
+         console.log(data);
+          var html ="";
+         
+          $.each(data,function(index,item){
+             console.log(item);
+             
+            html+= "<div class='media'>";
+            html+= "<a class='pull-left' href='#'>";
+            html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+            html+= '<div class="media-body">';
+            html+= '<div class="media-heading"><h4>'+item.USER_ID;
+            html+= '<small>'+item.UPD_YMD;
+            html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
+            html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+            html+= "</small></h4></div>";
+            html+= "<pre>";
+            html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
+			html+= "</pre></div></div>"; 
+          }) 
+          $("#review").html(html); 
+             
+      },
+      error : function(e){
+         console.log(e);
+         }
+   })   
+   
+   check=0;
+   updatenum = 0;
+}
+
+function deleteReply(REV_SQ, CONTENT_ID){
+	
+	$.ajax({
+		
+		type : "post",
+		url : "deleteReview",
+		data : {
+			REV_SQ : REV_SQ,
+	        CONTENT_ID : CONTENT_ID
+		},
+		success : function(data){
+			console.log(data);
+			var html ="";
+			var html2 ="";
+				$.each(data.rList, function(index,item){
+					   
+	                  html+= "<div class='media'>";
+	                  html+= "<a class='pull-left' href='#'>";
+	                  html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+	                  html+= '<div class="media-body">';
+	                  html+= '<div class="media-heading"><h4>'+item.USER_ID;
+	                  html+= '<small>'+item.UPD_YMD; 
+	                  html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
+	                  html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+	                  html+= "</small></h4></div>";
+	                  html+= "<pre>";
+	                  html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
+	      			  html+= "</pre></div></div>";
+	                })
+	                  html2+='<div align="center">';
+	                  var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+	                  html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+	                  var onepageback=data.navi.currentPage -1
+	                  html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+	                  var j=0;
+	                  for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
+	                     j=j+1;
+	                     console.log(j);
+	                      html2+='<a href="javascript:pagingFormSubmit('+data.navi.startPageGroup + 1+')">'+j+' </a>'; 
+	                  } 
+	                  html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + 1+')">▶ </a>';
+	                  html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + data.navi.pagePerGroup+')">▶▶</a></div>';
+	                  html2+='<form action="SC_08" method="get" id="pagingForm">';
+	                  html2+='<input type="hidden" id="page" name="page">';
+	                  html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';	                  
+	                  html2+='</form></div>'; 
+	                
+	                $("#review").html(html);
+	                $("#paging").html(html2);
+
+			$("#replytable").html(html);
+		},
+		error : function(e){
+			console.log(e);
+		}
+	})
+		
+}
+
  
 var map;
 var myLatLng;
@@ -99,6 +241,7 @@ function l_Data(){
     	
     	var CONTENT_ID=data.response.body.items.item.title;
     	var areacode=data.response.body.items.item.areacode;
+    	var sigungucode=data.response.body.items.item.sigungucode;
     	
     	initMap(myLatLng,data);
         console.log('success', data);
@@ -120,14 +263,21 @@ function l_Data(){
         }
         $("#placeInfo").html(data.response.body.items.item.overview);
        
-        $("#addr").html('<a href="sc_05?areacode='+areacode+'">'+addr1+'</a>'); //areacode드를 보내 주면 될듯       	
+        $("#addr").html('<a href="sc_05?areacode='+areacode+'&sigungucode='+sigungucode+'">'+addr1+'</a>'); //areacode드를 보내 주면 될듯       	
         
     });
+        
+	    var html ="";
 	    $.getJSON(url2, function(data) {
+	    	console.log('success', data);
+	    	console.log(data.response.body.items.item.eventstartdate);
+	    	if (typeof(data.response.body.items.item.playtime) !== "undefined") {
+	   		html += "<h4>행사일정 : "+data.response.body.items.item.playtime+"</h4>";	   		
+	    	}else if(typeof(data.response.body.items.item.eventstartdate)!=="undefined" ){
+	    	html += "<h4>행사일정 : "+data.response.body.items.item.eventstartdate+"~"+data.response.body.items.item.eventenddate+"</h4>";
+	    	}
 	    	
-	    	 console.log('success', data);
-	    	 console.log(data.response.body.items.item.playtime);
-	   	$("#eventDate").html("<h4>행사일정 : "+data.response.body.items.item.playtime+"</h4>");
+	    	$("#eventDate").html(html);
 	    }); 
     
 }
@@ -268,18 +418,19 @@ function f_Data(){
 					 var html ="";
 					 var html2 ="";
 					 $.each(data.rList,function(index,item){
-						 console.log(item);
-						 console.log(data.navi);
-						 console.log(data.navi.endPageGroup);
-						html+= "<div class='media'>";
-						html+= "<a class='pull-left' href='#'>";
-						html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
-						html+= '<div class="media-body">';
-						html+= '<div class="media-heading"><h4>'+item.user_ID;
-						html+= '<small>'+item.inp_YMD+'</small>';
-						html+= '</h4></div>';
-						html+= item.rev_TXT;
-						html+= '</div></div>'; 
+						  
+						 html+= "<div class='media'>";
+		                 html+= "<a class='pull-left' href='#'>";
+		                 html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+		                 html+= '<div class="media-body">';
+		                 html+= '<div class="media-heading"><h4>'+item.USER_ID;
+		                 html+= '<small>'+item.UPD_YMD;
+		                 html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
+		                 html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+		                 html+= "</small></h4></div>";
+		                 html+= "<pre>";
+		                 html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
+		      			 html+= "</pre></div></div>";
 					 })
 						html2+='<div align="center">';
 						var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
@@ -290,7 +441,7 @@ function f_Data(){
 						 for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
 							j=j+1;
 							console.log(j);
-							 html2+='<a href="javascript:pagingFormSubmit('+data.navi.startPageGroup + 1+')">'+j+'</a>'; 
+							 html2+='<a href="javascript:pagingFormSubmit('+data.navi.startPageGroup + 1+')">'+j+' </a>'; 
 						} 
 						html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + 1+')">▶</a>';
 						html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + data.navi.pagePerGroup+')">▶▶</a></div>';
@@ -331,7 +482,20 @@ $(function(){
 				
 				success : function(data){
 					console.log(data);
-					alert('성공');
+					
+			               if(data==1){
+			               	modal({
+			       				type: 'success',
+			       				title: '클립성공',
+			       				text: '클립보드에 저장되었습니다!',
+			               	}); 
+			               }else{
+			            	   modal({
+			       				type: 'error',
+			       				title: '클립취소',
+			       				text: '클립을 해제하였습니다!',
+			       			});
+			               }
 					
 				},
 				error : function(e){
@@ -454,8 +618,15 @@ function locationObj(){
                     <div class="media-body">
                         <div class="media-heading"><h4>${reply.USER_ID}
                             <small>${reply.INP_YMD}</small>
+                            <!-- 아이디 비교 -->
+                            <%-- <c:if test="${ID == reply.USER_ID}"> --%>
+                     <small><a href="javascript:replyUpdateForm('${reply.REV_SQ}','${reply.CONTENT_ID}')">수정</a>
+                     		<a href="#none" onclick="deleteReply('${reply.REV_SQ}','${reply.CONTENT_ID}')">삭제</a></small>
+                     <%-- </c:if> --%>
                         </h4></div>
-                        ${reply.REV_TXT}
+                       	<pre>
+                        <div id="${reply.REV_SQ}" class="review_txt">${reply.REV_TXT}</div>
+                        </pre>
                     </div>
                 </div>
 				</c:forEach>
@@ -576,19 +747,7 @@ function locationObj(){
 
     </div>
     
-    <!-- /.container -->
-
-    <!-- jQuery -->
-    
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    
-    <script src="./resources/js/bootstrap.min.js"></script>
-    <script src="./resources/js/owl.carousel.min.js"></script>
-    <script src="./resources/js/wow.js"></script>
-    <script src="./resources/js/main.js"></script>
-    <script src="./resources/css/08bootstrap/js/bootstrap.js"></script>
+ 
 	
 </body>
 </html>

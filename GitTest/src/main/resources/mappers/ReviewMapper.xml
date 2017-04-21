@@ -6,20 +6,20 @@
 <mapper namespace="com.scmaster.gittest.dao.ReviewMapper">
 
 	<!-- Review 리스트 가져오기 --> 
-	<select id="readReview" resultType="Review" parameterType="String">
+	<select id="readReview" resultType="HashMap" parameterType="Review">
 		SELECT
 			REV_SQ
 			, USER_ID
 			, CONTENT_ID
 			, REV_TXT
 			, INP_YMD
-			, UPD_YMD
+			, to_char(UPD_YMD,'YYYY-MM-DD HH24:MI:SS') as "UPD_YMD"
 		FROM 
 			SM_REVIEW_TB
 		where 
 		CONTENT_ID = #{CONTENT_ID}
 		ORDER BY
-			REV_SQ DESC
+			INP_YMD DESC , REV_SQ
 	</select>
 	
 	<!-- 페이징 관련 리뷰글수 -->
@@ -52,7 +52,31 @@
 			
 		)
 	</insert>
+	<update id="updateReview" parameterType="Review">
+	update
+		SM_REVIEW_TB
+		set 
+		REV_TXT = #{REV_TXT}	
+		,UPD_YMD = sysdate
+	where 
+		REV_SQ=#{REV_SQ}
+	and	
+		CONTENT_ID = #{CONTENT_ID}
+	and 
+		USER_ID=#{USER_ID}
+	</update>
 	
-	
+	<delete id="deleteReview" parameterType="Review">
+	delete
+		from
+			SM_REVIEW_TB
+		where
+			REV_SQ=#{REV_SQ}
+		and	
+			CONTENT_ID = #{CONTENT_ID}
+		and 
+			USER_ID=#{USER_ID}
+			
+	</delete>
 
 </mapper>

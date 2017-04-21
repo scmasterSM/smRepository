@@ -11,94 +11,253 @@
     <meta name="keyword" content="html, css, bootstrap, job-board">
     <meta name="author" content="Ohidul">
 
-    <title>Blog Post - Start Bootstrap Template</title>
+ 
+		
+<!-- Bootstrap Core CSS -->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800'
+	rel='stylesheet' type='text/css'>
 
-    <!-- Bootstrap Core CSS -->
-      <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800' rel='stylesheet' type='text/css'>
+<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
 
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-        <link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="./resources/css/normalize.css">
+<link rel="stylesheet" href="./resources/css/font-awesome.min.css">
+<link rel="stylesheet" href="./resources/css/fontello.css">
+<link rel="stylesheet" href="./resources/css/animate.css">
+<link rel="stylesheet" href="./resources/css/bootstrap.css">
+<link rel="stylesheet" href="./resources/css/owl.carousel.css">
+<link rel="stylesheet" href="./resources/css/owl.theme.css">
+<link rel="stylesheet" href="./resources/css/owl.transitions.css">
+<link rel="stylesheet" href="./resources/css/style.css">
+<link rel="stylesheet" href="./resources/css/responsive.css">
+<!--Stylesheets-->
+<link href="./resources/css/jquery.modal.css" type="text/css" rel="stylesheet" />
+<script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
+<!-- Custom CSS -->
+<link href="./resources/css/08bootstrap/css/bootstrap.css" rel="stylesheet">    
+<link href="./resources/css/08bootstrap/css/blog-post.css" rel="stylesheet">
+<!-- <script src="./resources/js/jquery-3.1.1.js"></script> -->
+<script src="./resources/js/jquery.min.js"></script>
+<%-- <script type="text/javascript"src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script> --%>
+<!-- jQuery -->
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript" src="./resources/js/jquery.modal.js"></script> 
 
-        <link rel="stylesheet" href="./resources/css/normalize.css">
-        <link rel="stylesheet" href="./resources/css/font-awesome.min.css">
-        <link rel="stylesheet" href="./resources/css/fontello.css">
-        <link rel="stylesheet" href="./resources/css/animate.css">        
-        <link rel="stylesheet" href="./resources/css/bootstrap.css">
-        <link rel="stylesheet" href="./resources/css/owl.carousel.css">
-        <link rel="stylesheet" href="./resources/css/owl.theme.css">
-        <link rel="stylesheet" href="./resources/css/owl.transitions.css">
-        <link rel="stylesheet" href="./resources/css/style.css">
-        <link rel="stylesheet" href="./resources/css/responsive.css">
-        <script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
-        <script type="text/javascript"src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script>
-        
-    <link href="./resources/css/08bootstrap/css/bootstrap.css" rel="stylesheet">    
-	
-    <!-- Custom CSS -->
-    <link href="./resources/css/08bootstrap/css/blog-post.css" rel="stylesheet">
-<link rel ="stylesheet" href ="./resources/css/07css.css">
+  	
+<link rel ="stylesheet" href ="./resources/css/07css.css"> 
  
 <head>
-<script type="text/javascript"src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>장소화면</title>
 
-<script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8&callback=initMap"
-		async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8"></script>
+<script>
+	window.jQuery
+			|| document
+					.write('<script src="./resources/js/vendor/jquery-1.10.2.min.js"><\/script>')
+</script>
+<script src="./resources/js/bootstrap.min.js"></script>
+<script src="./resources/js/owl.carousel.min.js"></script>
+<script src="./resources/js/wow.js"></script>
+<script src="./resources/js/main.js"></script>    
+
+ 
 <script type="text/javascript">
+ 
+
 function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어 온다
-	var form=document.getElementById("pagingForm");
-	var page=document.getElementById("page"); 
-	page.value=currentPage; 
-	form.submit();
+   var form=document.getElementById("pagingForm");
+   var page=document.getElementById("page"); 
+   page.value=currentPage; 
+   form.submit();
 }
+
+var check = 0;
+var inner = null;
+var updatenum = 0;
+
+function replyUpdateForm(REV_SQ, CONTENT_ID){
+   
+   if(check == 1 && REV_SQ == updatenum){
+      document.getElementById(REV_SQ).innerHTML = inner;
+      check=0;
+      return;
+   }
+   
+   if(updatenum != REV_SQ && updatenum != ''){
+      document.getElementById(updatenum).innerHTML = inner;
+   }
+   
+   
+   updatenum = REV_SQ;
+   console.log(REV_SQ);
+   inner = document.getElementById(REV_SQ).innerHTML;
+   console.log(inner);
+   
+   document.getElementById(REV_SQ).innerHTML = 
+	   "<textarea class='form-control' name='text' id='reply' rows='3'>"+inner+"</textarea>"
+      +"<a href='#' class='btn btn-primary' onclick='replyUpdate("+REV_SQ+","+CONTENT_ID+")'>수정</a>";
+        
+      
+      
+   check = 1;
+}
+
+function replyUpdate(REV_SQ, CONTENT_ID){
+   
+   text = $("#reply").val();
+   console.log(text);
+   $.ajax({
+      
+      type : "post",
+      url : "updateReview",
+      data : {
+    	 REV_TXT : text,
+         REV_SQ : REV_SQ,
+         CONTENT_ID : CONTENT_ID
+      },
+      success : function(data){
+         
+         console.log(data);
+          var html ="";
+         
+          $.each(data,function(index,item){
+             console.log(item);
+             
+            html+= "<div class='media'>";
+            html+= "<a class='pull-left' href='#'>";
+            html+= "<img class='media-object' src='http://placehold.it/64x64' alt=''></a>";
+            html+= "<div class='media-body'>";
+            html+= "<div class='media-heading'><h4>"+item.USER_ID;
+            html+= "<small>"+item.UPD_YMD;
+            html+= "<a href='javascript:replyUpdateForm("+item.REV_SQ+","+item.CONTENT_ID+")'> 수정 </a> ";
+            html+= "<a href='#none' onclick='deleteReply("+item.REV_SQ+","+item.CONTENT_ID+")'> 삭제 </a>";
+            html+= "</small></h4></div>";
+            html+= "<pre>";
+            html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
+			html+= "</pre></div></div>"; 
+          }) 
+          $("#review").html(html);
+          
+          
+              
+      },
+      error : function(e){
+         console.log(e);
+         }
+   })   
+   
+   check=0;
+   updatenum = 0;
+}
+
+function deleteReply(REV_SQ, CONTENT_ID){
+	
+	$.ajax({
+		
+		type : "post",
+		url : "deleteReview",
+		data : {
+			REV_SQ : REV_SQ,
+	        CONTENT_ID : CONTENT_ID
+		},
+		success : function(data){
+			console.log(data);
+			var html ="";
+			var html2 ="";
+				$.each(data.rList, function(index,item){
+					   
+	                  html+= "<div class='media'>";
+	                  html+= "<a class='pull-left' href='#'>";
+	                  html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+	                  html+= '<div class="media-body">';
+	                  html+= '<div class="media-heading"><h4>'+item.USER_ID;
+	                  html+= '<small>'+item.UPD_YMD; 
+	                  html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
+	                  html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+	                  html+= "</small></h4></div>";
+	                  html+= "<pre>";
+	                  html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
+	      			  html+= "</pre></div></div>";
+	                })
+	                  html2+='<div align="center">';
+	                  var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+	                  html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+	                  var onepageback=data.navi.currentPage -1
+	                  html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+	                  var j=0;
+	                  for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
+	                     j=j+1;
+	                     console.log(j);
+	                      html2+='<a href="javascript:pagingFormSubmit('+data.navi.startPageGroup + 1+')">'+j+' </a>'; 
+	                  } 
+	                  html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + 1+')">▶ </a>';
+	                  html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + data.navi.pagePerGroup+')">▶▶</a></div>';
+	                  html2+='<form action="SC_07place" method="get" id="pagingForm">';
+	                  html2+='<input type="hidden" id="page" name="page">';
+	                  html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';
+	                  html2+='<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">';
+	                  html2+='</form></div>'; 
+	                
+	                $("#review").html(html);
+	                $("#paging").html(html2);
+
+			$("#replytable").html(html);
+		},
+		error : function(e){
+			console.log(e);
+		}
+	})
+		
+}
+
 
 var map;
 var myLatLng;
 var CONTENT_ID;
-    var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
-	
+    var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
+   
     //장소바꿀때 전 단계에서 contentId를 받아와서 바꾸면 될듯
     var contentTypeId = ${contypeid}; 
     var contentId = ${contentid};
     
-  	var lat;
-  	var lng;
-  	
-  	//선택된 장소의 이름, 대표 사진, 장소 설명, 좌표 불러오는API
+     var lat;
+     var lng;
+     
+     //선택된 장소의 이름, 대표 사진, 장소 설명, 좌표 불러오는API
     var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
     url += "&mapX&mapY";
     url += "&contentTypeId="+contentTypeId+"&contentId="+contentId;
     url += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&transGuideYN=Y&_type=json";
-	
+   
     var url2= "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro?ServiceKey="+key;
-		url2 +=	"&contentTypeId="+contentTypeId+"&contentId="+contentId+"&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&introYN=Y&_type=json";
+      url2 +=   "&contentTypeId="+contentTypeId+"&contentId="+contentId+"&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&introYN=Y&_type=json";
     
     window.onload=function(){
-    	l_Data();
-    	r_Data();
-    	f_Data();
+       l_Data();
+       r_Data();
+       f_Data();
 }
 
 function l_Data(){
-	var html ="";//선택된 장소의 이름과 대표 사진 장소 설명 불러오기
+   var html ="";//선택된 장소의 이름과 대표 사진 장소 설명 불러오기
     console.log(url);
     $.getJSON(url, function(data) {
-    	myLatLng={
-    			lat : parseFloat(data.response.body.items.item.mapy),
-    			lng : parseFloat(data.response.body.items.item.mapx)
-    	}
-    	
-    	var CONTENT_ID=data.response.body.items.item.title;
-    	var areacode=data.response.body.items.item.areacode;
-    	console.log(CONTENT_ID); 
-    	console.log(contentTypeId); 
-    	
-    	 var addr=data.response.body.items.item.addr1;
+       myLatLng={
+             lat : parseFloat(data.response.body.items.item.mapy),
+             lng : parseFloat(data.response.body.items.item.mapx)
+       }
+        
+       var CONTENT_ID=data.response.body.items.item.title;
+       var areacode=data.response.body.items.item.areacode;
+       var sigungucode=data.response.body.items.item.sigungucode;
+        
+       
+        var addr=data.response.body.items.item.addr1;
          var addr1=addr.split(" ",1);
-    	
-    	initMap(myLatLng,data);
+       
+       initMap(myLatLng,data);
         console.log('sucess', data);
         /* for( var i = 0 ; i < data.response.body.totalCount ; i++){
             console.log( data.response.body.items.item[i] );
@@ -108,140 +267,139 @@ function l_Data(){
         console.log(data.response.body.items.item);
         $("#placeName").html(data.response.body.items.item.title);
         if (typeof (data.response.body.items.item.firstimage) !== "undefined") {
-        $("#placeImg").html('<img src='+data.response.body.items.item.firstimage+'>');        	
+        $("#placeImg").html('<img src='+data.response.body.items.item.firstimage+'>');           
         }else{
-        $("#placeImg").html('<img src="./resources/image/noimage.jpg">');	
+        $("#placeImg").html('<img src="./resources/image/noimage.jpg">');   
         }
         $("#placeInfo").html(data.response.body.items.item.overview);
-        $("#addr").html('<a href="sc_05?areacode='+areacode+'">'+addr1+'</a>');
-   		html += "주소 : "+ data.response.body.items.item.addr1+"<br>";
-   		if (typeof (data.response.body.items.item.tel) !== "undefined") {
+        $("#addr").html('<a href="sc_05?areacode='+areacode+'&sigungucode='+sigungucode+'">'+addr1+'</a>');
+         html += "주소 : "+ data.response.body.items.item.addr1+"<br>";
+         if (typeof (data.response.body.items.item.tel) !== "undefined") {
         html += "전화번호 : " + data.response.body.items.item.tel;
-   		}
+         }
         $("#pInfo").html(html);
         html="";
     });
     
    
     $.getJSON(url2, function(data) {
-    	
-   	console.log('success', data);
-   	console.log(data.response.body.items.item.treatmenu);
-   	console.log(typeof(data.response.body.items.item.treatmenu));
-   	
+       
+      console.log('success', data);
+      
+      
    if (typeof (data.response.body.items.item.treatmenu) !== "undefined") {
-  		html += "영업 시간 : " + data.response.body.items.item.opentimefood+"<br>";
-  		html += "메뉴 : " + data.response.body.items.item.treatmenu.split("<br />",4);
-  		
-  	}else if(typeof (data.response.body.items.item.usetime) !== "undefined"){
-  		html += "이용 시간 : "+ data.response.body.items.item.usetime+"<br>";
-  	}else if(typeof (data.response.body.items.item.restdate) !== "undefined"){
-  		html += "쉬는 날 : "+ data.response.body.items.item.restdate+"<br>";
-  	}else if(typeof (data.response.body.items.item.expguide) !== "undefined" && data.response.body.items.item.expguide!==null){
-  		html += data.response.body.items.item.expguide+"<br>";
-  	}else if(typeof (data.response.body.items.item.infocenter) !== "undefined"){
-  		html += "문의 및 안내 : "+ data.response.body.items.item.infocenter+"<br>";
-  	}else if(typeof (data.response.body.items.item.playtime) !== "undefined"){
-  		html += "축제기간 : "+ data.response.body.items.item.playtime+"<br>";
-  	}
-  		$("#pInfo2").html(html);
-  		html="";
+        html += "영업 시간 : " + data.response.body.items.item.opentimefood+"<br>";
+        html += "메뉴 : " + data.response.body.items.item.treatmenu.split("<br />",4);
+        
+     }else if(typeof (data.response.body.items.item.usetime) !== "undefined"){
+        html += "이용 시간 : "+ data.response.body.items.item.usetime+"<br>";
+     }else if(typeof (data.response.body.items.item.restdate) !== "undefined"){
+        html += "쉬는 날 : "+ data.response.body.items.item.restdate+"<br>";
+     }else if(typeof (data.response.body.items.item.expguide) !== "undefined" && data.response.body.items.item.expguide!==null){
+        html += data.response.body.items.item.expguide+"<br>";
+     }else if(typeof (data.response.body.items.item.infocenter) !== "undefined"){
+        html += "문의 및 안내 : "+ data.response.body.items.item.infocenter+"<br>";
+     }else if(typeof (data.response.body.items.item.playtime) !== "undefined"){
+        html += "축제기간 : "+ data.response.body.items.item.playtime+"<br>";
+     }
+        $("#pInfo2").html(html);
+        html="";
    }); 
     
 }
 
 //주변 관광지
 function r_Data(){
-		 $.getJSON(url, function(data) {
-			areacode=data.response.body.items.item.areacode;
-		    sigungucode=data.response.body.items.item.sigungucode;
-			 
-		 
-		var cTypeId; 
-		console.log(areacode); 
-		console.log(sigungucode); 
-		
-		var url3= "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key;
-		url3 += "&contentTypeId=12&areaCode=" + areacode + "&sigunguCode=" + sigungucode + "&cat1=&cat2=&cat3=&listYN=Y";
-		url3 += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=Q&numOfRows=100"; 
-	    
-	    
-		$.getJSON(url3, function(data) {
-			var length=data.response.body.items.item.length
-			console.log('success', data);
-			var j=0;
-			
-			
-           		for( var i = 0 ; i < 3 ; i++){
-				var j=j+1;
-		         	console.log( data.response.body.items.item.length);
-		           	var val = Math.floor( Math.random()*length);
-		           	var con=data.response.body.items.item[val].contentid;
- 		           	console.log(con);
-					console.log(val);
-					console.log( data.response.body.items.item[val].title);
-					var conType=data.response.body.items.item[val].contenttypeid;
-					if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
-					$("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
-					}else{
-						$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
-					}
-					
-					$("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
-					$("#rplaceaddr"+ j).html(data.response.body.items.item[val].addr1);
- 		           	}
-		})
-		
-		 });
+       $.getJSON(url, function(data) {
+         areacode=data.response.body.items.item.areacode;
+          sigungucode=data.response.body.items.item.sigungucode;
+          
+       
+      var cTypeId; 
+      console.log(areacode); 
+      console.log(sigungucode); 
+      
+      var url3= "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key;
+      url3 += "&contentTypeId=12&areaCode=" + areacode + "&sigunguCode=" + sigungucode + "&cat1=&cat2=&cat3=&listYN=Y";
+      url3 += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=Q&numOfRows=100"; 
+       
+       
+      $.getJSON(url3, function(data) {
+         var length=data.response.body.items.item.length
+         console.log('success', data);
+         var j=0;
+         
+         
+                 for( var i = 0 ; i < 3 ; i++){
+            var j=j+1;
+                  console.log( data.response.body.items.item.length);
+                    var val = Math.floor( Math.random()*length);
+                    var con=data.response.body.items.item[val].contentid;
+                     console.log(con);
+               console.log(val);
+               console.log( data.response.body.items.item[val].title);
+               var conType=data.response.body.items.item[val].contenttypeid;
+               if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
+               $("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
+               }else{
+                  $("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
+               }
+               
+               $("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
+               $("#rplaceaddr"+ j).html(data.response.body.items.item[val].addr1);
+                     }
+      })
+      
+       });
 }
 //인근 음식점
 function f_Data(){
-	 $.getJSON(url, function(data) {
-		areacode=data.response.body.items.item.areacode;
-	    sigungucode=data.response.body.items.item.sigungucode;
-		 
-	 
-	var cTypeId; 
-	console.log(areacode); 
-	console.log(sigungucode); 
-	
-	var url3= "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key;
-	url3 += "&contentTypeId=39&areaCode=" + areacode + "&sigunguCode=" + sigungucode + "&cat1=&cat2=&cat3=&listYN=Y";
-	url3 += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=Q&numOfRows=100"; 
+    $.getJSON(url, function(data) {
+      areacode=data.response.body.items.item.areacode;
+       sigungucode=data.response.body.items.item.sigungucode;
+       
+    
+   var cTypeId; 
+   console.log(areacode); 
+   console.log(sigungucode); 
+   
+   var url3= "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key;
+   url3 += "&contentTypeId=39&areaCode=" + areacode + "&sigunguCode=" + sigungucode + "&cat1=&cat2=&cat3=&listYN=Y";
+   url3 += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=Q&numOfRows=100"; 
    
    
-	$.getJSON(url3, function(data) {
-		var length=data.response.body.items.item.length
-		console.log('success', data);
-		var j=0;
-		
-		
-      		for( var i = 0 ; i < 3 ; i++){
-			var j=j+1;
-	         	console.log( data.response.body.items.item.length);
-	           	var val = Math.floor( Math.random()*length);
-	           	var con=data.response.body.items.item[val].contentid;
-	           	console.log(con);
-				console.log(val);
-				console.log( data.response.body.items.item[val].title);
-				var conType=data.response.body.items.item[val].contenttypeid;
-				if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
-				$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
-				}else{
-					$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
-				}
-				
-				/* $("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID=1131275"><img src='+data.response.body.items.item[val].firstimage+' width=200 height=180></a>'); */
-				$("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
-				$("#resaddr"+ j).html(data.response.body.items.item[val].addr1);
-	           	}
-	})
-	
-	 });
+   $.getJSON(url3, function(data) {
+      var length=data.response.body.items.item.length
+      console.log('success', data);
+      var j=0;
+      
+      
+            for( var i = 0 ; i < 3 ; i++){
+         var j=j+1;
+               console.log( data.response.body.items.item.length);
+                 var val = Math.floor( Math.random()*length);
+                 var con=data.response.body.items.item[val].contentid;
+                 console.log(con);
+            console.log(val);
+            console.log( data.response.body.items.item[val].title);
+            var conType=data.response.body.items.item[val].contenttypeid;
+            if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
+            $("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
+            }else{
+               $("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
+            }
+            
+            /* $("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID=1131275"><img src='+data.response.body.items.item[val].firstimage+' width=200 height=180></a>'); */
+            $("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
+            $("#resaddr"+ j).html(data.response.body.items.item[val].addr1);
+                 }
+   })
+   
+    });
 }
 
 
-	function initMap(myLatLng,data) {//맵 띄우는 함수
+   function initMap(myLatLng,data) {//맵 띄우는 함수
   map = new google.maps.Map(document.getElementById('map'), {
     center: myLatLng,
     zoom: 15
@@ -249,118 +407,139 @@ function f_Data(){
   showmaker(data)
 } 
  function showmaker(data){//마커 띄우는함수
-	 marker = new google.maps.Marker({
-		    position: myLatLng,
-		    map: map,  		   
-		   	draggable: false,
-	    	animation: google.maps.Animation.DROP 
-		  }); 
+    marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,           
+            draggable: false,
+          animation: google.maps.Animation.DROP 
+        }); 
  }
  
  $(function(){
-		$("#write").on("click",function(){ 
+      $("#write").on("click",function(){ 
 
-			$.getJSON(url, function(data) {
-			console.log(data.response.body.items.item)
-			var REV_TXT = $("#reviewWrite").val();
-			var CONTENT_ID = data.response.body.items.item.contentid;
-			
-			if(CONTENT_ID.length ==0 || REV_TXT.length ==0) {
-				alert("데이터를 입력해 주세요");
-				return;
-			} 
-		 
-			/* console.log(reviewData); */
-			$.ajax({
-				
-				type : "post",
-				url : "writeReview",
-				data :{
-					CONTENT_ID : CONTENT_ID
-					,REV_TXT : REV_TXT	
-				},
-				
-				success : function(data){
-					
-					console.log(data);
-					 var html ="";
-					 var html2 ="";
-					 $.each(data.rList,function(index,item){
-						 console.log(item);
-						 console.log(data.navi);
-						 console.log(data.navi.endPageGroup);
-						html+= "<div class='media'>";
-						html+= "<a class='pull-left' href='#'>";
-						html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
-						html+= '<div class="media-body">';
-						html+= '<div class="media-heading"><h4>'+item.user_ID;
-						html+= '<small>'+item.inp_YMD+'</small>';
-						html+= '</h4></div>';
-						html+= item.rev_TXT;
-						html+= '</div></div>'; 
-					 })
-						html2+='<div align="center">';
-						var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
-						html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀</a>';
-						var onepageback=data.navi.currentPage -1
-						html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀</a>';
-						var j=0;
-						for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
-							j=j+1;
-							console.log(j);
-							 html2+='<a href="javascript:pagingFormSubmit('+data.navi.startPageGroup + 1+')">'+j+'</a>'; 
-						} 
-						html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + 1+')">▶</a>';
-						html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + data.navi.pagePerGroup+')">▶▶</a></div>';
-						html2+='<form action="SC_07place" method="get" id="pagingForm">';
-						html2+='<input type="hidden" id="page" name="page">';
-						html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';
-						html2+='<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">';
-						html2+='</form></div>'; 
-					 
-					 $("#review").html(html);
-					 $("#paging").html(html2);
-					 $('#reviewWrite').val('');		
-				},
-				error : function(e){
-					console.log(e);
-				}   
-			});
-			});
-		});
-		
-	});
+         $.getJSON(url, function(data) {
+         console.log(data.response.body.items.item)
+         var REV_TXT = $("#reviewWrite").val();
+         var CONTENT_ID = data.response.body.items.item.contentid;
+         
+         if(CONTENT_ID.length ==0 || REV_TXT.length ==0) {
+            alert("데이터를 입력해 주세요");
+            return;
+         } 
+       
+         /* console.log(reviewData); */
+         $.ajax({
+            
+            type : "post",
+            url : "writeReview",
+            data :{
+               CONTENT_ID : CONTENT_ID
+               ,REV_TXT : REV_TXT   
+            },
+            
+            success : function(data){
+               
+               console.log(data);
+                var html ="";
+                var html2 ="";
+                $.each(data.rList,function(index,item){
+                  console.log(item); 
+                  html+= "<div class='media'>";
+                  html+= "<a class='pull-left' href='#'>";
+                  html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+                  html+= '<div class="media-body">';
+                  html+= '<div class="media-heading"><h4>'+item.USER_ID;
+                  html+= '<small>'+item.UPD_YMD;
+                  html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
+                  html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+                  html+= '</small></h4></div>';
+                  html+= '<pre>';
+                  html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
+      				html+= "</pre></div></div>";
+                })
+                  html2+='<div align="center">';
+                  var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+                  html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+                  var onepageback=data.navi.currentPage -1
+                  html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+                  var j=0;
+                  for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
+                     j=j+1;
+                     console.log(j);
+                      html2+='<a href="javascript:pagingFormSubmit('+data.navi.startPageGroup + 1+')">'+j+' </a>'; 
+                  } 
+                  html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + 1+')">▶ </a>';
+                  html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + data.navi.pagePerGroup+')">▶▶</a></div>';
+                  html2+='<form action="SC_07place" method="get" id="pagingForm">';
+                  html2+='<input type="hidden" id="page" name="page">';
+                  html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';
+                  html2+='<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">';
+                  html2+='</form></div>'; 
+                
+                $("#review").html(html);
+                $("#paging").html(html2);
+                $('#reviewWrite').val('');      
+            },
+            error : function(e){
+               console.log(e);
+            }   
+         });
+         });
+      });
+      
+   });
+
+ 
+ 
  $(function(){
-		$("#clip").on("click",function(){
-				console.log(contentId);
-				var conID = contentId;
-				var conTypeID=contentTypeId;
-			$.ajax({
-				type : "POST",
-				url : "clipBoard",
-				data :{
-					CONTENT_ID : conID
-					,CONTENT_TYPE_ID : conTypeID	
-				},
-				
-				success : function(data){
-					console.log(data);
-					
-				},
-				error : function(e){
-					console.log(e);
-				}
-					
-				
-			})			
-		});
-		
-	});
+      $("#clip").on("click",function(){
+            console.log(contentId);
+            var conID = contentId;
+            var conTypeID=contentTypeId;
+            
+         $.ajax({
+            type : "POST",
+            url : "clipBoard",
+            data :{
+               CONTENT_ID : conID
+               ,CONTENT_TYPE_ID : conTypeID   
+            },
+            
+            success : function(data){
+               console.log(data);
+               if(data==1){
+               	modal({
+       				type: 'success',
+       				title: '클립성공',
+       				text: '클립보드에 저장되었습니다!',
+               	}); 
+               }else{
+            	   modal({
+       				type: 'error',
+       				title: '클립취소',
+       				text: '클립보드에서 삭제하였습니다!',
+       			});
+               }
+               
+   			              
+            },
+            error : function(e){
+               console.log(e);
+            }
+               
+            
+         })         
+      });
+      
+   });
 
 function locationObj(){
     var offset = $("#reviewWrite").offset();
     $('html, body').animate({scrollTop : offset.top}, 400);
 }
+
+
 
 </script>
 
@@ -429,8 +608,8 @@ function locationObj(){
                 
                 <div class="pInfo" id="pInfo"></div>
                 <div class="pInfo2" id="pInfo2"></div>
-				<div class="addr" id="addr"></div>
-				</div>
+            <div class="addr" id="addr"></div>
+            </div>
                 <hr>
 
                 <!-- Preview Image -->
@@ -470,41 +649,48 @@ function locationObj(){
                     </a>
                     <div class="media-body">
                         <div class="media-heading"><h4>${reply.USER_ID}
-                            <small>${reply.INP_YMD}</small>
+                            <small>${reply.UPD_YMD}</small>
+                            <!-- 아이디 비교 -->
+                            <%-- <c:if test="${ID == reply.USER_ID}"> --%>
+                     <small><a href="javascript:replyUpdateForm('${reply.REV_SQ}','${reply.CONTENT_ID}')">수정</a>
+                     		<a href="#none" onclick="deleteReply('${reply.REV_SQ}','${reply.CONTENT_ID}')">삭제</a></small>
+                     <%-- </c:if> --%>
                         </h4></div>
-                        ${reply.REV_TXT}
+                        <pre>
+                        <div id="${reply.REV_SQ}" class="review_txt">${reply.REV_TXT}</div>
+                        </pre>
                     </div>
                 </div>
-				</c:forEach>
-				</div>
-				<div id="paging">
-				
-				<div align="center">
-					<a href ="javascript:pagingFormSubmit(
-						${navi.currentPage - navi.pagePerGroup})">◀◀</a>
-						<a href ="javascript:pagingFormSubmit(${navi.currentPage -1})">◀</a>
-					<c:if test="${rList.size() > 0}">	
-					<c:forEach var="counter" begin="${navi.startPageGroup}" end="${navi.endPageGroup}">
-						<a href="javascript:pagingFormSubmit(${counter})">${counter}</a>
-			 		</c:forEach>
-			 		</c:if>
-			 		<c:if test="${rList.size() == 0}"><a href="#">1</a></c:if>
-			 		
-						<a href="javascript:pagingFormSubmit(${navi.currentPage + 1})">▶</a>
-						<a href="javascript:pagingFormSubmit(
-						${navi.currentPage + navi.pagePerGroup})">▶▶</a>
-				</div>
-				<form action="SC_07place" method="get" id="pagingForm">
-			 	<!--boardlist컨트롤러의 id(page)와 같은  값(page)에 보낸다  -->
-				<input type="hidden" id="page" name="page">
-				<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">
-				<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">
-				
-				</form>				
-				</div>
+            </c:forEach>
+            </div>
+            <div id="paging">
+            
+            <div align="center">
+               <a href ="javascript:pagingFormSubmit(
+                  ${navi.currentPage - navi.pagePerGroup})">◀◀</a>
+                  <a href ="javascript:pagingFormSubmit(${navi.currentPage -1})">◀</a>
+               <c:if test="${rList.size() > 0}">   
+               <c:forEach var="counter" begin="${navi.startPageGroup}" end="${navi.endPageGroup}">
+                  <a href="javascript:pagingFormSubmit(${counter})">${counter}</a>
+                </c:forEach>
+                </c:if>
+                <c:if test="${rList.size() == 0}"><a href="#">1</a></c:if>
+                
+                  <a href="javascript:pagingFormSubmit(${navi.currentPage + 1})">▶</a>
+                  <a href="javascript:pagingFormSubmit(
+                  ${navi.currentPage + navi.pagePerGroup})">▶▶</a>
+            </div>
+            <form action="SC_07place" method="get" id="pagingForm">
+             <!--boardlist컨트롤러의 id(page)와 같은  값(page)에 보낸다  -->
+            <input type="hidden" id="page" name="page">
+            <input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">
+            <input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">
+            
+            </form>            
+            </div>
                 <!-- Comment -->
             </div>
-			</div>
+         </div>
             <!-- Blog Sidebar Widgets Column -->
             <div class="col-left">
             <div class="col-md-4">
@@ -512,9 +698,9 @@ function locationObj(){
                 <!-- Blog Search Well -->
                 <div class="well">
                 <div class="well-head">
-                	<a href="#" onclick="locationObj(); return false">리뷰쓰기</a>&emsp;&emsp;
-					<a href="#" id="clip"> 클립 </a>
-                    
+                   <a href="#" onclick="locationObj(); return false">리뷰쓰기</a>&emsp;&emsp;
+               	<a href="#" id="clip"> 클립 </a>
+                 
                 </div>    
                     <!-- /.input-group -->
                 </div>
@@ -531,45 +717,45 @@ function locationObj(){
 
                 <!-- Side Widget Well -->
                 <div class="well">
-                	<h4>주변 관광지</h4> 
+                   <h4>주변 관광지</h4> 
                     <div class="rplace1" id ="rplace1">
-					<div class="rplaceImg1" id ="rplaceImg1"></div>
-					<div class="rplacetitle1" id ="rplacetitle1"></div>
-					<div class="rplaceaddr1" id ="rplaceaddr1"></div>
-					</div>
+               <div class="rplaceImg1" id ="rplaceImg1"></div>
+               <div class="rplacetitle1" id ="rplacetitle1"></div>
+               <div class="rplaceaddr1" id ="rplaceaddr1"></div>
+               </div>
                     
                     <div class="rplace2" id ="rplace2">
-					<div class="rplaceImg2" id ="rplaceImg2"></div>
-					<div class="rplacetitle2" id ="rplacetitle2"></div>
-					<div class="rplaceaddr2" id ="rplaceaddr2"></div>
-					</div>
+               <div class="rplaceImg2" id ="rplaceImg2"></div>
+               <div class="rplacetitle2" id ="rplacetitle2"></div>
+               <div class="rplaceaddr2" id ="rplaceaddr2"></div>
+               </div>
                     
                     <div class="rplace3" id ="rplace3">
-					<div class="rplaceImg3" id ="rplaceImg3"></div>
-					<div class="rplacetitle3" id ="rplacetitle3"></div>
-					<div class="rplaceaddr3" id ="rplaceaddr3"></div>
-					</div>
+               <div class="rplaceImg3" id ="rplaceImg3"></div>
+               <div class="rplacetitle3" id ="rplacetitle3"></div>
+               <div class="rplaceaddr3" id ="rplaceaddr3"></div>
+               </div>
                 </div>
                 
                 <div class="well">
-                	<h4>주변 음식점</h4> 
+                   <h4>주변 음식점</h4> 
                     <div class="rplace1" id ="rplace1">
-					<div class="rplaceImg1" id ="resImg1"></div>
-					<div class="rplacetitle1" id ="restitle1"></div>
-					<div class="rplaceaddr1" id ="resaddr1"></div>
-					</div>
+               <div class="rplaceImg1" id ="resImg1"></div>
+               <div class="rplacetitle1" id ="restitle1"></div>
+               <div class="rplaceaddr1" id ="resaddr1"></div>
+               </div>
                     
                     <div class="rplace2" id ="rplace2">
-					<div class="rplaceImg2" id ="resImg2"></div>
-					<div class="rplacetitle2" id ="restitle2"></div>
-					<div class="rplaceaddr2" id ="resaddr2"></div>
-					</div>
+               <div class="rplaceImg2" id ="resImg2"></div>
+               <div class="rplacetitle2" id ="restitle2"></div>
+               <div class="rplaceaddr2" id ="resaddr2"></div>
+               </div>
                     
                     <div class="rplace3" id ="rplace3">
-					<div class="rplaceImg3" id ="resImg3"></div>
-					<div class="rplacetitle3" id ="restitle3"></div>
-					<div class="rplaceaddr3" id ="resaddr3"></div>
-					</div>
+               <div class="rplaceImg3" id ="resImg3"></div>
+               <div class="rplacetitle3" id ="restitle3"></div>
+               <div class="rplaceaddr3" id ="resaddr3"></div>
+               </div>
                 </div>
 
             </div>
@@ -592,19 +778,7 @@ function locationObj(){
             <!-- /.row -->
         </footer>
 
-    </div>
-    
-    <!-- /.container -->
-
-    <!-- jQuery -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="./resources/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-    <script src="./resources/js/bootstrap.min.js"></script>
-    <script src="./resources/js/owl.carousel.min.js"></script>
-    <script src="./resources/js/wow.js"></script>
-    <script src="./resources/js/main.js"></script>
-    <script src="./resources/css/08bootstrap/js/bootstrap.js"></script>
-	
+    </div> 
 
 </body>
 </html>

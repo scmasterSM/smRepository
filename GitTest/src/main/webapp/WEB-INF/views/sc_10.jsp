@@ -35,8 +35,7 @@
         <script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
         <link rel ="stylesheet" href ="./resources/css/10css.css">
         <script type="text/javascript"src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script>
-        <script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8&callback=initMap"
-		async defer></script>
+        <script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8"></script>
     </head>
     <body>
 
@@ -231,7 +230,7 @@ function ReadApi(contentId,contentTypeId) { /* currentPage가 어디서 호출되어 온�
 				html += '<a href="SC_07place?CONTENT_ID='+contentId+'&CONTENT_TYPE_ID='+contentTypeId+'">';
 				
 				html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
-				html += '<div class="overlay"><h3>'+data.response.body.items.item.title+'</h3></div>';
+				html += '<div class="overlay"><h3>'+data.response.body.items.item.title+'<br>'+data.response.body.items.item.addr1+'</h3></div>';
 				html += '</a>';
 				html += '</li>';
 			
@@ -256,11 +255,7 @@ $(function(){
 			console.log(data);
 			$.each(data,function(index,item){
 				console.log(item);
-				var contentId=item.DTL_CONTENT_ID; 
-				/* var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
-				url += "&mapX&mapY";
-				url += "&contentTypeId&contentId="+contentId+"&areaCode&sigunguCode&cat1=&cat2=&cat3=&listYN=Y";
-				url += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&transGuideYN=Y&_type=json"; */
+				var contentId=item.DTL_CONTENT_ID;				
 			     ReadApi(contentId);
 			console.log(url);
 			$.getJSON(url, function(data) {
@@ -286,7 +281,7 @@ $(function(){
 			    	contentId=item.DTL_CONTENT_ID2;
 			    	ReadApi(contentId);
 			    $.getJSON(url, function(data) {
-			    	html += '<li>';
+			    	html += '<li>'; 
 					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
 					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
