@@ -126,6 +126,8 @@
 				,area_code
 				,sigungu_code
 				,city_nm
+				,map_x
+				,map_y
 			)values(
 				SM_DTL_SCD_TB_DTL_SQ.nextval
 				,#{scd_sq}
@@ -137,6 +139,8 @@
 				,#{area_code}
 				,#{sigungu_code}
 				,#{city_nm}
+				,#{map_x}
+				,#{map_y}
 			)
 	</insert>
 	
@@ -419,5 +423,17 @@
 		and
 			daily_ord = #{daily_ord}
 	</update>
+	
+	<!-- 클립 읽어오기 -->		
+	<select id="get_cliplist" parameterType="String" resultType="Hashmap">
+		select	
+			clip_sq, user_id, content_id, content_type_id, clip_ymd 
+		from 	
+			SM_CLIP_TB
+		where 	
+			user_id = #{user_id}
+		order by 
+			clip_sq
+	</select>
 	
  </mapper>

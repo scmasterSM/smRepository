@@ -426,6 +426,10 @@ html, body {
    function deleteCity(index){
 	   var target = '#city'+index;
 	   $(target).remove();
+	   var numItems = $('div.city').length;
+	   if(numItems == 0){
+		   $('#flag').text("도시를 선택해 주세요.");
+	   }
    }
    function minusDays(index){
 	   var target = '#days'+index;
