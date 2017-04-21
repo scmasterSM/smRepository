@@ -493,6 +493,13 @@
   }	
   
   function show_myMarkers(){
+	  console.log("in")
+	  for(var i=0; i<myloc_markers.length; i++){
+			myloc_markers[i].setMap(null);
+		}
+		myloc_markers.length = 0;
+		marker_no = 0;
+		var mymarkerlist = [];
 	  var scd_sq = $('#scd_sq').val();
 		var daily_sq = parseInt($('#section2_day').text().match(/\d+/)[0], 10);
 		var sq = {
@@ -505,13 +512,6 @@
 			data: sq,
 			async: false,
 			success: function(data){
-				if(data.length != 0){
-					for(var i=0; i<myloc_markers.length; i++){
-						myloc_markers[i].setMap(null);
-					}
-					myloc_markers.length = 0;
-					marker_no = 0;
-					var mymarkerlist = [];
 					var iconsetngs = {
 						    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
 						};
@@ -549,7 +549,6 @@
 								});
 						  myloc_markers.push(marker);
 					  }
-				}
 			},
 			error: function(e){
 				console.log(e);
