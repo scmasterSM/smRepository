@@ -193,7 +193,7 @@ background-color: #00aeef;
   padding: 11px 0;
 }
 .form-inline .form-control, .form-inline .form-control {
-  background: none repeat scroll 0 0 #eeeeee;
+	background: none repeat scroll 0 0 #eeeeee;
   border-radius: 1px;
   color: #333;
   font-style: italic;
@@ -499,7 +499,7 @@ background-color: #00aeef;
 	margin-top: 30px
 }
 .more-jobs a {
-  background: none repeat scroll 0 0 #d1d1d1;
+   background: none repeat scroll 0 0 #d1d1d1;
   color: #666666;
   padding: 14px 22px;
   border-radius: 2px;
@@ -524,7 +524,7 @@ background-color: #00aeef;
   text-transform: uppercase;
 }
 .job-add a {
-  background: none repeat scroll 0 0 #00aeef;
+ background: none repeat scroll 0 0 #00aeef;
   border-radius: 5px;
   color: #fff;
   display: inline-block;
