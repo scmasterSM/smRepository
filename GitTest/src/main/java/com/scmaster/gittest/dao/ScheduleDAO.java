@@ -202,4 +202,11 @@ public class ScheduleDAO {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
 		mapper.day_change(daily);
 	}
+	
+	// 클립 리스트 가져오기
+	public List<HashMap<String, Object>> get_cliplist(String user_id){
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		List<HashMap<String, Object>> cliplist = mapper.get_cliplist(user_id);
+		return cliplist;
+	}
 }

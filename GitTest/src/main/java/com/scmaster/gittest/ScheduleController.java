@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.scmaster.gittest.dao.ScheduleDAO;
+import com.scmaster.gittest.dao.ScheduleMapper;
 import com.scmaster.gittest.vo.Budget;
 import com.scmaster.gittest.vo.Daily_City;
 import com.scmaster.gittest.vo.Daily_Scd;
@@ -56,7 +57,7 @@ public class ScheduleController {
 			dao.insert_daily(dailyList.get(i));
 		}
 		dailyList.clear();
-		return "redirect:edit_schedule?scd_sq="+scd_sq;
+		return "redirect:edit_schedule?scd_sq=" + scd_sq;
 	}
 
 	// 지도에서 검색
@@ -188,5 +189,13 @@ public class ScheduleController {
 	@RequestMapping(value = "updateDates", method = RequestMethod.POST)
 	public void updateDates(Daily_Scd daily) {
 		dao.day_change(daily);
+	}
+
+	// 클립 리스트 가져오기
+	@ResponseBody
+	@RequestMapping(value = "get_cliplist", method = RequestMethod.POST)
+	public List<HashMap<String, Object>> get_cliplist(String user_id) {
+		List<HashMap<String, Object>> cliplist = dao.get_cliplist(user_id);
+		return cliplist;
 	}
 }

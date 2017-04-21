@@ -221,6 +221,8 @@ CREATE TABLE SM_DTL_SCD_TB
 	AREA_CODE varchar2(20),
 	SIGUNGU_CODE varchar2(20),
 	CITY_NM varchar2(100),
+	MAP_X varchar2(30),
+	MAP_Y varchar2(30),
 	PRIMARY KEY (DTL_SQ)
 );
 
