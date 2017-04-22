@@ -186,6 +186,7 @@
                   <li role="presentation"><a href="#employeers"
                      aria-controls="profile" role="tab" data-toggle="tab">댓글</a></li>
                   <div class="plan-menu">
+                  <a data-toggle="modal" href="#myModal">공유하기</a>&emsp;&emsp;
                   <a href="">복사하기</a>&emsp;&emsp;
                   <a href="edit_schedule?scd_sq=${scd_sq }">수정하기</a>&emsp;&emsp;
                   <a href="">다운로드</a>
@@ -390,6 +391,27 @@
       </div>
    </div>
 
+<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">일정에 초대 하실 분의 아이디를 입력해주세요</h4>
+        </div>
+        <div class="modal-body">
+        <input type="text" name="shareId" class="form-control" id="shareId" placeholder="공유할 ID를 입력해주세요" />
+        </div>
+        <div class="modal-footer">
+        <div id="existId" class="existId"></div>
+         <button type="button" class="btn btn-default btn_invite" onclick="return whoWithShare();">Invite</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="return deleteElement();">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 
 
 
@@ -411,8 +433,8 @@ var markers = [];
 var myloc_path;
 var myloc_markers = [];
 var marker_no;
+var map=[];
 
-$(function(){ 
   $(function(){
      $.ajax({
          type : "POST",
@@ -539,8 +561,52 @@ $(function(){
          } 
       });         
          
-   }); 
  })  
+ 
+ $(function(){
+	
+		ws = new WebSocket("ws://192.168.0.109:8888/gittest/webSocket");
+		
+		var data = {
+				"loginId" : "${user_id}"
+		}
+		
+		console.log("loging id : "+data);
+		ws.onopen = () => ws.send(JSON.stringify(data));
+		
+		ws.onmessage = function(event){
+			console.log(event.data);
+		}
+		
+		//서버에서 접속 종료한 후 이벤트 정의
+		ws.onclose = function(event){
+			
+		}
+})
+
+$(function(){
+	$('#shareId').keyup(function(){
+		if($('#shareId').val() != null){
+		 $.ajax({
+				type : "POST",
+				url : "checkId",
+				data : { 
+					"user_id" : $('#shareId').val(),
+				}
+				,success : function(data){
+					if(data == '1'){
+						$('#existId').html("<span>해당 아이디가 존재합니다. 일정을 공유하시겠습니까?</span>");
+					}else{
+						$('#existId').html("<span>해당 아이디가 존재하지 않습니다. 다시 입력해주세요</span>");
+					}
+				},
+				error : function(e){
+					console.log(e);
+				} 
+			});//ajax
+		}
+	}); 
+})
 
 function ReadApi(contentId) { /* currentPage가 어디서 호출되어 온다 */
    url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
@@ -549,8 +615,31 @@ function ReadApi(contentId) { /* currentPage가 어디서 호출되어 온다 */
    url += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&transGuideYN=Y&_type=json";
    
 }
+  
+  function whoWithShare(){
+		var checkId = $('#shareId').val();
+		if(checkId == ''){
+			alert("일정을 함께 공유하실 분의 아이디를 입력해주세요.");
+			return false;
+		}
+		
+		var data = {
+				"scd_sq" : ${scd_sq}
+				,"searchId" : checkId
+		}
+		console.log(data);
+		ws.send(JSON.stringify(data));
+		
+		return false;
+	}
 
-var map=[];
+	function deleteElement(){
+		document.getElementById('shareId').value = '';
+		var html = '';
+		$('#existId').html(html);
+		return false;
+	}
+
 
 function initMap(myLatLng,day_cnt) {
    console.log(myLatLng);
