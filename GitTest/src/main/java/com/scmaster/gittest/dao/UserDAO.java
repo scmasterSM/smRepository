@@ -1,9 +1,12 @@
 package com.scmaster.gittest.dao;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.scmaster.gittest.vo.Daily_City;
 import com.scmaster.gittest.vo.User;
 
 @Repository
@@ -41,6 +44,18 @@ public class UserDAO {
 		}
 		return result;
 	}
-	
+	//HOME 화면 인기 도시 
+		public ArrayList<Daily_City> bestcity(){
+			UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+			
+			return mapper.bestcity();
+		}
+		
+		//SC_05 화면 디테일 도시
+		public Daily_City detail_city(String city_nm){
+			UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+			
+			return mapper.detail_city(city_nm);
+		}
 	
 }
