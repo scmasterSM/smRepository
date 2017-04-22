@@ -17,8 +17,8 @@
 	rel='stylesheet' type='text/css'>
 
 <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+<!-- <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico" type="image/x-icon"> -->
 
 <link rel="stylesheet" href="./resources/css/normalize.css">
 <link rel="stylesheet" href="./resources/css/font-awesome.min.css">
@@ -32,9 +32,8 @@
 <link rel="stylesheet" href="./resources/css/responsive.css">
 <script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
 <!-- <script src="./resources/js/jquery-3.1.1.js"></script> -->
-	<script src="./resources/js/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="./resources/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-	<script src="./resources/js/bootstrap.min.js"></script>
+	<script src="./resources/js/vendor/jquery-1.10.2.min.js"></script>
+	<script src="./resources/js/bootstrap.js"></script>
 	<script src="./resources/js/owl.carousel.min.js"></script>
 	<script src="./resources/js/wow.js"></script>
 	<script src="./resources/js/main.js"></script>
@@ -52,9 +51,17 @@
 
 <script type="text/javascript">
      	var areacode = ${areacode};
-     	var sigungucode = ${sigungucode};
-     	var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
+     	var sigungucode = "";
+     	var city_nm = '${city_nm}';
+     	//alert(city_nm);
+     	var key = "2pTN6y%2BhCGaVQL97quhdeM%2FW9ezdUvBNytbkKoT323qbc%2Ff5ao8fYoW2C31AgwacBVhy7PYHqvuwcnzprU4%2BNw%3D%3D";
 		
+     	function checkId() {
+     		$("#loginAtag").trigger("click");
+     		$('#myModal').modal('show');
+     	}
+     	
+     	
      	//정보수정 모달
      	$('#myModal_Edit').modal('show');
 
@@ -72,7 +79,7 @@
         	
         	theme_Data(areacode, "A01&cat2=");
             popular_Data(areacode);
-            city_img(areacode);
+            city_img(city_nm);
            
           //자연
             $('#bMenu0').on('click', 
@@ -126,6 +133,113 @@
                     function (){ 
                         theme_Data(areacode, "A05"); 
             } ); 
+           
+          //로그인 
+    		$("#submit_button").on("click",function(){ 
+    			
+    			var user_id1 = $("#user_id").val();
+    			var password1 = $("#password").val();
+    			
+    			if(user_id1.length == 0){
+    				alert('아이디를 입력해주세요');
+    				return false;
+    			}
+    			if(password1.length ==0){
+    				alert('비밀번호를 입력해주세요');
+    				return false;
+    			} 
+
+    			$.ajax({
+    				type:"post",
+    				url:"login",
+    				data : {
+    					user_id : user_id1,
+    					password : password1
+    				},
+    				dataType : 'text',
+    				
+    				success : function(data){
+    					if(data == "success"){
+    						$('#myModal').modal('hide');
+    						window.location.href = "home";
+    						
+    					}else{
+    						alert("비밀번호가 맞지 않습니다.");
+    					}
+    				},
+    				error : function(e){
+    					console(e);
+    				}
+    			})
+    		});
+    		
+    		//조인
+    		
+    		$("#submit_join").on("click",function(){
+    			
+    			var user_id2 = $("#user_id1").val();
+    			var password2 = $("#password1").val();
+    			var password3 = $("#password2").val();
+    			var email1 = $("#email").val();
+    			var user_sex1 = $("#user_sex").val();
+    			
+    			var sung = "선택";
+    			
+    			//alert(user_sex1);
+    				//$('#user_sex option:selected').val();
+    				//$('select[name=user_sex]').val();
+    			
+    			if(user_id2.length == 0){
+    				alert('아이디를 입력해주세요');
+    				return false;
+    			}
+    			if(password2.length ==0){
+    				alert('비밀번호를 입력해주세요');
+    				return false;
+    			} 
+    			if(email1.length == 0){
+    				alert('이메일을 입력해주세요');
+    				return false;
+    			}
+    			
+    		    if(user_sex1 == sung ){
+    				alert('성별을 입력해주세요');
+    				return false;
+    			} 
+    			
+    			if(password2 != password3){
+    				alert('비밀번호 확인 시 비밀번호가 일치하지 않습니다.');
+    				return false;
+    			} 
+    			
+    			$.ajax({
+    				type:"post",
+    				url:"join",
+    				data : {
+    					user_id : user_id2,
+    					password : password2,
+    					email : email1,
+    					user_sex : user_sex1
+    				},
+    				dataType : 'text',
+    				
+    				success : function(data){
+    					console.log(data);
+    					if(data == "success"){
+    						alert("가입처리가 완료 되었습니다.");
+    						$('#myModal').modal('hide');
+    						window.location.href = "./";
+    					}else{
+    						alert("가입 처리가 되지 않았습니다.");
+    					}
+    				},
+    				error : function(e){
+    					console(e);
+    				}
+    			})
+    		});
+           
+ 
         }); //레디펑션 end
         
       //로그인& 조인 모달 
@@ -140,9 +254,11 @@
  
         
         //지역별 테마를 담는 변수 
-        function theme_Data(areacode,themecode){
+        function theme_Data(areacode, themecode){
             
-          	sigungucode = eval($("#test1").val()); 
+           	sigungucode = eval($("#test1").val());
+            //alert(sigungucode);
+ 
             
         	var url2 ="";
             url2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="
@@ -150,8 +266,10 @@
             url2 += "&contentTypeId=&areaCode="+areacode+"&sigunguCode="+sigungucode+"&cat1="+themecode+"&cat3=&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=11&pageNo=1";
             url2 += "&_type=json";
 
+            //alert(url2);
             
             $.getJSON(url2,function(data) {
+            
                var content = ""; 
                content += '<ul class="list-inline job-seeker">';
                var length=data.response.body.items.item.length;
@@ -162,15 +280,22 @@
                //console.log(data);   
                
                var outputArray = [];
+
                 for (var i = 0; i < 6; i++) {
-              	 //컨텐트아이디 추출
+                	if(outputArray.length == 6) break;
+                	if(data.response.body.items.item.length == outputArray.length) break;;
+                //컨텐트아이디 추출
       	         //console.log(con);
+              	 	/* alert('테마 6개를 가져오는 첫 for문 들어옴'); */
       	         	var val = Math.floor( Math.random()*length);
 				 	var repeat = false;
 				 	var j = 0;
+				 	//alert(outputArray.length);
 				 	 for(j = 0; j < outputArray.length; j++){
                 		 if(outputArray[j] == data.response.body.items.item[val].title){
-							repeat = true;
+                				/* alert('이름 중복 들어왔나 '); */
+                			 data.response.body.items.item.splice(val, 1);
+                			 repeat = true;
                 			 break; 
                 		 }
                 	 }
@@ -230,235 +355,41 @@
          
         
         /* 3장의 도시 이미지를 출력하는 메소드  */
-        function city_img(areacode){
-        	
+        function city_img(city_nm){
+        	//alert(city_nm);
         	var imageArray = [];
         	var city_info = "";  
-            if (areacode == 1) { /*서울 */
-               
-            	city_info += '<div class="container">';
-            	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-            	city_info += '<h2>ソウル</h2>';
-            	city_info += '<h1>SEOUL</h1>';
-            	city_info += '</div></div>';
-            	
-            	$("#city_info").html(city_info);
-            	
-            	imageArray.push("./resources/image/seoul/seoul.jpg");
-               imageArray.push("./resources/image/seoul/seoul2.jpg");
-               imageArray.push("./resources/image/seoul/seoul3.jpg");
-               
-            } else if (areacode == 2) { /* 인천 */
-            	
-            	city_info += '<div class="container">';
-            	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-            	city_info += '<h2>インチョン</h2>';
-            	city_info += '<h1>인천</h1>';
-            	city_info += '</div></div>';
-            	
-            	$("#city_info").html(city_info);
-            	
-                imageArray.push("./resources/image/05_city/incheon770.jpg");
-                imageArray.push("./resources/image/05_city/incheon770.jpg");
-                imageArray.push("./resources/image/05_city/incheon770.jpg");
-             
-            } else if (areacode == 3) { /* 대전 */
-            	
-            	city_info += '<div class="container">';
-            	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-            	city_info += '<h2>大田(テジョン)</h2>';
-            	city_info += '<h1>DAEJOEN</h1>';
-            	city_info += '</div></div>';
-            	
-            	$("#city_info").html(city_info);
-            	
-                imageArray.push("./resources/image/");
-                imageArray.push("./resources/image/");
-                imageArray.push("./resources/image/");
-         
-             } else if (areacode == 4) { /* 대구 */
-            	 
-            	city_info += '<div class="container">';
-             	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-             	city_info += '<h2>大邱(テグ)</h2>';
-             	city_info += '<h1>DAEGU</h1>';
-             	city_info += '</div></div>';
-             	
-             	$("#city_info").html(city_info);
-            	 
-                 imageArray.push("./resources/image/");
-                 imageArray.push("./resources/image/");
-                 imageArray.push("./resources/image/");
-            
-              } else if (areacode == 5) { /* 광주 */
-            	  
-            	  city_info += '<div class="container">';
-               	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-               	city_info += '<h2>光州(クァンジュ)</h2>';
-               	city_info += '<h1>GWANGJU</h1>';
-               	city_info += '</div></div>';
-               	
-               	$("#city_info").html(city_info);
-            	  
-                  imageArray.push("./resources/image/");
-                  imageArray.push("./resources/image/");
-                  imageArray.push("./resources/image/");
-             
-               }  else if (areacode == 6) { /* 부산  */
-            	   
-            	   city_info += '<div class="container">';
-                  	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-                  	city_info += '<h2>釜山(プサン)</h2>';
-                  	city_info += '<h1>BUSAN</h1>';
-                  	city_info += '</div></div>';
-               
-                  	$("#city_info").html(city_info);
-                  	
-                   imageArray.push("./resources/image/busan/busan1.jpg");
-                   imageArray.push("./resources/image/busan/busan2.jpg");
-                   imageArray.push("./resources/image/busan/busan3.jpg");
-              
-                } else if (areacode == 7) { /*울산 */
-                    imageArray.push("./resources/image/");
-                    imageArray.push("./resources/image/");
-                    imageArray.push("./resources/image/");
-               
-                 } else if (areacode == 8) { /* 세종시  */
-                     imageArray.push("./resources/image/");
-                     imageArray.push("./resources/image/");
-                     imageArray.push("./resources/image/");
-                
-                  } else if (areacode == 31) { /* 경기도 */
-                	   city_info += '<div class="container">';
-                     	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-                     	city_info += '<h2>キョンギ・ド</h2>';
-                     	city_info += '<h1>경기도</h1>';
-                     	city_info += '</div></div>';
-                	  
-                      	$("#city_info").html(city_info);
-                	  
-                      imageArray.push("./resources/image/");
-                      imageArray.push("./resources/image/");
-                      imageArray.push("./resources/image/");
-                 
-                   } else if (areacode == 32) { /* 강원도  */
-                	   
-                	   city_info += '<div class="container">';
+        	
+        	  $.ajax({
+      	        type : "GET",
+      	        url : "detail_city",
+      	        data : {
+      	        	 city_nm : city_nm
+      	        },
+      	        success : function(result){
+      	        	//console.log(result);
+
+      	        		city_info += '<div class="container">';
                     	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-                    	city_info += '<h2>カンウォン・ド</h2>';
-                    	city_info += '<h1>강원도</h1>';
-                    	city_info += '</div></div>';
-               	  
-                     	$("#city_info").html(city_info);
-                	   
-                       imageArray.push("./resources/image/");
-                       imageArray.push("./resources/image/");
-                       imageArray.push("./resources/image/");
-                  
-                    } else if (areacode == 33) { /* 충청북도  */
+                    	city_info += '<h2>'+result.city_name_en+'</h2>';
+                    	city_info += '<h1>'+result.city_nm+'</h1>';
+                    	city_info += '</div></div><br><br>';
                     	
-                    	city_info += '<div class="container">';
-                    	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-                    	city_info += '<h2>チュンチョンブク・ト</h2>';
-                    	city_info += '<h1>충청북도</h1>';
-                    	city_info += '</div></div>';
-               	  
-                     	$("#city_info").html(city_info);
+                    	$("#city_info").html(city_info);
                     	
-                        imageArray.push("./resources/image/");
-                        imageArray.push("./resources/image/");
-                        imageArray.push("./resources/image/");
-                   
-                     } else if (areacode == 34) { /* 충남  */
-                    	 
-                    	   	city_info += '<div class="container">';
-                        	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-                        	city_info += '<h2></h2>';
-                        	city_info += '<h1>충청남도</h1>';
-                        	city_info += '</div></div>';
-                   	  
-                         	$("#city_info").html(city_info);
-                    	 
-                         imageArray.push("./resources/image/");
-                         imageArray.push("./resources/image/");
-                         imageArray.push("./resources/image/");
-                    
-                      } else if (areacode == 35) { /* 경북 */
-                    	  
-                    	 	city_info += '<div class="container">';
-                        	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-                        	city_info += '<h2></h2>';
-                        	city_info += '<h1>경상북도</h1>';
-                        	city_info += '</div></div>';
-                   	  
-                         	$("#city_info").html(city_info);
-                    	  
-                          imageArray.push("./resources/image/");
-                          imageArray.push("./resources/image/");
-                          imageArray.push("./resources/image/");
-                     
-                       } else if (areacode == 36) { /*경남 */
-                    	   
-                    		city_info += '<div class="container">';
-                        	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-                        	city_info += '<h2></h2>';
-                        	city_info += '<h1>경상남도</h1>';
-                        	city_info += '</div></div>';
-                   	  
-                         	$("#city_info").html(city_info);
-                    	   
-                    	   
-                           imageArray.push("./resources/image/");
-                           imageArray.push("./resources/image/");
-                           imageArray.push("./resources/image/");
-                      
-                        }else if (areacode == 37) { /* 전북  */
-                        	
-                        	city_info += '<div class="container">';
-                        	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-                        	city_info += '<h2></h2>';
-                        	city_info += '<h1>전라북도</h1>';
-                        	city_info += '</div></div>';
-                   	  
-                         	$("#city_info").html(city_info);
-                        	
-                            imageArray.push("./resources/image/");
-                            imageArray.push("./resources/image/");
-                            imageArray.push("./resources/image/");
-                       
-                         }else if (areacode == 38) { /*전남  */
-                        	 
-                        		city_info += '<div class="container">';
-                            	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-                            	city_info += '<h2></h2>';
-                            	city_info += '<h1>전라남도</h1>';
-                            	city_info += '</div></div>';
-                       	  
-                             	$("#city_info").html(city_info);
-                        	 
-                             imageArray.push("./resources/image/");
-                             imageArray.push("./resources/image/");
-                             imageArray.push("./resources/image/");
+                    	imageArray.push(result.pic_address);
+                        imageArray.push(result.pic_address);
+                        imageArray.push(result.pic_address); 
+          	        	
+                        $.each($(".slide-image"), function(index, item) {
+                            $(this).attr("src", imageArray[index]);
+                         });
                         
-                          }else if (areacode == 39) { /*제주도  */
-                        	  
-                        	  
-                      		city_info += '<div class="container">';
-                          	city_info += '<div class="row page-title text-center wow zoomInDown" data-wow-delay="1s">';
-                          	city_info += '<h2>JEJUDO</h2>';
-                          	city_info += '<h1>제주도</h1>';
-                          	city_info += '</div></div>';
-                     	  
-                           	$("#city_info").html(city_info);
-                        	  
-                              imageArray.push("./resources/image/");
-                              imageArray.push("./resources/image/");
-                              imageArray.push("./resources/image/");
-                           }
-                 
-                 $.each($(".slide-image"), function(index, item) {
-                     $(this).attr("src", imageArray[index]);
-                  });
+      	           }, error : function(e){
+      	              console.log(e);
+      	           }
+      	     });//ajax
+     
         }
         
         
@@ -476,8 +407,7 @@
             
         	//console.log(url);
             $.getJSON(url,function(data) {
-            	console.log(data);
-            			console.log(data);
+            	//console.log(data);
                            var content2 =""
                            content2 += '<ul class="list-inline job-seeker">';
                   	       	 var length=data.response.body.items.item.length;
@@ -624,12 +554,12 @@
 											<!-- Tab panes -->
 											<div class="tab-content">
 												<div class="tab-pane active" id="Login">
-													<form role="form" class="form-horizontal">
+													<form action="login" role="form" method="post" class="form-horizontal" onsubmit="return login()">
 														<div class="form-group">
 															<label for="email" class="col-sm-2 control-label">
 																ID</label>
 															<div class="col-sm-10">
-																<input type="text" class="form-control" id="email1"
+																<input type="text" class="form-control" name="user_id" id="user_id"
 																	placeholder="ID" />
 															</div>
 														</div>
@@ -637,36 +567,37 @@
 															<label for="exampleInputPassword1"
 																class="col-sm-2 control-label"> Password</label>
 															<div class="col-sm-10">
-																<input type="text" class="form-control"
-																	id="exampleInputPassword1" placeholder="Password" />
+																<input type="text" name="password" class="form-control"
+																	id="password" placeholder="Password" />
 															</div>
 														</div>
 														<div class="row">
 															<div class="col-sm-2"></div>
 															<div class="col-sm-10">
-																<button type="submit" class="btn btn-primary btn-sm">
+																<button type="button" class="btn btn-primary btn-sm" value="submit" id="submit_button">
 																	Submit</button>
-																<a href="javascript:;">Forgot your password?</a>
+																<!-- <a href="javascript:;">Forgot your password?</a> -->
 															</div>
 														</div>
 													</form>
 												</div>
-												<div class="tab-pane" id="Registration">
-													<form role="form" class="form-horizontal">
+													<div class="tab-pane" id="Registration">
+													<form action="join" role="form" method="post" class="form-horizontal" onsubmit="return joinCheck()">
 														<div class="form-group">
 															<label for="email" class="col-sm-2 control-label">
 																ID</label>
 															<div class="col-sm-10">
 																<div class="row">
 																	<div class="col-md-3">
-																		<select class="form-control">
-																			<option>남성</option>
-																			<option>여성</option>
+																		<select class="form-control" name="user_sex" id="user_sex">
+																			<option value="선택">선택</option>
+																			<option value="m">남성</option>
+																			<option value="f">여성</option>
 																		</select>
 																	</div>
 																	<div class="col-md-9">
 																		<input type="text" class="form-control"
-																			placeholder="ID" />
+																			placeholder="ID" name="user_id" id="user_id1"/>
 																	</div>
 																</div>
 															</div>
@@ -675,7 +606,7 @@
 															<label for="email" class="col-sm-2 control-label">
 																Email</label>
 															<div class="col-sm-10">
-																<input type="email" class="form-control" id="email"
+																<input type="email" class="form-control" name="email" id="email"
 																	placeholder="Email" />
 															</div>
 														</div>
@@ -684,7 +615,7 @@
 																Password</label>
 															<div class="col-sm-10">
 																<input type="password" class="form-control"
-																	id="password1" placeholder="Password" />
+																	id="password1" name="password" placeholder="Password" />
 															</div>
 														</div>
 														<div class="form-group">
@@ -692,16 +623,16 @@
 															</label>
 															<div class="col-sm-10">
 																<input type="password" class="form-control"
-																	id="password2" placeholder="Password 확인" />
+																	id="password2" name="password2" placeholder="Password 확인" />
 															</div>
 														</div>
 														<div class="row">
 															<div class="col-sm-2"></div>
 															<div class="col-sm-10">
-																<button type="button" class="btn btn-primary btn-sm">
-																	Save & Continue</button>
-																<button type="button" class="btn btn-default btn-sm">
-																	Cancel</button>
+																<button type="button" class="btn btn-primary btn-sm" id="submit_join">
+																Save & Continue
+																</button>
+																<input type="reset" class="btn btn-default btn-sm" value="Reset" />
 															</div>
 														</div>
 													</form>
@@ -831,12 +762,12 @@
 
 				</div>
 			<c:choose>
-				<c:when test="${sessionScope.id == null }">
+				<c:when test="${sessionScope.user_id == null }">
 				
 				<ul class="main-nav nav navbar-nav navbar-right">
 					<li class="wow fadeInDown" data-wow-delay="0s"><a
-						class="active" href="SC_11">일정 만들기</a></li>
-					<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">나의 일정 보기</a></li>
+						class="active" href="#" onclick="checkId();">일정 만들기</a></li>
+					<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#" onclick="checkId();">나의 일정 보기</a></li>
 <!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
 							Own Schedule</a></li>
 					<li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">City
@@ -847,7 +778,7 @@
 					<ul class="main-nav nav navbar-nav navbar-right">
 					<li class="wow fadeInDown" data-wow-delay="0s"><a
 						class="active" href="SC_11">일정 만들기</a></li>
-					<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">나의 일정 보기</a>
+					<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="SC_10">나의 일정 보기</a>
 					</li>
 					<!-- <li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">나의 일정</a>
 					</li> -->
@@ -880,7 +811,7 @@
 	
 
 		<!--도시 이미지  -->
-		    <div class="row carousel-holder">
+		  <div class="row carousel-holder">
 
                <div class="col-md-12">
                   <div id="carousel-example-generic" class="carousel slide"
@@ -895,15 +826,15 @@
                      <div class="carousel-inner">
                         <div class="item active">
                            <img class="slide-image" src="./resources/image/seoul/seoul.jpg"
-                              alt="">
+                              alt="" width="770" height="288">
                         </div>
                         <div class="item">
                            <img class="slide-image" src="./resources/image/seoul/seoul.jpg"
-                              alt="">
+                              alt="" width="770" height="288">
                         </div>
                         <div class="item">
                            <img class="slide-image" src="./resources/image/seoul/seoul.jpg"
-                              alt="">
+                              alt="" width="770" height="288">
                         </div>
                      </div>
                     
@@ -918,8 +849,8 @@
                   </div>
                </div>
 
-            </div>
-
+            </div> 
+			
 		
 		
 				
