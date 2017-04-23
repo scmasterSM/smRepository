@@ -1,5 +1,7 @@
 package com.scmaster.gittest;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.scmaster.gittest.dao.UserDAO;
+import com.scmaster.gittest.vo.Daily_City;
 import com.scmaster.gittest.vo.User;
 
 
@@ -19,6 +22,11 @@ public class UserController {
 
 	@Autowired
 	UserDAO dao;
+	
+	@RequestMapping(value = "login", method = RequestMethod.GET)
+	public String loginForm() {
+		return "login";
+	}
 	
 	@ResponseBody
 	@RequestMapping(value="login",method=RequestMethod.POST)
@@ -51,6 +59,12 @@ public class UserController {
 		return "redirect:/";
 	}
 	
+	@RequestMapping(value = "logout2", method = RequestMethod.GET)
+	public String logout2(HttpSession session) {
+		session.invalidate();
+		return "redirect:/sc_05";
+	}
+	
 	@ResponseBody
 	@RequestMapping(value="join", method = RequestMethod.POST)
 	public String join(User user , Model model){
@@ -66,5 +80,24 @@ public class UserController {
 		}
 	}
 	
+	// 도시 순위 불러오는 함수
+		@ResponseBody
+		@RequestMapping(value = "bestcity", method = RequestMethod.GET)
+		public ArrayList<Daily_City> bestlist() {
+			//System.out.println("도시 순위 불러오는 함수");
+			ArrayList<Daily_City> bList = new ArrayList<>();
+			bList = dao.bestcity();
+			//System.out.println(bList);
+			return bList;
+		}
+		
+		//SC_05 도시 디테일 함수 
+		@ResponseBody
+		@RequestMapping(value = "detail_city", method = RequestMethod.GET)
+		public Daily_City detail_city(String city_nm) {
+			Daily_City dCity = new Daily_City();
+			dCity = dao.detail_city(city_nm);
+			return dCity;
+		}
 	
 }

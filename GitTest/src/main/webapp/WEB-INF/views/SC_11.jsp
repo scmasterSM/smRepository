@@ -85,7 +85,7 @@
 
 	function logout() {
 
-		location.href = "logout_05";
+		location.href = "logout";
 	}
 </script>
 </head>
@@ -105,14 +105,14 @@
 				<div
 					class="col-md-2 col-md-offset-5  col-sm-3 col-sm-offset-1  col-xs-3  col-xs-offset-1">
 					<c:choose>
-						<c:when test="${sessionScope.id == null }">
+						<c:when test="${sessionScope.user_id == null }">
 							<div class="header-half header-social"></div>
 						</c:when>
 						<c:otherwise>
 							<div class="header-half header-social">
 								<ul class="list-inline">
-									<li><img src="./resources/image/login_img.png">${sessionScope.id }님
-										환영합니다</li>
+									<li><img src="./resources/image/login_img.png">welcome!
+										[ ${sessionScope.user_id } ]</li>
 								</ul>
 							</div>
 						</c:otherwise>
@@ -145,7 +145,7 @@
 			<div class="button navbar-right">
 
 				<c:choose>
-					<c:when test="${sessionScope.id == null }">
+					<c:when test="${sessionScope.user_id == null }">
 						<button type="button" id="loginForm"
 							class="navbar-btn nav-button wow bounceInRight login"
 							data-toggle="modal" data-target="#myModal" id="loginForm"
@@ -399,11 +399,11 @@
 
 			</div>
 			<c:choose>
-				<c:when test="${sessionScope.id == null }">
+				<c:when test="${sessionScope.user_id == null }">
 
 					<ul class="main-nav nav navbar-nav navbar-right">
 						<li class="wow fadeInDown" data-wow-delay="0s"><a
-							class="active" href="SC_11">일정 만들기</a></li>
+							class="active" href="#">일정 만들기</a></li>
 						<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">나의
 								일정 보기</a></li>
 						<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
@@ -415,9 +415,9 @@
 				<c:otherwise>
 					<ul class="main-nav nav navbar-nav navbar-right">
 						<li class="wow fadeInDown" data-wow-delay="0s"><a
-							class="active" href="SC_11">일정 만들기</a></li>
-						<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">나의
-								일정 보기</a></li>
+							class="active" href="#">일정 만들기</a></li>
+						<li class="wow fadeInDown" data-wow-delay="0.1s"><a
+							href="SC_10">나의 일정 보기</a></li>
 						<!-- 	<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">나의 일정</a>
 					</li> -->
 						<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
@@ -427,8 +427,6 @@
 					</ul>
 				</c:otherwise>
 			</c:choose>
-
-
 		</div>
 		<!-- /.navbar-collapse -->
 	</div>
@@ -437,7 +435,7 @@
 	<div class="sc_11">
 		<div id="sc_11_01"></div>
 		<img src="">
-		
+
 	</div>
 
 
@@ -486,29 +484,53 @@
 	</div> -->
 
 
+	<div class="slider-area">
+		<div class="slider">
+			<div id="bg-slider" class="owl-carousel owl-theme">
 
+				<div class="item_1">
+					<!-- <img src="" alt=""> -->
+				</div>
+			<!-- 	<div class="item">
+					<img src=""
+						alt="The Last of us">
+				</div>
+				<div class="item">
+					<img src="" alt="">
+				</div> -->
 
-	<div class="content-area">
-		<div class="container">
-			<div class="row page-title text-center wow zoomInDown"
-				data-wow-delay="1s">
-
-
-				<a href="new_schedule" class="btn btn-info" role="button">새로운 일정
-					만들기</a> <a href="#" class="btn btn-info" role="button">나의 일정 보기</a>
-
-				<!-- <button type="button" class="btn btn-primary">Primary</button>
+			</div>
+		</div>
+		<div class="container slider-content">
+			<div class="row">
+				<div
+					class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
+					<br>
+					<div id="mainContent">
+						<h2>
+							나만의 일정을<br> 쉽게 만들어 보세요 
+						</h2>
+					</div>
+					<div class="content-area_1">
+						<div class="container_1">
+							<div class="row page-title text-center wow zoomInDown"
+								data-wow-delay="1s">
+								<a href="new_schedule" class="btn btn-info" role="button">새로운
+									일정 만들기</a> <a href="SC_10" class="btn btn-info" role="button">나의
+									일정 보기</a>
+								<!-- <button type="button" class="btn btn-primary">Primary</button>
   <button type="button" class="btn btn-success">Success</button> -->
+							</div>
+						</div>
+					</div>
 
-
-
+				</div>
 			</div>
 		</div>
 	</div>
 
 
-
-	<h5>여행 자들의 일정 보기</h5>
+	<center><h5>여행 자들의 일정 보기</h5></center>
 
 
 
