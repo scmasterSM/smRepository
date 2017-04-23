@@ -46,10 +46,20 @@ public class webSocketHandler implements WebSocketHandler {
 	@Override
 	public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
 		Gson gson = new Gson();
-
 		String msg = (String) message.getPayload();
-		logger.info(msg);
 		Map<String, Object> msgMap = gson.fromJson(msg, Map.class);
+		
+		switch ((String)msgMap.get("doWhat")) {
+		
+		case "login":
+			
+			break;
+			
+		case "addShareAuthority":
+			
+			break;
+		}
+		
 		if((String) msgMap.get("loginId") != null) setSession((String) msgMap.get("loginId"), session);
 		else{
 			String searchId = (String) msgMap.get("searchId");
@@ -59,6 +69,7 @@ public class webSocketHandler implements WebSocketHandler {
 			map.put("scd_sq", Integer.parseInt(String.valueOf(Math.round(d))));
 			//저장하기 전에 먼저 있는지 없는지 확인해야함 
 			int result = dao.addShareAuthority(map);
+			System.out.println(result);
 		}
 		broadcast(msg);
 	}
