@@ -50,4 +50,24 @@
 			user_id = #{user_id}
 	</update>
 	
+	<!-- 홈화면 인기도시 불러오는 기능   -->
+	<select id="bestcity" resultType="Daily_City">
+		select b.pic_address,c.area_code,b.city_nm,b.city_name_en,b.sigungu_code,c.city_cnt
+		from sm_city_tb b,
+		(select count(city_nm) as city_cnt, area_code,city_nm from sm_daily_city_tb
+		group by city_nm,area_code
+		order by city_cnt desc) c
+		where b.city_nm = c.city_nm and rownum <![CDATA[ < ]]> 7
+	</select>
+	
+	<!-- SC_05 detail 화면   -->
+
+	<select id="detail_city" parameterType="String" resultType="Daily_City">
+		select 
+		pic_address,areacode as area_code, city_nm, city_name_en,sigungu_code
+		from sm_city_tb
+		where city_nm = #{city_nm}
+	</select>
+	
+	
 </mapper>

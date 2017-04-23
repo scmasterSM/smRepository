@@ -66,12 +66,8 @@
 	background: #DFDFDF; */
 }
 </style>
-<script>
-	window.jQuery
-			|| document
-					.write('<script src="./resources/js/vendor/jquery-1.10.2.min.js"><\/script>')
-</script>
-<script src="./resources/js/bootstrap.min.js"></script>
+
+<script src="./resources/js/bootstrap.js"></script>
 <script src="./resources/js/owl.carousel.min.js"></script>
 <script src="./resources/js/wow.js"></script>
 <script src="./resources/js/main.js"></script>
@@ -79,8 +75,14 @@
 
 <script type="text/javascript">
 	//관광API 키값 
-	var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
+	var key = "2pTN6y%2BhCGaVQL97quhdeM%2FW9ezdUvBNytbkKoT323qbc%2Ff5ao8fYoW2C31AgwacBVhy7PYHqvuwcnzprU4%2BNw%3D%3D";
 
+function checkId() {
+	$("#loginAtag").trigger("click");
+	$('#myModal').modal('show');
+}
+	
+	
 	$(function() {
 		$("#joinForm").on("click",function(){ /* 조인버튼 클릭시 모달   */
 			$("#regAtag").trigger("click");
@@ -98,8 +100,9 @@
 		})
 		
 		r_Data('this'); 
-		random_city();
 		initCitySearch();
+		
+		getPoppular_city();
 		
 		
 		//로그인 
@@ -206,7 +209,7 @@
 				}
 			})
 		});
-		
+
 		
 	});//레디펑션
 	
@@ -231,7 +234,7 @@
 	      {"areaCode" : 38, "sigunguCode" : "", "name" : '전라남도', "name_en" : "Jeollanam-do", "lat" : parseFloat(34.8679), "lng" : parseFloat(126.991), "is_state" : 1}];
 	   
 	  function getSigungu(areaCode){
-		  var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
+		  var key = "2pTN6y%2BhCGaVQL97quhdeM%2FW9ezdUvBNytbkKoT323qbc%2Ff5ao8fYoW2C31AgwacBVhy7PYHqvuwcnzprU4%2BNw%3D%3D";
 		  var sigunguCode;
 	      var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode?ServiceKey="
 	           + key + "&areaCode=" + areaCode 
@@ -247,7 +250,6 @@
 	                 $.ajax({
 	                    type : "GET",
 	                    url : gUrl,
-	                    async : false,
 	                    success : function(data){
 	                       var location = data.results[0].geometry.location;
 	                       sigungu.push({
@@ -291,7 +293,7 @@
 			      source: city_names,
 			      select: function(event, selected) {
 			          $.each(sigungu, function(index, val){
-			        	  if(val.name == selected.item.value) location.href = "sc_05?areacode='"+val.areaCode+"'&sigungucode='"+val.sigunguCode+"'"; 
+			        	  if(val.name == selected.item.value) location.href = "sc_05?areacode='"+val.areaCode+"'&sigungucode='"+val.sigunguCode+"'&city_nm="+val.name+"";
 			          });
 			      }
 		    });
@@ -300,7 +302,7 @@
 	  	function city_search(){
 	  		var input = $('#searchTextField').val();
 	  		$.each(sigungu, function(index, val){
-	        	  if(val.name == input) location.href = "sc_05?areacode='"+val.areaCode+"'&sigungucode='"+val.sigunguCode+"'"; /* 이부분 확인 필요  */
+	        	  if(val.name == input) location.href = "sc_05?areacode='"+val.areaCode+"'&sigungucode='"+val.sigunguCode+"'&city_nm="+val.name+"";
 	        });
 	  		return false;
 	  	}
@@ -315,32 +317,37 @@
 		location.href = "logout";
 	}
 	
-	//추천 지역을 랜덤으로 보여주는 메소드
-	function random_city(){
-		var content2 = '';
-		
+	//DB에서 불러온 인기도시
+	 function getPoppular_city(){
+		  areaCode = "";
+		  var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
+		  var sigunguCode;
+		  var content2 = '';
+	     $.ajax({
+	        type : "GET",
+	        url : "bestcity",
+	        success : function(result){
+	        	console.log(result);
+	            	content2 += '<ul class="list-inline job-seeker">';
+	             $.each(result, function(index, val) {
+					if(val.sigungu_code == null){
+	         		content2 += '<li><a href="sc_05?areacode='+val.area_code+'&sigungucode=%27%27&city_nm='+val.city_nm+'"> <img src="'+val.pic_address+'" alt="" width="300" height="200">';
+					}else{
+						content2 += '<li><a href="sc_05?areacode='+val.area_code+'&sigungucode='+val.sigungu_code+'&city_nm='+val.city_nm+'"> <img src="'+val.pic_address+'" alt="" width="300" height="200">';	
+					}
+	         		content2 += '<div class="overlay">';
+	         		content2 +=	'<h3>'+val.city_nm+'</h3>';
+	         		content2 +=	'<p>플랜 '+val.city_cnt+'개가 기록된 인기 도시</p>';
+	                 
+	              }); //each 
+	         		content2 +=	'</div></a></li></ul>';
+	             $("#tabtab").html(content2);
+	           }, error : function(e){
+	              console.log(e);
+	           }
+	     });//ajax
+	  }
 
-		content2 += '<ul class="list-inline job-seeker">';
-		content2 += '<li><a href="sc_05?areacode=1&sigungucode=%27%27"> <img src="./resources/image/main_city/city_seoul.jpg" alt="" width="300" height="200">';
-		content2 += '<div class="overlay">';
-		content2 +=	'<h3>서울</h3>';
-		content2 +=	'<p>쇼핑,관광등 없는게 없는 "Soul of Asia!"</p>';
-		content2 +=	'</div></a></li><li><a href="sc_05?areacode=6&sigungucode=%27%27"> <img src="./resources/image/main_city/city_busan.jpg" alt="" width="300" height="200">';
-		content2 +=	'<div class="overlay"><h3>부산</h3><p>탁트인 바다,맛있는 음식 exciting city! </p></div></a></li>';
-		content2 +=  '<li><a href="sc_05?areacode=37&sigungucode=%2712%27"> <img src="./resources/image/main_city/city_junju.jpg" alt="" width="300" height="200">';
-		content2 +=  '<div class="overlay">';
-		content2 +=	'<h3>전주</h3><p>옛것을 고수하는 아름다운  slow city! </p></div></a></li>';
-		content2 +=   '<li><a href="sc_05?areacode=39&sigungucode=%27%27"> <img src="./resources/image/main_city/city_jeju.jpg" alt="" width="300" height="200">';
-		content2 += '<div class="overlay"><h3>제주도</h3><p>4계절 내내 다채로운 대표 관광 city!</p></div></a></li>';
-		content2 += '<li><a href="sc_05?areacode=32&sigungucode=%27%27"> <img src="./resources/image/main_city/city_kwd.jpg" alt="" width="300" height="200">';
-		content2 +=		'<div class="overlay"><h3>강원도</h3><p>바다와 산 모두 즐길 수 있는 곳!</p></div></a></li>';
-		content2 += '<li><a href="sc_05?areacode=35&sigungucode=%272%27"> <img src="./resources/image/main_city/city_kj.jpg" alt="" width="300" height="200">';
-		content2 +=	'<div class="overlay"><h3>경주</h3><p>역사를 품은 색다른 매력이 있는 곳! </p></div></a></li></ul>';
-		
-		$("#tabtab").html(content2);
-		
-	}
-	
 
 	//행사 정보를 가져오는 메소드 
 	 function r_Data(month) {
@@ -351,7 +358,7 @@
 	      /* url2 ="&contentTypeId=15&areaCode=&sigunguCode=&cat1=&cat2=&cat3"; */
 	      url += "&eventStartDate=20170501&eventEndDate=20170531&arrange=A&listYN=Y&pageNo=1&numOfRows=50&MobileOS=ETC&MobileApp=AppTesting&_type=json";
 		}else{
-			url += "&eventStartDate=20170401&eventEndDate=20170430&arrange=A&listYN=Y&pageNo=1&numOfRows=199&MobileOS=ETC&MobileApp=AppTesting&_type=json";
+			url += "&eventStartDate=20170418&eventEndDate=20170430&arrange=A&listYN=Y&pageNo=1&numOfRows=199&MobileOS=ETC&MobileApp=AppTesting&_type=json";
 		}
 	
       $.getJSON(
@@ -382,11 +389,7 @@
                     		 outputArray[j] = data.response.body.items.item[val].title;
                     	 }
                     	 
-                        //console.log(data.response.body.items.item.length);
-                        //console.log(val);
                         var con = data.response.body.items.item[val].contentid;
-                        //console.log(con);
-                        //console.log(data.response.body.items.item[val].title);
                         
                         if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
                            content += '<li><a href="SC_08?CONTENT_ID='
@@ -532,7 +535,7 @@
 															<div class="col-sm-10">
 																<button type="button" class="btn btn-primary btn-sm" value="submit" id="submit_button">
 																Submit</button>
-																<a href="javascript:;">Forgot your password?</a>
+																<!-- <a href="javascript:;">Forgot your password?</a> -->
 															</div>
 														</div>
 													</form>
@@ -719,13 +722,15 @@
 				</div>
 				
 				<c:choose>
-				<c:when test="${sessionScope.id == null }">
+				<c:when test="${sessionScope.user_id == null }">
 				
 					<ul class="main-nav nav navbar-nav navbar-right">
-					<li class="wow fadeInDown" data-wow-delay="0s"><a
-						class="active" href="SC_11">일정 만들기</a></li>
-					<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="SC_10">나의 일정 보기</a>
-					</li>
+						<li class="wow fadeInDown" data-wow-delay="0s">
+							<a class="active" href ="#" onclick="checkId();">일정 만들기</a>
+						</li>
+						<li class="wow fadeInDown" data-wow-delay="0.1s">
+							<a href="#" onclick="checkId();">나의 일정 보기</a>
+						</li>
 					<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
 							Own Schedule</a></li>
 					<li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">City
@@ -736,7 +741,7 @@
 					<ul class="main-nav nav navbar-nav navbar-right">
 					<li class="wow fadeInDown" data-wow-delay="0s"><a
 						class="active" href="SC_11">일정 만들기</a></li>
-					<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">나의 일정 보기</a>
+					<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="SC_10">나의 일정 보기</a>
 					</li>
 					<!-- <li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">나의 일정</a>
 					</li> -->
@@ -873,32 +878,10 @@
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane fade in active"
 						id="job-seekers">
-						<!-- <ul class="list-inline job-seeker">
-
-								<li><a href=""> <img
-										src="./resources/img/team-small-5.jpg" alt="">
-										<div class="overlay">
-											<h3>Ohidul Islam</h3>
-											<p>Web Designer</p>
-										</div>
-								</a></li>
-							</ul> -->
+				
 					</div>
 					<div role="tabpanel" class="tab-pane fade" id="employeers">
-						<!-- <ul class="list-inline">
-							<li><a href=""> <img src="./resources/img/employee4.png"
-									alt="">
-									<div class="overlay">
-										<h3>Instagram</h3>
-									</div>
-							</a></li>
-							<li><a href=""> <img src="./resources/img/employee3.png"
-									alt="">
-									<div class="overlay">
-										<h3>Twitter</h3>
-									</div>
-							</a></li>
-						</ul> -->
+				
 					</div>
 				</div>
 			</div>
@@ -1153,6 +1136,7 @@
 			</div>
 		</div>
 	</div>
+	
 
 
 	<!-- footer -->
