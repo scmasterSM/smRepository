@@ -28,7 +28,7 @@ public class MyScheduleController {
 	
 	@ResponseBody
 	@RequestMapping(value="read_scd",method=RequestMethod.GET)
-	public ArrayList<HashMap<String, Object>> read_scd(HttpSession session, Model model){
+	public ArrayList<HashMap<String, Object>> read_scd(HttpSession session){
 		String user_id=(String)session.getAttribute("user_id");  
 		ArrayList<HashMap<String, Object>>scdList = dao.read_scd(user_id); 
 		return scdList;
@@ -52,6 +52,12 @@ public class MyScheduleController {
 		System.out.println(d_scdList);
 		return d_scdList; 
 	} 
-	
+	@ResponseBody
+	@RequestMapping(value="shared_read_scd",method=RequestMethod.GET)
+	public ArrayList<HashMap<String, Object>> shared_read_scd(HttpSession session){
+		String user_id=(String)session.getAttribute("user_id");  
+		ArrayList<HashMap<String, Object>>scdList = dao.shared_read_scd(user_id); 
+		return scdList;
+	}
 	
 }
