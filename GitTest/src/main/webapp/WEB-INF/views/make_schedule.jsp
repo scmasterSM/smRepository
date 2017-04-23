@@ -500,7 +500,7 @@ html, body {
 		<h3>세부정보</h3>
 		<form action="create_schedule" method="post" onsubmit="return add_citylist();">
 			<table>
-				<input type="hidden" id="user_id" name="user_id" value="1" placeholder="ID">
+				<input type="hidden" id="user_id" name="user_id" value="${user_id }" placeholder="ID">
 				<tr>	
 					<td>제목</td>
 					<td><input type="text" id="scd_title" name="scd_title" placeholder="제목 입력"></td>
