@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.scmaster.gittest.dao.ShareMapper">
+ 
+<insert id="addShareAuthority" parameterType="HashMap">
+	insert into
+			SM_SHARED_USER_TB(
+				SHARED_SQ
+				,SCD_SQ
+				,USER_ID
+			)values(
+				SM_SHARED_USER_TB_SHARED_SQ.nextval
+				,#{scd_sq}
+				,#{searchId}
+			)
+</insert>
+
+<select id="getSharedScdSq" resultType="int" parameterType="String">
+	select
+		SCD_SQ
+	from
+		SM_SHARED_USER_TB
+	where
+		USER_ID = #{userId}
+
+</select>
+
+</mapper>

@@ -29,8 +29,9 @@
 	
 	<websocket:handlers>
 		<websocket:mapping handler="echoHandler" path="/echo"/>
+		<websocket:mapping handler="webSocketHandler" path="/webSocket"/>
 	</websocket:handlers>
 	
 	<beans:bean id="echoHandler" class="com.scmaster.gittest.websocket.EchoHandler"/>
-	
+	<beans:bean id="webSocketHandler" class="com.scmaster.gittest.websocket.webSocketHandler"/>
 </beans:beans>
