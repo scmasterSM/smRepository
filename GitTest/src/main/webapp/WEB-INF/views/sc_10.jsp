@@ -66,12 +66,9 @@
                   <button class="navbar-btn nav-button wow fadeInRight" data-wow-delay="0.6s">Sign up</button>
               </div>
               <ul class="main-nav nav navbar-nav navbar-right">
-                <li class="wow fadeInDown" data-wow-delay="0s"><a class="active" href="#">Home</a></li>
-                <li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">Job Seekers</a></li>
-                <li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">Employeers</a></li>
-                <li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">About us</a></li>
-                <li class="wow fadeInDown" data-wow-delay="0.4s"><a href="#">Blog</a></li>
-                <li class="wow fadeInDown" data-wow-delay="0.5s"><a href="#">Contact</a></li>
+                <li class="wow fadeInDown" data-wow-delay="0s"><a
+						class="active" href="SC_11">일정 만들기</a></li>
+				<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="SC_10">나의 일정 보기</a></li>
               </ul>
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container-fluid -->
@@ -108,6 +105,7 @@
                       <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active"><a href="#job-seekers" aria-controls="home" role="tab" data-toggle="tab">클립 보드</a></li>
                         <li role="presentation"><a href="#employeers" aria-controls="profile" role="tab" data-toggle="tab">여행 일정</a></li>
+                        <li role="presentation"><a href="#shared" aria-controls="profile" role="tab" data-toggle="tab">공유 받은 일정</a></li>
                       </ul>
 
                       <!-- Tab panes -->
@@ -124,6 +122,14 @@
                             <ul class="list-inline">
                             <!-- 여행일정 -->
                                 <div id="myPlan" class="myPlan"></div>
+                                
+                                
+                            </ul>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="shared">
+                            <ul class="list-inline">
+                            <!-- 여행일정 -->
+                                <div id="sharedPlan" class="sharedPlan"></div>
                                 
                                 
                             </ul>
@@ -309,7 +315,69 @@ $(function(){
 	}) 
 	}) 
  
-	
+$(function(){
+
+	$.ajax({
+		type : "get",
+		url : "shared_read_scd",
+		success : function(data){
+			var html="";
+			console.log(data);
+			$.each(data,function(index,item){
+				console.log(item);
+				var contentId=item.DTL_CONTENT_ID;				
+			     ReadApi(contentId);
+			console.log(url);
+			$.getJSON(url, function(data) {
+				
+			    console.log('success1', data);
+			    var scd_sq=item.SCD_SQ;
+			    console.log(scd_sq);
+			    if (typeof (data.response.body.items.item.firstimage) !== "undefined") {
+			    	
+			    	html += '<li>';
+					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+						}else{
+							html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+						}					
+					html += '</a>';
+					html += '</li>';
+				
+				$("#sharedPlan").html(html);
+			    }else if (typeof (data.response.body.items.item.firstimage) == "undefined") {
+			    	contentId=item.DTL_CONTENT_ID2;
+			    	ReadApi(contentId);
+			    $.getJSON(url, function(data) {
+			    	html += '<li>'; 
+					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+					}else{
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+					}
+					html += '</a>';
+					html += '</li>';
+				
+				$("#sharedPlan").html(html);
+			    	
+			    })
+			    	
+			    }
+			    console.log(data.response.body.items.item); 
+			 });
+			
+			})
+				
+		},
+		error : function(e){
+			console.log(e);
+		}
+	}) 
+	}) 	
 	 
 </script>    
 </html>
