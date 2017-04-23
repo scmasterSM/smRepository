@@ -541,12 +541,9 @@ function locationObj(){
                   <button class="navbar-btn nav-button wow fadeInRight" data-wow-delay="0.6s">Sign up</button>
               </div>
               <ul class="main-nav nav navbar-nav navbar-right">
-                <li class="wow fadeInDown" data-wow-delay="0s"><a class="active" href="#">Home</a></li>
-                <li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">Job Seekers</a></li>
-                <li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">Employeers</a></li>
-                <li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">About us</a></li>
-                <li class="wow fadeInDown" data-wow-delay="0.4s"><a href="#">Blog</a></li>
-                <li class="wow fadeInDown" data-wow-delay="0.5s"><a href="SC_10">클립보드</a></li>
+                <li class="wow fadeInDown" data-wow-delay="0s"><a
+						class="active" href="SC_11">일정 만들기</a></li>
+				<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="SC_10">나의 일정 보기</a></li>
               </ul>
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container-fluid -->
