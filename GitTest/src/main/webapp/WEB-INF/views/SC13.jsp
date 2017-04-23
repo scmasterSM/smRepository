@@ -656,7 +656,7 @@
 			}
 		}
 		for (var i = 0; i < totalCount; i++) {
-			if(typeof(data.response.body.items.item[i])!='undefined'){
+			if(typeof(data.response.body.items.item[i])!='undefined' && !(data.response.body.items.item[i].title.includes("2016"))){
 			var latLng = {
 				lat : parseFloat(data.response.body.items.item[i].mapy),
 				lng : parseFloat(data.response.body.items.item[i].mapx)
