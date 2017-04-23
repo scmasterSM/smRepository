@@ -565,7 +565,7 @@ var map=[];
  
  $(function(){
 	
-		ws = new WebSocket("ws://192.168.0.109:8888/gittest/webSocket");
+		ws = new WebSocket("ws://10.10.6.61:8888/gittest/webSocket");
 		
 		var data = {
 				"loginId" : "${user_id}"
@@ -581,7 +581,7 @@ var map=[];
 		//서버에서 접속 종료한 후 이벤트 정의
 		ws.onclose = function(event){
 			
-		}
+	}
 })
 
 $(function(){
