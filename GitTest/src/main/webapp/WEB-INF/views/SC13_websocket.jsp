@@ -175,21 +175,6 @@
 	
 	
   <script>
-  /* var ws;
-  var wsURI = "ws://10.10.6.1:8888/gittest/echo";
-  
-  function connect_ws(){
-	  ws = new WebSocket(wsURI);
-		ws.onmessage = function(e){ 
-			 set_places(JSON.parse(e.data)); 
-		};
-		 ws.onopen = () => ws.send(JSON.stringify(sq));
-		 ws.onclose = function(e){
-			 ws.close();
-			 ws = null;
-		 }
-  } */
-  
   $(function(){
 	add_day();
     
@@ -236,6 +221,30 @@
     $('.ordlist:first').trigger('click');
     
   });
+  
+  $(function(){
+	  ws = new WebSocket("ws://172.30.1.55:8888/gittest/webSocket");
+		
+		var data = {
+				"doWhat" : "webSocketlogIn",
+				"loginId" : "${user_id}"
+		}
+		
+		ws.onopen = () => ws.send(JSON.stringify(data));
+		
+		ws.onmessage = function(event){
+			console.log(event.data);
+		}
+		
+		//서버에서 접속 종료한 후 이벤트 정의
+		ws.onclose = function(event){
+			
+		}
+  })
+  
+  function wsCommunication(){
+	  
+  }
   
   var map;
   var myMarkers;
@@ -301,6 +310,8 @@
      });//ajax
   }
   	
+  
+  //websocket으로 변경
   	function add_day(){
   		$("#add_day").on('click', function() {
   			var order = parseInt($(".day:last").val()) + 1;
@@ -412,6 +423,7 @@
 	 	})
 	}
 	
+	//websocket으로 변경
   function ordclick(){
 	  $(".ordlist").on("click", function(){
 			init_search_menu();
@@ -556,6 +568,7 @@
 		})
   }
   
+  //websocket으로 변경
   function delete_place(dtl_sq){
 	  $.ajax({
 			type: "post",
@@ -813,6 +826,7 @@
 		  		myloc_markers.push(marker);
 	}
 	
+	//websocket으로 변경
 	function budget_memo(dtl_sq, contentid){
 		var scd_sq = $('#scd_sq').val();
 		var daily_sq = parseInt($('#section2_day').text().match(/\d+/)[0], 10);
@@ -866,6 +880,8 @@
 	    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
 	}
 	
+	
+	//websocket으로 변경
 	function get_daily_budget(){
 		var scd_sq = $('#scd_sq').val();
 		var daily_sq = parseInt($('#section2_day').text().match(/\d+/)[0], 10);
@@ -888,6 +904,7 @@
 		})
 	}
 	
+	//websocket으로 변경
 	function get_budget_total(){
 		var scd_sq = $('#scd_sq').val();
 		$.ajax({
@@ -940,6 +957,8 @@
 			}
 		})
 		var city_names = '';
+		
+		//websocket 변경
 		for(var i=0; i < cities.length; i++){
 			cities[i].city_cnt = cities.length;
 			$.ajax({
@@ -1361,6 +1380,7 @@
   		$("#budget_memo").attr("class","col-4 sidenav");
   	}
 
+  	//websocket으로 변경
   	function closeBgtMemo() {
 		var scd_sq = $('#place_scd_sq').val();
 		var daily_sq = $('#place_daily_sq').val();
@@ -1419,7 +1439,8 @@
   		$('#alter_schedule').css('width', '10%');
   		$('#alter_schedule').attr("class","col-2 sidenav");
   	}
-
+	
+  	//websocket으로 수정
   	function closeAlt() {
   		daily_date_change();
   		//$('#map').css('left', '0');
@@ -1436,6 +1457,8 @@
 		init_search_menu();
   	}
   	
+  	
+  	//websocket으로 변경
   	function daily_date_change(){
   		var scd_sq = $('#scd_sq').val();
   		var d = new Date($('#start_ymd').val());
@@ -1463,6 +1486,8 @@
   		});
   	}
   	
+  	
+  	//websocket
   	function init_daily_list(){
   		var scd_sq = $('#scd_sq').val();
   		$.ajax({
@@ -1504,6 +1529,8 @@
     	  	$('#days').html(my_content); 
       }	
   	
+  	
+  	//websocket
   	function alter_schedule(){
 		var scd_sq = $('#scd_sq').val();
   		$.ajax({
@@ -1543,6 +1570,7 @@
   		$("#alterlist").sortable("enable");
     }	
   	
+  	//websocket
   	function delete_day(daily_sq, daily_ord){
   		var check = confirm("정말 삭제하시겠습니까?");
   		if(!check) return;
