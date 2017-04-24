@@ -23,6 +23,12 @@ public class MyScheduleDao {
 		return scdList;
 	}
 	
+	public ArrayList<HashMap<String, Object>> shared_read_scd(String user_id){
+		MyScheduleMapper mapper=sqlsession.getMapper(MyScheduleMapper.class);
+		ArrayList<HashMap<String, Object>>scdList=mapper.shared_read_scd(user_id);
+		return scdList;
+	}
+	
 	public ArrayList<HashMap<String, Object>> read_scd_info(int scd_sq){
 		MyScheduleMapper mapper=sqlsession.getMapper(MyScheduleMapper.class);
 		ArrayList<HashMap<String, Object>>rscdList=mapper.read_scd_info(scd_sq);
