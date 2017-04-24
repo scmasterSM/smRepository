@@ -12,6 +12,8 @@ import com.scmaster.gittest.vo.Schedule;
 public interface ScheduleMapper {
 	public void insert_scd(Schedule schedule);
 	public int getScd_Sq(String user_id);
+	public Schedule select_scd(int scd_sq);
+	public void update_scd(Schedule schedule);
 	public void insert_daily(Daily_Scd daily);
 	public int getDaily(Daily_Scd daily);
 	public void insert_city(Daily_Scd new_daily);

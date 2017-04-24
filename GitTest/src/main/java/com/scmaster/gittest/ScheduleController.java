@@ -198,4 +198,19 @@ public class ScheduleController {
 		List<HashMap<String, Object>> cliplist = dao.get_cliplist(user_id);
 		return cliplist;
 	}
+
+	// 일차 순서 변경
+	@ResponseBody
+	@RequestMapping(value = "select_scd", method = RequestMethod.POST)
+	public Schedule select_scd(int scd_sq) {
+		Schedule schedule = dao.select_scd(scd_sq);
+		return schedule;
+	}
+
+	// 일차 순서 변경
+	@ResponseBody
+	@RequestMapping(value = "update_scd", method = RequestMethod.POST)
+	public void update_scd(Schedule schedule) {
+		dao.update_scd(schedule);
+	}
 }
