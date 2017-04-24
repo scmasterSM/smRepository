@@ -28,6 +28,19 @@ public class ScheduleDAO {
 		int scd_sq = mapper.getScd_Sq(schedule.getUser_id());
 		return scd_sq;
 	}
+	
+	// 메인 스케줄 가져오기
+	public Schedule select_scd(int scd_sq){
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		Schedule schedule = mapper.select_scd(scd_sq);
+		return schedule;
+	}
+
+	// 메인 스케줄 수정
+	public void update_scd(Schedule schedule) {
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		mapper.update_scd(schedule);
+	}
 
 	// 일차 스케줄 저장
 	public void insert_daily(Daily_Scd daily) {
@@ -119,9 +132,11 @@ public class ScheduleDAO {
 	public Budget getBudgetMemo(int dtl_sq) {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
 		Budget budget = mapper.getBudgetMemo(dtl_sq);
-		if(budget != null){
-			if(budget.getDtl_budget() == null) budget.setDtl_budget("");
-			if(budget.getDtl_memo() == null) budget.setDtl_memo("");
+		if (budget != null) {
+			if (budget.getDtl_budget() == null)
+				budget.setDtl_budget("");
+			if (budget.getDtl_memo() == null)
+				budget.setDtl_memo("");
 		}
 		return budget;
 	}
@@ -140,8 +155,8 @@ public class ScheduleDAO {
 		} else {
 			mapper.update_bgt(budget);
 		}
-		if(budget.getDtl_memo() != null)
-		mapper.update_memo(budget);
+		if (budget.getDtl_memo() != null)
+			mapper.update_memo(budget);
 	}
 
 	// 일차별 예산 가져오기
@@ -202,9 +217,9 @@ public class ScheduleDAO {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
 		mapper.day_change(daily);
 	}
-	
+
 	// 클립 리스트 가져오기
-	public List<HashMap<String, Object>> get_cliplist(String user_id){
+	public List<HashMap<String, Object>> get_cliplist(String user_id) {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
 		List<HashMap<String, Object>> cliplist = mapper.get_cliplist(user_id);
 		return cliplist;

@@ -29,26 +29,90 @@
 	    display: table;
 	}
 	
-	.col-1 {width: 5%; height: 100%}
-	.col-2 {width: 10%; height: 100%}
-	.col-3 {width: 15%; height: 100%}
-	.col-4 {width: 20%; height: 100%}
-	.col-5 {width: 25%; height: 100%}
-	.col-6 {width: 30%; height: 100%}
-	.col-7 {width: 35%; height: 100%}
-	.col-8 {width: 40%; height: 100%}
-	.col-9 {width: 45%; height: 100%}
-	.col-10 {width: 50%; height: 100%}
-	.col-11 {width: 55%; height: 100%}
-	.col-12 {width: 60%; height: 100%}
-	.col-13 {width: 65%; height: 100%}
-	.col-14 {width: 70%; height: 100%}
-	.col-15 {width: 75%; height: 100%}
-	.col-16 {width: 80%; height: 100%}
-	.col-17 {width: 85%; height: 100%}
-	.col-18 {width: 90%; height: 100%}
-	.col-19 {width: 95%; height: 100%}
-	.col-20 {width: 100%; height: 100%}
+	.header {
+		width: 100%; 
+		height: 8%;    
+		/* border-top: solid #4eb1e4 2px; */
+  		position: relative;
+	    float: left;
+	    height: 60px;
+	    background-color: white;
+	    width: 100%;
+	    min-width: 1092px;
+	    z-index: 100;
+	    border-bottom: 1px solid #ddd; 
+	}
+	.fl {
+   		float: left;
+	}
+	#plan_title {
+	    font-size: 20px;
+	    color: #363636;
+	    font-weight: bold;
+	    margin-top: 7px;
+	    line-height: 26px;
+	    height: 45px;
+	    padding: 10px;
+	    border-radius: 5px;
+	    cursor: pointer;
+	    padding-right: 30px;
+	}
+	#plan_out_btn {
+	    width: 100px;
+	    height: 42px;
+	    text-align: center;
+	    background: #00AEEF;
+	    border: medium none;
+	    line-height: 42px;
+	    font-weight: bold;
+	    font-size: 16px;
+	    color: #fff;
+	    margin-right: 10px;
+	    cursor: pointer;
+	}
+	.pn_title_input_box {
+	    width: 260px;
+	    height: 30px;
+	    border: 1px solid #c8c8ca;
+	    padding-left: 10px;
+	    padding-right: 40px;
+	    font-size: 13px;
+	    color: #808080;
+	}
+	#plan_title.on {
+	    padding-right: 0px;
+	}
+	.pn_title_chg_ok {
+	    background: #ff9320;
+	    border: 1px solid #f7870f;
+	    margin-left: 2px;
+	    width: 60px;
+	    height: 30px;
+	    font-size: 12px;
+	    color: white;
+	    cursor: pointer;
+	}
+	
+	.col-1 {width: 5%; height: 92%}
+	.col-2 {width: 10%; height: 92%}
+	.col-3 {width: 15%; height: 92%}
+	.col-4 {width: 20%; height: 92%}
+	.col-5 {width: 25%; height: 92%}
+	.col-6 {width: 30%; height: 92%}
+	.col-7 {width: 35%; height: 92%}
+	.col-8 {width: 40%; height: 92%}
+	.col-9 {width: 45%; height: 92%}
+	.col-10 {width: 50%; height: 92%}
+	.col-11 {width: 55%; height: 92%}
+	.col-12 {width: 60%; height: 92%}
+	.col-13 {width: 65%; height: 92%}
+	.col-14 {width: 70%; height: 92%}
+	.col-15 {width: 75%; height: 92%}
+	.col-16 {width: 80%; height: 92%}
+	.col-17 {width: 85%; height: 92%}
+	.col-18 {width: 90%; height: 92%}
+	.col-19 {width: 95%; height: 92%}
+	.col-20 {width: 100%; height: 92%}
 	
 	.daylist ul {
 	    list-style-type: none;
@@ -58,8 +122,9 @@
 	.daylist li {
 	    padding: 8px;
 	    margin-bottom: 7px;
-	    background-color: #33b5e5;
+	    background-color: #00AEEF;
 	    color: #ffffff;
+	    border: medium none;
 	    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	}
 	.daylist li:hover {
@@ -70,6 +135,7 @@
 		height: 100%;
 		margin: 0;
 		padding: 0;
+		overflow: hidden;
 	}
 	
 	.sidenav .closebtn {
@@ -91,27 +157,28 @@
 
 	.sidenav {
 		padding: 15px 15px 15px 15px;
-	    height: 100%;
+	    height: 91.9%;
 	    width: 0;
 	    position: fixed;
 	    pointer-events: none;
 	    z-index: 1;
-	    top: 0;
+	    top: 8.1%;
 	    left: 25%;
 	    background-color: white;
 	    overflow-x: hidden;	
 	    transition: 0.5s;
 	    opacity: 0;
+	    border-top: 1px solid black; 
 	}
 	
 	#alter_schedule{
 		padding: 15px 15px 15px 15px;
-	    height: 100%;
+	    height: 91.9%;
 	    width: 0;
 	    position: fixed;
 	    pointer-events: none;
 	    z-index: 1;
-	    top: 0;
+	    top: 8.1%;
 	    left: 0%;
 	    background-color: white;
 	    overflow-x: hidden;	
@@ -234,7 +301,6 @@
     });
 
     $('.ordlist:first').trigger('click');
-    
   });
   
   var map;
@@ -266,7 +332,7 @@
 	  var sigunguCode;
       var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode?ServiceKey="
            + key + "&areaCode=" + areaCode 
-           + "&numOfRows=100&MobileOS=ETC&MobileApp=AppTesting&_type=json";
+           + "&numOfR93=100&MobileOS=ETC&MobileApp=AppTesting&_type=json";
      $.ajax({
         type : "GET",
         url : url,
@@ -656,7 +722,7 @@
 			}
 		}
 		for (var i = 0; i < totalCount; i++) {
-			if(typeof(data.response.body.items.item[i])!='undefined'){
+			if(typeof(data.response.body.items.item[i])!='undefined' && !(data.response.body.items.item[i].title.includes("2016"))){
 			var latLng = {
 				lat : parseFloat(data.response.body.items.item[i].mapy),
 				lng : parseFloat(data.response.body.items.item[i].mapx)
@@ -844,7 +910,7 @@
 						content += '<input type="hidden" id="place_scd_sq" value="'+scd_sq+'">';
 						content += '<input type="hidden" id="place_daily_sq" value="'+daily_sq+'">';
 						content += '<input type="hidden" id="place_dtl_sq" value="'+dtl_sq+'">';
-						content += '<h4>예산</h4> KRW <input type="number" step="1000" id="place_budget" value="'+budget+'" placeholder="예산을 입력하세요">';
+						content += '<h4>예산</h4> KRW <input type="number" min="0" step="1000" id="place_budget" value="'+budget+'" placeholder="예산을 입력하세요">';
 						content += '<h4>메모</h4> <textarea rows="5" cols="50" id="place_memo" placeholder="메모를 입력하세요">'+memo+'</textarea>';
 					},
 					error: function(e){
@@ -1479,6 +1545,20 @@
 				console.log(e);
 			}		
 		})
+		
+		$.ajax({
+			type: "post",
+			url: "select_scd",
+			data: {
+				scd_sq: scd_sq
+			},
+			success: function(data){
+				$('#plan_title').html(data.scd_title);
+			},
+			error: function(e){
+				console.log(e);
+			}		
+		})
   	}
   	
   	function set_dailylist(data){
@@ -1623,6 +1703,75 @@
 	        }//update
         });
         $("#alterlist").disableSelection();
+        
+        $('#plan_title').mouseover(function(){
+        	if($(this).hasClass('on')){
+        		$('#plan_title').css('background','');
+        		$('#plan_title').css('background-color','#fff');
+        	}else{
+        		$('#plan_title').css('background','url("/res/img/workspace/new/title_edit_btn.png") no-repeat right 10px top 12px');
+        		$('#plan_title').css('background-color','#ededed');
+        	}
+
+        });
+
+        $('#plan_title').mouseout(function(){
+        	$('#plan_title').css('background','');
+        	$('#plan_title').css('background-color','#fff');
+        });
+
+
+        $('#plan_title').click(function(e){
+
+            if($(e.target).is('.pn_title_chg_ok')){
+        		 e.stopPropagation();
+        			_this_val = $('#plan_title input').val();
+        			var scd_sq = $('#scd_sq').val();
+
+        			$.ajax({
+        				type: 'post',
+        				url: 'update_scd',
+        				data: {
+        					scd_sq:scd_sq 
+        					,scd_title:_this_val
+        				},
+        				success: function(data) {
+	        				$('#plan_title').html(_this_val);
+	        				('#plan_title').removeClass('on');
+	        				return;
+        				},         
+        				error: function(e) {
+        					console.log(e);
+        				}
+        			});
+
+        			$('#plan_title').html(_this_val);
+                    $('#plan_title').removeClass('on');
+                    return;
+        	}
+            
+        	if($(this).hasClass('on')){
+        	}else{
+        		$(this).addClass('on');
+        		_this_txt = $(this).text();
+        		_this_html = '<input type="text" value="'+_this_txt+'" class="pn_title_input_box"><div style="font-size: 10px;position:absolute;top: 22px;left: 325px;color:##808080" id="pl_title_cnt">'+_this_txt.length+'/20</div><button class="pn_title_chg_ok">확인</button>';
+        		$('#plan_title').html(_this_html);
+        	}
+        });
+
+
+        $('#plan_title').on('keydown', '.pn_title_input_box', function(){
+        	title_cnt = $(this).val().length;
+        	if(title_cnt > 20){
+        		$(this).val($(this).val().substring(0,20));
+        	}
+        	if(title_cnt < 20){
+        		$('#pl_title_cnt').html(title_cnt+'/20');
+        	}else{
+        		$('#pl_title_cnt').html('20/20');
+        	}
+
+        });
 	}
   </script>
 </head>
@@ -1632,9 +1781,30 @@
 <input type="hidden" id="sigunguCode" value="">
 <input type="hidden" id="day_city_name" value="">
 
+<div class="header">
+		<div class="fl" id="logoimg"><a href="./"><img src="./resources/image/logoedit.png" style="margin-top:5px;margin-left:20px;width:70px;height:50px;"></a></div>
+		<div class="fl" style="width:395px;border-right:solid #ebebeb 1px;height:40px;font-size:22px;"><div class="fl" id="plan_title"></div><div class="clear"></div></div>
+		<div class="fl" style="width:200px;height:62px;line-height:62px;border-right:solid #ebebeb 1px;text-align:center;color: #555555;font-size:16px;font-weight:bold;" id="plan_total_budget">
+			KRW <span id="budget_total"></span>
+		</div>
+		<div class="fl" style="width:550px;">&nbsp;</div>
+		<div class="fl" id="gnb_ci_name"></div>
+		<div class="fr gnb_box">
+		<div class="fr" style="margin-top:9px;margin-right:20px;">
+			<div class="fl" id="plan_member_list_box">
+			<div class="fl" style="margin-right:5px;"></div>
+			<div class="clear"></div>
+			</div>
+			<a href="#"><div class="fl" id="plan_out_btn">공유하기</div></a>
+			<a href="SC_12?scd_sq=${scd_sq }"><div class="fl" id="plan_out_btn">저장&닫기</div></a>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+</div>
+</div>
+
 <div style="overflow:auto;" class="col-2 daylist" id="section1">
 <input type="button" value="일정 수정하기" onclick="openAlt();" size="20"> <br>
-KRW <span id="budget_total"></span>
 <hr />
 <div id="days">
 <div id="daylist"></div>
