@@ -251,9 +251,10 @@ function l_Data(){
         
         //행사 지역이름 추출
         var addr=data.response.body.items.item.addr1;
-        var addr1=addr.split(" ",1);
+        var addr1=addr.split(" ",2);
+        console.log(addr1[1]);
+        //var addr2 = addr1.split()
         
-        console.log(addr1);
         console.log(data.response.body.items.item);
         $("#placeName").html(data.response.body.items.item.title);
         if (typeof (data.response.body.items.item.firstimage) !== "undefined") {
@@ -263,7 +264,7 @@ function l_Data(){
         }
         $("#placeInfo").html(data.response.body.items.item.overview);
        
-        $("#addr").html('<a href="sc_05?areacode='+areacode+'&sigungucode='+sigungucode+'">'+addr1+'</a>'); //areacode드를 보내 주면 될듯       	
+        $("#addr").html('<a href="sc_05?areacode='+areacode+'&sigungucode='+sigungucode+'">'+addr+'</a>'); //areacode드를 보내 주면 될듯       	
         
     });
         
@@ -308,11 +309,30 @@ function r_Data(){
 				var j=j+1;
 		         	console.log( data.response.body.items.item.length);
 		           	var val = Math.floor( Math.random()*length);
+		           	var repeat = false; //내가 넣은 것 
+		           	var k = 0; //내가 넣은 것 
+		           	var outputArray = []; //내가 넣은 것
 		           	var con=data.response.body.items.item[val].contentid;
 		           	var conType=data.response.body.items.item[val].contenttypeid;
- 		           	console.log(con);
-					console.log(val);
-					console.log( data.response.body.items.item[val].title);
+ 		           	//console.log(con);
+					//console.log(val);
+					//console.log( data.response.body.items.item[val].title);
+					
+					for(k =0; k< outputArray.length;k++){
+						 if(outputArray[k] == data.response.body.items.item[val].title){
+            					
+               				 repeat = true;
+               			 	 break; 
+						}
+					}
+					if(repeat){
+						i--;
+						continue;
+					}else{
+						outputArray[k] = data.response.body.items.item[val].title;
+						
+					} //for k 부터 여기까지 내가 넣은 것 
+					
 					if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
 					$("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
 					}else{
@@ -519,35 +539,361 @@ function locationObj(){
  
 
  <!-- Navigation -->
-        
+<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- Body content -->
+	<div class="header-connect">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5 col-sm-8 col-xs-8">
+					<div class="header-half header-call"></div>
+				</div>
+				<div
+					class="col-md-2 col-md-offset-5  col-sm-3 col-sm-offset-1  col-xs-3  col-xs-offset-1">
+					<c:choose>
+						<c:when test="${sessionScope.user_id == null }">
+							<div class="header-half header-social">
+								<!-- 	<ul class="list-inline">
+							<li><a href="autoLogin">연습</a></li>
+						</ul> -->
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="header-half header-social">
+								<ul class="list-inline">
+									<li><img src="./resources/image/login_img.png">
+										${sessionScope.user_id }</li>
+								</ul>
+							</div>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
+		</div>
+	</div>
 
-        <nav class="navbar navbar-default">
-          <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="#"><img src="./resources/img/logo.png" alt=""></a>
-            </div>
+	<nav class="navbar navbar-default">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <div class="button navbar-right">
-                  <button class="navbar-btn nav-button wow bounceInRight login" data-wow-delay="0.8s">Login</button>
-                  <button class="navbar-btn nav-button wow fadeInRight" data-wow-delay="0.6s">Sign up</button>
-              </div>
-              <ul class="main-nav nav navbar-nav navbar-right">
-                <li class="wow fadeInDown" data-wow-delay="0s"><a
-						class="active" href="SC_11">일정 만들기</a></li>
-				<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="SC_10">나의 일정 보기</a></li>
-              </ul>
-            </div><!-- /.navbar-collapse -->
-          </div><!-- /.container-fluid -->
-        </nav>
+				<a href="home"><img src="./resources/image/logoicon.png" alt=""
+					width="80px" height="80px"></a><img
+					src="./resources/image/main_logo.png" alt="">
+
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<!-- <a class="navbar-brand" href="#">
+				</a> -->
+
+			</div>
+			<!-- 	<br> <br> -->
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<div class="button navbar-right">
+					<c:choose>
+						<c:when test="${sessionScope.user_id == null }">
+							<button type="button" id="loginForm"
+								class="navbar-btn nav-button wow bounceInRight login"
+								data-toggle="modal" data-target="#myModal" id="loginForm"
+								data-wow-delay="0.8s">Login</button>
+							<button type="button"
+								class="navbar-btn nav-button wow fadeInRight"
+								data-toggle="modal" data-target="#myModal" id="joinForm"
+								data-wow-delay="0.6s">Join</button>
+						</c:when>
+						<c:otherwise>
+							<button type="button" id="Edit"
+								class="navbar-btn nav-button wow bounceInRight login"
+								data-toggle="modal" data-target="#myModal_Edit" id="editForm"
+								data-wow-delay="0.8s">Edit</button>
+							<button type="button"
+								class="navbar-btn nav-button wow fadeInRight" id="logout"
+								data-wow-delay="0.6s" onclick="logout()">logout</button>
+						</c:otherwise>
+					</c:choose>
+
+					<!--로그인&조인 모달  -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+						aria-labelledby="myLargeModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">×</button>
+
+									<h4 class="modal-title" id="myModalLabel">Login / Join</h4>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-md-8"
+											style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
+											<!-- Nav tabs -->
+											<ul class="nav nav-tabs headertabs">
+												<li class="active"><a href="#Login" id="loginAtag"
+													data-toggle="tab">Login</a></li>
+												<li><a href="#Registration" id="regAtag"
+													data-toggle="tab">Join</a></li>
+											</ul>
+											<!-- Tab panes -->
+											<div class="tab-content">
+												<div class="tab-pane active" id="Login">
+													<form action="login" role="form" method="post"
+														class="form-horizontal" onsubmit="return login()">
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																ID</label>
+															<div class="col-sm-10">
+																<input type="text" name="user_id" class="form-control"
+																	id="user_id" placeholder="ID" />
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="exampleInputPassword1"
+																class="col-sm-2 control-label"> Password</label>
+															<div class="col-sm-10">
+																<input type="password" name="password"
+																	class="form-control" id="password"
+																	placeholder="Password" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-2"></div>
+															<div class="col-sm-10">
+																<button type="button" class="btn btn-primary btn-sm"
+																	value="submit" id="submit_button">Submit</button>
+																<!-- <a href="javascript:;">Forgot your password?</a> -->
+															</div>
+														</div>
+													</form>
+												</div>
+												<div class="tab-pane" id="Registration">
+													<form action="join" role="form" method="post"
+														class="form-horizontal" onsubmit="return joinCheck()">
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																ID</label>
+															<div class="col-sm-10">
+																<div class="row">
+																	<div class="col-md-3">
+																		<select class="form-control" name="user_sex"
+																			id="user_sex">
+																			<option value="선택">선택</option>
+																			<option value="m">남성</option>
+																			<option value="f">여성</option>
+																		</select>
+																	</div>
+																	<div class="col-md-9">
+																		<input type="text" class="form-control"
+																			placeholder="ID" name="user_id" id="user_id1" />
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																Email</label>
+															<div class="col-sm-10">
+																<input type="email" class="form-control" name="email"
+																	id="email" placeholder="Email" />
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="mobile" class="col-sm-2 control-label">
+																Password</label>
+															<div class="col-sm-10">
+																<input type="password" class="form-control"
+																	id="password1" name="password" placeholder="Password" />
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="password" class="col-sm-2 control-label">
+															</label>
+															<div class="col-sm-10">
+																<input type="password" class="form-control"
+																	id="password2" name="password2"
+																	placeholder="Password 확인" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-2"></div>
+															<div class="col-sm-10">
+																<button type="button" class="btn btn-primary btn-sm"
+																	id="submit_join">Save & Continue</button>
+																<input type="reset" class="btn btn-default btn-sm"
+																	value="Reset" />
+															</div>
+														</div>
+													</form>
+												</div>
+											</div>
+											<!-- <div id="OR" class="hidden-xs">OR</div> -->
+										</div>
+										<!-- <div class="col-md-4">
+											<div class="row text-center sign-with">
+												<div class="col-md-12">
+													<h3>Sign in with</h3>
+												</div>
+												<div class="col-md-12">
+													<div class="btn-group btn-group-justified">
+														<a href="#" class="btn btn-primary">Facebook</a> <a
+															href="#" class="btn btn-danger"> Google</a>
+													</div>
+												</div>
+											</div>
+										</div> -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--로그인&조인 모달 끝 -->
+					<!--정보수정 모달 시작  -->
+					<div class="modal fade" id="myModal_Edit" tabindex="-1"
+						role="dialog" aria-labelledby="myLargeModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">×</button>
+
+									<h4 class="modal-title" id="myModalLabel">Edit my
+										information</h4>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-md-8"
+											style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
+											<!-- Nav tabs -->
+											<ul class="nav nav-tabs headertabs">
+												<li class="active"><a href="#Login" id="loginAtag"
+													data-toggle="tab">Edit</a></li>
+												<!-- <li><a href="#Registration" id="regAtag" data-toggle="tab">Join</a></li> -->
+											</ul>
+											<!-- Tab panes -->
+											<div class="tab-content">
+												<div class="tab-pane active" id="Edit">
+													<form role="form" class="form-horizontal">
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																ID</label>
+															<div class="col-sm-10">
+																<div class="row">
+																	<div class="col-md-3">
+																		<select class="form-control" id="user_sex_ed">
+																			<option value="m">남성</option>
+																			<option value="f">여성</option>
+																		</select>
+																	</div>
+																	<div class="col-md-9">
+																		<input type="text" class="form-control"
+																			id="user_id_ed" name="user_id_ed" placeholder="ID" />
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																Email</label>
+															<div class="col-sm-10">
+																<input type="email" class="form-control" id="email_ed"
+																	placeholder="Email" />
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="mobile" class="col-sm-2 control-label">
+																Password</label>
+															<div class="col-sm-10">
+																<input type="password" class="form-control"
+																	id="password_ed" placeholder="Password" />
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="password" class="col-sm-2 control-label">
+															</label>
+															<div class="col-sm-10">
+																<input type="password" class="form-control"
+																	id="password2_ed" placeholder="Password 확인" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-2"></div>
+															<div class="col-sm-10">
+																<button type="button" class="btn btn-primary btn-sm">
+																	Save & Continue</button>
+																<button type="button" class="btn btn-default btn-sm">
+																	Cancel</button>
+															</div>
+														</div>
+													</form>
+												</div>
+											</div>
+											<!-- <div id="OR" class="hidden-xs">OR</div> -->
+										</div>
+										<!-- <div class="col-md-4">
+											<div class="row text-center sign-with">
+												<div class="col-md-12">
+													<h3>Sign in with</h3>
+												</div>
+												<div class="col-md-12">
+													<div class="btn-group btn-group-justified">
+														<a href="#" class="btn btn-primary">Facebook</a> <a
+															href="#" class="btn btn-danger"> Google</a>
+													</div>
+												</div>
+											</div>
+										</div> -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+
+				<c:choose>
+					<c:when test="${sessionScope.user_id == null }">
+
+						<ul class="main-nav nav navbar-nav navbar-right">
+							<li class="wow fadeInDown" data-wow-delay="0s"><a
+								class="active" href="#" onclick="checkId();">일정 만들기</a></li>
+							<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#"
+								onclick="checkId();">나의 일정 보기</a></li>
+							<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
+							Own Schedule</a></li>
+					<li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">City
+							Information</a></li> -->
+						</ul>
+					</c:when>
+					<c:otherwise>
+						<ul class="main-nav nav navbar-nav navbar-right">
+							<li class="wow fadeInDown" data-wow-delay="0s"><a
+								class="active" href="SC_11">일정 만들기</a></li>
+							<li class="wow fadeInDown" data-wow-delay="0.1s"><a
+								href="SC_10">나의 일정 보기</a></li>
+							<!-- <li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">나의 일정</a>
+					</li> -->
+							<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
+							Own Schedule</a></li>
+					<li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">City
+							Information</a></li> -->
+						</ul>
+					</c:otherwise>
+				</c:choose>
+
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
 
     <!-- Page Content -->
     <div class="container">

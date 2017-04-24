@@ -419,7 +419,8 @@
                   	       		var j = 0;
                        	 		for(j = 0; j < outputArray.length; j++){
                        				 if(outputArray[j] == data.response.body.items.item[val].title){
-   									 repeat = true;
+                       					
+                       				 repeat = true;
                        			 	 break; 
                        		 		}
                        			 }
@@ -428,6 +429,7 @@
                        		 	continue;
                        	 		}else{
                        		 		outputArray[j] = data.response.body.items.item[val].title;
+                       		 	console.log(data.response.body.items.item[val].readcount);
                        	 		}
   
 		                          	//컨텐트아이디 추출
@@ -480,7 +482,7 @@
 			<c:otherwise>
 				<div class="header-half header-social">
 						<ul class="list-inline">
-							<li><img src="./resources/image/login_img.png">welcome! [ ${sessionScope.user_id } ]</li>
+							<li><img src="./resources/image/login_img.png">${sessionScope.user_id }</li>
 						</ul>
 			   </div>
 			</c:otherwise>		

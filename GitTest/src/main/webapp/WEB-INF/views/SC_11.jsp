@@ -111,8 +111,7 @@
 						<c:otherwise>
 							<div class="header-half header-social">
 								<ul class="list-inline">
-									<li><img src="./resources/image/login_img.png">welcome!
-										[ ${sessionScope.user_id } ]</li>
+									<li><img src="./resources/image/login_img.png">${sessionScope.user_id }</li>
 								</ul>
 							</div>
 						</c:otherwise>
@@ -486,10 +485,10 @@
 
 	<div class="slider-area">
 		<div class="slider">
-			<div id="bg-slider" class="owl-carousel owl-theme">
+			<div id="bg-slider1 class="owl-carousel owl-theme">
 
-				<div class="item_1">
-					<!-- <img src="" alt=""> -->
+				<div class="item_12">
+					 <img src="./resources/image/voyage.png" alt=""> 
 				</div>
 			<!-- 	<div class="item">
 					<img src=""
@@ -507,17 +506,17 @@
 					class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
 					<br>
 					<div id="mainContent">
-						<h2>
+						<!-- <h2>
 							나만의 일정을<br> 쉽게 만들어 보세요 
-						</h2>
+						</h2> -->
+						<br><br>
 					</div>
 					<div class="content-area_1">
 						<div class="container_1">
 							<div class="row page-title text-center wow zoomInDown"
 								data-wow-delay="1s">
 								<a href="new_schedule" class="btn btn-info" role="button">새로운
-									일정 만들기</a> <a href="SC_10" class="btn btn-info" role="button">나의
-									일정 보기</a>
+									일정 만들기</a> <a href="SC_10" class="btn btn-info" role="button">나의 일정 보기</a>
 								<!-- <button type="button" class="btn btn-primary">Primary</button>
   <button type="button" class="btn btn-success">Success</button> -->
 							</div>
