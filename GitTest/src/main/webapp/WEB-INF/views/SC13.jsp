@@ -7,8 +7,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript" src="./resources/js/jquery-3.1.1.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="./resources/css/bootstrap.css">
+<script src="./resources/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel='stylesheet' href='./resources/css/perfect-scrollbar.css' />
+<script src='./resources/js/perfect-scrollbar.jquery.js'></script>
 <script defer
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_azK-PpKrUbRSAlyccxLXpUGnwagdJhQ"></script>
 <title>Edit Schedule</title>
@@ -20,7 +24,7 @@
 	[class*="col-"] {
 	    float: left;
 	    padding: 15px;
-	    border: 1px solid black;
+	    border: solid #ebebeb 1px;
 	}	
 	
 	.row::after {
@@ -40,7 +44,7 @@
 	    width: 100%;
 	    min-width: 1092px;
 	    z-index: 100;
-	    border-bottom: 1px solid #ddd; 
+	    border-bottom: solid #ebebeb 1px; 
 	}
 	.fl {
    		float: left;
@@ -121,14 +125,16 @@
 	}
 	.daylist li {
 	    padding: 8px;
-	    margin-bottom: 7px;
+	    margin-top: 0px;
+	    margin-bottom: 0px;
+	    margin-left: 0px;
 	    background-color: #00AEEF;
+	    width: 100%;
 	    color: #ffffff;
 	    border: medium none;
 	    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-	}
-	.daylist li:hover {
-	    background-color: #0099cc;
+	    font-weight: bold;
+	    font-size: 13px;
 	}
 	
 	html, body {
@@ -168,7 +174,26 @@
 	    overflow-x: hidden;	
 	    transition: 0.5s;
 	    opacity: 0;
-	    border-top: 1px solid black; 
+	    border-top: solid #ebebeb 1px; 
+	}
+	
+	.my_loc {
+		border-top: 2px solid #00AEEF;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+	
+	.ordlist {
+		border-top: 2px solid #00AEEF;
+		padding-top: 10px;
+		padding-bottom: 10px;
+  		cursor: pointer;
+	}
+	
+	.alterDaylist {
+		border-bottom: 2px solid #00AEEF;
+		padding-top: 10px;
+		padding-bottom: 10px;
 	}
 	
 	#alter_schedule{
@@ -191,19 +216,92 @@
 	    position: fixed;
 	    z-index: 99;
 	    left: 25%;
+	    top: 8%;
 	}
 	
 	.labels {
-     color: #363636;
-     background-color: white;
-     font-family: "nanum";
-     font-size: 11px;
-     font-weight: bold;
-     text-align: center;
-     min-width: 40px;
-    padding:2px;
-     border: 1px solid black;
-     white-space: nowrap;
+	     color: #363636;
+	     background-color: white;
+	     font-family: "nanum";
+	     font-size: 11px;
+	     font-weight: bold;
+	     text-align: center;
+	     min-width: 40px;
+	     padding:2px;
+	     border: 1px solid black;
+	     white-space: nowrap;
+   }
+   
+   #theme2_select {
+   	   background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
+	   height: 29px;
+	   overflow: hidden;
+	   width: 240px;
+	   border: 1px solid black;
+       margin-top: 5px;
+       margin-bottom: 5px;
+   }
+   
+   #theme2_select select {
+   	   background: transparent;
+	   font-size: 13px;
+	   height: 29px;
+	   padding: 2px; /* If you add too much padding here, the options won't show in IE */
+	   width: 252px;
+   }
+   
+   .theme_check label {
+	    width: 78px;
+	    height: 32px;
+	    text-align: center;
+	    background: #00AEEF;
+	    border: medium none;
+	    line-height: 32px;
+	    font-weight: bold;
+	    font-size: 13px;
+	    color: #fff;
+	    margin-right: 10px;
+	    cursor: pointer;
+    	margin-top: 5px;
+    	margin-bottom: 5px;
+   }
+   
+   input[type=button], button {
+	color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid wheat;
+    margin-top: 5px;
+    margin-bottom: 5px;
+   }
+   
+   #eddays, #add_day, #alter_complete {
+   	padding: 8px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    background-color: #00AEEF;
+    width: 100%;
+    color: #ffffff;
+    border: medium none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    font-weight: bold;
+    font-size: 13px;
+   }
+   
+   .radio {
+    	display: none
    }
    
 .item .img_box {
@@ -301,6 +399,53 @@
     });
 
     $('.ordlist:first').trigger('click');
+    
+    ws = new WebSocket("ws://localhost:8888/gittest/webSocket");
+    
+    var data = {
+          "doWhat" : "webSocketlogIn",
+          "loginId" : "${user_id}"
+    }
+    
+    ws.onopen = () => ws.send(JSON.stringify(data));
+    
+    ws.onmessage = function(event){
+       console.log(event.data);
+    }
+    
+    //서버에서 접속 종료한 후 이벤트 정의
+    ws.onclose = function(event){}
+    
+    $('#shareId').keyup(function(){
+        if($('#shareId').val() != null){
+         $.ajax({
+              type : "POST",
+              url : "checkId",
+              data : { 
+                 "user_id" : $('#shareId').val(),
+              }
+              ,success : function(data){
+                 if(data == '1'){
+                    $('#existId').html("<span>해당 아이디가 존재합니다. 일정을 공유하시겠습니까?</span>");
+                 }else{
+                    $('#existId').html("<span>해당 아이디가 존재하지 않습니다. 다시 입력해주세요</span>");
+                 }
+              },
+              error : function(e){
+                 console.log(e);
+              } 
+           });//ajax
+        }
+     });
+    
+    $('#section1').perfectScrollbar();
+    $('#section2').perfectScrollbar({
+    	wheelPropagation: true
+    });
+    $('#location_info').perfectScrollbar();
+    $('#section3').perfectScrollbar({
+  	  suppressScrollY: true
+  	});
   });
   
   var map;
@@ -328,7 +473,7 @@
       {"areaCode" : 38, "sigunguCode" : "", "name" : '전라남도', "name_en" : "Jeollanam-do", "lat" : parseFloat(34.8679), "lng" : parseFloat(126.991), "is_state" : 1}];
    
   function getSigungu(areaCode){
-	  var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
+	  var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 	  var sigunguCode;
       var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode?ServiceKey="
            + key + "&areaCode=" + areaCode 
@@ -388,7 +533,7 @@
   					+ '<input type="hidden" class="day_city_name" value="'+cityname+'">'
   					+ '<input type="hidden" class="ymd" value="'+date+'">' 
   					+ '<input type="hidden" class="day" value="'+order+'">' 
-  					+ 'DAY '+order+' <br> '+date+' <br> <span id="city_names">'+cityname+'</span><hr /></div>';
+  					+ 'DAY '+order+' <br> '+date+' <br> <span id="city_names">'+cityname+'</span><br></div>';
   			$("#daylist").before(day);
   			var scd_sq = $('#scd_sq').val();
   			var daily_scd = {
@@ -472,7 +617,6 @@
 	
 	function init_search_menu(){
 		$('#search').val("");
-	 	$('#select-1').remove();
 		$('input[type=radio][name=radio-1]').each(function(){
 	 		$(this).attr('checked',false);
 	 	})
@@ -495,7 +639,7 @@
 				$('#areaCode').val(areaCode);
 				$('#sigunguCode').val(sigunguCode);
 			}
-			var content = '<h2 id="section2_day">'+day+'</h2>'	
+			var content = '<h3 id="section2_day">'+day+'</h3>'	
 			+ 'KRW <span id="daily_budget"></span>'
 			+ '<div id="sortable">'
 			+ '<div id="my_location"></div>'
@@ -532,15 +676,17 @@
 	  $.each(data,function(index,item){
 		var sigunguCode = item.SIGUNGU_CODE;
 		if(typeof(sigunguCode) == 'undefined') sigunguCode = "";
+		var image = item.DTL_IMAGE;
+		if(typeof(image) == 'undefined' || image == 'undefined') image = "./resources/image/noimage.jpg";
 		  my_content += '<div class="my_loc" id="'+item.DTL_SQ+'" dtl_sq="'+item.DTL_SQ+'" dtl_ord="'+item.DTL_ORD+'" title="'+item.PLACE_NM+'" contentid="'+item.DTL_CONTENT_ID+'" '
 			+ 'areaCode="'+item.AREA_CODE+'" sigunguCode="'+sigunguCode+'" city_name="'+item.CITY_NM+'">'
 			+ '<span class="sec2_ord">'+item.DTL_ORD+'</span> '
 			+ '<input type="hidden" id="sec2_id" value="'+item.DTL_CONTENT_ID+'">'
 		 	+ item.PLACE_NM
-			+ '<img src='+item.DTL_IMAGE+' width=190 height=120><br>'
+			+ '<img src='+image+' width=190 height=120><br>'
 			+ '<input type="button" value="예산/메모" onclick="javascript:budget_memo(\''+item.DTL_SQ+'\',\''+item.DTL_CONTENT_ID+'\');"> '
 			+ '<input type="button" value="삭제" onclick="javascript:delete_place('+item.DTL_SQ+');">'
-			+ '<hr />'
+			+ '<br>'
 			+ '</div>';
 	  });
 		$("#my_location").before(my_content);
@@ -596,7 +742,7 @@
 					  $.each(data,function(index,item){
 						  var latLng = new google.maps.LatLng(parseFloat(item.MAP_Y), parseFloat(item.MAP_X));
 						  path.push(latLng);
-						  mymarkerlist.push({lat: parseFloat(item.MAP_Y), lng: parseFloat(item.MAP_X)});
+						  mymarkerlist.push({lat: parseFloat(item.MAP_Y), lng: parseFloat(item.MAP_X), title: item.PLACE_NM});
 					  });
 					  for(var i=0; i<mymarkerlist.length; i++){
 						  marker_no++;
@@ -608,7 +754,7 @@
 									draggable : false,
 									position : latLng,
 									map : map,
-									title : "place"+(i+1),
+									title : (i+1)+". "+mymarkerlist[i].title,
 									id : i+1,
 									icon: "./resources/marker_img/number_"+marker_no+".png",
 									zIndex: 1000
@@ -746,14 +892,16 @@
 				var target = '#'+data.response.body.items.item[i].contentid;
 				$(target).html('');
 			}
+			var image = data.response.body.items.item[i].firstimage;
+			if(typeof(image) == 'undefined' || image == 'undefined') image = "./resources/image/noimage.jpg";
 			var content = '<div class="content">'
 				+ '<div id="image">'
-				+'<img src='+data.response.body.items.item[i].firstimage+' width=200 height=120>'
+				+'<img src='+image+' width=200 height=120>'
 				+ '</div>'
 				+ '<h3>'+data.response.body.items.item[i].title+'</h3>'
 				+ '<h5>'+data.response.body.items.item[i].addr1+'</h5>'
 				+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item[i].contentid + ')"> '
-				+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+data.response.body.items.item[i].firstimage+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
+				+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+image+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
 				+ '</div>'; 
 
 			google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
@@ -762,7 +910,7 @@
 			        infowindow.open(map,marker);
 			        var target = "#" + marker.id;
 			        $('#location_info').scrollTop(0);
-			      	$('#location_info').animate({ scrollTop: $(target).offset().top - 200}, 2000);
+			      	$('#location_info').animate({ scrollTop: $(target).offset().top - 270}, 2000);
 			    }; 	
 			})(marker,content,infowindow));
 			google.maps.event.addListener(marker,'dblclick', (function(marker,content,infowindow){ 
@@ -846,7 +994,7 @@
 					+ '<img src='+firstimage+' width=190 height=120><br>'
 					+ '<input type="button" value="예산/메모" onclick="javascript:budget_memo(\''+dtl_sq+'\',\''+contentid+'\');"> '
 					+ '<input type="button" value="삭제" onclick="javascript:delete_place('+dtl_sq+');">'
-					+ '<hr />'
+					+ '<br>'
 					+ '</div>';
 				$("#my_location").before(my_content);
 				my_loc_event();
@@ -857,10 +1005,10 @@
 		})
 		sortable();
 		check_cities();
-		add_myMarkers(map_x, map_y);
+		add_myMarkers(map_x, map_y, title);
 	};
 	
-	function add_myMarkers(map_x, map_y){
+	function add_myMarkers(map_x, map_y, title){
 		myloc_path.setMap(map);
 		var path = myloc_path.getPath();
 		var latLng = new google.maps.LatLng(parseFloat(map_y), parseFloat(map_x));
@@ -871,7 +1019,7 @@
 					draggable : false,
 					position : latLng,
 					map : map,
-					title : "place"+(myloc_markers.length+1),
+					title : (myloc_markers.length+1)+". "+title,
 					id : myloc_markers.length+1,
 					icon: "./resources/marker_img/number_"+marker_no+".png",
 					zIndex: 1000
@@ -892,9 +1040,11 @@
 		url += "&MobileOS=ETC&MobileApp=AppTesting&_type=json";
 		
 		$.getJSON(url, function(data) {
+			var image = data.response.body.items.item.firstimage;
+			if(typeof(image) == 'undefined' || image == 'undefined') image = "./resources/image/noimage.jpg";
 			var content = '';
-				content += '<h2>'+ data.response.body.items.item.title+'</h2>';
-				content += '<img src='+data.response.body.items.item.firstimage+' width=340 height=220>';
+				content += '<h3>'+ data.response.body.items.item.title+'</h3>';
+				content += '<img src='+image+' width=340 height=220>';
 				$.ajax({
 					type: "post",
 					url: "get_budget_memo",
@@ -910,14 +1060,14 @@
 						content += '<input type="hidden" id="place_scd_sq" value="'+scd_sq+'">';
 						content += '<input type="hidden" id="place_daily_sq" value="'+daily_sq+'">';
 						content += '<input type="hidden" id="place_dtl_sq" value="'+dtl_sq+'">';
-						content += '<h4>예산</h4> KRW <input type="number" min="0" step="1000" id="place_budget" value="'+budget+'" placeholder="예산을 입력하세요">';
-						content += '<h4>메모</h4> <textarea rows="5" cols="50" id="place_memo" placeholder="메모를 입력하세요">'+memo+'</textarea>';
+						content += '<h4 style="font-weight: bold;">예산</h4> KRW <input type="number" min="0" step="1000" id="place_budget" value="'+budget+'" placeholder="예산을 입력하세요">';
+						content += '<h4 style="font-weight: bold;">메모</h4> <textarea rows="5" cols="40" id="place_memo" placeholder="메모를 입력하세요">'+memo+'</textarea>';
 					},
 					error: function(e){
 						console.log(e);
 					}		
 				})
-				content += '<h4>'+ data.response.body.items.item.overview+'</h4>';
+				content += '<h5>'+ data.response.body.items.item.overview+'</h5>';
 				content += '주소: ' + data.response.body.items.item.addr1+'('+data.response.body.items.item.zipcode+')<br>';
 				if(typeof(data.response.body.items.item.tel) != 'undefined')
 					content += '전화번호: '+ data.response.body.items.item.tel+'<br>';
@@ -1082,20 +1232,22 @@
 			auto_fill(data);
 			var content = '';
 			for (var i = 0; i < 50; i++) {
+				var image = data.response.body.items.item[i].firstimage;
+				if(typeof(image) == 'undefined' || image == 'undefined') image = "./resources/image/noimage.jpg";
 				if(typeof(data.response.body.items.item[i])!='undefined'){
 					if(!data.response.body.items.item[i].title.includes("2016")) {
 					content += '<div class="location" id="'+data.response.body.items.item[i].contentid
 						+'" value="'+data.response.body.items.item[i].title+'">'							
 					 	+ '<h4>'+ data.response.body.items.item[i].title+'</h4>'
-						+ '<img src='+data.response.body.items.item[i].firstimage
+						+ '<img src='+image
 						+' width=200 height=120><br>'
 						+ '주소: ' + data.response.body.items.item[i].addr1+'<br>'
 						+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item[i].contentid + ')"> '
-						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+data.response.body.items.item[i].firstimage+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
+						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+image+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
 						+ '</div>'
 					}
 				}		
-				$("#location_info").html(content);	
+				$("#location_info").html(content);
 				location_event();
 			}
 			showMarker(data);
@@ -1136,16 +1288,18 @@
 		$.getJSON(url, function(data) {
 			//auto_fill(data);
 			console.log(data);
+			var image = data.response.body.items.item.firstimage;
+			if(typeof(image) == 'undefined' || image == 'undefined') image = "./resources/image/noimage.jpg";
 			var content = '';
 				if(typeof(data.response.body.items.item)!='undefined'){
 					content += '<div class="location" id="'+data.response.body.items.item.contentid
 						+'" value="'+data.response.body.items.item.title+'">'							
 					 	+ '<h4>'+ data.response.body.items.item.title+'</h4>'
-						+ '<img src='+data.response.body.items.item.firstimage
+						+ '<img src='+image
 						+' width=200 height=120><br>'
 						+ '주소: ' + data.response.body.items.item.addr1+'<br>'
 						+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item.contentid + ')"> '
-						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item.title+'\',\''+data.response.body.items.item.firstimage+'\',\''+data.response.body.items.item.contentid+'\',\''+data.response.body.items.item.addr1+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
+						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item.title+'\',\''+image+'\',\''+data.response.body.items.item.contentid+'\',\''+data.response.body.items.item.addr1+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
 						+ '</div>';
 				$("#location_flag").before(content);
 				}
@@ -1182,16 +1336,18 @@
 				return;
 			}
 			for (var i = 0; i < 50; i++) {
+				var image = data.response.body.items.item[i].firstimage;
+				if(typeof(image) == 'undefined' || image == 'undefined') image = "./resources/image/noimage.jpg";
 				if(typeof(data.response.body.items.item[i])!='undefined'){
 					if(!data.response.body.items.item[i].title.includes("2016")) {
 					content += '<div class="location" id="'+data.response.body.items.item[i].contentid
 						+'" value="'+data.response.body.items.item[i].title+'">'							
 					 	+ '<h4>'+ data.response.body.items.item[i].title+'</h4>'
-						+ '<img src='+data.response.body.items.item[i].firstimage
+						+ '<img src='+image
 						+' width=200 height=120><br>'
 						+ '주소: ' + data.response.body.items.item[i].addr1+'<br>'
 						+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item[i].contentid + ')"> '
-						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+data.response.body.items.item[i].firstimage+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
+						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+image+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
 						+ '</div>'
 					}
 				}		
@@ -1212,10 +1368,12 @@
 		url += "&MobileOS=ETC&MobileApp=AppTesting&_type=json";
 		
 		$.getJSON(url, function(data) {
+			var image = data.response.body.items.item.firstimage;
+			if(typeof(image) == 'undefined' || image == 'undefined') image = "./resources/image/noimage.jpg";
 			var content = 
-				'<h2>'+ data.response.body.items.item.title+'</h2>'
-				+ '<img src='+data.response.body.items.item.firstimage+' width=340 height=220>'
-				+ '<h4>'+ data.response.body.items.item.overview+'</h4>'
+				'<h3>'+ data.response.body.items.item.title+'</h3>'
+				+ '<img src='+image+' width=340 height=220>'
+				+ '<h5>'+ data.response.body.items.item.overview+'</h5>'
 				+ '주소: ' + data.response.body.items.item.addr1+'('+data.response.body.items.item.zipcode+')<br>';
 				if(typeof(data.response.body.items.item.tel) != 'undefined')
 					content += '전화번호: '+ data.response.body.items.item.tel+'<br>';
@@ -1228,6 +1386,7 @@
   	
   	function location_event(){
   		$(".location").mouseenter(function(){
+  			$(this).find('img').css( 'cursor', 'pointer' );
 	    	var title = $(this).attr("value");
 	    	for(var i=0;i<myMarkers.length;i++){
 	    	    if(myMarkers[i].title == title){
@@ -1258,6 +1417,7 @@
   	
   	function my_loc_event(){
   		$(".my_loc").mouseenter(function(){
+  			$(this).find('img').css( 'cursor', 'pointer' );
 	    	var dtl_ord = $(this).attr("dtl_ord");
 	    	for(var i=0;i<myloc_markers.length;i++){
 	    	    if(myloc_markers[i].id == dtl_ord){
@@ -1291,16 +1451,18 @@
 				var result = false;
 				showMarker(data, true);
 		   		for (var i = 0; i < data.response.body.totalCount; i++) {
+					var image = data.response.body.items.item[i].firstimage;
+					if(typeof(image) == 'undefined' || image == 'undefined') image = "./resources/image/noimage.jpg";
 					if(typeof(data.response.body.items.item[i])!='undefined'){
 						if(data.response.body.items.item[i].title.includes(title)){
 							content += '<div class="location" id="'+data.response.body.items.item[i].title
 								+'" value="'+data.response.body.items.item[i].title+'">'	
 							 	+ '<h4>'+ data.response.body.items.item[i].title+'</h4>'
-								+ '<img src='+data.response.body.items.item[i].firstimage
+								+ '<img src='+image
 								+' width=200 height=120><br>'
 								+ '주소: ' + data.response.body.items.item[i].addr1+'<br>'
 								+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item[i].contentid + ')"> '
-								+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+data.response.body.items.item[i].firstimage+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
+								+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+image+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
 								+ '</div>'
 							for (var j = 0; j < myMarkers.length; j++) {
 								if(data.response.body.items.item[i].title == myMarkers[j].title){
@@ -1388,6 +1550,7 @@
   		$('#openNav').css('opacity', '0');
   		$('#openNav').css('pointer-events', 'none');
   		$('#section3').css('pointer-events', 'visible');
+  		$('#section3').css('overflow', 'hidden');
   		$('#section3').css('opacity', '100');
   		$('#section3').css('width', '20%');
   		$("#section3").attr("class","col-4 sidenav");
@@ -1577,7 +1740,7 @@
     			+ 'DAY '+item.DAILY_ORD+' <br>'
     		 	+ item.DAILY_YMD+' <br>'
     			+ '<span id="city_names">'+item.CITY_NM+'</span>'
-    			+ '<hr />'
+    			+ '<br>'
     			+ '</div>';
     	  	});
     	  	my_content += '<div id="daylist"></div>';
@@ -1612,7 +1775,7 @@
   		 	+ '<div id="daily_date">'+item.DAILY_YMD+'</div>'
   			+ '<div id="city_names">'+item.CITY_NM+'</div>'
   			+ '<input type="button" value="삭제" onclick="javascript:delete_day(\''+item.DAILY_SQ+'\',\''+item.DAILY_ORD+'\');">'
-  			+ '<hr />'
+  			+ '<br>'
   			+ '</div>';
   	  });
   		$('.alterDaylist').each(function(){
@@ -1773,6 +1936,31 @@
 
         });
 	}
+	
+	function whoWithShare(){
+        var checkId = $('#shareId').val();
+        if(checkId == ''){
+           alert("일정을 함께 공유하실 분의 아이디를 입력해주세요.");
+           return false;
+        }
+        
+        var data = {
+              "doWhat"   : "addShareAuthority",      
+              "scd_sq" : ${scd_sq},
+              "searchId" : checkId
+        }
+        console.log(data);
+        ws.send(JSON.stringify(data));
+        
+        return false;
+     }
+
+     function deleteElement(){
+        document.getElementById('shareId').value = '';
+        var html = '';
+        $('#existId').html(html);
+        return false;
+     }
   </script>
 </head>
 <body>
@@ -1782,8 +1970,8 @@
 <input type="hidden" id="day_city_name" value="">
 
 <div class="header">
-		<div class="fl" id="logoimg"><a href="./"><img src="./resources/image/logoedit.png" style="margin-top:5px;margin-left:20px;width:70px;height:50px;"></a></div>
-		<div class="fl" style="width:395px;border-right:solid #ebebeb 1px;height:40px;font-size:22px;"><div class="fl" id="plan_title"></div><div class="clear"></div></div>
+		<div class="fl" id="logoimg"><a href="./"><img src="./resources/image/logoedit.png" style="margin-top:5px;margin-left:20px;width:60px;height:50px;"></a></div>
+		<div class="fl" style="width:410px;border-right:solid #ebebeb 1px;height:100%;font-size:22px;"><div class="fl" id="plan_title"></div><div class="clear"></div></div>
 		<div class="fl" style="width:200px;height:62px;line-height:62px;border-right:solid #ebebeb 1px;text-align:center;color: #555555;font-size:16px;font-weight:bold;" id="plan_total_budget">
 			KRW <span id="budget_total"></span>
 		</div>
@@ -1795,7 +1983,7 @@
 			<div class="fl" style="margin-right:5px;"></div>
 			<div class="clear"></div>
 			</div>
-			<a href="#"><div class="fl" id="plan_out_btn">공유하기</div></a>
+			<a data-toggle="modal" href="#myModal"><div class="fl" id="plan_out_btn">공유하기</div></a>
 			<a href="SC_12?scd_sq=${scd_sq }"><div class="fl" id="plan_out_btn">저장&닫기</div></a>
 			<div class="clear"></div>
 		</div>
@@ -1803,15 +1991,35 @@
 </div>
 </div>
 
+<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">일정에 초대 하실 분의 아이디를 입력해주세요</h4>
+        </div>
+        <div class="modal-body">
+        <input type="text" name="shareId" class="form-control" id="shareId" placeholder="공유할 ID를 입력해주세요" />
+        </div>
+        <div class="modal-footer">
+        <div id="existId" class="existId"></div>
+         <button type="button" class="btn btn-default btn_invite" onclick="return whoWithShare();">Invite</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="return deleteElement();">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
 <div style="overflow:auto;" class="col-2 daylist" id="section1">
-<input type="button" value="일정 수정하기" onclick="openAlt();" size="20"> <br>
-<hr />
+<input type="button" id="eddays" value="일정 수정하기" onclick="openAlt();" size="20">
+<br>
 <div id="days">
 <div id="daylist"></div>
 </div>
-<ul>
-<li id="add_day" value="">DAY 추가</li>
-</ul>
+<input type="button" id="add_day" value="DAY 추가">
 </div>
 
 <div style="overflow:auto;" class="sidenav" id="alter_schedule">
@@ -1833,14 +2041,13 @@
 
 <div class="sidenav" id="section3">
 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-<div id="search_menu" style="height:20%;">
+<div id="search_menu" style="height:29%;">
 <div>
-<span id="city_name"></span>
+<span id="city_name"></span> 
 <input type="button" value="도시변경" onclick="javascript:openCitySearch();">
 </div>
 <div class="search_box">
-  <label for="search">검색: </label>
-  <input id="search">
+검색: <input id="search">
 </div>
 <div class="theme_check">
     <label for="radio-1">자연</label>
@@ -1857,10 +2064,13 @@
     <label for="radio-6">클립</label>
     <input type="radio" class="radio" name="radio-1" id="radio-6" value="clip">
 </div>
-<br>
-<div id="theme2_select"></div>
+<div id="theme2_select">
+<select name="select-1" id="select-1" disabled="disabled">
+<option value="" selected="selected">카테고리를 먼저 선택하세요.</option>
+</select>
 </div>
-<div style="overflow:auto; height:80%;" id="location_info">
+</div>
+<div style="overflow:auto;height:71%;" id="location_info">
 <div id="location_flag"></div>
 </div>
 </div>
@@ -1878,8 +2088,7 @@
 <div style="overflow:auto;" class="sidenav" id="city_change">
 <a href="javascript:void(0)" class="closebtn" onclick="closeCitySearch()">&times;</a>
 <div style="overflow:auto; height:7%;" id="change_search">
-<label for="searchCity">검색: </label>
-<input id="searchCity">
+검색: <input id="searchCity">
 </div>
 <div style="overflow:auto; height:93%;" id="changelist"></div>
 </div>
