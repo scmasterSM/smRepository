@@ -109,6 +109,7 @@ public class HomeController {
 	
 	@RequestMapping(value="sc_05",method=RequestMethod.GET)
 	public String sc_05(String areacode, String sigungucode, String city_nm, Model model){
+			System.out.println(city_nm);
 			model.addAttribute("areacode",areacode);
 			model.addAttribute("sigungucode",sigungucode);
 			model.addAttribute("city_nm", city_nm);

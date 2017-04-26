@@ -7,6 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript" src="./resources/js/jquery-3.1.1.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="./resources/css/bootstrap.css">
+<script src="./resources/js/bootstrap.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -22,6 +24,26 @@
    z-index: 1;
    position: absolute;
 }
+input[type=button], button {
+	color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    padding: 1px 8px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 2px solid wheat;
+    margin-top: 5px;
+    margin-bottom: 5px;
+   }
 .labels {
      color: #363636;
      background-color: white;
@@ -137,6 +159,25 @@ html, body {
 .city {
 	width: 100%;
  	 position: relative;
+}
+
+.form-con {
+    /* display: block; */
+    /* width: 100%; */
+    /* height: 34px; */
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 </style>
 
@@ -368,8 +409,8 @@ html, body {
 				var days = 'days'+city_count;
 			    var city = '';
 			    city += '<div class="city" id="city'+city_count+'">'
-			    city += '&nbsp &nbsp &nbsp <input type="button" value="x" onclick="javascript:deleteCity('+city_count+');">'
-			    city +=	'&nbsp '+title+' &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp'
+			    city += '&nbsp &nbsp <input type="button" value="x" onclick="javascript:deleteCity('+city_count+');">'
+			    city +=	'&nbsp &nbsp <span style="display:inline-block;width:100px">'+title+'</span> &nbsp'
 			    city +=	'<input type="button" value="-" onclick="javascript:minusDays('+city_count+');">'
 			    city +=	' <span id="'+days+'">2</span>일 '
 			    city +=	'<input type="button" value="+" onclick="javascript:plusDays('+city_count+');">'
@@ -379,6 +420,16 @@ html, body {
 		   		city +=	'</div>';
   			$('#flag').before(city);
   			$('#flag').text("");
+  		   	var numItems = $('div.city').length;
+  		    if(numItems == 1){
+  		    	$('#flag').after('<br> <input type="button" id="inputdetail" value="세부정보 입력" data-toggle="modal" href="#myModal">');
+  		    }
+		   }else{
+			    var focusMarker = new google.maps.LatLng(marker.lat, marker.lng);
+	            map.setCenter(focusMarker);
+	            map.setZoom(9);
+	        	deleteMarkers();
+		   		getDetail(marker.areaCode);
 		   }
         });
    }
@@ -429,6 +480,7 @@ html, body {
 	   var numItems = $('div.city').length;
 	   if(numItems == 0){
 		   $('#flag').text("도시를 선택해 주세요.");
+		   $('#inputdetail').remove();
 	   }
    }
    function minusDays(index){
@@ -473,12 +525,12 @@ html, body {
    
     <div style="overflow:auto;" class="sidenav" id="city_info">
 	<h3>여행도시</h3>
-	<br>
+	<hr />
 	<div id="city_day_box">
 		<c:if test="${name != null}">
 			<div class="city" id="city1">
-			&nbsp &nbsp &nbsp <input type="button" value="x" onclick="javascript:deleteCity(1);">
-			 &nbsp ${name } &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+			&nbsp &nbsp <input type="button" value="x" onclick="javascript:deleteCity(1);">
+			&nbsp &nbsp<span style="display:inline-block;width:100px">${name }</span>&nbsp 
 			<input type="button" value="-" onclick="javascript:minusDays(1);">
 			<span id="days1">2</span>일
 			<input type="button" value="+" onclick="javascript:plusDays(1);">
@@ -487,57 +539,82 @@ html, body {
 			<input type="hidden" name="city1" value="${name }">
 			</div>
 			<div id="flag"></div>
+			<br>
+			<input type="button" id="inputdetail" value="세부정보 입력" data-toggle="modal" href="#myModal">
 		</c:if>
 		<c:if test="${name == null}">
 			<div id="flag">도시를 선택해 주세요.</div>
 		</c:if>
-		<br>
-		<input type="button" value="세부정보 입력" onclick="javascript:open_scd();">
 	</div>
-	</div>
-	
-		<div style="overflow:auto;" class="sidenav2" id="scd_info">
-		<h3>세부정보</h3>
-		<form action="create_schedule" method="post" onsubmit="return add_citylist();">
-			<table>
-				<input type="hidden" id="user_id" name="user_id" value="${user_id }" placeholder="ID">
-				<tr>	
-					<td>제목</td>
-					<td><input type="text" id="scd_title" name="scd_title" placeholder="제목 입력"></td>
-				</tr>
-				<tr>	
-					<td>출발일</td>
-					<td><input type="text" id="start_ymd" name="start_ymd"></td>
-				</tr>
-				<tr>
-					<td>테마</td>
-					<td><input type="radio" name="scd_theme" value="alone" checked="checked">홀로
-						<input type="radio" name="scd_theme" value="couple">커플
-						<input type="radio" name="scd_theme" value="family">가족
-						<input type="radio" name="scd_theme" value="group">단체</td>
-				</tr>
-				<tr>
-					<td>계절</td>
-					<td><input type="radio" name="scd_season" value="spring" checked="checked">봄
-						<input type="radio" name="scd_season" value="summer">여름
-						<input type="radio" name="scd_season" value="fall">가을
-						<input type="radio" name="scd_season" value="winter">겨울</td>
-				</tr>
-				<tr>
-					<td>설명</td>
-					<td><input type="text" id="scd_desc" name="scd_desc" placeholder="설명 입력">
-						<input type="hidden" id="day_cnt" name="day_cnt"></td>
-				</tr>
-				<tr>
-					<td>공개</td>
-					<td><input type="checkbox" name="public_fl" value="public">공개
-						<input type="checkbox" name="public_fl" value="shared_user">비공개</td>
-				</tr>
-			</table>
-			<input type="submit" value="완료">
-			<input type="button" value="돌아가기" onclick="javascript:back();">
+		
+<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">세부정보 입력</h4>
+        </div>
+        <div class="modal-body">
+						<form role="form" class="form-horizontal" action="create_schedule" method="post" onsubmit="return add_citylist();">
+							<div class="form-group">
+								<label for="scd_title" class="col-sm-2 control-label"> 제목</label>
+								<div class="col-sm-10">
+									<input type="hidden" id="user_id" name="user_id" value="${user_id }" placeholder="ID">
+									<input type="text" class="form-con" id="scd_title" name="scd_title" placeholder="제목 입력">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="start_ymd" class="col-sm-2 control-label"> 출발일</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-con" id="start_ymd" name="start_ymd" placeholder="클릭하여 달력에서 선택">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="scd_theme" class="col-sm-2 control-label"> 테마</label>
+								<div class="col-sm-10">
+									<input type="radio" class="form-con" name="scd_theme" value="alone" checked="checked">홀로 &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="scd_theme" value="couple">커플 &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="scd_theme" value="family">가족 &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="scd_theme" value="group">단체 &nbsp; &nbsp;
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="scd_season" class="col-sm-2 control-label"> 계절</label>
+								<div class="col-sm-10">
+									<input type="radio" class="form-con" name="scd_season" value="spring" checked="checked">봄 &nbsp; &nbsp; &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="scd_season" value="summer">여름 &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="scd_season" value="fall">가을 &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="scd_season" value="winter">겨울 &nbsp; &nbsp;
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="scd_desc" class="col-sm-2 control-label"> 설명</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-con" id="scd_desc" name="scd_desc" placeholder="설명 입력">
+									<input type="hidden" class="form-con" id="day_cnt" name="day_cnt">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="public_fl" class="col-sm-2 control-label"> 공개여부</label>
+								<div class="col-sm-10">
+									<input type="checkbox" class="form-con" name="public_fl" value="public">공개 &nbsp; &nbsp;
+									<input type="checkbox" class="form-con" name="public_fl" value="shared_user">비공개 &nbsp; &nbsp;
+								</div>
+							</div>
+							
+        </div>
+        <div class="modal-footer">
+        <div id="existId" class="existId"></div>
+			<button type="submit" class="btn btn-default btn_next">완료</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:back();">돌아가기</button>
 			</form>
-	</div>
-
+        </div>
+      </div>
+      
+    </div>
+  </div>
+	
 </body>
 </html>

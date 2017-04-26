@@ -45,6 +45,11 @@ public class MyScheduleDao {
 		ArrayList<Dtl_Scd> info_List=mapper.scd_info(scd_sq);
 		return info_List;
 	}
+	public Dtl_Scd get_citylatlng(Dtl_Scd areasigungu){
+		MyScheduleMapper mapper=sqlsession.getMapper(MyScheduleMapper.class);
+		Dtl_Scd latlng = mapper.get_citylatlng(areasigungu);
+		return latlng;
+	}
 	
 	
 }
