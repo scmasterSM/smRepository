@@ -43,5 +43,5 @@
 	delete from SM_CLIP_TB
 	where 		CONTENT_ID =#{CONTENT_ID}
 			and USER_ID=#{USER_ID}
-	</delete>
+	</delete> 
 </mapper>
