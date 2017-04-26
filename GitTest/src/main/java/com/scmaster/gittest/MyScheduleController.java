@@ -59,5 +59,11 @@ public class MyScheduleController {
 		ArrayList<HashMap<String, Object>>scdList = dao.shared_read_scd(user_id); 
 		return scdList;
 	}
+	@ResponseBody
+	@RequestMapping(value="get_citylatlng",method=RequestMethod.POST)
+	public Dtl_Scd get_citylatlng(Dtl_Scd areasigungu){
+		Dtl_Scd latlng = dao.get_citylatlng(areasigungu);
+		return latlng;
+	}
 	
 }

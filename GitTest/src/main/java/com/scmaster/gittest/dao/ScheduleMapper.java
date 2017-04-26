@@ -39,6 +39,7 @@ public interface ScheduleMapper {
 	public Budget get_budget_total(Budget budget);
 	public List<HashMap<String, Object>> get_daily_list(int scd_sq);
 	public List<HashMap<String, Object>> get_city_list(int daily_sq);
+	public List<HashMap<String, Object>> get_city_listAll(int daily_sq);
 	public void delete_day(int daily_sq);
 	public void day_sort_change(Daily_Scd daily);
 	public void day_change(Daily_Scd daily);

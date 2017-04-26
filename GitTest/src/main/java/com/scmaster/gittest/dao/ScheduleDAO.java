@@ -1,10 +1,16 @@
 package com.scmaster.gittest.dao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.type.IntegerTypeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -28,9 +34,9 @@ public class ScheduleDAO {
 		int scd_sq = mapper.getScd_Sq(schedule.getUser_id());
 		return scd_sq;
 	}
-	
+
 	// 메인 스케줄 가져오기
-	public Schedule select_scd(int scd_sq){
+	public Schedule select_scd(int scd_sq) {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
 		Schedule schedule = mapper.select_scd(scd_sq);
 		return schedule;
@@ -200,6 +206,13 @@ public class ScheduleDAO {
 		return new_dailyList;
 	}
 
+	// 일차 도시 리스트 가져오기
+	public List<HashMap<String, Object>> get_city_list(int daily_sq) {
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		List<HashMap<String, Object>> citylist = mapper.get_city_listAll(daily_sq);
+		return citylist;
+	}
+
 	// 일자 삭제
 	public void delete_day(int daily_sq) {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
@@ -223,5 +236,68 @@ public class ScheduleDAO {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
 		List<HashMap<String, Object>> cliplist = mapper.get_cliplist(user_id);
 		return cliplist;
+	}
+
+	// 일정 복사하여 추가하기
+	public void copy_schedule(int scd_sq, String user_id) {
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		
+		//메인 스케쥴 가져와서 id바꾸어 저장
+		Schedule schedule = mapper.select_scd(scd_sq);
+		schedule.setUser_id(user_id);
+		String start_ymd = schedule.getStart_ymd();
+		String[] array = start_ymd.split(" ");
+		schedule.setStart_ymd(array[0]);
+		mapper.insert_scd(schedule);
+		int my_scd_sq = mapper.getScd_Sq(user_id);
+		
+		//모든 일차 스케쥴 가져와서 for문으로 일차, 일차도시, 일차상세장소 테이블 복사하여 저장
+		List<HashMap<String, Object>> dailyList = mapper.get_daily_list(scd_sq);
+		for(HashMap<String, Object> daily : dailyList){
+			//scd_sq 바꾸어 일차 테이블 저장
+			String d_sq = String.valueOf(daily.get("DAILY_SQ"));
+			int daily_sq = Integer.parseInt(d_sq);
+			String d_ord = String.valueOf(daily.get("DAILY_ORD"));
+			int daily_ord = Integer.parseInt(d_ord);
+			String daily_ymd = String.valueOf(daily.get("DAILY_YMD"));
+			Daily_Scd my_daily = new Daily_Scd(0, my_scd_sq, daily_ord, daily_ymd, null, null, 0, null);
+			mapper.insert_daily(my_daily);
+			int my_daily_sq = mapper.getDaily(my_daily);
+			
+			//일차에 해당하는 일차도시 테이블 복사하여 저장
+			List<HashMap<String, Object>> cityList = mapper.get_city_listAll(daily_sq);
+			for(HashMap<String, Object> city : cityList){
+				String c_ord = String.valueOf(city.get("CITY_ORD"));
+				int city_ord = Integer.parseInt(c_ord);
+				String area_code = String.valueOf(city.get("AREA_CODE"));
+				String sigungu_code = String.valueOf(city.get("SIGUNGU_CODE"));
+				String city_nm = String.valueOf(city.get("CITY_NM"));
+				my_daily.setDaily_sq(my_daily_sq);
+				my_daily.setArea_code(area_code);
+				my_daily.setSigungu_code(sigungu_code);
+				my_daily.setCity_ord(city_ord);
+				my_daily.setCity_nm(city_nm);
+				mapper.insert_city(my_daily);
+			}
+			
+			//일차에 해당하는 일차상세장소 테이블 복사하여 저장
+			Dtl_Scd dtl_scd = new Dtl_Scd(0, scd_sq, daily_sq, 0, null, null, null, null, null, null, null, null, null);
+			List<HashMap<String, Object>> dtlList = mapper.getDtlList(dtl_scd);
+			for(HashMap<String, Object> dtl : dtlList){
+				String dt_ord = String.valueOf(dtl.get("DTL_ORD"));
+				int dtl_ord = Integer.parseInt(dt_ord);
+				String dtl_content_id = String.valueOf(dtl.get("DTL_CONTENT_ID"));
+				String memo = String.valueOf(dtl.get("MEMO"));
+				String place_nm = String.valueOf(dtl.get("PLACE_NM"));
+				String dtl_image = String.valueOf(dtl.get("DTL_IMAGE"));
+				String area_code = String.valueOf(dtl.get("AREA_CODE"));
+				String sigungu_code = String.valueOf(dtl.get("SIGUNGU_CODE"));
+				String city_nm = String.valueOf(dtl.get("CITY_NM"));
+				String map_x = String.valueOf(dtl.get("MAP_X"));
+				String map_y = String.valueOf(dtl.get("MAP_Y"));
+				Dtl_Scd my_dtl = new Dtl_Scd(0, my_scd_sq, my_daily_sq, dtl_ord, dtl_content_id, memo, place_nm, dtl_image, area_code, sigungu_code, city_nm, map_x, map_y);
+				mapper.insert_dtl(my_dtl);
+			}
+		}
 	}
 }

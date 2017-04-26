@@ -62,4 +62,15 @@
  	and 	s.scd_sq = c.scd_sq
  	order by c.scd_sq desc
 	</select>
+	
+	<select id="get_citylatlng" parameterType="Dtl_Scd" resultType="Dtl_Scd">
+	SELECT
+	 		lat map_y, 
+	 		lng map_x
+	FROM 	SM_CITY_TB
+	where 	areacode = #{area_code}
+	<if test="sigungu_code != ''">
+	and 	sigungu_code = #{sigungu_code)
+	</if>
+	</select>
  </mapper>
