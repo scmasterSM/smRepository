@@ -153,7 +153,7 @@
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati architecto quaerat facere blanditiis tempora sequi nulla accusamus, possimus cum necessitatibus suscipit quia autem mollitia, similique quisquam molestias. Vel unde, blanditiis.</p>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                   <!--  <div class="col-md-4">
                         <div class="single-footer">
                             <h4>Twitter update</h4>
                             <div class="twitter-updates">
@@ -167,7 +167,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-4">
                         <div class="single-footer">
                             <h4>Useful lnks</h4>
@@ -268,7 +268,7 @@ $(function(){
 				
 			    console.log('success1', data);
 			    var scd_sq=item.SCD_SQ;
-			    console.log(scd_sq);
+			    
 			    if (typeof (data.response.body.items.item.firstimage) !== "undefined") {
 			    	
 			    	html += '<li>';
@@ -282,7 +282,7 @@ $(function(){
 					html += '</a>';
 					html += '</li>';
 				
-				$("#myPlan").html(html);
+				/* $("#myPlan").html(html); */
 			    }else if (typeof (data.response.body.items.item.firstimage) == "undefined") {
 			    	contentId=item.DTL_CONTENT_ID2;
 			    	ReadApi(contentId);
@@ -298,14 +298,14 @@ $(function(){
 					html += '</a>';
 					html += '</li>';
 				
-				$("#myPlan").html(html);
+				
 			    	
 			    })
 			    	
 			    }
-			    console.log(data.response.body.items.item); 
+			    
+			$("#myPlan").html(html);
 			 });
-			
 			})
 				
 		},
