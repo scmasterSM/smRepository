@@ -52,6 +52,7 @@ public class ScheduleDAO {
 	public void insert_daily(Daily_Scd daily) {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
 		mapper.insert_daily(daily);
+		//System.out.println(daily);
 		int daily_sq = mapper.getDaily(daily);
 		daily.setDaily_sq(daily_sq);
 		if (daily.getArea_code() != null) {
