@@ -24,6 +24,14 @@
    z-index: 1;
    position: absolute;
 }
+.modal-header {
+	background-color: #00AEF0;
+	color: #fff;
+}
+.btn-default {
+	background-color: #00AEF0;
+	color: #fff;
+}
 input[type=button], button {
 	color: #333;
     background-color: #fff;
@@ -40,7 +48,7 @@ input[type=button], button {
     cursor: pointer;
     user-select: none;
     background-image: none;
-    border: 2px solid wheat;
+    border: 2.5px solid wheat;
     margin-top: 5px;
     margin-bottom: 5px;
    }
