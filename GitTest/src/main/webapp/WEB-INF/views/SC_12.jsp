@@ -496,8 +496,6 @@ var map=[];
                          $.each(data,function(index,item){	
                         	 var sigungu_code = item.SIGUNGU_CODE;
                         	 var city_nm = item.CITY_NM.toString();
-                        	 console.log(city_nm);
-                        	 console.log(typeof(city_nm));
                          	 if(typeof(sigungu_code) == 'undefined' || sigungu_code == 'undefined') sigungu_code = "";
                         	 if(index == 0) html += '<a href="sc_05?areacode='+item.AREA_CODE+'&sigungucode='+sigungu_code+'&city_nm='+city_nm+'">'+ item.CITY_NM +'</a>';
                         	 else html += ', <a href="sc_05?areacode='+item.AREA_CODE+'&sigungucode='+sigungu_code+'&city_nm='+city_nm+'">'+ item.CITY_NM +'</a>';
