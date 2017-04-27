@@ -351,7 +351,7 @@ html, body {
            + '<h3 id="firstHeading" class="firstHeading">'+city.name+'</h3>'
            + '<div id="bodyContent">'
            + '<a href="sc_05?areacode='+city.areaCode+'&sigungucode='+sigungu_code+'&city_nm='+city_nm+'">'
-           + '<input type="button" value="자세히 보기"></a>'
+           + '<input type="button" value="자세히 보기"></a> '
            + '<input type="button" value="일정 만들기" onclick="make_schedule('+city.areaCode+', '+city.sigunguCode+', '+city.lat+', '+city.lng+', \''+city.name+'\')" />'
            + '</div>' + '</div>';   
        

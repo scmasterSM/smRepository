@@ -12,6 +12,8 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="./resources/css/jquery-ui.min.css" type="text/css" media="screen" />
+<link rel='stylesheet' href='./resources/css/perfect-scrollbar.css' />
+<script src='./resources/js/perfect-scrollbar.jquery.js'></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_azK-PpKrUbRSAlyccxLXpUGnwagdJhQ"></script>
 <style>
@@ -133,18 +135,22 @@ html, body {
    padding: 0;
 }
 
+hr {
+	border-top: solid #a7a7a7 1px;
+}
+
 .sidenav {
 		padding: 15px 15px 15px 15px;
 	    height: 40%;
 	    width: 20%;
 	    position: fixed;
-	    top: 0;
+	    top: 0%;
 	    left: 20%;
 	    background-color: white;
 	    overflow-x: hidden;	
 	    transition: 0.5s;
 	    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-	    border: 1px solid black;
+	    border: solid #ebebeb 1px;
 	    z-index: 99;
 	}
 
@@ -234,7 +240,14 @@ html, body {
       $("#start_ymd").datepicker({
     	  dateFormat: "yy-mm-dd"
       });
-   });
+
+      $('#pop_city_list_box').perfectScrollbar();
+      $('#city_list_box').perfectScrollbar();
+     // $('#city_info').perfectScrollbar();
+      $('body').perfectScrollbar({
+      	  suppressScrollY: true
+      	});
+ });
    function makeSide(where, city){
       var html="";
 	   if(where == '#pop_city_list_box'){
@@ -522,6 +535,9 @@ html, body {
 		$('#scd_info').css('pointer-events', 'none');
 	}
    
+   function open_mod(){
+	   $('#myModal').modal('show');
+   }
 </script>
 
 <title>make_schedule</title>
@@ -533,8 +549,10 @@ html, body {
    
    
     <div style="overflow:auto;" class="sidenav" id="city_info">
-	<h3>여행도시</h3>
-	<hr />
+    <div>
+		<h3>여행도시</h3>
+		<hr />
+	</div>
 	<div id="city_day_box">
 		<c:if test="${name != null}">
 			<div class="city" id="city1">
