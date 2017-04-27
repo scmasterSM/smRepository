@@ -11,6 +11,7 @@
 <script src="./resources/js/bootstrap.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="./resources/css/jquery-ui.min.css" type="text/css" media="screen" />
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_azK-PpKrUbRSAlyccxLXpUGnwagdJhQ"></script>
 <style>
