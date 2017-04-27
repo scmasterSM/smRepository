@@ -553,13 +553,13 @@ var map=[];
  
  $(function(){
 	
-		ws = new WebSocket("ws://10.10.6.61:8888/gittest/webSocket");
+		ws = new WebSocket("ws://10.10.10.151:8888/gittest/webSocket");
 		
 		var data = {
+				"doWhat" : "webSocketlogIn",
 				"loginId" : "${user_id}"
 		}
 		
-		console.log("loging id : "+data);
 		ws.onopen = () => ws.send(JSON.stringify(data));
 		
 		ws.onmessage = function(event){
@@ -612,8 +612,9 @@ function ReadApi(contentId) { /* currentPage가 어디서 호출되어 온다 */
 		}
 		
 		var data = {
-				"scd_sq" : ${scd_sq}
-				,"searchId" : checkId
+				"doWhat"	: "addShareAuthority",		
+				"scd_sq" : ${scd_sq},
+				"searchId" : checkId
 		}
 		console.log(data);
 		ws.send(JSON.stringify(data));
