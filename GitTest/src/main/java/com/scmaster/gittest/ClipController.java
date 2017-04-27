@@ -1,5 +1,7 @@
 package com.scmaster.gittest;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.scmaster.gittest.dao.ClipDao;
 import com.scmaster.gittest.dao.ReviewDao;
 import com.scmaster.gittest.vo.Clip;
+import com.scmaster.gittest.vo.Schedule;
 
 @Controller
 public class ClipController {
@@ -44,6 +47,5 @@ public class ClipController {
 		String user_id=(String)session.getAttribute("user_id"); 
 		List<Clip>cList = dao.readCLip(user_id); 
 		return cList;
-	}
-	
+	}	 
 }

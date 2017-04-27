@@ -30,9 +30,10 @@
 <link rel="stylesheet" href="./resources/css/owl.transitions.css">
 <link rel="stylesheet" href="./resources/css/style.css">
 <link rel="stylesheet" href="./resources/css/responsive.css">
+<link rel ="stylesheet" href ="./resources/css/11css.css"> 
 <script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
-<!-- <script src="./resources/js/jquery-3.1.1.js"></script> -->
 <script src="./resources/js/jquery.min.js"></script>
+
 <script>
 	window.jQuery
 			|| document
@@ -60,7 +61,9 @@
 <script type="text/javascript">
 	/* var areacode = ${areacode}; */
 	/* console.log(areacode); */
-
+	var check = 0;
+	var inner = null;
+	var area = null;
 	var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 
 	//정보수정 모달
@@ -87,6 +90,98 @@
 
 		location.href = "logout";
 	}
+	
+	/* function plusArea() {
+		var inner = document.getElementById("filter_area");
+		inner.innerHTML =
+				"<div class='filter_title city' id='filter_title city' data-sh='city' >여행지역</div>"				
+			+	"<div class='filter_right' data-sh='tour_day'>"
+			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:sigunguArea(31)'>경기도</a></div>"
+			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:filter(32)'>강원도</a></div>"
+			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:getAreaCode(33)'>충청북도</a></div>"
+			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:getAreaCode(34)'>충청남도</a></div>"
+			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:getAreaCode(35)'>경상북도</a></div>"
+			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:getAreaCode(36)'>경상남도</a></div>"
+			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:getAreaCode(37)'>전라북도</a></div>"
+			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:getAreaCode(38)'>전라남도</a></div>"
+			+	"<div class='clear'></div></div>"; <a href='#' onclick='javascript:sigunguArea()'>접기</a> 	
+	} */
+	
+	/* function sigunguArea(cities){
+		
+		 console.log(check);
+		console.log(area);
+		if(check == 1){
+		      document.getElementById('sigungu_area").innerHTML = inner;
+		      console.log(inner);
+		      check=0;
+		      return;
+		   }
+		if(area != "sigungu_area" && area != null){
+		      document.getElementById(area).innerHTML = inner;
+		   } 
+		   
+		console.log(area);
+		
+		area = "sigungu_area";		   
+		inner = document.getElementById('sigungu_area').innerHTML; 
+		var inner = document.getElementById('sigungu_area');
+		var output="";
+			
+			output +="<div class='filter_title city' data-sh='city' >상세지역</div>";
+			output	+=	"<div class='filter_right city' data-sh='city'>";
+			output	+=	"<div class='city_box'>";
+			if(cities!=null){
+			for(var i=0;i<cities.length;i++){
+				output	+=	"<div class='filter_set_btn'><a href ='#'>"+cities[i].name+"</a></div>";	
+			}
+			}
+			output	+=	"</div><div class='city_btn' data-on='off'></div>";
+			output	+=	"<div class='clear'></div></div>";
+		inner.innerHTML += output;
+		check =1;
+		console.log(cities);
+	} */
+	
+
+	
+/* 	function getAreaCode(areaCode){
+		
+		  var sigunguCode;
+	      var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode?ServiceKey="
+	            + key + "&areaCode=" + areaCode 
+	            + "&numOfRows=100&MobileOS=ETC&MobileApp=AppTesting&_type=json";
+	      $.ajax({
+	         type : "GET",
+	         url : url,
+	         async : false,
+	         success : function(result){
+	        	var cities = [];
+	      	  	 
+	                console.log(result);
+	            $.each(result.response.body.items.item, function(index, val) {	      
+	            	console.log(val);
+	          		var city = {
+                            "index" : val.rnum,
+                            "areaCode" : areaCode,
+                            "sigunguCode" : val.code,
+                            "name" : val.name, 
+                         };
+                    cities.push(city);
+	                console.log(cities)
+	                             
+                   
+	               	});//each
+	                
+	            sigunguArea(cities);
+	            }, error : function(e){
+	               console.log(e);
+	            }
+	      });//ajax
+	            check=0;
+	            area = null;
+	   }	 */
+	
 </script>
 </head>
 
@@ -531,10 +626,133 @@
 
 	<center><h5>여행 자들의 일정 보기</h5></center>
 
+<div class="content">
+	<div class="wrap">
+		<div class="content_header">
+			<div class="content_header_title">
+				</div>
+			<div class="clear"></div>
+		</div>
 
+	<div class="content_filter">
+						<input type="hidden" id="cu_srl" >
+			<input type="hidden" id="ci_srl" >
+						<input type="hidden" id="tour_day">
+			<input type="hidden" id="tour_month">
+			<input type="hidden" id="tour_type">
+			<div class="filter_title f_title" >
+				필터			</div>
+			<div class="filter_right f_content" >
+							</div>
+			<div class="clear"></div>
 
+			<div class="filter_title" data-sh="area_tab" >
+				주요 여행지			</div>
+			<div class="filter_right" data-sh="area_tab" >
+					<div class="filter_set_btn">
+					<a href ="#" onclick="javascript:areafilter(1)">서울</a>
+					</div>
+					<div class="filter_set_btn" >
+					<a href ="#" onclick="javascript:areafilter(6)">부산</a>
+					</div>
+					<div class="filter_set_btn">
+					<a href ="#" onclick="javascript:areafilter(39)">제주도</a>
+					</div>
+					<div class="filter_set_btn" >
+					<a href ="#" onclick="javascript:areafilter(2)">인천</a>
+					</div>
+					<div class="filter_set_btn">
+					<a href ="#" onclick="javascript:areafilter(3)">대전</a>
+					</div>
+					<div class="filter_set_btn" >
+					<a href ="#" onclick="javascript:areafilter(4)">대구</a>
+					</div>
+					<div class="filter_set_btn">
+					<a href ="#" onclick="javascript:areafilter(5)">광주</a>
+					</div>
+					<div class="filter_set_btn" >
+					<a href ="#" onclick="javascript:areafilter(7)">울산</a>
+					</div>
+					<div class="filter_set_btn" >
+					<a href ="#" onclick="javascript:areafilter(8)">세종시</a>
+					</div>
+					<!-- <div class="filter_set_btn" >
+					<a href ="javascript:plusArea()">더보기</a>
+					</div> -->
+					<!-- 			<div class="area_btn" data-on="off"> -->
+					
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="area_tab" data-sh="area_tab">
+			 
+			</div>
+			<div id="filter_area">
+				<div class='filter_title' id='filter_title city' data-sh='city' >여행지역</div>				
+			<div class='filter_right' data-sh='city'>
+				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(31)'>경기도</a></div>
+				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(32)'>강원도</a></div>
+				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(33)'>충청북도</a></div>
+				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(34)'>충청남도</a></div>
+				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(35)'>경상북도</a></div>
+				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(36)'>경상남도</a></div>
+				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(37)'>전라북도</a></div>
+				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(38)'>전라남도</a></div>
+				<div class='clear'></div></div>
+			</div>
+			<div id="sigungu_area"></div>
+			<div class="clear"></div>
+
+			<div class="filter_title" data-sh="tour_day">
+				여행일			</div>
+			<div class="filter_right" data-sh="tour_day">
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:dayfilter(1)'>1일</a></div>
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:dayfilter(2)'>2일</a></div>
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:dayfilter(3)'>3일</a></div>
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:dayfilter(4)'>4일</a></div>
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:dayfilter(5)'>5일</a></div>
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:dayfilter(6)'>6일</a></div>
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:dayfilter(7)'>7일이상</a></div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="filter_title" data-sh="tour_ss">
+				여행시기			</div>
+			<div class="filter_right" data-sh="tour_ss">
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:seasonfilter("spring")'>봄</a></div>
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:seasonfilter("summer")'>여름</a></div>
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:seasonfilter("fall")'>가을</a></div>
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:seasonfilter("winter")'>겨울</a></div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="filter_title last" data-sh="theme">
+				여행테마			</div>
+			<div class="filter_right last" data-sh="theme">
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:themefilter("alone")'>나홀로여행</a></div>
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:themefilter("couple")'>커플여행</a></div>
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:themefilter("family")'>가족여행</a></div>
+				<div class="filter_set_btn"><a href ='#' onclick='javascript:themefilter("group")'>단체여행</a></div>
+				
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>		
+		<div class="content_list">
+			
+		
+		</div>
+	</div>
+</div>
+	
+	
+	
+	
 	<!--도시 이미지  -->
-	<!--   <div class="row carousel-holder">
+<!-- 	   <div class="row carousel-holder">
 
                <div class="col-md-12">
                   <div id="carousel-example-generic" class="carousel slide"
@@ -572,7 +790,7 @@
                   </div>
                </div>
 
-            </div> -->
+            </div>  -->
 
 	<!-- footer -->
 	<div class="footer-area">
@@ -582,4 +800,88 @@
 		</div>
 	</div>
 </body>
+
+<script src="./resources/js/jquery-3.1.1.js"></script>
+<script>
+var _areacode='null';
+var _day_cnt='null';
+var _season='null';
+var _theme='null';
+function areafilter(areacode){ 
+	if(_areacode == 'null'){
+		_areacode = areacode;		
+	}else if(_areacode != areacode){
+		_areacode = areacode;
+	}else if(_areacode==areacode){
+		_areacode ='null';		
+	} 
+	filtering();
+}
+function dayfilter(day_cnt){
+	if(_day_cnt == 'null'){
+		_day_cnt = day_cnt;		
+	}else if(_day_cnt != day_cnt){
+		_day_cnt = day_cnt;
+	}else if(_day_cnt==day_cnt){
+		_day_cnt ='null';		
+	}
+	filtering();
+}
+function seasonfilter(season){
+	if(_season == 'null'){
+		_season = season;		
+	}else if(_season != season){
+		_season = season;
+	}else if(_season==season){
+		_season ='null';		
+	}
+	filtering();
+}
+function themefilter(theme){
+	if(_theme == 'null'){
+		_theme = theme;		
+	}else if(_theme != theme){
+		_theme = theme;
+	}else if(_theme==theme){
+		_theme ='null';		
+	}	 
+	filtering();
+}
+
+function filtering(){
+	var areacode=_areacode;
+	var DAY_CNT=_day_cnt;
+	var SCD_SEASON=_season;
+	var SCD_THEME=_theme;
+	 
+	 
+	console.log("지역코드 : "+areacode+"여행일수 : "+DAY_CNT+", 계절 :"+SCD_SEASON+", 테마 : "+SCD_THEME);
+	 
+	dataType: "json",
+	$.ajax({
+		type : "get",
+		url : "filtering",
+		data : {	
+			
+			 day_cnt : DAY_CNT
+			,scd_season : SCD_SEASON
+			,scd_theme : SCD_THEME 
+			,area_code : areacode
+		},
+		success : function(data){
+			 
+			console.log(data);
+			 
+			
+				
+		},
+		error : function(e){
+			console.log(e);
+		}
+	}) 
+	  
+}
+
+</script>
+
 </html>
