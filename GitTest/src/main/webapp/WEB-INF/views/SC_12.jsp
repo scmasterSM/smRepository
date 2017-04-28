@@ -12,7 +12,7 @@
 <head>
 <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Jonaki | Job Board Template</title>
+        <title>상세 일정 화면</title>
         <meta name="description" content="company is a free job board template">
         <meta name="author" content="Ohidul">
         <meta name="keyword" content="html, css, bootstrap, job-board">
@@ -37,6 +37,9 @@
           <link rel="stylesheet" href="./resources/css/12css.css">
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_azK-PpKrUbRSAlyccxLXpUGnwagdJhQ"></script>
 <style type="text/css">
+html, body {
+	overflow-x: hidden;
+}
 body.modal-open {
     overflow: hidden;
 }
@@ -71,140 +74,403 @@ body.modal-open {
    src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script>
 </head>
 <body>
+		<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- Body content -->
 
-   <div id="preloader">
-      <div id="status">&nbsp;</div>
-   </div>
-   <!-- Body content -->
+	<div class="header-connect">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5 col-sm-8 col-xs-8">
+					<div class="header-half header-call"></div>
+				</div>
+				<div
+					class="col-md-2 col-md-offset-5  col-sm-3 col-sm-offset-1  col-xs-3  col-xs-offset-1">
+					<c:choose>
+						<c:when test="${sessionScope.user_id == null }">
+							<div class="header-half header-social">
+								<!-- 	<ul class="list-inline">
+							<li><a href="autoLogin">연습</a></li>
+						</ul> -->
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="header-half header-social">
+								<ul class="list-inline">
+									<li><img src="./resources/image/login_img.png">
+										${sessionScope.user_id }</li>
+								</ul>
+							</div>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
+		</div>
+	</div>
 
-   <div class="header-connect">
+	<nav class="navbar navbar-default">
+	<div class="container">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+
+			<a href="home"><img src="./resources/image/logoicon.png" alt=""
+				width="80px" height="80px"></a><img
+				src="./resources/image/main_logo.png" alt="">
+
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<!-- <a class="navbar-brand" href="#">
+				</a> -->
+
+		</div>
+		<!-- 	<br> <br> -->
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse"
+			id="bs-example-navbar-collapse-1">
+			<div class="button navbar-right">
+				<c:choose>
+					<c:when test="${sessionScope.user_id == null }">
+						<button type="button" id="loginForm"
+							class="navbar-btn nav-button wow bounceInRight login"
+							data-toggle="modal" data-target="#myModal" id="loginForm"
+							data-wow-delay="0.8s">Login</button>
+						<button type="button"
+							class="navbar-btn nav-button wow fadeInRight" data-toggle="modal"
+							data-target="#myModal" id="joinForm" data-wow-delay="0.6s">Join</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" id="Edit"
+							class="navbar-btn nav-button wow bounceInRight login"
+							data-toggle="modal" data-target="#myModal_Edit" id="editForm"
+							data-wow-delay="0.8s">Edit</button>
+						<button type="button"
+							class="navbar-btn nav-button wow fadeInRight" id="logout"
+							data-wow-delay="0.6s" onclick="logout()">logout</button>
+					</c:otherwise>
+				</c:choose>
+
+				<!--로그인&조인 모달  -->
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+					aria-labelledby="myLargeModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-hidden="true">×</button>
+
+								<h4 class="modal-title" id="myModalLabel">Login / Join</h4>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-md-8"
+										style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
+										<!-- Nav tabs -->
+										<ul class="nav nav-tabs headertabs">
+											<li class="active"><a href="#Login" id="loginAtag"
+												data-toggle="tab">Login</a></li>
+											<li><a href="#Registration" id="regAtag"
+												data-toggle="tab">Join</a></li>
+										</ul>
+										<!-- Tab panes -->
+										<div class="tab-content">
+											<div class="tab-pane active" id="Login">
+												<form action="login" role="form" method="post"
+													class="form-horizontal" onsubmit="return login()">
+													<div class="form-group">
+														<label for="email" class="col-sm-2 control-label">
+															ID</label>
+														<div class="col-sm-10">
+															<input type="text" name="user_id" class="form-control"
+																id="user_id" placeholder="ID" />
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="exampleInputPassword1"
+															class="col-sm-2 control-label"> Password</label>
+														<div class="col-sm-10">
+															<input type="password" name="password"
+																class="form-control" id="password"
+																placeholder="Password" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-sm-2"></div>
+														<div class="col-sm-10">
+															<button type="button" class="btn btn-primary btn-sm"
+																value="submit" id="submit_button">Submit</button>
+															<!-- <a href="javascript:;">Forgot your password?</a> -->
+														</div>
+													</div>
+												</form>
+											</div>
+											<div class="tab-pane" id="Registration">
+												<form action="join" role="form" method="post"
+													class="form-horizontal" onsubmit="return joinCheck()">
+													<div class="form-group">
+														<label for="email" class="col-sm-2 control-label">
+															ID</label>
+														<div class="col-sm-10">
+															<div class="row">
+																<div class="col-md-3">
+																	<select class="form-control" name="user_sex"
+																		id="user_sex">
+																		<option value="선택">선택</option>
+																		<option value="m">남성</option>
+																		<option value="f">여성</option>
+																	</select>
+																</div>
+																<div class="col-md-9">
+																	<input type="text" class="form-control"
+																		placeholder="ID" name="user_id" id="user_id1" />
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="email" class="col-sm-2 control-label">
+															Email</label>
+														<div class="col-sm-10">
+															<input type="email" class="form-control" name="email"
+																id="email" placeholder="Email" />
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="mobile" class="col-sm-2 control-label">
+															Password</label>
+														<div class="col-sm-10">
+															<input type="password" class="form-control"
+																id="password1" name="password" placeholder="Password" />
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="password" class="col-sm-2 control-label">
+														</label>
+														<div class="col-sm-10">
+															<input type="password" class="form-control"
+																id="password2" name="password2"
+																placeholder="Password 확인" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-sm-2"></div>
+														<div class="col-sm-10">
+															<button type="button" class="btn btn-primary btn-sm"
+																id="submit_join">Save & Continue</button>
+															<input type="reset" class="btn btn-default btn-sm"
+																value="Reset" />
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+										<!-- <div id="OR" class="hidden-xs">OR</div> -->
+									</div>
+									<!-- <div class="col-md-4">
+											<div class="row text-center sign-with">
+												<div class="col-md-12">
+													<h3>Sign in with</h3>
+												</div>
+												<div class="col-md-12">
+													<div class="btn-group btn-group-justified">
+														<a href="#" class="btn btn-primary">Facebook</a> <a
+															href="#" class="btn btn-danger"> Google</a>
+													</div>
+												</div>
+											</div>
+										</div> -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--로그인&조인 모달 끝 -->
+				<!--정보수정 모달 시작  -->
+				<div class="modal fade" id="myModal_Edit" tabindex="-1"
+					role="dialog" aria-labelledby="myLargeModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-hidden="true">×</button>
+
+								<h4 class="modal-title" id="myModalLabel">Edit my
+									information</h4>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-md-8"
+										style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
+										<!-- Nav tabs -->
+										<ul class="nav nav-tabs headertabs">
+											<li class="active"><a href="#Login" id="loginAtag"
+												data-toggle="tab">Edit</a></li>
+											<!-- <li><a href="#Registration" id="regAtag" data-toggle="tab">Join</a></li> -->
+										</ul>
+										<!-- Tab panes -->
+										<div class="tab-content">
+											<div class="tab-pane active" id="Edit">
+												<form role="form" class="form-horizontal">
+													<div class="form-group">
+														<label for="email" class="col-sm-2 control-label">
+															ID</label>
+														<div class="col-sm-10">
+															<div class="row">
+																<div class="col-md-3">
+																	<select class="form-control" id="user_sex_ed"
+																		disabled="disabled">
+																		<option value="">${sessionScope.user_sex}</option>
+																	</select>
+																</div>
+																<div class="col-md-9">
+																	<input type="text" class="form-control" id="user_id_ed"
+																		name="user_id_ed" placeholder="ID"
+																		value="${sessionScope.user_id}" disabled="disabled" />
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="email" class="col-sm-2 control-label">
+															Email</label>
+														<div class="col-sm-10">
+															<input type="email" class="form-control" id="email_ed"
+																placeholder="Email" />
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="mobile" class="col-sm-2 control-label">
+															Password</label>
+														<div class="col-sm-10">
+															<input type="password" class="form-control"
+																id="password1_ed" placeholder="Password" />
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="password" class="col-sm-2 control-label">
+														</label>
+														<div class="col-sm-10">
+															<input type="password" class="form-control"
+																id="password2_ed" placeholder="Password 확인" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-sm-2"></div>
+														<div class="col-sm-10">
+															<button type="button" class="btn btn-primary btn-sm"
+																id="editForm">Edit</button>
+															<input type="reset" class="btn btn-default btn-sm"
+																value="Reset" />
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+										<!-- <div id="OR" class="hidden-xs">OR</div> -->
+									</div>
+									<!-- <div class="col-md-4">
+											<div class="row text-center sign-with">
+												<div class="col-md-12">
+													<h3>Sign in with</h3>
+												</div>
+												<div class="col-md-12">
+													<div class="btn-group btn-group-justified">
+														<a href="#" class="btn btn-primary">Facebook</a> <a
+															href="#" class="btn btn-danger"> Google</a>
+													</div>
+												</div>
+											</div>
+										</div> -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+
+			<c:choose>
+				<c:when test="${sessionScope.user_id == null }">
+
+					<ul class="main-nav nav navbar-nav navbar-right">
+						<li class="wow fadeInDown" data-wow-delay="0s"><a
+							class="active" href="#" onclick="checkId();">일정 만들기</a></li>
+						<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#"
+							onclick="checkId();">나의 일정 보기</a></li>
+						<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
+							Own Schedule</a></li>
+					<li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">City
+							Information</a></li> -->
+					</ul>
+				</c:when>
+				<c:otherwise>
+					<ul class="main-nav nav navbar-nav navbar-right">
+						<li class="wow fadeInDown" data-wow-delay="0s"><a
+							class="active" href="SC_11">일정 만들기</a></li>
+						<li class="wow fadeInDown" data-wow-delay="0.1s"><a
+							href="SC_10">나의 일정 보기</a></li>
+						<!-- <li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">나의 일정</a>
+					</li> -->
+						<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
+							Own Schedule</a></li>
+					<li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">City
+							Information</a></li> -->
+					</ul>
+				</c:otherwise>
+			</c:choose>
+
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container-fluid --> </nav>
+
+	<!-- <section class="jumbotron text-center" style="background:url(./resources/image/otherpage/111.png);">
+	 <img src="./resources/image/otherpage/111.png" > 
       <div class="container">
-         <div class="row">
-            <div class="col-md-5 col-sm-8 col-xs-8">
-               <div class="header-half header-call">
-                  <p>
-                     <span><i class="icon-cloud"></i>+019 4854 8817</span> <span><i
-                        class="icon-mail"></i>ohidul.islam951@gmail.com</span>
-                  </p>
-               </div>
-            </div>
-            <div
-               class="col-md-2 col-md-offset-5  col-sm-3 col-sm-offset-1  col-xs-3  col-xs-offset-1">
-               <div class="header-half header-social">
-                  <ul class="list-inline">
-                     <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                     <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                     <li><a href="#"><i class="fa fa-vine"></i></a></li>
-                     <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                     <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                     <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                  </ul>
-               </div>
-            </div>
-         </div>
+      <br><br>
+         <h1 class="jumbotron-heading">My schedule</h1>
+        <p class="lead text-muted">일정 상세 보기</p>
+        <p>
+          <a href="#" class="btn btn-primary">Main call to action</a>
+          <a href="#" class="btn btn-secondary">Secondary action</a>
+        </p> 
       </div>
-   </div>
-
-   <nav class="navbar navbar-default">
-   <div class="container">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-         <button type="button" class="navbar-toggle collapsed"
-            data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span> <span
-               class="icon-bar"></span> <span class="icon-bar"></span> <span
-               class="icon-bar"></span>
-         </button>
-         <a class="navbar-brand" href="#"><img
-            src="./resources/img/logo.png" alt=""></a>
-      </div>
-
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse"
-         id="bs-example-navbar-collapse-1">
-         <div class="button navbar-right">
-            <button class="navbar-btn nav-button wow bounceInRight login"
-               data-wow-delay="0.8s">Login</button>
-            <button class="navbar-btn nav-button wow fadeInRight"
-               data-wow-delay="0.6s">Sign up</button>
-         </div>
-         <ul class="main-nav nav navbar-nav navbar-right">
-            <li class="wow fadeInDown" data-wow-delay="0s"><a
-               class="active" href="#">Home</a></li>
-            <li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">Job
-                  Seekers</a></li>
-            <li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">Employeers</a></li>
-            <li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">About
-                  us</a></li>
-            <li class="wow fadeInDown" data-wow-delay="0.4s"><a href="#">Blog</a></li>
-            <li class="wow fadeInDown" data-wow-delay="0.5s"><a href="#">Contact</a></li>
-         </ul>
-      </div>
-      <!-- /.navbar-collapse -->
-   </div>
-   <!-- /.container-fluid --> </nav>
-
-   <div class="slider-area">
-      <div class="slider">
-         <div id="bg-slider" class="owl-carousel owl-theme">
-
-            <div class="item">
-               <img src="./resources/img/slider-image-3.jpg" alt="Mirror Edge">
-            </div>
-            <div class="item">
-               <img src="./resources/img/slider-image-2.jpg" alt="The Last of us">
-            </div>
-            <div class="item">
-               <img src="./resources/img/slider-image-1.jpg" alt="GTA V">
-            </div>
-
-         </div>
-      </div>
-      <div class="container slider-content">
-         <div class="row">
-            <div
-               class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
-               <h2>Job Searching Just Got So Easy</h2>
-               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Eligendi deserunt deleniti, ullam commodi sit ipsam laboriosam
-                  velit adipisci quibusdam aliquam teneturo!</p>
-               <div class="search-form wow pulse" data-wow-delay="0.8s">
-                  <form action="" class=" form-inline">
-                     <div class="form-group">
-                        <input type="text" class="form-control"
-                           placeholder="Job Key Word">
-                     </div>
-                     <div class="form-group">
-                        <select name="" id="" class="form-control">
-                           <option>Select Your City</option>
-                           <option selected>New york, CA</option>
-                           <option>New york, CA</option>
-                           <option>New york, CA</option>
-                           <option>New york, CA</option>
-                        </select>
-                     </div>
-                     <div class="form-group">
-                        <select name="" id="" class="form-control">
-                           <option>Select Your Category</option>
-                           <option selected>Graphic Design</option>
-                           <option>Web Design</option>
-                           <option>App Design</option>
-                        </select>
-                     </div>
-                     <input type="submit" class="btn" value="Search">
+    </section>  -->
 
 
-                  </form>
-               </div>
-            </div>
-         </div>
-      </div>
-   </div>
+	<style type="text/css">
+	 @import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+.section-30 {
+	background-image: url(./resources/image/otherpage/myPage-temp5.png);
+	background-repeat: repeat-y;
+	background-size: 100%;
+}
+h1 {
+	font-family: 'Hanna', serif;
+	color : gray;
+	font-size: -webkit-xxx-large;
+}
+
+</style>
+	<section
+		class="section-30 section-sm-40 section-md-66 section-lg-bottom-90 bg-gray-dark page-title-wrap">
+	<div class="shell">
+		<div class="page-title" style="height: 400px;">
+			<div class="container" style="margin: auto; margin-top: 85px;">
+				<h1>My Itinerary</h1>
+			</div>
+		</div>
+	</div>
+	</section>
+	
 
    <div class="content-area">
-
-      <hr>
-
       <div class="container">
          <div class="row job-posting wow fadeInUp" data-wow-delay="1s">
             <div role="tabpanel">
@@ -355,71 +621,18 @@ body.modal-open {
             </div>
          </div>
       </div>
-      <hr>
+      <!-- <hr> -->
    </div>
-   <div class="footer-area">
-      <div class="container">
-         <div class="row footer">
-            <div class="col-md-4">
-               <div class="single-footer">
-                  <img src="./resources/img/footer-logo.png" alt=""
-                     class="wow pulse" data-wow-delay="1s">
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                     Obcaecati architecto quaerat facere blanditiis tempora sequi
-                     nulla accusamus, possimus cum necessitatibus suscipit quia autem
-                     mollitia, similique quisquam molestias. Vel unde, blanditiis.</p>
-               </div>
-            </div>
-            <div class="col-md-4">
-               <div class="single-footer">
-                  <h4>Twitter update</h4>
-                  <div class="twitter-updates">
-                     <div class="single-tweets">
-                        <h5>ABOUT 9 HOURS</h5>
-                        <p>
-                           <strong>AGOMeet Aldous</strong> - a Brave New World for #rails
-                           with more cohesion, less coupling and greater dev speed <a
-                              href="http://t.co/rsekglotzs">http://t.co/rsekglotzs</a>
-                        </p>
-                     </div>
-                     <div class="single-tweets">
-                        <h5>ABOUT 9 HOURS</h5>
-                        <p>
-                           <strong>AGOMeet Aldous</strong> - a Brave New World for #rails
-                           with more cohesion, less coupling and greater dev speed <a
-                              href="http://t.co/rsekglotzs">http://t.co/rsekglotzs</a>
-                        </p>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="col-md-4">
-               <div class="single-footer">
-                  <h4>Useful lnks</h4>
-                  <div class="footer-links">
-                     <ul class="list-unstyled">
-                        <li><a href="">About Us</a></li>
-                        <li><a href="" class="active">Services</a></li>
-                        <li><a href="">Work</a></li>
-                        <li><a href="">Our Blog</a></li>
-                        <li><a href="">Customers Testimonials</a></li>
-                        <li><a href="">Affliate</a></li>
-                        <li><a href="">Contact Us</a></li>
-                     </ul>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="row footer-copy">
-            <p>
-               <span>(C) webstie, All rights reserved</span> | <span>Graphic
-                  Designed by <a href="https://dribbble.com/siblu">Eftakher Alam</a>
-               </span> | <span> Web Designed by <a href="http://ohidul.me">Ohidul
-                     Islam</a></span>
-            </p>
-         </div>
-      </div>
-   </div>
+  <!-- footer -->
+	<div class="footer-area" style="border-top: 1px solid #00AEEF;">
+		<div class="container" style="padding-bottom : 0px">
+			<div class="row footer-copy">
+				<p style="margin: 0 0 0px;">
+					<span id="span1" style="color : gray;">Copyright &copy; NikoNikoNi 2017</span>
+				</p>
+			</div>
+		</div>
+	</div>
 
 <!-- Modal_share -->
   <div class="modal fade" id="myModal_share" role="dialog">
@@ -547,8 +760,6 @@ var map=[];
             scd_sq : scd_sq 
          },
          success : function(data){
-             
-            console.log(data);
             //여행일수 카운트 
             var cnt=0;
             //여행 일정 카운트
@@ -573,17 +784,18 @@ var map=[];
                                                    
                   
                $.each(data,function(index,item){
-            	   console.log("index: "+index);
                    day_cnt= index;
                   /* var contentId=item.DTL_CONTENT_ID;
                   console.log(contentId);
                   var sigungucode;
                   ReadApi(contentId); */
                   
-                   
+                  var d = new Date(item.DAILY_YMD);
+     			  var weekday = [' (일)',' (월)',' (화)',' (수)',' (목)',' (금)',' (토)'];
+     			  var day = weekday[d.getDay()]; 
                   
                   html += '<tr class="white">';
-                  html += '<td><div class="scht_date">'+ item.DAILY_YMD +'</div>';
+                  html += '<td><div class="scht_date">'+ item.DAILY_YMD + day +'</div>';
                   html += '<div class="scht_day">DAY '+ item.DAILY_ORD +'</div></td>';                     
                   html += '<td class="scht_vtop">';
                   html += '<div class="scht_city">';
@@ -634,7 +846,6 @@ var map=[];
                       } 
                    }); 
                    
-                  console.log("map    "+mapcount);
                   html += '</td>';
                   html += '<td class="scht_vtop">';
                   html += '<div class="scht_htname"><div class="map" id="map'+mapcount+'"></div></div></td>';                  
@@ -722,7 +933,6 @@ function ReadApi(contentId) { /* currentPage가 어디서 호출되어 온다 */
 				"scd_sq" : ${scd_sq}
 				,"searchId" : checkId
 		}
-		console.log(data);
 		ws.send(JSON.stringify(data));
 		
 		return false;
@@ -759,7 +969,6 @@ function initMap() {
                     },
                     async: false,
                     success: function(data){
-                    	console.log(data);
                     	   var zoom = 7;
                     	   map[count] = new google.maps.Map(document.getElementById('map'+(1+count)), {
                     	      center : {lat: parseFloat(data.map_y), lng: parseFloat(data.map_x)},
@@ -798,7 +1007,6 @@ function makeMarker(city){
 }
 
 function show_myMarkers(daily_ord){
-	console.log("do:   "+ daily_ord);
      var sq = {
         scd_sq: scd_sq,
         daily_sq: daily_ord
@@ -890,8 +1098,6 @@ function show_myMarkers(daily_ord){
  
  function edit_form(){
 	 var scd_sq = parseInt($('#scd_sq').val());
-	 console.log(typeof(scd_sq));
-	 console.log(scd_sq);
 	 var d = new Date($('#start_ymd').val());
 	 var curr_date = d.getDate();
 	 var curr_month = d.getMonth() + 1;
@@ -902,6 +1108,7 @@ function show_myMarkers(daily_ord){
 	 var scd_theme = $('input[name=scd_theme]:checked').val();
 	 var scd_season = $('input[name=scd_season]:checked').val();
 	 var public_fl = $('input[name=public_fl]:checked').val();
+	 var day_cnt = $('.scht_day').length;
 	 
 	 $.ajax({
 			type : "post",
@@ -914,6 +1121,7 @@ function show_myMarkers(daily_ord){
 	 			,scd_theme: scd_theme
 	 			,public_fl: public_fl
 	 			,start_ymd: start_ymd
+	 			,day_cnt: day_cnt
 			},
 			success : function(data){
 			},

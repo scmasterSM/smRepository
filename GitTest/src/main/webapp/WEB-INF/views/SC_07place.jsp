@@ -51,13 +51,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>장소화면</title>
 
+<style type="text/css">
+html, body {
+	overflow-x: hidden;
+}
+</style>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8"></script>
 <script>
 	window.jQuery
 			|| document
 					.write('<script src="./resources/js/vendor/jquery-1.10.2.min.js"><\/script>')
 </script>
-<script src="./resources/js/bootstrap.min.js"></script>
+<script src="./resources/js/bootstrap.js"></script>
 <script src="./resources/js/owl.carousel.min.js"></script>
 <script src="./resources/js/wow.js"></script>
 <script src="./resources/js/main.js"></script>    
@@ -255,7 +260,37 @@ function l_Data(){
         
        
         var addr=data.response.body.items.item.addr1;
-         var addr1=addr.split(" ",1);
+         var addr1=addr.split(" ",2);
+         
+         if(addr1[0] == '서울특별시'){
+     	    addr1[0] = 'SEOUL';
+         	addr1[1] = '서울';
+         }else if(addr1[0] == '인천광역시'){
+         	addr1[0] = 'INCHEON';
+         	addr1[1] = '인천';
+         }else if(addr1[0] == '부산광역시'){
+         	addr1[0] = 'BUSAN';
+         	addr1[1] = '부산';
+         }else if(addr1[0] == '대전광역시'){
+         	addr1[0] = 'DEAJOEN';
+         	addr1[1] = '대전';
+         }else if(addr1[0] == '대구광역시'){
+         	addr1[0] = 'DEAGU';
+         	addr1[1] = '대구';
+         }else if(addr1[0] == '광주광역시'){
+         	addr1[0] = 'GWANGJU';
+         	addr1[1] = '광주';
+         }else if(addr1[0] == '울산광역시'){
+         	addr1[0] = 'ULSAN';
+         	addr1[1] = '울산';
+         }else if(addr1[0] == '제주특별자치도'){
+         	addr1[0] = 'JEJUDO';
+         	addr1[1] = '제주도';
+         }else if(addr1[0] == '세종특별자치시'){
+         	addr1[0] = 'SEJONG';
+         	addr1[1] = '세종시';
+         }
+         
        
        initMap(myLatLng,data);
         console.log('sucess', data);
@@ -272,7 +307,7 @@ function l_Data(){
         $("#placeImg").html('<img src="./resources/image/noimage.jpg">');   
         }
         $("#placeInfo").html(data.response.body.items.item.overview);
-        $("#addr").html('<a href="sc_05?areacode='+areacode+'&sigungucode='+sigungucode+'">'+addr1+'</a>');
+        $("#addr").html('<a href="sc_05?areacode='+areacode+'&sigungucode='+sigungucode+'&city_nm='+addr1[1]+'">'+addr1+'</a>');
          html += "주소 : "+ data.response.body.items.item.addr1+"<br>";
          if (typeof (data.response.body.items.item.tel) !== "undefined") {
         html += "전화번호 : " + data.response.body.items.item.tel;
@@ -329,24 +364,61 @@ function r_Data(){
          console.log('success', data);
          var j=0;
          
-         
-                 for( var i = 0 ; i < 3 ; i++){
+         var outputArray = []; //내가 넣은 것
+            for( var i = 0 ; i < 3 ; i++){
             var j=j+1;
                   console.log( data.response.body.items.item.length);
                     var val = Math.floor( Math.random()*length);
-                    var con=data.response.body.items.item[val].contentid;
+                    var repeat = false; //내가 넣은 것 
+		           	var k = 0; //내가 넣은 것 
+                   // var con=data.response.body.items.item[val].contentid;
                      console.log(con);
                console.log(val);
                console.log( data.response.body.items.item[val].title);
-               var conType=data.response.body.items.item[val].contenttypeid;
-               if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
+               //var conType=data.response.body.items.item[val].contenttypeid;
+               
+          	 	 for(k =0; k< outputArray.length;k++){
+					 if(outputArray[k] == data.response.body.items.item[val].title){
+  					
+     				 repeat = true;
+     			 	 break; 
+					}
+				}
+				if(repeat){
+					i--;
+					continue;
+				}else{
+					outputArray[k] = data.response.body.items.item[val].title;
+				
+				}  //for k 부터 여기까지 내가 넣은 것 
+               
+				var con=data.response.body.items.item[val].contentid;
+				var conType=data.response.body.items.item[val].contenttypeid;
+				
+               
+				 if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
+                   	
+					 $("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
+					 $("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
+		              $("#rplaceaddr"+ j).html(data.response.body.items.item[val].addr1);
+                 
+                 } else {
+       			i--;
+                 }
+				
+				
+				
+				
+				
+				/* 
+				if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
                $("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
                }else{
                   $("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
                }
                
                $("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
-               $("#rplaceaddr"+ j).html(data.response.body.items.item[val].addr1);
+               $("#rplaceaddr"+ j).html(data.response.body.items.item[val].addr1); */
                      }
       })
       
@@ -373,25 +445,56 @@ function f_Data(){
       console.log('success', data);
       var j=0;
       
-      
-            for( var i = 0 ; i < 3 ; i++){
+         var outputArray = []; //내가 넣은 것
+         for( var i = 0 ; i < 3 ; i++){
          var j=j+1;
                console.log( data.response.body.items.item.length);
                  var val = Math.floor( Math.random()*length);
+             	var repeat = false; //내가 넣은 것 
+	           	var k = 0; //내가 넣은 것 
                  var con=data.response.body.items.item[val].contentid;
                  console.log(con);
             console.log(val);
             console.log( data.response.body.items.item[val].title);
+            
+            for(k =0; k< outputArray.length;k++){
+				 if(outputArray[k] == data.response.body.items.item[val].title){
+  					
+     				 repeat = true;
+     			 	 break; 
+				}
+			}
+			if(repeat){
+				i--;
+				continue;
+			}else{
+				outputArray[k] = data.response.body.items.item[val].title;
+				
+			} //for k 부터 여기까지 내가 넣은 것 
+
             var conType=data.response.body.items.item[val].contenttypeid;
-            if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
+           
+			
+       	 	if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
+       	 	 $("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
+	       	 $("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
+	         $("#resaddr"+ j).html(data.response.body.items.item[val].addr1);
+         
+        	 } else {
+			i--;
+        	 }
+			
+			
+			
+	/* 		if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
             $("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
             }else{
                $("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
             }
             
             /* $("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID=1131275"><img src='+data.response.body.items.item[val].firstimage+' width=200 height=180></a>'); */
-            $("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
-            $("#resaddr"+ j).html(data.response.body.items.item[val].addr1);
+            /* $("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
+            $("#resaddr"+ j).html(data.response.body.items.item[val].addr1); */
                  }
    })
    
@@ -549,35 +652,362 @@ function locationObj(){
 <body>
 
  <!-- Navigation -->
-   
+   <div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- Body content -->
+	<div class="header-connect">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5 col-sm-8 col-xs-8">
+					<div class="header-half header-call"></div>
+				</div>
+				<div
+					class="col-md-2 col-md-offset-5  col-sm-3 col-sm-offset-1  col-xs-3  col-xs-offset-1">
+					<c:choose>
+						<c:when test="${sessionScope.user_id == null }">
+							<div class="header-half header-social">
+								<!-- 	<ul class="list-inline">
+							<li><a href="autoLogin">연습</a></li>
+						</ul> -->
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="header-half header-social">
+								<ul class="list-inline">
+									<li><img src="./resources/image/login_img.png">
+										${sessionScope.user_id }</li>
+								</ul>
+							</div>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<nav class="navbar navbar-default">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
 
-        <nav class="navbar navbar-default">
-          <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="#"><img src="./resources/img/logo.png" alt=""></a>
-            </div>
+				<a href="home"><img src="./resources/image/logoicon.png" alt=""
+					width="80px" height="80px"></a><img
+					src="./resources/image/main_logo.png" alt="">
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <div class="button navbar-right">
-                  <button class="navbar-btn nav-button wow bounceInRight login" data-wow-delay="0.8s">Login</button>
-                  <button class="navbar-btn nav-button wow fadeInRight" data-wow-delay="0.6s">Sign up</button>
-              </div>
-              <ul class="main-nav nav navbar-nav navbar-right">
-                 <li class="wow fadeInDown" data-wow-delay="0s"><a
-						class="active" href="SC_11">일정 만들기</a></li>
-				<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="SC_10">나의 일정 보기</a></li>
-              </ul>
-            </div><!-- /.navbar-collapse -->
-          </div><!-- /.container-fluid -->
-        </nav>
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<!-- <a class="navbar-brand" href="#">
+				</a> -->
+
+			</div>
+			<!-- 	<br> <br> -->
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<div class="button navbar-right">
+					<c:choose>
+						<c:when test="${sessionScope.user_id == null }">
+							<button type="button" id="loginForm"
+								class="navbar-btn nav-button wow bounceInRight login"
+								data-toggle="modal" data-target="#myModal" id="loginForm"
+								data-wow-delay="0.8s">Login</button>
+							<button type="button"
+								class="navbar-btn nav-button wow fadeInRight"
+								data-toggle="modal" data-target="#myModal" id="joinForm"
+								data-wow-delay="0.6s">Join</button>
+						</c:when>
+						<c:otherwise>
+							<button type="button" id="Edit"
+								class="navbar-btn nav-button wow bounceInRight login"
+								data-toggle="modal" data-target="#myModal_Edit" id="editForm"
+								data-wow-delay="0.8s">Edit</button>
+							<button type="button"
+								class="navbar-btn nav-button wow fadeInRight" id="logout"
+								data-wow-delay="0.6s" onclick="logout()">logout</button>
+						</c:otherwise>
+					</c:choose>
+
+					<!--로그인&조인 모달  -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+						aria-labelledby="myLargeModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">×</button>
+
+									<h4 class="modal-title" id="myModalLabel">Login / Join</h4>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-md-8"
+											style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
+											<!-- Nav tabs -->
+											<ul class="nav nav-tabs headertabs">
+												<li class="active"><a href="#Login" id="loginAtag"
+													data-toggle="tab">Login</a></li>
+												<li><a href="#Registration" id="regAtag"
+													data-toggle="tab">Join</a></li>
+											</ul>
+											<!-- Tab panes -->
+											<div class="tab-content">
+												<div class="tab-pane active" id="Login">
+													<form action="login" role="form" method="post"
+														class="form-horizontal" onsubmit="return login()">
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																ID</label>
+															<div class="col-sm-10">
+																<input type="text" name="user_id" class="form-control"
+																	id="user_id" placeholder="ID" />
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="exampleInputPassword1"
+																class="col-sm-2 control-label"> Password</label>
+															<div class="col-sm-10">
+																<input type="password" name="password"
+																	class="form-control" id="password"
+																	placeholder="Password" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-2"></div>
+															<div class="col-sm-10">
+																<button type="button" class="btn btn-primary btn-sm"
+																	value="submit" id="submit_button">Submit</button>
+																<!-- <a href="javascript:;">Forgot your password?</a> -->
+															</div>
+														</div>
+													</form>
+												</div>
+												<div class="tab-pane" id="Registration">
+													<form action="join" role="form" method="post"
+														class="form-horizontal" onsubmit="return joinCheck()">
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																ID</label>
+															<div class="col-sm-10">
+																<div class="row">
+																	<div class="col-md-3">
+																		<select class="form-control" name="user_sex"
+																			id="user_sex">
+																			<option value="선택">선택</option>
+																			<option value="m">남성</option>
+																			<option value="f">여성</option>
+																		</select>
+																	</div>
+																	<div class="col-md-9">
+																		<input type="text" class="form-control"
+																			placeholder="ID" name="user_id" id="user_id1" />
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																Email</label>
+															<div class="col-sm-10">
+																<input type="email" class="form-control" name="email"
+																	id="email" placeholder="Email" />
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="mobile" class="col-sm-2 control-label">
+																Password</label>
+															<div class="col-sm-10">
+																<input type="password" class="form-control"
+																	id="password1" name="password" placeholder="Password" />
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="password" class="col-sm-2 control-label">
+															</label>
+															<div class="col-sm-10">
+																<input type="password" class="form-control"
+																	id="password2" name="password2"
+																	placeholder="Password 확인" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-2"></div>
+															<div class="col-sm-10">
+																<button type="button" class="btn btn-primary btn-sm"
+																	id="submit_join">Save & Continue</button>
+																<input type="reset" class="btn btn-default btn-sm"
+																	value="Reset" />
+															</div>
+														</div>
+													</form>
+												</div>
+											</div>
+											<!-- <div id="OR" class="hidden-xs">OR</div> -->
+										</div>
+										<!-- <div class="col-md-4">
+											<div class="row text-center sign-with">
+												<div class="col-md-12">
+													<h3>Sign in with</h3>
+												</div>
+												<div class="col-md-12">
+													<div class="btn-group btn-group-justified">
+														<a href="#" class="btn btn-primary">Facebook</a> <a
+															href="#" class="btn btn-danger"> Google</a>
+													</div>
+												</div>
+											</div>
+										</div> -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--로그인&조인 모달 끝 -->
+					<!--정보수정 모달 시작  -->
+					<div class="modal fade" id="myModal_Edit" tabindex="-1"
+						role="dialog" aria-labelledby="myLargeModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">×</button>
+
+									<h4 class="modal-title" id="myModalLabel">Edit my
+										information</h4>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-md-8"
+											style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
+											<!-- Nav tabs -->
+											<ul class="nav nav-tabs headertabs">
+												<li class="active"><a href="#Login" id="loginAtag"
+													data-toggle="tab">Edit</a></li>
+												<!-- <li><a href="#Registration" id="regAtag" data-toggle="tab">Join</a></li> -->
+											</ul>
+											<!-- Tab panes -->
+											<div class="tab-content">
+												<div class="tab-pane active" id="Edit">
+													<form role="form" class="form-horizontal">
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																ID</label>
+															<div class="col-sm-10">
+																<div class="row">
+																	<div class="col-md-3">
+																		<select class="form-control" id="user_sex_ed">
+																			<option value="m">남성</option>
+																			<option value="f">여성</option>
+																		</select>
+																	</div>
+																	<div class="col-md-9">
+																		<input type="text" class="form-control"
+																			id="user_id_ed" name="user_id_ed" placeholder="ID" />
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																Email</label>
+															<div class="col-sm-10">
+																<input type="email" class="form-control" id="email_ed"
+																	placeholder="Email" />
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="mobile" class="col-sm-2 control-label">
+																Password</label>
+															<div class="col-sm-10">
+																<input type="password" class="form-control"
+																	id="password_ed" placeholder="Password" />
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="password" class="col-sm-2 control-label">
+															</label>
+															<div class="col-sm-10">
+																<input type="password" class="form-control"
+																	id="password2_ed" placeholder="Password 확인" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-2"></div>
+															<div class="col-sm-10">
+																<button type="button" class="btn btn-primary btn-sm">
+																	Save & Continue</button>
+																<button type="button" class="btn btn-default btn-sm">
+																	Cancel</button>
+															</div>
+														</div>
+													</form>
+												</div>
+											</div>
+											<!-- <div id="OR" class="hidden-xs">OR</div> -->
+										</div>
+										<!-- <div class="col-md-4">
+											<div class="row text-center sign-with">
+												<div class="col-md-12">
+													<h3>Sign in with</h3>
+												</div>
+												<div class="col-md-12">
+													<div class="btn-group btn-group-justified">
+														<a href="#" class="btn btn-primary">Facebook</a> <a
+															href="#" class="btn btn-danger"> Google</a>
+													</div>
+												</div>
+											</div>
+										</div> -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+
+				<c:choose>
+					<c:when test="${sessionScope.user_id == null }">
+
+						<ul class="main-nav nav navbar-nav navbar-right">
+							<li class="wow fadeInDown" data-wow-delay="0s"><a
+								class="active" href="#" onclick="checkId();">일정 만들기</a></li>
+							<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#"
+								onclick="checkId();">나의 일정 보기</a></li>
+							<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
+							Own Schedule</a></li>
+					<li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">City
+							Information</a></li> -->
+						</ul>
+					</c:when>
+					<c:otherwise>
+						<ul class="main-nav nav navbar-nav navbar-right">
+							<li class="wow fadeInDown" data-wow-delay="0s"><a
+								class="active" href="SC_11">일정 만들기</a></li>
+							<li class="wow fadeInDown" data-wow-delay="0.1s"><a
+								href="SC_10">나의 일정 보기</a></li>
+							<!-- <li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">나의 일정</a>
+					</li> -->
+							<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
+							Own Schedule</a></li>
+					<li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">City
+							Information</a></li> -->
+						</ul>
+					</c:otherwise>
+				</c:choose>
+
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
+        
 
     <!-- Page Content -->
     <div class="container">
@@ -690,13 +1120,13 @@ function locationObj(){
          </div>
             <!-- Blog Sidebar Widgets Column -->
             <div class="col-left">
-            <div class="col-md-4">
+            <div class="col-md-4" style="float: right;">
 
                 <!-- Blog Search Well -->
                 <div class="well">
                 <div class="well-head">
-                   <a href="#" onclick="locationObj(); return false">리뷰쓰기</a>&emsp;&emsp;
-               	<a href="#" id="clip"> 클립 </a>
+                   <a href="#" onclick="locationObj(); return false"><img src="./resources/image/img07_08/review.png" alt="Review" width="40px" height="30px"></a>review&emsp;
+               	<a href="#" id="clip"><img src="./resources/image/img07_08/pin.png" alt="Clip" width="35px" height="30px"></a>clip
                  
                 </div>    
                     <!-- /.input-group -->
@@ -763,19 +1193,18 @@ function locationObj(){
         
 
         <!-- Footer -->
-        
+       </div> 
         <footer>
        
             <div class="row1">
                 <div class="col-lg-12">
                 <hr>
-                    <p>Copyright &copy; Your Website 2017</p>
+                    <p>Copyright &copy; NikoNikoNi 2017</p>
                 </div>
             </div>
             <!-- /.row -->
         </footer>
 
-    </div> 
 
 </body>
 </html>

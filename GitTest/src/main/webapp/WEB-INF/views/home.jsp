@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html class="no-js">
+<!-- <link rel ="stylesheet" href ="./resources/css/home.css">  -->
 <head>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -50,6 +51,10 @@
 	padding: 20px;
 }
 
+html, body {
+	overflow-x: hidden;
+}
+
 /* div#OR {
 	height: 30px;
 	width: 30px;
@@ -91,18 +96,15 @@
 	var dt = new Date();
 	dt.setFullYear(dt.getFullYear(), dt.getMonth() + 1, 0);
 	//console.log(today.getFullYear() + "" + padDigits((today.getMonth() + 1), 2) + padDigits(today.getDate()), 2);
-
 	//오늘의 날짜 (변환 후) 
 	var dt_today = today.getFullYear() + "" + padDigits((today.getMonth() + 1))
 			+ padDigits(today.getDate());
 	//이번달 마지막 날짜(변환후)
 	var dt_last = today.getFullYear() + "" + padDigits((today.getMonth() + 1)) + padDigits(dt.getDate());
-
 	//다음달 첫날 
 	var next_dt = new Date();
 	next_dt.setMonth(next_dt.getMonth() + 1);
 	next_dt.setDate(1);
-	
 	//다음달 마지막 날
 	var next_dt_l = new Date();
 	next_dt_l.setFullYear(next_dt_l.getFullYear(), next_dt_l.getMonth() + 1, 0);
@@ -123,6 +125,8 @@
 		$("#loginForm").on("click", function() { /*로그인 버튼 클릭시 모달 */
 			$("#loginAtag").trigger("click");
 		})
+		
+
 
 		$("#this-recommend").on("click", function() { /*이번달 추천탭 */
 			r_Data('this');
@@ -134,7 +138,7 @@
 
 		r_Data('this');
 		initCitySearch();
-
+		//readReview_all();
 		getPoppular_city();
 
 		//로그인 
@@ -241,6 +245,67 @@
 				}
 			})
 		});
+		
+		
+		//정보수정
+		
+		$("#editForm").on("click", function() {
+
+			var user_id2 = $("#user_id_ed").val();
+			var password2 = $("#password1_ed").val();
+			var password3 = $("#password2_ed").val();
+			var email1 = $("#email_ed").val();
+			var user_sex1 = $("#user_sex_ed").val();
+
+
+			//alert(user_sex1);
+			//$('#user_sex option:selected').val();
+			//$('select[name=user_sex]').val();
+
+
+			if (password2.length == 0) {
+				alert('비밀번호를 입력해주세요');
+				return false;
+			}
+			if (email1.length == 0) {
+				alert('이메일을 입력해주세요');
+				return false;
+			}
+
+			if (password2 != password3) {
+				alert('비밀번호 확인 시 비밀번호가 일치하지 않습니다.');
+				return false;
+			}
+
+			$.ajax({
+				type : "post",
+				url : "edit",
+				data : {
+					user_id : user_id2,
+					password : password2,
+					email : email1,
+					//user_sex : user_sex1
+				},
+				dataType : 'text',
+
+				success : function(data) {
+					console.log(data);
+					if (data == "success") {
+						alert("회원 정보 수정 되었습니다.");
+						$('#myModal').modal('hide');
+						window.location.href = "./";
+					} else {
+						alert("정보 수정이 실패하였습니다.");
+					}
+				},
+				error : function(e) {
+					console(e);
+				}
+			})
+		});
+		
+		
+		
 
 	});//레디펑션
 
@@ -508,10 +573,7 @@
 					success : function(result) {
 						//console.log(result);
 						content2 += '<ul class="list-inline job-seeker">';
-						$
-								.each(
-										result,
-										function(index, val) {
+						$.each(result,function(index, val) {
 											if (val.sigungu_code == null) {
 												content2 += '<li><a href="sc_05?areacode='
 														+ val.area_code
@@ -543,7 +605,45 @@
 				});//ajax
 	}
 
-	//행사 정보를 가져오는 메소드 
+	//DB에서 리뷰 가져오기 
+	
+/* 	function readReview_all() {
+		var j = 0;
+		var areaCode = '';
+		var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
+		var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode?ServiceKey="
+			+ key
+			+ "&areaCode="
+			+ areaCode
+			+ "&numOfRows=100&MobileOS=ETC&MobileApp=AppTesting&_type=json";
+		
+		var content2 = '';
+		$.ajax({    type : "GET",
+					url : "readReview_all",
+					success : function(result) {
+						console.log(result);
+						
+						//val.rev_TXT
+						//val.content_ID
+						//val.content_ID
+						
+						$.each(result,function(index, val) {
+							
+
+							
+							$("#client-text").html(content2); 
+							j = j+1;
+							console.log(j);
+						}); //each //
+					},
+					error : function(e) {
+						console.log(e);
+					}
+				});//ajax
+
+	}  */
+	
+	//행사 정보를 가져오기 
 	function r_Data(month) {
 		var url = ""
 		url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?ServiceKey="
@@ -858,14 +958,13 @@
 															<div class="col-sm-10">
 																<div class="row">
 																	<div class="col-md-3">
-																		<select class="form-control" id="user_sex_ed">
-																			<option value="m">남성</option>
-																			<option value="f">여성</option>
+																		<select class="form-control" id="user_sex_ed" disabled="disabled">
+																			<option value="">${sessionScope.user_sex}</option>
 																		</select>
 																	</div>
 																	<div class="col-md-9">
 																		<input type="text" class="form-control"
-																			id="user_id_ed" name="user_id_ed" placeholder="ID" />
+																			id="user_id_ed" name="user_id_ed" placeholder="ID" value="${sessionScope.user_id}" disabled="disabled" />
 																	</div>
 																</div>
 															</div>
@@ -883,7 +982,7 @@
 																Password</label>
 															<div class="col-sm-10">
 																<input type="password" class="form-control"
-																	id="password_ed" placeholder="Password" />
+																	id="password1_ed" placeholder="Password" />
 															</div>
 														</div>
 														<div class="form-group">
@@ -897,10 +996,10 @@
 														<div class="row">
 															<div class="col-sm-2"></div>
 															<div class="col-sm-10">
-																<button type="button" class="btn btn-primary btn-sm">
-																	Save & Continue</button>
-																<button type="button" class="btn btn-default btn-sm">
-																	Cancel</button>
+																<button type="button" class="btn btn-primary btn-sm" id="editForm">
+																	Edit</button>
+																<input type="reset" class="btn btn-default btn-sm"
+																	value="Reset" />
 															</div>
 														</div>
 													</form>
@@ -983,14 +1082,33 @@
 
 			</div>
 		</div>
+		
+		<style type="text/css">
+		
+		 @import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+		 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+		 @import url(http://fonts.googleapis.com/earlyaccess/nanumbrushscript.css);
+		 /* h2 {
+		    font-family: 'Hanna', serif; 
+			/* font-family: 'Noto Sans KR', sans-serif; 
+			} */
+			
+		#h2h2 {
+			font-family: 'Nanum Brush Script', serif;
+			font-size: 70px;
+		}
+		
+		</style>
+		
 		<div class="container slider-content">
 			<div class="row">
 				<div
 					class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
 					<br>
 					<div id="mainContent">
-						<h2>
-							내가 사는 이 도시가 <br> 새롭게 보이기 시작했다
+						<h2 id ="h2h2">
+							<!-- 내가 사는 이 도시가 <br> 새롭게 보이기 시작했다 -->
+							 문득 <br> 여행이 하고 싶어졌다
 						</h2>
 					</div>
 					<br> <br> <br> <br> <br>
@@ -1020,7 +1138,8 @@
 			<div class="row page-title text-center wow zoomInDown"
 				data-wow-delay="1s">
 				<h3>Let's plan with Travel Maker!</h3>
-				<h2>여행은 하고 싶은데 어디를 가야할지 고민이라면?</h2>
+				<!-- <h2>여행은 하고 싶은데 어디를 가야할지 고민이라면?</h2> -->
+				<h2>여행 계획이 고민이라면?</h2>
 				<!-- <p>전국 163개 도시의 10,000개의 관광명소, 음식점, 쇼핑 정보를 확인하세요.</p> -->
 			</div>
 			<div class="row how-it-work text-center">
@@ -1042,7 +1161,7 @@
 				</div>
 				<div class="col-md-4">
 					<div class="single-work wow fadeInUp" data-wow-delay="1s">
-						<img src="./resources/img/how-work3.png" alt="">
+						<img src="./resources/image/main_icon.png" alt="" width="90px" height="90">
 						<h3>일정 공유</h3>
 						<p>
 							내 일정을 공유하여 실시간으로 <br>친구와 함께 계획을 세워보세요
@@ -1100,159 +1219,6 @@
 			</div>
 		</div>
 
-		<!-- <div class="container">
-			<div class="row page-title text-center wow bounce"
-				data-wow-delay="1s">
-				<h5>Recent Jobs</h5>
-				<h2>
-					<span>54716</span> Available jobs for you
-				</h2>
-			</div> -->
-		<!-- 		<div class="row jobs">
-				<div class="col-md-9">
-					<div class="job-posts table-responsive">
-						<table class="table">
-							<tr class="odd wow fadeInUp" data-wow-delay="1s">
-								<td class="tbl-logo"><img
-									src="./resources/img/job-logo1.png" alt=""></td>
-								<td class="tbl-title"><h4>
-										Web Designer <br>
-										<span class="job-type">full time</span>
-									</h4></td>
-								<td><p>dribbble community</p></td>
-								<td><p>
-										<i class="icon-location"></i>San Franciso, USA
-									</p></td>
-								<td><p>&dollar; 14000</p></td>
-								<td class="tbl-apply"><a href="#">Apply now</a></td>
-							</tr>
-							<tr class="even wow fadeInUp" data-wow-delay="1.1s">
-								<td class="tbl-logo"><img
-									src="./resources/img/job-logo2.png" alt=""></td>
-								<td class="tbl-title"><h4>
-										Front End Developer <br>
-										<span class="job-type">full time</span>
-									</h4></td>
-								<td><p>Jolil corporation</p></td>
-								<td><p>
-										<i class="icon-location"></i>San Franciso, USA
-									</p></td>
-								<td><p>&dollar; 14000</p></td>
-								<td class="tbl-apply"><a href="#">Apply now</a></td>
-							</tr>
-							<tr class="odd wow fadeInUp" data-wow-delay="1.2s">
-								<td class="tbl-logo"><img
-									src="./resources/img/job-logo3.png" alt=""></td>
-								<td class="tbl-title"><h4>
-										HR Manager <br>
-										<span class="job-type">full time</span>
-									</h4></td>
-								<td><p>Fanta bevarage</p></td>
-								<td><p>
-										<i class="icon-location"></i>San Franciso, USA
-									</p></td>
-								<td><p>&dollar; 14000</p></td>
-								<td class="tbl-apply"><a href="#">Apply now</a></td>
-							</tr>
-							<tr class="even wow fadeInUp" data-wow-delay="1.3s">
-								<td class="tbl-logo"><img
-									src="./resources/img/job-logo4.png" alt=""></td>
-								<td class="tbl-title"><h4>
-										Internship Designer <br>
-										<span class="job-type">full time</span>
-									</h4></td>
-								<td><p>Google</p></td>
-								<td><p>
-										<i class="icon-location"></i>San Franciso, USA
-									</p></td>
-								<td><p>&dollar; 14000</p></td>
-								<td class="tbl-apply"><a href="#">Apply now</a></td>
-							</tr>
-							<tr class="odd wow fadeInUp" data-wow-delay="1.4s">
-								<td class="tbl-logo"><img
-									src="./resources/img/job-logo5.png" alt=""></td>
-								<td class="tbl-title"><h4>
-										Software Designer <br>
-										<span class="job-type">full time</span>
-									</h4></td>
-								<td><p>Microsoft</p></td>
-								<td><p>
-										<i class="icon-location"></i>San Franciso, USA
-									</p></td>
-								<td><p>&dollar; 14000</p></td>
-								<td class="tbl-apply"><a href="#">Apply now</a></td>
-							</tr>
-							<tr class="even hide-jobs">
-								<td class="tbl-logo"><img
-									src="./resources/img/job-logo4.png" alt=""></td>
-								<td class="tbl-title"><h4>
-										Internship Designer <br>
-										<span class="job-type">full time</span>
-									</h4></td>
-								<td><p>Google</p></td>
-								<td><p>
-										<i class="icon-location"></i>San Franciso, USA
-									</p></td>
-								<td><p>&dollar; 14000</p></td>
-								<td class="tbl-apply"><a href="#">Apply now</a></td>
-							</tr>
-							<tr class="odd hide-jobs">
-								<td class="tbl-logo"><img
-									src="./resources/img/job-logo5.png" alt=""></td>
-								<td class="tbl-title"><h4>
-										Software Designer <br>
-										<span class="job-type">full time</span>
-									</h4></td>
-								<td><p>Microsoft</p></td>
-								<td><p>
-										<i class="icon-location"></i>San Franciso, USA
-									</p></td>
-								<td><p>&dollar; 14000</p></td>
-								<td class="tbl-apply"><a href="#">Apply now</a></td>
-							</tr>
-							<tr class="even hide-jobs">
-								<td class="tbl-logo"><img
-									src="./resources/img/job-logo4.png" alt=""></td>
-								<td class="tbl-title"><h4>
-										Internship Designer <br>
-										<span class="job-type">full time</span>
-									</h4></td>
-								<td><p>Google</p></td>
-								<td><p>
-										<i class="icon-location"></i>San Franciso, USA
-									</p></td>
-								<td><p>&dollar; 14000</p></td>
-								<td class="tbl-apply"><a href="#">Apply now</a></td>
-							</tr>
-							<tr class="odd hide-jobs">
-								<td class="tbl-logo"><img
-									src="./resources/img/job-logo5.png" alt=""></td>
-								<td class="tbl-title"><h4>
-										Software Designer <br>
-										<span class="job-type">full time</span>
-									</h4></td>
-								<td><p>Microsoft</p></td>
-								<td><p>
-										<i class="icon-location"></i>San Franciso, USA
-									</p></td>
-								<td><p>&dollar; 14000</p></td>
-								<td class="tbl-apply"><a href="#">Apply now</a></td>
-							</tr>
-						</table>
-					</div>
-					<div class="more-jobs">
-						<a href=""> <i class="fa fa-refresh"></i>View more jobs
-						</a>
-					</div>
-				</div>
-				<div class="col-md-3 hidden-sm">
-					<div class="job-add wow fadeInRight" data-wow-delay="1.5s">
-						<h2>Seeking a job?</h2>
-						<a href="#">Create a Account</a>
-					</div>
-				</div>
-			</div>
-		</div> -->
 		<hr>
 		<div class="container">
 			<div class="row page-title text-center  wow bounce"
@@ -1262,58 +1228,58 @@
 			<div class="row testimonial">
 				<div class="col-md-12">
 					<div id="testimonial-slider">
-						<div class="item">
-							<div class="client-text">
-								<p>낮에는 아름다운 기와와 단청, 궁궐의 고즈넉한 모습이 아름답습니다. 데이트를 하는 연인과 외국인
+						<div class="item" id="client_text">
+							<div class="client-text" id="client-text0"> 
+							 <p>낮에는 아름다운 기와와 단청, 궁궐의 고즈넉한 모습이 아름답습니다. 데이트를 하는 연인과 외국인
 									관광객이 많으며 한복을 입으면 입장료가 무료입니다. 주변에 한복을 대여하는 곳이 있으니 이용해보세요. 뒤에 높은
 									건물이 없어 파란 하늘과 어우러진 아름다운 기와를 볼 수도 있습니다. 밤에 바라보는 경회루는 낭만적이니 밤에도 꼭
 									보길 바랍니다.</p>
 								<h4>
-									<strong>서울 경복궁 / </strong><i>Pearl K</i>
-								</h4>
-							</div>
+									<strong><a href="SC_07place?CONTENT_ID=126508&CONTENT_TYPE_ID=12">서울 경복궁</a> / </strong><i>Pearl K</i>
+								</h4>   
+							</div>  
 							<div class="client-face wow fadeInRight" data-wow-delay=".9s">
-								<img src="./resources/img/client-face1.png" alt="">
+								<img src="./resources/image/bg_city/review_1.png" alt="">
 							</div>
 						</div>
-						<div class="item">
-							<div class="client-text">
-								<p>제주의 자연을 가장 잘 느낄수 있는 장소라고 생각합니다. 바다가 보이는 풍경이나 해변가도 좋고 버스
+						 <div class="item">
+							<div class="client-text" id="client-text1">
+								 <p>제주의 자연을 가장 잘 느낄수 있는 장소라고 생각합니다. 바다가 보이는 풍경이나 해변가도 좋고 버스
 									투어를 하거나 스쿠터, 도보 등으로 즐기기에도 부담없는 여행지입니다. 우도로 가는 접근성도 나쁘지 않고 주변의
 									성산일출봉이나 섭지코지를 함께 볼수있어 개인적으로 가장 선호하는 코스입니다.</p>
 								<h4>
-									<strong>제주도 우도 / </strong><i>2013tessie </i>
-								</h4>
-							</div>
+									<strong><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">제주도 우도</a> / </strong><i>2013tessie </i>
+								</h4> 
+							</div> 
 							<div class="client-face">
 								<img src="./resources/img/client-face2.png" alt="">
 							</div>
 						</div>
 						<div class="item">
-							<div class="client-text">
-								<p>비내리는 날이라 산책하기 좋진 않았지만 신선한 공기와 대나무의 초록이 어울려 운치있는 하루였습니다.
+							 <div class="client-text" id="client-text2">
+								 <p>비내리는 날이라 산책하기 좋진 않았지만 신선한 공기와 대나무의 초록이 어울려 운치있는 하루였습니다.
 									날씨만 좋았다면 정말 좋았을텐데. 입장료가 있지만 이번달엔 안에 있는 전시장 무료입장이 가능해서 좋았습니다.</p>
 								<h4>
-									<strong>전남 담양군 죽녹원 / </strong><i>민재 성</i>
-								</h4>
-							</div>
+									<strong><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">전남 담양군 죽녹원</a> / </strong><i>민재 성</i>
+								</h4>  
+							</div> 
 							<div class="client-face">
 								<img src="./resources/img/client-face1.png" alt="">
 							</div>
-						</div>
-						<div class="item">
-							<div class="client-text">
-								<p>오래전 추억을 떠올릴수 있는 장소 입니다.도심에서 조금만 벗어나면 높은곳에 위치한 아주 오래된듯한
+						</div> 
+						 <div class="item">
+							 <div class="client-text" id="client-text3">
+							     <p>오래전 추억을 떠올릴수 있는 장소 입니다.도심에서 조금만 벗어나면 높은곳에 위치한 아주 오래된듯한
 									마을이 나타납니다.겉으로 보는모습과는 다르게 마을안으로 들어서면 아기자기하고 이쁜 벽화와 조형물을 만날수있습니다.
 									어린왕자는 사진찍는 필수 코스 입니다</p>
 								<h4>
-									<strong>부산 감천문화마을 / </strong><i>seoulbangi</i>
-								</h4>
+									<strong><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">부산 감천문화마을</a> / </strong><i>seoulbangi</i>
+								</h4>  
 							</div>
 							<div class="client-face">
 								<img src="./resources/img/client-face2.png" alt="">
 							</div>
-						</div>
+						</div> 
 					</div>
 				</div>
 			</div>
@@ -1344,21 +1310,13 @@
 			</div>
 		</div>
 	</div>
-
-
-
 	<!-- footer -->
-
-	<div class="footer-area">
-		<div class="container">
-			<br>
-			<br>
-
+	<div class="footer-area" style="border-top: 1px solid #00AEEF;">
+		<div class="container" style="padding-bottom : 0px">
 			<div class="row footer-copy">
-				<!-- 		<p>
-					<span id="span1">(C) webstie, All rights reserved</span>
-					
-				</p> -->
+				<p style="margin: 0 0 0px;">
+					<span id="span1" style="color : gray;">Copyright &copy; NikoNikoNi 2017</span>
+				</p>
 			</div>
 		</div>
 	</div>

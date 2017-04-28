@@ -49,6 +49,12 @@
 	
 <!-- <script src="./resources/js/jquery-3.1.1.js"></script> -->
 
+<style type="text/css">
+html, body {
+	overflow-x: hidden;
+}
+</style>
+
 <script type="text/javascript">
      	var areacode = ${areacode};
      	var sigungucode = "";
@@ -77,10 +83,16 @@
     			$("#loginAtag").trigger("click");
     		})
         	
-        	theme_Data(areacode, "A01&cat2=");
+        	theme_Data(areacode, "");
             popular_Data(areacode);
             city_img(city_nm);
            
+            
+            //전체
+            $('#bMenu').on('click', 
+                    function (){ 
+                        theme_Data(areacode, ""); 
+                  } );
           //자연
             $('#bMenu0').on('click', 
               function (){ 
@@ -258,8 +270,7 @@
             
            	sigungucode = eval($("#test1").val());
             //alert(sigungucode);
- 
-            
+            if(typeof(sigungucode)=='undefined'||sigungucode=='undefined') sigungucode="";
         	var url2 ="";
             url2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="
                    +key;
@@ -314,15 +325,20 @@
       	        	 	 content += '<div class="overlay"><h3>'
 								+ data.response.body.items.item[val].title
 								+ '</h3><p>'
-								+ data.response.body.items.item[val].addr1
+								+ data.response.body.items.item[val].addr1.split(" ", 3)
 								+ '</p></div></a></li>'; 
             		} else {
                    		i--;
                    }
                 }//outer for
                 
+                //전체
+                if(themecode === ""){
+                    $("#home").html(content); 
+                    //console.log(content);
+                
                 //자연
-                if(themecode === "A01&cat2="){
+                }else if(themecode === "A01&cat2="){
                    $("#home").html(content); 
                //역사 
                 }else if(themecode === "A02&cat2=A0201"){
@@ -393,7 +409,7 @@
         }
         
         
-        //지역의 모든 장소를 가져오는 함수 
+        //지역의 인기 장소를 가져오는 함수 
         function popular_Data(areacode) {
 
         	sigungucode = eval($("#test1").val());
@@ -402,7 +418,7 @@
                   + key;
             url += "&contentTypeId=&areaCode="
                   + areacode
-                  + "&sigunguCode="+sigungucode+"&cat1=&cat2=&cat3=&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=500&pageNo=";
+                  + "&sigunguCode="+sigungucode+"&cat1=&cat2=&cat3=&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=300&pageNo=";
             url += "&_type=json";
             
         	//console.log(url);
@@ -412,9 +428,12 @@
                            content2 += '<ul class="list-inline job-seeker">';
                   	       	 var length=data.response.body.items.item.length;
                            
+                  	       	 
                   	         var outputArray = [];
-                  	       	 for (var i = 0; i < 6; i++) {
-                  	       	 	var val = Math.floor(Math.random() * length);  
+              	         
+                  	         for (var i = 0; i < 6; i++) {
+                  	        
+                  	        	var val = Math.floor(Math.random() * length);  
                   	       	    var repeat = false; 
                   	       		var j = 0;
                        	 		for(j = 0; j < outputArray.length; j++){
@@ -429,7 +448,7 @@
                        		 	continue;
                        	 		}else{
                        		 		outputArray[j] = data.response.body.items.item[val].title;
-                       		 	console.log(data.response.body.items.item[val].readcount);
+                       		 
                        	 		}
   
 		                          	//컨텐트아이디 추출
@@ -441,7 +460,7 @@
 		                                  content2 += '<div class="overlay"><h3>'
 												+ data.response.body.items.item[val].title
 												+ '</h3><p>'
-												+ data.response.body.items.item[val].addr1
+												+ data.response.body.items.item[val].addr1.split(" ", 3)
 												+ '</p></div></a></li>'; 
 		                              
 		                              } else {
@@ -862,8 +881,10 @@
 				<div role="tabpanel">
 					<!-- Nav tabs -->
 					<ul class="nav nav-tabs" role="tablist">
-						<li id="bMenu0" role="presentation" class="active"><a href="#job-seekers"
-							aria-controls="home" role="tab" data-toggle="tab">자연</a></li>
+						<li id="bMenu" role="presentation" class="active"><a href="#job-seekers"
+							aria-controls="home" role="tab" data-toggle="tab">전체</a></li>
+						<li id="bMenu0" role="presentation"><a href="#employeers"
+							aria-controls="profile" role="tab" data-toggle="tab">자연</a></li>
 						<li id="bMenu1" role="presentation"><a href="#employeers"
 							aria-controls="profile" role="tab" data-toggle="tab">역사</a></li>
 						<li id="bMenu2" role="presentation"><a href="#"
@@ -1026,75 +1047,16 @@
 			</div>
 		</div>
 	</div>
-
-		<!-- <hr>
-		<div class="container">
-			<div class="row page-title text-center  wow bounce"
-				data-wow-delay=".7s">
-				<h5>TESTIMONIALS</h5>
-				<h2>WHAT PEOPLES ARE SAYING</h2>
+<!--footer  -->
+	 <div class="footer-area" style="border-top: 1px solid #00AEEF;">
+		<div class="container" style="padding-bottom : 0px">
+			<div class="row footer-copy">
+				<p style="margin: 0 0 0px;">
+					<span id="span1" style="color : gray;">Copyright &copy; NikoNikoNi 2017</span>
+				</p>
 			</div>
-			<div class="row testimonial">
-				<div class="col-md-12">
-					<div id="testimonial-slider">
-						<div class="item">
-							<div class="client-text">
-								<p>Jobify offer an amazing service and I couldn’t be
-									happier! They are dedicated to helping recruiters find great
-									candidates, wonderful service!</p>
-								<h4>
-									<strong>Ohidul Islam, </strong><i>Web Designer</i>
-								</h4>
-							</div>
-							<div class="client-face wow fadeInRight" data-wow-delay=".9s">
-								<img src="./resources/img/client-face1.png" alt="">
-							</div>
-						</div>
-						<div class="item">
-							<div class="client-text">
-								<p>Jobify offer an amazing service and I couldn’t be
-									happier! They are dedicated to helping recruiters find great
-									candidates, wonderful service!</p>
-								<h4>
-									<strong>Ohidul Islam, </strong><i>Web Designer</i>
-								</h4>
-							</div>
-							<div class="client-face">
-								<img src="./resources/img/client-face2.png" alt="">
-							</div>
-						</div>
-						<div class="item">
-							<div class="client-text">
-								<p>Jobify offer an amazing service and I couldn’t be
-									happier! They are dedicated to helping recruiters find great
-									candidates, wonderful service!</p>
-								<h4>
-									<strong>Ohidul Islam, </strong><i>Web Designer</i>
-								</h4>
-							</div>
-							<div class="client-face">
-								<img src="./resources/img/client-face1.png" alt="">
-							</div>
-						</div>
-						<div class="item">
-							<div class="client-text">
-								<p>Jobify offer an amazing service and I couldn’t be
-									happier! They are dedicated to helping recruiters find great
-									candidates, wonderful service!</p>
-								<h4>
-									<strong>Ohidul Islam, </strong><i>Web Designer</i>
-								</h4>
-							</div>
-							<div class="client-face">
-								<img src="./resources/img/client-face2.png" alt="">
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> -->
-
-	</div>
+		</div>
+        </div>
 
 	<!-- Modal -->
 <%--  	<div class="modal fade" id="myModal" role="dialog">
@@ -1122,12 +1084,6 @@
 
     <input type="hidden" id="test1" value="${sigungucode}">
 	<!-- footer -->
-	<div class="footer-area">
-		<div class="container">
-			<br><br>
-			<div class="row footer-copy">
-			</div>
-		</div>
-	</div>
+
 </body>
 </html>

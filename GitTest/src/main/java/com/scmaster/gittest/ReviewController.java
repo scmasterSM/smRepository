@@ -1,8 +1,10 @@
 package com.scmaster.gittest;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.http.HttpSession;
 
@@ -77,5 +79,20 @@ public class ReviewController {
 		hList.put("navi", navi);
 		return hList; 
 	}
-
+	
+	@ResponseBody
+	@RequestMapping(value="readReview_all", method=RequestMethod.GET)
+	public ArrayList<Review> readReview_all(){
+		//System.out.println("여기 들어왔나 ");
+		ArrayList<Review> rList = new ArrayList<>();
+		rList = dao.readReview_all();
+		//System.out.println(rList);
+		ArrayList<Review> tList = new ArrayList<>();
+		Collections.shuffle(rList);
+		for (int i = 1; i <= 4; i++) {
+			tList.add(rList.get(i));
+		}
+		//System.out.println(tList);
+		return tList;
+	}
 }
