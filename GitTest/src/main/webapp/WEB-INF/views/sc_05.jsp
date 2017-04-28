@@ -49,6 +49,12 @@
 	
 <!-- <script src="./resources/js/jquery-3.1.1.js"></script> -->
 
+<style type="text/css">
+html, body {
+	overflow-x: hidden;
+}
+</style>
+
 <script type="text/javascript">
      	var areacode = ${areacode};
      	var sigungucode = "";

@@ -37,6 +37,9 @@
           <link rel="stylesheet" href="./resources/css/12css.css">
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_azK-PpKrUbRSAlyccxLXpUGnwagdJhQ"></script>
 <style type="text/css">
+html, body {
+	overflow-x: hidden;
+}
 body.modal-open {
     overflow: hidden;
 }
