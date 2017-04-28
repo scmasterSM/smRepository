@@ -34,3 +34,133 @@
 }
 
 .sample_image { overflow: hidden; } */
+
+/* 모바일 Device : 0 ~ 640 */
+@media screen and (max-width: 640px){
+	.jumbotron {
+    padding-top: 6rem;
+    padding-bottom: 20rem;
+    margin-bottom: 0px;
+    background-color: #fff;
+   /*  background: url(../image/otherpage/scsc.png); */
+    width:100%;
+    height:440px; 
+    position:relative;
+    vertical-align: middle;
+    border: 0;
+}  
+ 
+} 
+
+/* Tablet Device : 641 ~ 768 */
+ @media screen and (min-width:641px){
+ 	.jumbotron {
+   padding-top: 6rem;
+    padding-bottom: 20rem;
+    margin-bottom: 0px;
+    background-color: #fff;
+   /* background: url(../image/otherpage/scsc.png); */
+    position:relative;
+    height: 100%; 
+    width: 100%; 
+} 
+}
+
+/* Desktop Device : 1024 이상 */
+@media screen and (min-width:1024px){
+ .jumbotron {
+    padding-top: 6rem;
+    padding-bottom: 20rem;
+    margin-bottom: 0px;
+    background-color: #fff;
+  /*  background: url(../image/otherpage/scsc.png); */
+    width:100%;
+    height:600px; 
+    position:relative;
+    height: 100%; 
+    width: 100%;
+} 
+}
+
+.page-title {
+    text-align: center;
+}
+
+.page-title > * {
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.page-title .page-title-inner {
+    position: relative;
+    display: inline-block;
+}
+
+.page-title .page-title-left,
+.page-title .page-title-right {
+    position: absolute;
+    top: 50%;
+    width: auto;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.page-title .page-title-left *,
+.page-title .page-title-right * {
+    display: inline;
+    white-space: nowrap;
+}
+
+.page-title .page-title-left {
+    left: 0;
+    text-align: right;
+    -webkit-transform: translate(-100%, -50%);
+    transform: translate(-100%, -50%);
+}
+
+.page-title .page-title-left * {
+    padding-right: .25em;
+}
+
+.page-title .page-title-left *:nth-last-child(odd) {
+    color: rgba(255, 255, 255, 0.1);
+}
+
+.page-title .page-title-left *:nth-last-child(even) {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.page-title .page-title-right {
+    right: 0;
+    text-align: left;
+    -webkit-transform: translate(100%, -50%);
+    transform: translate(100%, -50%);
+}
+
+.page-title .page-title-right * {
+    padding-left: .25em;
+}
+
+.page-title .page-title-right *:nth-child(odd) {
+    color: rgba(255, 255, 255, 0.1);
+}
+
+.page-title .page-title-right *:nth-child(even) {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.page-title-wrap {
+    background: #000;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center 80%;
+}
+
+@media (min-width: 768px) {
+    .page-title {
+        text-align: left;
+    }
+}
+
