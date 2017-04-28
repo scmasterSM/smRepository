@@ -958,7 +958,7 @@ if (typeof jQuery === 'undefined') {
     this.isShown = true
 
     this.checkScrollbar()
-    this.setScrollbar()
+    //this.setScrollbar()
     this.$body.addClass('modal-open')
 
     this.escape()

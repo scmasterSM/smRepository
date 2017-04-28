@@ -62,6 +62,10 @@ public class ReviewDao {
 		return result;
 	}
 	
+	public ArrayList<Review> readReview_all(){
+		ReviewMapper mapper =sqlsession.getMapper(ReviewMapper.class);
+		return mapper.readReview_all();
+	}
 	
 	
 }

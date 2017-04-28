@@ -34,6 +34,18 @@ public class UserController {
 		
 		User user2 = dao.login_User(user_id);
 		
+		String user_sex = user2.getUser_sex();
+		
+		if(user_sex.equals("f")){
+			session.setAttribute("user_sex", "여");
+		}else if(user_sex.equals("m")){
+			session.setAttribute("user_sex", "남");
+		}else if(user_sex.equals("F")){
+			session.setAttribute("user_sex", "여");
+		}else if(user_sex.equals("M")){
+			session.setAttribute("user_sex", "남");
+		}
+	
 		//System.out.println(user2);
 		
 		if(user2 != null){
@@ -79,6 +91,28 @@ public class UserController {
 			return "fail";
 		}
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="edit", method = RequestMethod.POST)
+	public String edit_User(User user , Model model){
+		
+		int result = dao.edit_User(user);
+		
+		
+		if(result == 1){
+			model.addAttribute("success", "회원 정보 수정 성공");
+			return "success";
+		}else{
+			model.addAttribute("errMsg", "수정 실패");
+			return "fail";
+		}
+	}
+	
+	
+	
+	
+	
+	
 	
 	// 도시 순위 불러오는 함수
 		@ResponseBody
