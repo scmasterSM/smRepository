@@ -61,6 +61,13 @@ public class ScheduleController {
 	}
 
 	// 지도에서 검색
+	@RequestMapping(value = "edit_schedule_info", method = RequestMethod.POST)
+	public void edit_schedule_info(Schedule schedule) {
+		System.out.println(schedule.getScd_sq());
+		dao.update_scd_info(schedule);
+	}
+
+	// SC_13으로 이동
 	@RequestMapping(value = "edit_schedule", method = RequestMethod.GET)
 	public String edit_schedule(int scd_sq, HttpSession session) {
 		session.setAttribute("scd_sq", scd_sq);
@@ -170,6 +177,14 @@ public class ScheduleController {
 		return dailyList;
 	}
 
+	// 일차 도시 리스트 가져오기
+	@ResponseBody
+	@RequestMapping(value = "get_city_list", method = RequestMethod.POST)
+	public List<HashMap<String, Object>> get_city_list(int daily_sq) {
+		List<HashMap<String, Object>> citylist = dao.get_city_list(daily_sq);
+		return citylist;
+	}
+
 	// 일자 삭제
 	@ResponseBody
 	@RequestMapping(value = "delete_day", method = RequestMethod.POST)
@@ -199,7 +214,7 @@ public class ScheduleController {
 		return cliplist;
 	}
 
-	// 일차 순서 변경
+	// 일차 선택
 	@ResponseBody
 	@RequestMapping(value = "select_scd", method = RequestMethod.POST)
 	public Schedule select_scd(int scd_sq) {
@@ -207,10 +222,18 @@ public class ScheduleController {
 		return schedule;
 	}
 
-	// 일차 순서 변경
+	// 일차 수정
 	@ResponseBody
 	@RequestMapping(value = "update_scd", method = RequestMethod.POST)
 	public void update_scd(Schedule schedule) {
 		dao.update_scd(schedule);
+	}
+
+	// 일차 수정
+	@ResponseBody
+	@RequestMapping(value = "copy_schedule", method = RequestMethod.POST)
+	public void copy_schedule(int scd_sq, HttpSession session) {
+		String user_id = (String)session.getAttribute("user_id");
+		dao.copy_schedule(scd_sq, user_id);
 	}
 }

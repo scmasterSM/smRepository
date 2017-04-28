@@ -11,6 +11,7 @@ import com.scmaster.gittest.vo.Schedule;
 
 public interface ScheduleMapper {
 	public void insert_scd(Schedule schedule);
+	public void update_scd_info(Schedule schedule);
 	public int getScd_Sq(String user_id);
 	public Schedule select_scd(int scd_sq);
 	public void update_scd(Schedule schedule);
@@ -39,6 +40,7 @@ public interface ScheduleMapper {
 	public Budget get_budget_total(Budget budget);
 	public List<HashMap<String, Object>> get_daily_list(int scd_sq);
 	public List<HashMap<String, Object>> get_city_list(int daily_sq);
+	public List<HashMap<String, Object>> get_city_listAll(int daily_sq);
 	public void delete_day(int daily_sq);
 	public void day_sort_change(Daily_Scd daily);
 	public void day_change(Daily_Scd daily);

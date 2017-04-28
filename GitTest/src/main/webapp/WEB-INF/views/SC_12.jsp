@@ -17,18 +17,17 @@
         <meta name="author" content="Ohidul">
         <meta name="keyword" content="html, css, bootstrap, job-board">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800' rel='stylesheet' type='text/css'>
-
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<link rel="stylesheet" href="./resources/css/bootstrap.css">
+		<link rel="stylesheet" href="./resources/css/jquery-ui.min.css" type="text/css" media="screen" />
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
         <link rel="icon" href="favicon.ico" type="image/x-icon">
-
         <link rel="stylesheet" href="./resources/css/normalize.css">
         <link rel="stylesheet" href="./resources/css/font-awesome.min.css">
         <link rel="stylesheet" href="./resources/css/fontello.css">
-        <link rel="stylesheet" href="./resources/css/animate.css">        
-        <link rel="stylesheet" href="./resources/css/bootstrap.css">
+        <link rel="stylesheet" href="./resources/css/animate.css">
         <link rel="stylesheet" href="./resources/css/owl.carousel.css">
         <link rel="stylesheet" href="./resources/css/owl.theme.css">
         <link rel="stylesheet" href="./resources/css/owl.transitions.css">
@@ -36,8 +35,38 @@
         <link rel="stylesheet" href="./resources/css/responsive.css">
         <script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
           <link rel="stylesheet" href="./resources/css/12css.css">
-        <script   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_azK-PpKrUbRSAlyccxLXpUGnwagdJhQ"></script>         
-
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_azK-PpKrUbRSAlyccxLXpUGnwagdJhQ"></script>
+<style type="text/css">
+body.modal-open {
+    overflow: hidden;
+}
+.modal-header {
+	background-color: #00AEF0;
+	color: #fff;
+}
+.btn-default {
+	background-color: #00AEF0;
+	color: #fff;
+}
+.form-con {
+    /* display: block; */
+    /* width: 100%; */
+    /* height: 34px; */
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+</style>
 <script type="text/javascript"
    src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script>
 </head>
@@ -186,9 +215,10 @@
                   <li role="presentation"><a href="#employeers"
                      aria-controls="profile" role="tab" data-toggle="tab">댓글</a></li>
                   <div class="plan-menu">
-                  <a data-toggle="modal" href="#myModal">공유하기</a>&emsp;&emsp;
-                  <a href="">복사하기</a>&emsp;&emsp;
-                  <a href="edit_schedule?scd_sq=${scd_sq }">수정하기</a>&emsp;&emsp;
+                  <a data-toggle="modal" href="#myModal_share">공유하기</a>&emsp;&emsp;
+                  <a href="javascript:copy_schedule(${scd_sq });">복사하기</a>&emsp;&emsp;
+                  <a data-toggle="modal" href="#myModal_edit">수정하기</a>&emsp;&emsp;
+                 <%--  <a href="edit_schedule?scd_sq=${scd_sq }">수정하기</a>&emsp;&emsp; --%>
                   <a href="">다운로드</a>
                   </div>
                </ul>
@@ -391,14 +421,14 @@
       </div>
    </div>
 
-<!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+<!-- Modal_share -->
+  <div class="modal fade" id="myModal_share" role="dialog">
     <div class="modal-dialog">
     
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">일정에 초대 하실 분의 아이디를 입력해주세요</h4>
+          <h3 class="modal-title" style=" font-weight: bold;">일정에 초대 하실 분의 아이디를 입력해주세요</h3>
         </div>
         <div class="modal-body">
         <input type="text" name="shareId" class="form-control" id="shareId" placeholder="공유할 ID를 입력해주세요" />
@@ -413,19 +443,91 @@
     </div>
   </div>
 
+<!-- Modal_edit -->
+  <div class="modal fade" id="myModal_edit" role="dialog">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h3 class="modal-title" style=" font-weight: bold;">세부정보 수정</h3>
+        </div>
+        <div class="modal-body">
+						<form role="form" class="form-horizontal" action="" method="get" onsubmit="return edit_form();">
+							<div class="form-group">
+								<label for="scd_title" class="col-sm-2 control-label"> 제목</label>
+								<div class="col-sm-10">
+									<input type="hidden" id="scd_sq" name="scd_sq" value="${scd_sq }" placeholder="ID">
+									<input type="hidden" id="user_id" name="user_id" value="${user_id }" placeholder="ID">
+									<input type="text" class="form-con" id="scd_title" name="scd_title" value="${schedule.scd_title }" placeholder="제목 입력">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="start_ymd" class="col-sm-2 control-label"> 출발일</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-con" id="start_ymd" name="start_ymd" value="${schedule.start_ymd }" placeholder="클릭하여 선택">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="scd_theme" class="col-sm-2 control-label"> 테마</label>
+								<div class="col-sm-10">
+									<input type="radio" class="form-con" name="scd_theme" value="alone" <c:if test="${schedule.scd_theme == 'alone'}">checked="checked"</c:if>>홀로 &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="scd_theme" value="couple" <c:if test="${schedule.scd_theme == 'couple'}">checked="checked"</c:if>>커플 &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="scd_theme" value="family" <c:if test="${schedule.scd_theme == 'family'}">checked="checked"</c:if>>가족 &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="scd_theme" value="group" <c:if test="${schedule.scd_theme == 'group'}">checked="checked"</c:if>>단체 &nbsp; &nbsp;
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="scd_season" class="col-sm-2 control-label"> 계절</label>
+								<div class="col-sm-10">
+									<input type="radio" class="form-con" name="scd_season" value="spring" <c:if test="${schedule.scd_season == 'spring'}">checked="checked"</c:if>>봄 &nbsp; &nbsp; &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="scd_season" value="summer" <c:if test="${schedule.scd_season == 'summer'}">checked="checked"</c:if>>여름 &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="scd_season" value="fall" <c:if test="${schedule.scd_season == 'fall'}">checked="checked"</c:if>>가을 &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="scd_season" value="winter" <c:if test="${schedule.scd_season == 'winter'}">checked="checked"</c:if>>겨울 &nbsp; &nbsp;
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="scd_desc" class="col-sm-2 control-label"> 설명</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-con" id="scd_desc" name="scd_desc" value="${schedule.scd_desc }" placeholder="설명 입력">
+									<input type="hidden" class="form-con" id="day_cnt" name="day_cnt">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="public_fl" class="col-sm-2 control-label"> 공개여부</label>
+								<div class="col-sm-10">
+									<input type="radio" class="form-con" name="public_fl" value="public" <c:if test="${schedule.public_fl == 'public'}">checked="checked"</c:if>>공개 &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="public_fl" value="shared_user" <c:if test="${schedule.public_fl == 'shared_user'}">checked="checked"</c:if>>비공개 &nbsp; &nbsp;
+								</div>
+							</div>
+							
+        </div>
+        <div class="modal-footer">
+        <div id="existId" class="existId"></div>
+			<button type="submit" class="btn btn-default btn_next">제출</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal" onclick="return false;">돌아가기</button>
+			</form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 
 
 
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="./resources/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+		<script type="text/javascript" src="./resources/js/jquery-3.1.1.js"></script>
         <script src="./resources/js/bootstrap.min.js"></script>
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    	<script type="text/javascript" src="./resources/js/jquery-ui.min.js"></script>
         <script src="./resources/js/owl.carousel.min.js"></script>
         <script src="./resources/js/wow.js"></script>
         <script src="./resources/js/main.js"></script>
 </body>
 <script>
 var scd_sq=${scd_sq};
-var info_List=[];
 var key = "2pTN6y%2BhCGaVQL97quhdeM%2FW9ezdUvBNytbkKoT323qbc%2Ff5ao8fYoW2C31AgwacBVhy7PYHqvuwcnzprU4%2BNw%3D%3D";
 var url;
 var myLatLng;
@@ -436,37 +538,14 @@ var marker_no;
 var map=[];
 
   $(function(){
-     $.ajax({
-         type : "POST",
-         url : "scd_info",
-         async : false,
-         data :{
-            scd_sq : scd_sq 
-         },success : function(data){
-            console.log(data);
-            
-            $.each(data,function(index,item){
-               
-               info_List.push(item);
-            });
-               
-               console.log(info_List);
-               
-               
-         },
-         error : function(e){
-            console.log(e);
-         } 
-         });      
-              
+	  
       $.ajax({
          type : "POST",
-         url : "read_scd_info",
+         url : "get_daily_list",
          async : false,
          data :{
             scd_sq : scd_sq 
          },
-         dataType: "json",
          success : function(data){
              
             console.log(data);
@@ -494,9 +573,8 @@ var map=[];
                                                    
                   
                $.each(data,function(index,item){
-                  day_cnt= index;
-                  DAILY_CNT=item.DAILY_CNT;
-                  var areacode=item.AREA_CODE;
+            	   console.log("index: "+index);
+                   day_cnt= index;
                   /* var contentId=item.DTL_CONTENT_ID;
                   console.log(contentId);
                   var sigungucode;
@@ -505,35 +583,56 @@ var map=[];
                    
                   
                   html += '<tr class="white">';
-                  html += '<td><div class="scht_date">'+ item.daily_ymd +'</div>';
+                  html += '<td><div class="scht_date">'+ item.DAILY_YMD +'</div>';
                   html += '<div class="scht_day">DAY '+ item.DAILY_ORD +'</div></td>';                     
                   html += '<td class="scht_vtop">';
-                  html += '<div class="scht_city"><a href="sc_05?areacode='+areacode+'">'+ item.CITY_NM +'</a></div>'; 
+                  html += '<div class="scht_city">';
+                  
+                  var daily_sq = item.DAILY_SQ;
+                  $.ajax({
+                      type : "POST",
+                      url : "get_city_list",
+                      async : false,
+                      data :{
+                         daily_sq : daily_sq
+                      },
+                      success : function(data){
+                         $.each(data,function(index,item){	
+                        	 var sigungu_code = item.SIGUNGU_CODE;
+                        	 var city_nm = encodeURI(item.CITY_NM);
+                         	 if(typeof(sigungu_code) == 'undefined' || sigungu_code == 'undefined') sigungu_code = "";
+                        	 if(index == 0) html += '<a href="sc_05?areacode='+item.AREA_CODE+'&sigungucode='+sigungu_code+'&city_nm='+city_nm+'">'+ item.CITY_NM +'</a>';
+                        	 else html += ', <a href="sc_05?areacode='+item.AREA_CODE+'&sigungucode='+sigungu_code+'&city_nm='+city_nm+'">'+ item.CITY_NM +'</a>';
+                         });
+                      },
+                      error : function(e){
+                         console.log(e);
+                      } 
+                   }); 
+                  html += '</div>'; 
                   html += '<div class="scht_city_blank"></div></td>';
                   html += '<td class="scht_vtop">';                     
-                   
-                  console.log(DAILY_CNT);
-                  for(var i=0;i<item.DAILY_CNT;i++){
-                     
-                     console.log(info_List);
-                     
-                     console.log(info_List[i].dtl_content_id);
-                     
-                     var contentId=info_List[j].dtl_content_id;
-                     console.log(contentId);
-                     ReadApi(contentId); 
                   
-                     $.getJSON(url, function(data){ 
-                            
-                      }) 
-                      
-                    
-                  html += '<div class="scht_spotname">';
-                  html += '<b>'+(i+1)+'. '+'</b>'+info_List[j].place_nm+'</div>';
+                  var daily_ord = item.DAILY_ORD;
                   
-                  j=j+1;
-                  }
-                  
+                  $.ajax({
+                      type : "POST",
+                      url : "get_places",
+                      async : false,
+                      data :{
+                         scd_sq : scd_sq
+                         ,daily_sq : daily_ord
+                      },success : function(data){
+                         $.each(data,function(index,item){
+                        	 ReadApi(item.DTL_CONTENT_ID);
+                        	 html += '<div class="scht_spotname">';
+                             html += '<b>'+(index+1)+'. '+'</b>'+item.PLACE_NM+'</div>';
+                         });
+                      },
+                      error : function(e){
+                         console.log(e);
+                      } 
+                   }); 
                    
                   console.log("map    "+mapcount);
                   html += '</td>';
@@ -543,27 +642,23 @@ var map=[];
                   mapcount=mapcount+1
                   
                })
-               $.getJSON(url, function(data){
-                   console.log('success', data);     
-                  myLatLng={
-                         lat : parseFloat(data.response.body.items.item.mapy),
-                         lng : parseFloat(data.response.body.items.item.mapx)
-                   }   
-                      initMap(myLatLng,day_cnt+1);
-                         
-                   })
+               
                html += '</div></table></div>'; 
                $("#scd_info").html(html);
+               initMap();
                
          },
          error : function(e){
             console.log(e);
          } 
       });         
-         
+
+	  $("#start_ymd").datepicker({
+  	  		dateFormat: "yy-mm-dd"
+      });
  })  
  
- $(function(){
+/*  $(function(){
 	
 		ws = new WebSocket("ws://10.10.6.61:8888/gittest/webSocket");
 		
@@ -581,8 +676,8 @@ var map=[];
 		//서버에서 접속 종료한 후 이벤트 정의
 		ws.onclose = function(event){
 			
-	}
-})
+		}
+}) */
 
 $(function(){
 	$('#shareId').keyup(function(){
@@ -641,25 +736,7 @@ function ReadApi(contentId) { /* currentPage가 어디서 호출되어 온다 */
 	}
 
 
-function initMap(myLatLng,day_cnt) {
-   console.log(myLatLng);
-   
-   var count=0;
-   for(var i=0;i<day_cnt;i++){   
-      
-   var zoom = 7;
-   map[i] = new google.maps.Map(document.getElementById('map'+(1+count)), {
-      center : myLatLng,
-      zoom : zoom
-   });
-   
-   count=count+1;
-   }
-   
-   for(var i=0; i<map.length; i++){
-	   console.log(map[i]);
-   }
-   
+function initMap() {
         $.ajax({
          type: "post",
          url: "get_daily_list",
@@ -668,8 +745,33 @@ function initMap(myLatLng,day_cnt) {
          },
          async: false,
          success: function(data){
+        	 var count=0;
             $.each(data, function(index,item){
-               show_myMarkers(item.DAILY_ORD);
+            	var area_code = item.AREA_CODE;
+            	var sigungu_code = item.SIGUNGU_CODE;
+            	if(typeof(sigungu_code) == 'undefined' || sigungu_code == 'undefined' || sigungu_code == 'null') sigungu_code = "";
+            	$.ajax({
+                    type: "post",
+                    url: "get_citylatlng",
+                    data: {
+                    	area_code: area_code
+                    	,sigungu_code: sigungu_code
+                    },
+                    async: false,
+                    success: function(data){
+                    	console.log(data);
+                    	   var zoom = 7;
+                    	   map[count] = new google.maps.Map(document.getElementById('map'+(1+count)), {
+                    	      center : {lat: parseFloat(data.map_y), lng: parseFloat(data.map_x)},
+                    	      zoom : zoom
+                    	   });
+                    	   count=count+1;
+                    },
+                    error: function(e){
+                       console.log(e);
+                    }      
+                 })
+                show_myMarkers(item.DAILY_ORD);
              });
          },
          error: function(e){
@@ -696,6 +798,7 @@ function makeMarker(city){
 }
 
 function show_myMarkers(daily_ord){
+	console.log("do:   "+ daily_ord);
      var sq = {
         scd_sq: scd_sq,
         daily_sq: daily_ord
@@ -733,7 +836,7 @@ function show_myMarkers(daily_ord){
                 $.each(data,function(index,item){
                    var latLng = new google.maps.LatLng(parseFloat(item.MAP_Y), parseFloat(item.MAP_X));
                    path.push(latLng);
-                   mymarkerlist.push({lat: parseFloat(item.MAP_Y), lng: parseFloat(item.MAP_X)});
+                   mymarkerlist.push({lat: parseFloat(item.MAP_Y), lng: parseFloat(item.MAP_X), title: item.PLACE_NM});
                 });
                 for(var i=0; i<mymarkerlist.length; i++){
                    marker_no++;
@@ -745,21 +848,82 @@ function show_myMarkers(daily_ord){
                           draggable : false,
                           position : latLng,
                           map : map[daily_ord-1],
-                          title : "place"+(i+1),
-                          id : i+1,
+      					  title : (myloc_markers.length+1)+". "+mymarkerlist[i].title,
+      					  id : myloc_markers.length+1,
                           icon: "./resources/marker_img/number_"+marker_no+".png",
                           zIndex: 1000
                        });
                    myloc_markers.push(marker);
                    bounds.extend(marker.position);
                 }
-                map[daily_ord-1].fitBounds(bounds);
+                if(myloc_markers.length != 0){
+                	map[daily_ord-1].fitBounds(bounds);
+                	google.maps.event.addListenerOnce(map[daily_ord-1], 'bounds_changed', function() {
+            			if (this.getZoom() > 15) {
+            			    this.setZoom(15);
+            			}
+            		});
+                }
            }
         },
         error: function(e){
            console.log(e);
         }      
      })
+ }
+ 
+ function copy_schedule(scd_sq){
+	 $.ajax({
+			type : "post",
+			url : "copy_schedule",
+			data : { 
+				scd_sq: scd_sq
+			}
+			,success : function(data){
+				alert("일정이 복사되었습니다!");
+			},
+			error : function(e){
+				console.log(e);
+			} 
+	});//ajax
+ }
+ 
+ function edit_form(){
+	 var scd_sq = parseInt($('#scd_sq').val());
+	 console.log(typeof(scd_sq));
+	 console.log(scd_sq);
+	 var d = new Date($('#start_ymd').val());
+	 var curr_date = d.getDate();
+	 var curr_month = d.getMonth() + 1;
+	 var curr_year = d.getFullYear();
+	 var start_ymd = curr_year + "-" + curr_month + "-" + curr_date;
+	 var scd_title = $('#scd_title').val();
+	 var scd_desc = $('#scd_desc').val();
+	 var scd_theme = $('input[name=scd_theme]:checked').val();
+	 var scd_season = $('input[name=scd_season]:checked').val();
+	 var public_fl = $('input[name=public_fl]:checked').val();
+	 
+	 $.ajax({
+			type : "post",
+			url : "edit_schedule_info",
+			data : { 
+				scd_sq: scd_sq
+	 			,scd_title: scd_title
+	 			,scd_desc: scd_desc
+	 			,scd_season: scd_season
+	 			,scd_theme: scd_theme
+	 			,public_fl: public_fl
+	 			,start_ymd: start_ymd
+			},
+			success : function(data){
+			},
+			error : function(e){
+				console.log(e);
+			}
+	});//ajax 
+
+		window.location.href = "edit_schedule?scd_sq="+scd_sq;	
+		return false;
  }
 </script>
 

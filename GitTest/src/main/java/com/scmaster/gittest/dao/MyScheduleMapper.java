@@ -15,5 +15,6 @@ public interface MyScheduleMapper {
 	public ArrayList<HashMap<String, Object>> read_scd_info(int scd_sq);
 	public ArrayList<HashMap<String, Object>> scd_daily_ymd(int scd_sq);
 	public ArrayList<Dtl_Scd> scd_info(int scd_sq);
+	public Dtl_Scd get_citylatlng(Dtl_Scd areasigungu);
 	
 }

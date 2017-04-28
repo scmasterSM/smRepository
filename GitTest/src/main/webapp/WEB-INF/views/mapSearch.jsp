@@ -7,6 +7,8 @@
 <script type="text/javascript" src="./resources/js/jquery-3.1.1.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_azK-PpKrUbRSAlyccxLXpUGnwagdJhQ"></script>
+<link rel="stylesheet" href="./resources/css/bootstrap.css">
+<script src="./resources/js/bootstrap.js"></script>
 <style>
 /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -15,6 +17,26 @@
    width: 80%;
    height: 100%;
 }
+input[type=button], button {
+	color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    padding: 1px 8px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 2.5px solid wheat;
+    margin-top: 5px;
+    margin-bottom: 5px;
+   }
 .labels {
      color: #363636;
      background-color: white;
@@ -319,13 +341,17 @@ html, body {
 	   /* var focusMarker = new google.maps.LatLng(city.lat, city.lng);
        map.setCenter(focusMarker);
        map.setZoom(11); */
+       	var sigungu_code = city.sigunguCode;
+  		var city_nm = city.name.toString();
+   	 	if(typeof(sigungu_code) == 'undefined' || sigungu_code == 'undefined') sigungu_code = "";
        var content = '<div class="content">'
            + '<div id="image">'
            +'<img src=./resources/img/city/'+city.areaCode+'.jpg width=200 height=120>'
            + '</div>'
-           + '<h1 id="firstHeading" class="firstHeading">'+city.name+'</h1>'
+           + '<h3 id="firstHeading" class="firstHeading">'+city.name+'</h3>'
            + '<div id="bodyContent">'
-           + '<input type="button" value="자세히 보기" onclick="">'
+           + '<a href="sc_05?areacode='+city.areaCode+'&sigungucode='+sigungu_code+'&city_nm='+city_nm+'">'
+           + '<input type="button" value="자세히 보기"></a> '
            + '<input type="button" value="일정 만들기" onclick="make_schedule('+city.areaCode+', '+city.sigunguCode+', '+city.lat+', '+city.lng+', \''+city.name+'\')" />'
            + '</div>' + '</div>';   
        
