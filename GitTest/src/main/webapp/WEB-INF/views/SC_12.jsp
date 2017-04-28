@@ -787,10 +787,12 @@ var map=[];
                   var sigungucode;
                   ReadApi(contentId); */
                   
-                   
+                  var d = new Date(item.DAILY_YMD);
+     			  var weekday = [' (일)',' (월)',' (화)',' (수)',' (목)',' (금)',' (토)'];
+     			  var day = weekday[d.getDay()]; 
                   
                   html += '<tr class="white">';
-                  html += '<td><div class="scht_date">'+ item.DAILY_YMD +'</div>';
+                  html += '<td><div class="scht_date">'+ item.DAILY_YMD + day +'</div>';
                   html += '<div class="scht_day">DAY '+ item.DAILY_ORD +'</div></td>';                     
                   html += '<td class="scht_vtop">';
                   html += '<div class="scht_city">';
