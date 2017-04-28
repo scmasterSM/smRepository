@@ -38,6 +38,12 @@
         <script type="text/javascript"src="<c:url value="/resources/js/jquery-3.1.1.js"/>"></script>
         <script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8"></script>
         
+        <style type="text/css">
+		html, body {
+			overflow-x: hidden;
+		}
+        </style>
+        
         <script type="text/javascript">
         
       //로그인& 조인 모달 

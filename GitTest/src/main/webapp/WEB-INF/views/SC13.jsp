@@ -378,7 +378,7 @@
     		var theme = $('input[type=radio][name=radio-1]:checked').val();
     		var theme2 = $('#select-1').val();
 			if(typeof(theme) == 'undefined') theme = '';
-			if(typeof(theme2) == 'undefined') theme2 = '';	
+			if(typeof(theme2) == 'undefined' || theme2 == '카테고리를 먼저 선택하세요') theme2 = '';	
     		theme2_change(theme, theme2);
     	}
     });
@@ -601,6 +601,7 @@
   	
   	function initCitySearch(){
   		var html = '';
+  		sigungu = [];
   		$.each(pop_cities, function(index, val){
       	  html += '<div class="item" data="'+ val.areaCode +'" data-ci_name="'+ val.name +'" data-lat="'+ val.lat +'" data-lng="' + val.lng + '" data-is_state="'+ val.is_state +'">';
             html += '<div class="img_box"><img src="./resources/img/city/'+val.areaCode+'.jpg"></div>';
@@ -1559,7 +1560,7 @@
 					var image = data.response.body.items.item[i].firstimage;
 					if(typeof(image) == 'undefined' || image == 'undefined') image = "./resources/image/noimage.jpg";
 					if(typeof(data.response.body.items.item[i])!='undefined'){
-						if(data.response.body.items.item[i].title.includes(title)){
+						if(data.response.body.items.item[i].title.includes(title) && !(data.response.body.items.item[i].title.includes('2016'))){
 							content += '<div class="location" id="'+data.response.body.items.item[i].title
 								+'" value="'+data.response.body.items.item[i].title+'">'	
 							 	+ '<h4>'+ data.response.body.items.item[i].title+'</h4>'
