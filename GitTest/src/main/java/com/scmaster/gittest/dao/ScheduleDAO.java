@@ -55,6 +55,12 @@ public class ScheduleDAO {
 		mapper.update_scd(schedule);
 	}
 
+	// 메인 스케줄 시작일 수정
+	public void edit_start_ymd(Schedule schedule) {
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		mapper.edit_start_ymd(schedule);
+	}
+
 	// 일차 스케줄 저장
 	public void insert_daily(Daily_Scd daily) {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
