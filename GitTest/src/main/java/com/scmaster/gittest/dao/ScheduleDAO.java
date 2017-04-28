@@ -35,6 +35,13 @@ public class ScheduleDAO {
 		return scd_sq;
 	}
 
+	// 메인 스케줄  수정
+	public void update_scd_info(Schedule schedule) {
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		mapper.update_scd_info(schedule);
+	}
+
+
 	// 메인 스케줄 가져오기
 	public Schedule select_scd(int scd_sq) {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
@@ -42,7 +49,7 @@ public class ScheduleDAO {
 		return schedule;
 	}
 
-	// 메인 스케줄 수정
+	// 메인 스케줄 타이틀 수정
 	public void update_scd(Schedule schedule) {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
 		mapper.update_scd(schedule);
