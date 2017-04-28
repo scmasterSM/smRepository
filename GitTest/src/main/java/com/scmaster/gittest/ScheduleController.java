@@ -63,7 +63,7 @@ public class ScheduleController {
 	// 지도에서 검색
 	@RequestMapping(value = "edit_schedule_info", method = RequestMethod.POST)
 	public void edit_schedule_info(Schedule schedule) {
-		//System.out.println(schedule.getScd_sq());
+		// System.out.println(schedule.getScd_sq());
 		dao.update_scd_info(schedule);
 	}
 
@@ -117,6 +117,13 @@ public class ScheduleController {
 	@RequestMapping(value = "add_day", method = RequestMethod.POST)
 	public void add_day(Daily_Scd daily_scd) {
 		dao.insert_daily(daily_scd);
+	}
+
+	// 메인 스케쥴 시작일 수정
+	@ResponseBody
+	@RequestMapping(value = "edit_start_ymd", method = RequestMethod.POST)
+	public void edit_start_date(Schedule schedule) {
+		dao.edit_start_ymd(schedule);
 	}
 
 	// 장소 순서 변경
@@ -231,11 +238,11 @@ public class ScheduleController {
 		dao.update_scd(schedule);
 	}
 
-	// 일차 수정
+	// 일차 복사
 	@ResponseBody
 	@RequestMapping(value = "copy_schedule", method = RequestMethod.POST)
 	public void copy_schedule(int scd_sq, HttpSession session) {
-		String user_id = (String)session.getAttribute("user_id");
+		String user_id = (String) session.getAttribute("user_id");
 		dao.copy_schedule(scd_sq, user_id);
 	}
 }
