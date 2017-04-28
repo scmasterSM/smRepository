@@ -108,3 +108,97 @@
     height: 50px;
     overflow-y: scroll;
 }
+.filter_value {
+    float: left;
+    cursor: pointer;
+    background: #f3f3f3;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #808080;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 3px;
+    margin-top: 10px;
+    margin-left: 3px;
+    margin-right: 10px;
+    overflow: hidden;
+}
+
+
+.filter_value span {
+    float: left;
+}
+
+.f_line {
+    background: #dbdbdb;
+    width: 1px;
+    height: 10px;
+    margin-left: 8px;
+    margin-right: 8px;
+    float: left;
+    margin-top: 10px;
+}
+.f_rm {
+    float: left;
+    margin-top: 10px;
+}
+.filter_set_box{
+	width: 13%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    color: #808080;
+    text-align: center;
+    cursor: pointer;
+    float: left;
+}
+.filter_set_box_day{
+	width: 12%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    color: #808080;
+    text-align: center;
+    cursor: pointer;
+    float: left;
+}
+.filter_set_box_theme{
+	width: 14%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    color: #808080;
+    text-align: center;
+    cursor: pointer;
+    float: left;
+}
+
+.all_scd_read> li{
+    display: inline-block;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-bottom: 20px;
+}
+.scd_box{
+	height : 210px;
+	width: 170px;
+}
+.like_box{
+	width: 55px;
+	float :left;
+	overflow: hidden;
+	text-align: left;
+	margin-left: 5px;
+}
+.user_id_box{
+	width: 100px;
+	float :left;
+	overflow: hidden;
+	text-align: right;
+	margin-right: 10px;
+}
+.icon{
+	width :30px;
+	height: 30px;
+}

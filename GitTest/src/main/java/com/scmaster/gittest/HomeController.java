@@ -22,11 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.scmaster.gittest.dao.ReviewDao;
-import com.scmaster.gittest.dao.ScheduleDAO;
 import com.scmaster.gittest.util.PageNavigator;
 import com.scmaster.gittest.vo.Clip;
 import com.scmaster.gittest.vo.Review;
-import com.scmaster.gittest.vo.Schedule;
 
 
 
@@ -43,8 +41,6 @@ public class HomeController {
 	
 	@Autowired
 	private ReviewDao dao;
-	@Autowired
-	private ScheduleDAO scd_dao;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
@@ -108,16 +104,11 @@ public class HomeController {
 	@RequestMapping(value="SC_12",method=RequestMethod.GET)
 	public String SC_12(int scd_sq,Model model){
 		model.addAttribute("scd_sq", scd_sq);
-		Schedule schedule = scd_dao.select_scd(scd_sq);
-		String[] arr = schedule.getStart_ymd().split(" ");
-		schedule.setStart_ymd(arr[0]);
-		model.addAttribute("schedule", schedule);
 		return "SC_12";
 	}
 	
 	@RequestMapping(value="sc_05",method=RequestMethod.GET)
 	public String sc_05(String areacode, String sigungucode, String city_nm, Model model){
-			System.out.println(city_nm);
 			model.addAttribute("areacode",areacode);
 			model.addAttribute("sigungucode",sigungucode);
 			model.addAttribute("city_nm", city_nm);
