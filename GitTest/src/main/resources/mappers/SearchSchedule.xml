@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.scmaster.gittest.dao.SearchScheduleMapper">
+
+	<!-- Review 리스트 가져오기 --> 
+	<select id="filtering" parameterType="HashMap"  resultType="HashMap">
+	
+	select	c.user_id,
+			c.scd_sq,
+			c.scd_desc,
+			c.scd_title,
+			q as DTL_CONTENT_ID,
+			w as DTL_CONTENT_ID2
+	from 	(select scd_sq,
+			<if test="area_code !='null'">
+			area_code ,
+			</if>
+					max(DTL_CONTENT_ID) q,
+			 		min(DTL_CONTENT_ID) w
+			from	sm_dtl_scd_tb group by scd_sq
+			<if test="area_code !='null'">
+					,area_code
+			</if>   ) d,					
+					sm_scd_tb c
+			where 	d.scd_sq=c.scd_sq and public_fl = 'public' 
+					
+			<if test="schedule.scd_theme !='null'">
+					and
+					c.scd_theme=#{schedule.scd_theme}		 
+			</if>
+			<if test="schedule.scd_season !='null'">
+					and
+					c.scd_season=#{schedule.scd_season}		 
+			</if>
+			<if test="schedule.day_cnt !='null'">
+				<choose>
+					<when test="schedule.day_cnt lt 7 ">
+						and
+						c.day_cnt =#{schedule.day_cnt}
+					</when>
+					<otherwise>
+						and
+						c.day_cnt <![CDATA[>=]]> 7
+					</otherwise>
+				</choose> 					 
+			</if> 
+			<if test="area_code !='null'">
+					and
+					area_code=#{area_code}		 
+			</if>
+			
+			order by c.scd_sq desc
+	 
+	</select>
+	
+	<select id="all_scd_read" resultType="HashMap">
+	
+	select	c.user_id,c.scd_sq,c.scd_desc,c.scd_title, q as DTL_CONTENT_ID, w as DTL_CONTENT_ID2
+			from (select scd_sq, max(DTL_CONTENT_ID)q, min(DTL_CONTENT_ID) w
+			from sm_dtl_scd_tb group by scd_sq) d, sm_scd_tb c
+			where d.scd_sq=c.scd_sq 
+			order by c.scd_sq desc
+	 
+	</select>
+	
+	<select id="tCount"  resultType="int">
+	select 	count(*)
+	from 	SM_scd_TB
+	where	public_fl = 'public'
+	</select>
+	
+	<select id="fCount" parameterType="HashMap"  resultType="int">
+	
+	select	count(*)
+	from 	(select scd_sq
+			<if test="area_code !='null'">
+			,area_code 
+			</if>
+					 
+			from	sm_dtl_scd_tb group by scd_sq
+			<if test="area_code !='null'">
+					,area_code
+			</if>   ) d,					
+					sm_scd_tb c
+			where 	d.scd_sq=c.scd_sq and public_fl = 'public' 
+					
+			<if test="schedule.scd_theme !='null'">
+					and
+					c.scd_theme=#{schedule.scd_theme}		 
+			</if>
+			<if test="schedule.scd_season !='null'">
+					and
+					c.scd_season=#{schedule.scd_season}		 
+			</if>
+			<if test="schedule.day_cnt !='null'">
+				<choose>
+					<when test="schedule.day_cnt lt 7 ">
+						and
+						c.day_cnt =#{schedule.day_cnt}
+					</when>
+					<otherwise>
+						and
+						c.day_cnt <![CDATA[>=]]> 7
+					</otherwise>
+				</choose> 					 
+			</if> 
+			<if test="area_code !='null'">
+					and
+					area_code=#{area_code}		 
+			</if> 
+	</select>
+</mapper>
