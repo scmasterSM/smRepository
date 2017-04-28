@@ -595,7 +595,7 @@ hr {
 							<div class="form-group">
 								<label for="start_ymd" class="col-sm-2 control-label"> 출발일</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-con" id="start_ymd" name="start_ymd" placeholder="클릭하여 달력에서 선택">
+									<input type="text" class="form-con" id="start_ymd" name="start_ymd" placeholder="클릭하여 선택">
 								</div>
 							</div>
 							<div class="form-group">
@@ -626,8 +626,8 @@ hr {
 							<div class="form-group">
 								<label for="public_fl" class="col-sm-2 control-label"> 공개여부</label>
 								<div class="col-sm-10">
-									<input type="checkbox" class="form-con" name="public_fl" value="public">공개 &nbsp; &nbsp;
-									<input type="checkbox" class="form-con" name="public_fl" value="shared_user">비공개 &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="public_fl" value="public" checked="checked">공개 &nbsp; &nbsp;
+									<input type="radio" class="form-con" name="public_fl" value="shared_user">비공개 &nbsp; &nbsp;
 								</div>
 							</div>
 							

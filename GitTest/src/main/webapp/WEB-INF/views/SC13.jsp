@@ -100,6 +100,14 @@
 	    color: white;
 	    cursor: pointer;
 	}
+	.modal-header {
+		background-color: #00AEF0;
+		color: #fff;
+	}
+	.btn-default {
+		background-color: #00AEF0;
+		color: #fff;
+	}
 	
 	.col-1 {width: 5%; height: 92%}
 	.col-2 {width: 10%; height: 92%}

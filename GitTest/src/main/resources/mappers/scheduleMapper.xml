@@ -31,6 +31,21 @@
 			)
 	</insert>
 	
+	<!-- 메인 스케줄 수정 -->
+	<update id="update_scd_info" parameterType="Schedule">
+		update
+			SM_SCD_TB
+		set
+			scd_title = #{scd_title}
+			,scd_desc = #{scd_desc}
+			,scd_season = #{scd_season}
+			,scd_theme = #{scd_theme}
+			,public_fl = #{public_fl}
+			,start_ymd = #{start_ymd}
+		where
+ 			scd_sq = #{scd_sq}
+	</update>
+	
 	<!-- scd_sq 가져오기 -->
 	<select id="getScd_Sq" parameterType="string" resultType="int">
 		select
@@ -41,7 +56,7 @@
 			user_id = #{user_id}
 	</select>
 	
-	<!-- scd_sq 가져오기 -->
+	<!-- scd 가져오기 -->
 	<select id="select_scd" parameterType="int" resultType="Schedule">
 		select
 			*
