@@ -42,6 +42,7 @@
 			,scd_theme = #{scd_theme}
 			,public_fl = #{public_fl}
 			,start_ymd = #{start_ymd}
+			,day_cnt = #{day_cnt}
 		where
  			scd_sq = #{scd_sq}
 	</update>
@@ -66,7 +67,7 @@
  			scd_sq = #{scd_sq}
 	</select>
 	
-	<!-- 메인 스케줄 수정 -->
+	<!-- 메인 스케줄 title 수정 -->
 	<update id="update_scd" parameterType="Schedule">
 		update
 			SM_SCD_TB
