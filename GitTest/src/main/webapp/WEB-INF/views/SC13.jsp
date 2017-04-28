@@ -1764,6 +1764,7 @@
   	function daily_date_change(){
   		var scd_sq = $('#scd_sq').val();
   		var d = new Date($('#start_ymd').val());
+  		var day_cnt = $('.alterDaylist').length;
   		$('.alterDaylist').each(function(index, item){
   			 var curr_date = d.getDate();
 			 if(curr_date < 10) curr_date = '0'+curr_date;
@@ -1784,8 +1785,24 @@
 					console.log(e);
 				}	
 			})
+			if(index==0){
+				$.ajax({
+					type: "post",
+					url: "edit_start_ymd",
+					async: false,
+					data: {
+						scd_sq: scd_sq
+						,start_ymd: date_ymd
+						,day_cnt: day_cnt
+					},
+					error: function(e){
+						console.log(e);
+					}	
+				})
+			}
 			d.setDate(d.getDate() + 1);	
   		});
+  		
   	}
   	
   	function init_daily_date(){
