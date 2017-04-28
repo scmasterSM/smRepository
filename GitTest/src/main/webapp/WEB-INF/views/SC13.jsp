@@ -368,7 +368,8 @@
   } */
   $(function(){
 	add_day();
-    
+
+	init_daily_date();
     init_daily_list();
     ordclick();
     
@@ -478,7 +479,7 @@
     $("#connectChat").trigger('click');    
     $("#connectChat").css('opacity','0');
     $("#connectChat").css('pointer-events','none');
-
+	
   });
   
   var map;
@@ -738,7 +739,6 @@
   }	
   
   function show_myMarkers(){
-	  console.log("in")
 	  for(var i=0; i<myloc_markers.length; i++){
 			myloc_markers[i].setMap(null);
 		}
@@ -1788,6 +1788,34 @@
   		});
   	}
   	
+  	function init_daily_date(){
+  		var scd_sq = $('#scd_sq').val();
+  		var d = new Date($('#init_start_ymd').val());
+  		var day_cnt = $('#init_day_cnt').val();
+  		for(var index=0; index<day_cnt; index++){
+  			 var curr_date = d.getDate();
+			 if(curr_date < 10) curr_date = '0'+curr_date;
+			 var curr_month = d.getMonth() + 1;
+			 if(curr_month < 10) curr_month = '0'+curr_month;
+			 var curr_year = d.getFullYear();
+			 var date_ymd = curr_year + "-" + curr_month + "-" + curr_date;
+  			$.ajax({
+				type: "post",
+				url: "updateDates",
+				async: false,
+				data: {
+					scd_sq: scd_sq
+					,daily_ord: index + 1
+					,daily_ymd: date_ymd
+				},
+				error: function(e){
+					console.log(e);
+				}	
+			})
+			d.setDate(d.getDate() + 1);	
+  		}
+  	}
+  	
   	function init_daily_list(){
   		var scd_sq = $('#scd_sq').val();
   		$.ajax({
@@ -2064,6 +2092,8 @@
 <input type="hidden" id="areaCode" value="">
 <input type="hidden" id="sigunguCode" value="">
 <input type="hidden" id="day_city_name" value="">
+<input type="hidden" id="init_start_ymd" value="${schedule.start_ymd }">
+<input type="hidden" id="init_day_cnt" value="${schedule.day_cnt }">
 
 <div class="header">
 		<div class="fl" id="logoimg"><a href="./"><img src="./resources/image/logoedit.png" style="margin-top:5px;margin-left:20px;width:60px;height:50px;"></a></div>
@@ -2122,7 +2152,7 @@
 
 <div style="overflow:auto;" class="sidenav" id="alter_schedule">
 <span>여행 시작일</span>
-<input type="text" id="start_ymd" name="start_ymd" value="" style="width:100%">
+<input type="text" id="start_ymd" name="start_ymd" value="${start_ymd }" style="width:100%">
 <br>
 <div id="alterlist">
 <div id="alterflag"></div>

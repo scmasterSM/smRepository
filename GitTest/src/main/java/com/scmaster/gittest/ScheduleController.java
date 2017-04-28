@@ -63,14 +63,16 @@ public class ScheduleController {
 	// 지도에서 검색
 	@RequestMapping(value = "edit_schedule_info", method = RequestMethod.POST)
 	public void edit_schedule_info(Schedule schedule) {
-		System.out.println(schedule.getScd_sq());
+		//System.out.println(schedule.getScd_sq());
 		dao.update_scd_info(schedule);
 	}
 
 	// SC_13으로 이동
 	@RequestMapping(value = "edit_schedule", method = RequestMethod.GET)
-	public String edit_schedule(int scd_sq, HttpSession session) {
+	public String edit_schedule(int scd_sq, HttpSession session, Model model) {
 		session.setAttribute("scd_sq", scd_sq);
+		Schedule schedule = dao.select_scd(scd_sq);
+		model.addAttribute("schedule", schedule);
 		return "SC13";
 	}
 
