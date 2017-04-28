@@ -418,6 +418,19 @@
 			city_ord
 	</select>
 	
+	
+ 	<!-- daily city list 가져오기 All -->
+	<select id="get_city_listAll" parameterType="int" resultType="Hashmap">
+		select
+			*
+		from
+			SM_DAILY_CITY_TB
+		where
+			daily_sq = #{daily_sq}
+		order by
+			city_ord
+	</select>
+	
 	<!-- 일자 삭제 -->
 	<delete id="delete_day" parameterType="int">
  		delete from

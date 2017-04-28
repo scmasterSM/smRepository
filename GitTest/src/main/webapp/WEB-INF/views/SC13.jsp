@@ -11,6 +11,10 @@
 <script src="./resources/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<link rel="stylesheet" href="./resources/css/jquery-ui.min.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="./resources/js/jquery-ui.min.js"></script>
+    <link type="text/css" href="./resources/css/jquery.ui.chatbox.css" rel="stylesheet" />
+    <script type="text/javascript" src="./resources/js/jquery.ui.chatbox.js"></script>
 <link rel='stylesheet' href='./resources/css/perfect-scrollbar.css' />
 <script src='./resources/js/perfect-scrollbar.jquery.js'></script>
 <script defer
@@ -282,7 +286,7 @@
     cursor: pointer;
     user-select: none;
     background-image: none;
-    border: 1px solid wheat;
+    border: 2.5px solid wheat;
     margin-top: 5px;
     margin-bottom: 5px;
    }
@@ -354,7 +358,6 @@
 			 ws = null;
 		 }
   } */
-  
   $(function(){
 	add_day();
     
@@ -446,6 +449,28 @@
     $('#section3').perfectScrollbar({
   	  suppressScrollY: true
   	});
+    
+    var box = null;
+    $("#connectChat").click(function(event, ui) {
+        if(box) {
+            box.chatbox("option", "boxManager").toggleBox();
+        }
+        else {
+            box = $("#chat_div").chatbox({
+            	id:${user_id}, 
+                user:{key : "value"},
+                title : "chat",
+                messageSent : function(id, user, msg) {
+                	//$("#log").append(id + " said: " + msg + "<br/>");
+                    $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
+           		}
+            });
+        }
+    });
+    $("#connectChat").trigger('click');    
+    $("#connectChat").css('opacity','0');
+    $("#connectChat").css('pointer-events','none');
+
   });
   
   var map;
@@ -563,8 +588,8 @@
   		var html = '';
   		$.each(pop_cities, function(index, val){
       	  html += '<div class="item" data="'+ val.areaCode +'" data-ci_name="'+ val.name +'" data-lat="'+ val.lat +'" data-lng="' + val.lng + '" data-is_state="'+ val.is_state +'">';
-            html += '<div class="img_box fl"><img src="./resources/img/city/'+val.areaCode+'.jpg"></div>';
-            html += '<div class="info_box fl"><div class="info_title">'+val.name+'</div><div class="info_sub_title">'+val.name_en+'</div></div>';
+            html += '<div class="img_box"><img src="./resources/img/city/'+val.areaCode+'.jpg"></div>';
+            html += '<div class="info_box"><div class="info_title">'+val.name+'</div><div class="info_sub_title">'+val.name_en+'</div></div>';
             html += '<div class="clear"></div></div>';
             if(sigungu.length < 100){
 	            if(val.is_state == 0){
@@ -675,7 +700,7 @@
 	  var my_content = '';
 	  $.each(data,function(index,item){
 		var sigunguCode = item.SIGUNGU_CODE;
-		if(typeof(sigunguCode) == 'undefined') sigunguCode = "";
+		if(typeof(sigunguCode) == 'undefined' || sigunguCode == 'undefined' || sigunguCode == 'null') sigunguCode = "";
 		var image = item.DTL_IMAGE;
 		if(typeof(image) == 'undefined' || image == 'undefined') image = "./resources/image/noimage.jpg";
 		  my_content += '<div class="my_loc" id="'+item.DTL_SQ+'" dtl_sq="'+item.DTL_SQ+'" dtl_ord="'+item.DTL_ORD+'" title="'+item.PLACE_NM+'" contentid="'+item.DTL_CONTENT_ID+'" '
@@ -901,7 +926,8 @@
 				+ '<h3>'+data.response.body.items.item[i].title+'</h3>'
 				+ '<h5>'+data.response.body.items.item[i].addr1+'</h5>'
 				+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item[i].contentid + ')"> '
-				+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+image+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
+				+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+image+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button> '
+				+ '<input type="button" value="채팅에 전송" onclick="javascript:place_to_chat(\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].title+'\')">'
 				+ '</div>'; 
 
 			google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
@@ -1188,7 +1214,7 @@
 
 		var areaCode = $("#areaCode").val();
 		var sigunguCode = $('#sigunguCode').val();
-		if(typeof(sigunguCode) == 'undefined' || sigunguCode == 'undefined') sigunguCode = "";
+		if(typeof(sigunguCode) == 'undefined' || sigunguCode == 'undefined' || sigunguCode == 'null') sigunguCode = "";
 		var theme2 = '';
 		
 		if(theme == 'A04'){
@@ -1243,7 +1269,8 @@
 						+' width=200 height=120><br>'
 						+ '주소: ' + data.response.body.items.item[i].addr1+'<br>'
 						+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item[i].contentid + ')"> '
-						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+image+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
+						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+image+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button> '
+						+ '<input type="button" value="채팅에 전송" onclick="javascript:place_to_chat(\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].title+'\')">'
 						+ '</div>'
 					}
 				}		
@@ -1299,7 +1326,8 @@
 						+' width=200 height=120><br>'
 						+ '주소: ' + data.response.body.items.item.addr1+'<br>'
 						+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item.contentid + ')"> '
-						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item.title+'\',\''+image+'\',\''+data.response.body.items.item.contentid+'\',\''+data.response.body.items.item.addr1+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
+						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item.title+'\',\''+image+'\',\''+data.response.body.items.item.contentid+'\',\''+data.response.body.items.item.addr1+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button> '
+						+ '<input type="button" value="채팅에 전송" onclick="javascript:place_to_chat(\''+data.response.body.items.item.contentid+'\',\''+data.response.body.items.item.title+'\')">'
 						+ '</div>';
 				$("#location_flag").before(content);
 				}
@@ -1311,7 +1339,7 @@
 
 		var areaCode = $('#areaCode').val();
 		var sigunguCode = $('#sigunguCode').val();
-		if(typeof(sigunguCode) == 'undefined' || sigunguCode == 'undefined') sigunguCode = "";
+		if(typeof(sigunguCode) == 'undefined' || sigunguCode == 'undefined' || sigunguCode == 'null') sigunguCode = "";
 		var theme3 = '';	
 
 		if(theme == 'A04'){
@@ -1336,9 +1364,9 @@
 				return;
 			}
 			for (var i = 0; i < 50; i++) {
-				var image = data.response.body.items.item[i].firstimage;
-				if(typeof(image) == 'undefined' || image == 'undefined') image = "./resources/image/noimage.jpg";
 				if(typeof(data.response.body.items.item[i])!='undefined'){
+					var image = data.response.body.items.item[i].firstimage;
+					if(typeof(image) == 'undefined' || image == 'undefined') image = "./resources/image/noimage.jpg";
 					if(!data.response.body.items.item[i].title.includes("2016")) {
 					content += '<div class="location" id="'+data.response.body.items.item[i].contentid
 						+'" value="'+data.response.body.items.item[i].title+'">'							
@@ -1347,7 +1375,8 @@
 						+' width=200 height=120><br>'
 						+ '주소: ' + data.response.body.items.item[i].addr1+'<br>'
 						+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item[i].contentid + ')"> '
-						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+image+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
+						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+image+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button> '
+						+ '<input type="button" value="채팅에 전송" onclick="javascript:place_to_chat(\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].title+'\')">'
 						+ '</div>'
 					}
 				}		
@@ -1383,6 +1412,66 @@
 			openDtl();
 		});
 	}
+  	
+  	var msgMarkers = [];
+  	function msg_place(contentid) {
+		var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
+
+		var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="
+				+ key;
+		url += "&contentId=" + contentid
+				+ "&defaultYN=Y&addrinfoYN=Y&firstImageYN=Y&overviewYN=Y&mapinfoYN=Y";
+		url += "&MobileOS=ETC&MobileApp=AppTesting&_type=json";
+		
+		$.getJSON(url, function(data) {
+			var dupCheck = true;
+			for(var i=0; i<msgMarkers.length; i++){
+				if(msgMarkers[i].id == data.response.body.items.item.contentid){
+					google.maps.event.trigger(msgMarkers[i], "click");
+					dupCheck = false;
+				}
+			}
+			if(dupCheck){
+				var infowindow = new google.maps.InfoWindow();
+				var latLng = {
+						lat : parseFloat(data.response.body.items.item.mapy),
+						lng : parseFloat(data.response.body.items.item.mapx)
+					}
+				var marker = new google.maps.Marker({
+					draggable : false,
+					position : latLng,
+					map : map,
+					title : data.response.body.items.item.title,
+					id : data.response.body.items.item.contentid
+				});
+				msgMarkers.push(marker);
+				var image = data.response.body.items.item.firstimage;
+				if(typeof(image) == 'undefined' || image == 'undefined') image = "./resources/image/noimage.jpg";
+				var content = '<div class="content">'
+					+ '<div id="image">'
+					+'<img src='+image+' width=200 height=120>'
+					+ '</div>'
+					+ '<h3>'+data.response.body.items.item.title+'</h3>'
+					+ '<h5>'+data.response.body.items.item.addr1+'</h5>'
+					+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item.contentid + ')"> '
+					+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item.title+'\',\''+image+'\',\''+data.response.body.items.item.contentid+'\',\''+data.response.body.items.item.mapx+'\',\''+data.response.body.items.item.mapy+'\')">일정에 추가</button> '
+					+ '<input type="button" value="채팅에 전송" onclick="javascript:place_to_chat(\''+data.response.body.items.item.contentid+'\',\''+data.response.body.items.item.title+'\')">'
+					+ '</div>'; 
+				google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+				    return function() {
+				        infowindow.setContent(content);
+				        infowindow.open(map,marker);
+				    }; 	
+				})(marker,content,infowindow));
+				google.maps.event.trigger(marker, "click");
+			}
+		});
+	}
+  	
+  	function place_to_chat(contentid, title){
+    	msg = "contentid,"+contentid+",#"+title;
+        $("#chat_div").chatbox("option", "boxManager").addMsg(${user_id}, msg);
+  	}
   	
   	function location_event(){
   		$(".location").mouseenter(function(){
@@ -1462,7 +1551,8 @@
 								+' width=200 height=120><br>'
 								+ '주소: ' + data.response.body.items.item[i].addr1+'<br>'
 								+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item[i].contentid + ')"> '
-								+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+image+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button>'
+								+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item[i].title+'\',\''+image+'\',\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button> '
+								+ '<input type="button" value="채팅에 전송" onclick="javascript:place_to_chat(\''+data.response.body.items.item[i].contentid+'\',\''+data.response.body.items.item[i].title+'\')">'
 								+ '</div>'
 							for (var j = 0; j < myMarkers.length; j++) {
 								if(data.response.body.items.item[i].title == myMarkers[j].title){
@@ -1500,8 +1590,8 @@
 		   		for (var i in sigungu) {
 					if(sigungu[i].name.includes(searchText)){
 						content += '<div class="item" data="'+ sigungu[i].areaCode +'" data2="'+ sigungu[i].sigunguCode +'" data-ci_name="'+ sigungu[i].name +'" data-lat="'+ sigungu[i].lat +'" data-lng="' + sigungu[i].lng + '" data-is_state="'+ sigungu[i].is_state +'">'
-							+ '<div class="img_box fl"><img src="./resources/img/city/'+sigungu[i].areaCode+'.jpg"></div>'
-						 	+ '<div class="info_box fl"><div class="info_title">'+sigungu[i].name+'</div><div class="info_sub_title">'+sigungu[i].name_en+'</div></div>'
+							+ '<div class="img_box"><img src="./resources/img/city/'+sigungu[i].areaCode+'.jpg"></div>'
+						 	+ '<div class="info_box"><div class="info_title">'+sigungu[i].name+'</div><div class="info_sub_title">'+sigungu[i].name_en+'</div></div>'
 							+ '<div class="clear"></div></div>';
 					}
 				}
@@ -1518,16 +1608,14 @@
   			var sigunguCode = $(this).attr('data2');
   			var name = $(this).attr('data-ci_name');
   			var state = $(this).attr('data-is_state');
-  			if(typeof(sigunguCode) == "undefined" || sigunguCode == "undefined"){
-  				sigunguCode = "";
-  			}
+  			if(typeof(sigunguCode) == 'undefined' || sigunguCode == 'undefined' || sigunguCode == 'null') sigunguCode = "";
   			if(state == 1){
 				var html = '<input type="button" value="돌아가기" onclick="initCitySearch();">';
   				for(var i in sigungu){
   					if(sigungu[i].areaCode == areaCode){
   						html += '<div class="item" data="'+ sigungu[i].areaCode +'" data2="'+ sigungu[i].sigunguCode +'" data-ci_name="'+ sigungu[i].name +'" data-lat="'+ sigungu[i].lat +'" data-lng="' + sigungu[i].lng + '" data-is_state="'+ sigungu[i].is_state +'">';
-  			            html += '<div class="img_box fl"><img src="./resources/img/city/'+sigungu[i].areaCode+'.jpg"></div>';
-  			            html += '<div class="info_box fl"><div class="info_title">'+sigungu[i].name+'</div><div class="info_sub_title">'+sigungu[i].name_en+'</div></div>';
+  			            html += '<div class="img_box"><img src="./resources/img/city/'+sigungu[i].areaCode+'.jpg"></div>';
+  			            html += '<div class="info_box"><div class="info_title">'+sigungu[i].name+'</div><div class="info_sub_title">'+sigungu[i].name_en+'</div></div>';
   			            html += '<div class="clear"></div></div>';
   					}
   				}
@@ -1985,6 +2073,8 @@
 			</div>
 			<a data-toggle="modal" href="#myModal"><div class="fl" id="plan_out_btn">공유하기</div></a>
 			<a href="SC_12?scd_sq=${scd_sq }"><div class="fl" id="plan_out_btn">저장&닫기</div></a>
+				<input type="button" id="connectChat" name="toggle" value="채팅창 보이기" />
+			    <div id="chat_div"></div>
 			<div class="clear"></div>
 		</div>
 		<div class="clear"></div>
@@ -2047,7 +2137,7 @@
 <input type="button" value="도시변경" onclick="javascript:openCitySearch();">
 </div>
 <div class="search_box">
-검색: <input id="search">
+<span>검색:</span>&nbsp; <input id="search">
 </div>
 <div class="theme_check">
     <label for="radio-1">자연</label>

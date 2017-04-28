@@ -187,7 +187,7 @@
                      aria-controls="profile" role="tab" data-toggle="tab">댓글</a></li>
                   <div class="plan-menu">
                   <a data-toggle="modal" href="#myModal">공유하기</a>&emsp;&emsp;
-                  <a href="">복사하기</a>&emsp;&emsp;
+                  <a href="javascript:copy_schedule(${scd_sq });">복사하기</a>&emsp;&emsp;
                   <a href="edit_schedule?scd_sq=${scd_sq }">수정하기</a>&emsp;&emsp;
                   <a href="">다운로드</a>
                   </div>
@@ -425,7 +425,6 @@
 </body>
 <script>
 var scd_sq=${scd_sq};
-var info_List=[];
 var key = "2pTN6y%2BhCGaVQL97quhdeM%2FW9ezdUvBNytbkKoT323qbc%2Ff5ao8fYoW2C31AgwacBVhy7PYHqvuwcnzprU4%2BNw%3D%3D";
 var url;
 var myLatLng;
@@ -436,37 +435,13 @@ var marker_no;
 var map=[];
 
   $(function(){
-     $.ajax({
-         type : "POST",
-         url : "scd_info",
-         async : false,
-         data :{
-            scd_sq : scd_sq 
-         },success : function(data){
-            console.log(data);
-            
-            $.each(data,function(index,item){
-               
-               info_List.push(item);
-            });
-               
-               console.log(info_List);
-               
-               
-         },
-         error : function(e){
-            console.log(e);
-         } 
-         });      
-              
       $.ajax({
          type : "POST",
-         url : "read_scd_info",
+         url : "get_daily_list",
          async : false,
          data :{
             scd_sq : scd_sq 
          },
-         dataType: "json",
          success : function(data){
              
             console.log(data);
@@ -494,9 +469,8 @@ var map=[];
                                                    
                   
                $.each(data,function(index,item){
-                  day_cnt= index;
-                  DAILY_CNT=item.DAILY_CNT;
-                  var areacode=item.AREA_CODE;
+            	   console.log("index: "+index);
+                   day_cnt= index;
                   /* var contentId=item.DTL_CONTENT_ID;
                   console.log(contentId);
                   var sigungucode;
@@ -505,35 +479,56 @@ var map=[];
                    
                   
                   html += '<tr class="white">';
-                  html += '<td><div class="scht_date">'+ item.daily_ymd +'</div>';
+                  html += '<td><div class="scht_date">'+ item.DAILY_YMD +'</div>';
                   html += '<div class="scht_day">DAY '+ item.DAILY_ORD +'</div></td>';                     
                   html += '<td class="scht_vtop">';
-                  html += '<div class="scht_city"><a href="sc_05?areacode='+areacode+'">'+ item.CITY_NM +'</a></div>'; 
+                  html += '<div class="scht_city">';
+                  
+                  var daily_sq = item.DAILY_SQ;
+                  $.ajax({
+                      type : "POST",
+                      url : "get_city_list",
+                      async : false,
+                      data :{
+                         daily_sq : daily_sq
+                      },
+                      success : function(data){
+                         $.each(data,function(index,item){	
+                        	 var sigungu_code = item.SIGUNGU_CODE;
+                        	 var city_nm = encodeURI(item.CITY_NM);
+                         	 if(typeof(sigungu_code) == 'undefined' || sigungu_code == 'undefined') sigungu_code = "";
+                        	 if(index == 0) html += '<a href="sc_05?areacode='+item.AREA_CODE+'&sigungucode='+sigungu_code+'&city_nm='+city_nm+'">'+ item.CITY_NM +'</a>';
+                        	 else html += ', <a href="sc_05?areacode='+item.AREA_CODE+'&sigungucode='+sigungu_code+'&city_nm='+city_nm+'">'+ item.CITY_NM +'</a>';
+                         });
+                      },
+                      error : function(e){
+                         console.log(e);
+                      } 
+                   }); 
+                  html += '</div>'; 
                   html += '<div class="scht_city_blank"></div></td>';
                   html += '<td class="scht_vtop">';                     
-                   
-                  console.log(DAILY_CNT);
-                  for(var i=0;i<item.DAILY_CNT;i++){
-                     
-                     console.log(info_List);
-                     
-                     console.log(info_List[i].dtl_content_id);
-                     
-                     var contentId=info_List[j].dtl_content_id;
-                     console.log(contentId);
-                     ReadApi(contentId); 
                   
-                     $.getJSON(url, function(data){ 
-                            
-                      }) 
-                      
-                    
-                  html += '<div class="scht_spotname">';
-                  html += '<b>'+(i+1)+'. '+'</b>'+info_List[j].place_nm+'</div>';
+                  var daily_ord = item.DAILY_ORD;
                   
-                  j=j+1;
-                  }
-                  
+                  $.ajax({
+                      type : "POST",
+                      url : "get_places",
+                      async : false,
+                      data :{
+                         scd_sq : scd_sq
+                         ,daily_sq : daily_ord
+                      },success : function(data){
+                         $.each(data,function(index,item){
+                        	 ReadApi(item.DTL_CONTENT_ID);
+                        	 html += '<div class="scht_spotname">';
+                             html += '<b>'+(index+1)+'. '+'</b>'+item.PLACE_NM+'</div>';
+                         });
+                      },
+                      error : function(e){
+                         console.log(e);
+                      } 
+                   }); 
                    
                   console.log("map    "+mapcount);
                   html += '</td>';
@@ -543,17 +538,10 @@ var map=[];
                   mapcount=mapcount+1
                   
                })
-               $.getJSON(url, function(data){
-                   console.log('success', data);     
-                  myLatLng={
-                         lat : parseFloat(data.response.body.items.item.mapy),
-                         lng : parseFloat(data.response.body.items.item.mapx)
-                   }   
-                      initMap(myLatLng,day_cnt+1);
-                         
-                   })
+               
                html += '</div></table></div>'; 
                $("#scd_info").html(html);
+               initMap();
                
          },
          error : function(e){
@@ -641,25 +629,7 @@ function ReadApi(contentId) { /* currentPage가 어디서 호출되어 온다 */
 	}
 
 
-function initMap(myLatLng,day_cnt) {
-   console.log(myLatLng);
-   
-   var count=0;
-   for(var i=0;i<day_cnt;i++){   
-      
-   var zoom = 7;
-   map[i] = new google.maps.Map(document.getElementById('map'+(1+count)), {
-      center : myLatLng,
-      zoom : zoom
-   });
-   
-   count=count+1;
-   }
-   
-   for(var i=0; i<map.length; i++){
-	   console.log(map[i]);
-   }
-   
+function initMap() {
         $.ajax({
          type: "post",
          url: "get_daily_list",
@@ -668,8 +638,33 @@ function initMap(myLatLng,day_cnt) {
          },
          async: false,
          success: function(data){
+        	 var count=0;
             $.each(data, function(index,item){
-               show_myMarkers(item.DAILY_ORD);
+            	var area_code = item.AREA_CODE;
+            	var sigungu_code = item.SIGUNGU_CODE;
+            	if(typeof(sigungu_code) == 'undefined' || sigungu_code == 'undefined' || sigungu_code == 'null') sigungu_code = "";
+            	$.ajax({
+                    type: "post",
+                    url: "get_citylatlng",
+                    data: {
+                    	area_code: area_code
+                    	,sigungu_code: sigungu_code
+                    },
+                    async: false,
+                    success: function(data){
+                    	console.log(data);
+                    	   var zoom = 7;
+                    	   map[count] = new google.maps.Map(document.getElementById('map'+(1+count)), {
+                    	      center : {lat: parseFloat(data.map_y), lng: parseFloat(data.map_x)},
+                    	      zoom : zoom
+                    	   });
+                    	   count=count+1;
+                    },
+                    error: function(e){
+                       console.log(e);
+                    }      
+                 })
+                show_myMarkers(item.DAILY_ORD);
              });
          },
          error: function(e){
@@ -696,6 +691,7 @@ function makeMarker(city){
 }
 
 function show_myMarkers(daily_ord){
+	console.log("do:   "+ daily_ord);
      var sq = {
         scd_sq: scd_sq,
         daily_sq: daily_ord
@@ -733,7 +729,7 @@ function show_myMarkers(daily_ord){
                 $.each(data,function(index,item){
                    var latLng = new google.maps.LatLng(parseFloat(item.MAP_Y), parseFloat(item.MAP_X));
                    path.push(latLng);
-                   mymarkerlist.push({lat: parseFloat(item.MAP_Y), lng: parseFloat(item.MAP_X)});
+                   mymarkerlist.push({lat: parseFloat(item.MAP_Y), lng: parseFloat(item.MAP_X), title: item.PLACE_NM});
                 });
                 for(var i=0; i<mymarkerlist.length; i++){
                    marker_no++;
@@ -745,21 +741,44 @@ function show_myMarkers(daily_ord){
                           draggable : false,
                           position : latLng,
                           map : map[daily_ord-1],
-                          title : "place"+(i+1),
-                          id : i+1,
+      					  title : (myloc_markers.length+1)+". "+mymarkerlist[i].title,
+      					  id : myloc_markers.length+1,
                           icon: "./resources/marker_img/number_"+marker_no+".png",
                           zIndex: 1000
                        });
                    myloc_markers.push(marker);
                    bounds.extend(marker.position);
                 }
-                map[daily_ord-1].fitBounds(bounds);
+                if(myloc_markers.length != 0){
+                	map[daily_ord-1].fitBounds(bounds);
+                	google.maps.event.addListenerOnce(map[daily_ord-1], 'bounds_changed', function() {
+            			if (this.getZoom() > 15) {
+            			    this.setZoom(15);
+            			}
+            		});
+                }
            }
         },
         error: function(e){
            console.log(e);
         }      
      })
+ }
+ 
+ function copy_schedule(scd_sq){
+	 $.ajax({
+			type : "post",
+			url : "copy_schedule",
+			data : { 
+				scd_sq: scd_sq
+			}
+			,success : function(data){
+				alert("일정이 복사되었습니다!");
+			},
+			error : function(e){
+				console.log(e);
+			} 
+	});//ajax
  }
 </script>
 
