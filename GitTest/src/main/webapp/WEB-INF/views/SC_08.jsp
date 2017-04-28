@@ -55,7 +55,15 @@
 <script src="./resources/js/bootstrap.js"></script>
 <script src="./resources/js/owl.carousel.min.js"></script>
 <script src="./resources/js/wow.js"></script>
-<script src="./resources/js/main.js"></script>  		
+<script src="./resources/js/main.js"></script>
+
+<style type="text/css">
+html, body {
+	overflow-x: hidden;
+}
+</style>
+
+  		
 <script type="text/javascript">
 
 //로그인& 조인 모달 

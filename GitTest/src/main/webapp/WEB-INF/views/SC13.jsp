@@ -378,7 +378,7 @@
     		var theme = $('input[type=radio][name=radio-1]:checked').val();
     		var theme2 = $('#select-1').val();
 			if(typeof(theme) == 'undefined') theme = '';
-			if(typeof(theme2) == 'undefined') theme2 = '';	
+			if(typeof(theme2) == 'undefined' || theme2 == '카테고리를 먼저 선택하세요') theme2 = '';	
     		theme2_change(theme, theme2);
     	}
     });
@@ -476,10 +476,14 @@
             });
         }
     });
-    $("#connectChat").trigger('click');    
+    $("#connectChat").trigger('click');
     $("#connectChat").css('opacity','0');
     $("#connectChat").css('pointer-events','none');
-	
+    $("#chat_div").chatbox("option", "boxManager").addMsg(false, ${user_id}+"님이 입장하셨습니다.");    
+    /* $(window).unload(function(){
+    	$("#chat_div").chatbox("option", "boxManager").addMsg(false, ${user_id}+"님이 퇴장하셨습니다.");
+    	alert('asdsad');
+    }); */
   });
   
   var map;
@@ -552,12 +556,14 @@
   	  		var last = $('.ymd:last').val();
   	  		var d = new Date(last);
   	  		d.setDate(d.getDate() + 1);
+			 var weekday = [' (일)',' (월)',' (화)',' (수)',' (목)',' (금)',' (토)'];
+			 var day = weekday[d.getDay()];
   	  		 var curr_date = '' + d.getDate();
   			 var curr_month = '' + (d.getMonth() + 1);
   			 var curr_year = d.getFullYear();
   			 if (curr_month.length < 2) curr_month = '0' + curr_month;
   			 if (curr_date.length < 2) curr_date = '0' + curr_date;
-  			 var date = curr_year + "-" + curr_month + "-" + curr_date;
+  			 var date = curr_year + "-" + curr_month + "-" + curr_date + day;
   			 var areacode = $('.areaCode:last').val();
   			 var sigungucode = $('.sigunguCode:last').val();
   			 var cityname = $('.day_city_name:last').val();
@@ -595,6 +601,7 @@
   	
   	function initCitySearch(){
   		var html = '';
+  		sigungu = [];
   		$.each(pop_cities, function(index, val){
       	  html += '<div class="item" data="'+ val.areaCode +'" data-ci_name="'+ val.name +'" data-lat="'+ val.lat +'" data-lng="' + val.lng + '" data-is_state="'+ val.is_state +'">';
             html += '<div class="img_box"><img src="./resources/img/city/'+val.areaCode+'.jpg"></div>';
@@ -654,6 +661,8 @@
 		$('input[type=radio][name=radio-1]').each(function(){
 	 		$(this).attr('checked',false);
 	 	})
+	 	$('#select-1').html('<option selected="selected">카테고리를 먼저 선택하세요</option>');
+	 	$('#select-1').attr('disabled', 'disabled');
 	}
 	
   function ordclick(){
@@ -1231,7 +1240,7 @@
 			theme2 = 'A0502';
 		}else if(theme == 'clip'){
 			$('#search').val("");
-		 	$('#select-1').remove();
+		 	$('#select-1').text('');
 			get_cliplist();
 			return;
 		}
@@ -1334,7 +1343,7 @@
 						+' width=200 height=120><br>'
 						+ '주소: ' + data.response.body.items.item.addr1+'<br>'
 						+ '<input type="button" value="자세히 보기" onclick="javascript:d_Data(' + data.response.body.items.item.contentid + ')"> '
-						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item.title+'\',\''+image+'\',\''+data.response.body.items.item.contentid+'\',\''+data.response.body.items.item.addr1+'\',\''+data.response.body.items.item[i].mapx+'\',\''+data.response.body.items.item[i].mapy+'\')">일정에 추가</button> '
+						+ '<button class="add_place" onclick="javascript:add_place(\''+data.response.body.items.item.title+'\',\''+image+'\',\''+data.response.body.items.item.contentid+'\',\''+data.response.body.items.item.addr1+'\',\''+data.response.body.items.item.mapx+'\',\''+data.response.body.items.item.mapy+'\')">일정에 추가</button> '
 						+ '<input type="button" value="채팅에 전송" onclick="javascript:place_to_chat(\''+data.response.body.items.item.contentid+'\',\''+data.response.body.items.item.title+'\')">'
 						+ '</div>';
 				$("#location_flag").before(content);
@@ -1551,7 +1560,7 @@
 					var image = data.response.body.items.item[i].firstimage;
 					if(typeof(image) == 'undefined' || image == 'undefined') image = "./resources/image/noimage.jpg";
 					if(typeof(data.response.body.items.item[i])!='undefined'){
-						if(data.response.body.items.item[i].title.includes(title)){
+						if(data.response.body.items.item[i].title.includes(title) && !(data.response.body.items.item[i].title.includes('2016'))){
 							content += '<div class="location" id="'+data.response.body.items.item[i].title
 								+'" value="'+data.response.body.items.item[i].title+'">'	
 							 	+ '<h4>'+ data.response.body.items.item[i].title+'</h4>'
@@ -1871,6 +1880,15 @@
     		var city_nm = item.CITY_NM;
     		if(index == 0) $('#start_ymd').val(item.DAILY_YMD);
     		if(typeof(city_nm) == 'undefined') city_nm = "";
+    			 var d = new Date(item.DAILY_YMD);
+    			 var weekday = [' (일)',' (월)',' (화)',' (수)',' (목)',' (금)',' (토)'];
+    			 var day = weekday[d.getDay()];
+      			 var curr_date = d.getDate();
+    			 if(curr_date < 10) curr_date = '0'+curr_date;
+    			 var curr_month = d.getMonth() + 1;
+    			 if(curr_month < 10) curr_month = '0'+curr_month;
+    			 var curr_year = d.getFullYear();
+    			 var date_ymd = curr_year + "-" + curr_month + "-" + curr_date + day;
     		  my_content += '<div id="Day'+item.DAILY_ORD+'" class="ordlist">'
     		    + '<input type="hidden" class="daily_sq" value="'+item.DAILY_SQ+'">'
     		    + '<input type="hidden" class="areaCode" value="'+item.AREA_CODE+'">'
@@ -1879,7 +1897,7 @@
     		    + '<input type="hidden" class="ymd" value="'+item.DAILY_YMD+'">'
     		    + '<input type="hidden" class="day" value="'+item.DAILY_ORD+'">'
     			+ 'DAY '+item.DAILY_ORD+' <br>'
-    		 	+ item.DAILY_YMD+' <br>'
+    		 	+ date_ymd +' <br>'
     			+ '<span id="city_names">'+item.CITY_NM+'</span>'
     			+ '<br>'
     			+ '</div>';
@@ -1910,10 +1928,19 @@
   	  var my_content = '';
   	  $.each(data, function(index,item){
   		var city_nm = item.CITY_NM;
+  		var d = new Date(item.DAILY_YMD);
+		 var weekday = [' (일)',' (월)',' (화)',' (수)',' (목)',' (금)',' (토)'];
+		 var day = weekday[d.getDay()];
+		 var curr_date = '' + d.getDate();
+	     var curr_month = '' + (d.getMonth() + 1);
+		 var curr_year = d.getFullYear();
+		 if (curr_month.length < 2) curr_month = '0' + curr_month;
+		 if (curr_date.length < 2) curr_date = '0' + curr_date;
+		 var date = curr_year + "-" + curr_month + "-" + curr_date + day;
   		if(typeof(city_nm) == 'undefined') city_nm = "";
   		  my_content += '<div class="alterDaylist" id="'+item.DAILY_ORD+'" daily_sq="'+item.DAILY_SQ+'" daily_ord="'+item.DAILY_ORD+'" daily_ymd="'+item.DAILY_YMD+'" city_nm="'+item.CITY_NM+'">'
   			+ 'DAY<span id="alter_day">'+item.DAILY_ORD+'</span><br>'
-  		 	+ '<div id="daily_date">'+item.DAILY_YMD+'</div>'
+  		 	+ '<div id="daily_date">'+date+'</div>'
   			+ '<div id="city_names">'+item.CITY_NM+'</div>'
   			+ '<input type="button" value="삭제" onclick="javascript:delete_day(\''+item.DAILY_SQ+'\',\''+item.DAILY_ORD+'\');">'
   			+ '<br>'

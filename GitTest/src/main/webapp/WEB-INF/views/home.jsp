@@ -51,6 +51,10 @@
 	padding: 20px;
 }
 
+html, body {
+	overflow-x: hidden;
+}
+
 /* div#OR {
 	height: 30px;
 	width: 30px;
