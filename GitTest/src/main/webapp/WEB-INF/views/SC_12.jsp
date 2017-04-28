@@ -547,8 +547,6 @@ var map=[];
             scd_sq : scd_sq 
          },
          success : function(data){
-             
-            console.log(data);
             //여행일수 카운트 
             var cnt=0;
             //여행 일정 카운트
@@ -573,7 +571,6 @@ var map=[];
                                                    
                   
                $.each(data,function(index,item){
-            	   console.log("index: "+index);
                    day_cnt= index;
                   /* var contentId=item.DTL_CONTENT_ID;
                   console.log(contentId);
@@ -634,7 +631,6 @@ var map=[];
                       } 
                    }); 
                    
-                  console.log("map    "+mapcount);
                   html += '</td>';
                   html += '<td class="scht_vtop">';
                   html += '<div class="scht_htname"><div class="map" id="map'+mapcount+'"></div></div></td>';                  
@@ -722,7 +718,6 @@ function ReadApi(contentId) { /* currentPage가 어디서 호출되어 온다 */
 				"scd_sq" : ${scd_sq}
 				,"searchId" : checkId
 		}
-		console.log(data);
 		ws.send(JSON.stringify(data));
 		
 		return false;
@@ -759,7 +754,6 @@ function initMap() {
                     },
                     async: false,
                     success: function(data){
-                    	console.log(data);
                     	   var zoom = 7;
                     	   map[count] = new google.maps.Map(document.getElementById('map'+(1+count)), {
                     	      center : {lat: parseFloat(data.map_y), lng: parseFloat(data.map_x)},
@@ -798,7 +792,6 @@ function makeMarker(city){
 }
 
 function show_myMarkers(daily_ord){
-	console.log("do:   "+ daily_ord);
      var sq = {
         scd_sq: scd_sq,
         daily_sq: daily_ord
@@ -890,8 +883,6 @@ function show_myMarkers(daily_ord){
  
  function edit_form(){
 	 var scd_sq = parseInt($('#scd_sq').val());
-	 console.log(typeof(scd_sq));
-	 console.log(scd_sq);
 	 var d = new Date($('#start_ymd').val());
 	 var curr_date = d.getDate();
 	 var curr_month = d.getMonth() + 1;
@@ -902,6 +893,7 @@ function show_myMarkers(daily_ord){
 	 var scd_theme = $('input[name=scd_theme]:checked').val();
 	 var scd_season = $('input[name=scd_season]:checked').val();
 	 var public_fl = $('input[name=public_fl]:checked').val();
+	 var day_cnt = $('.scht_day').length;
 	 
 	 $.ajax({
 			type : "post",
@@ -914,6 +906,7 @@ function show_myMarkers(daily_ord){
 	 			,scd_theme: scd_theme
 	 			,public_fl: public_fl
 	 			,start_ymd: start_ymd
+	 			,day_cnt: day_cnt
 			},
 			success : function(data){
 			},
