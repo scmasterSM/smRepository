@@ -1,4 +1,5 @@
 /* @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css); */
+@import url(http://fonts.googleapis.com/earlyaccess/nanumpenscript.css);
 @import url(http://fonts.googleapis.com/earlyaccess/kopubbatang.css);
 
 
@@ -11,6 +12,10 @@ body{
 	margin: auto;
 }
 
+.item_1{
+	background-color:green;
+}
+
 .row.carousel-holder{
 	width: 800px;
 	margin: auto;
@@ -18,7 +23,7 @@ body{
 
 #mainContent{
 	font-family : 'KoPub Batang', serif;
-	
+	/* font-family: 'Nanum Pen Script', cursive;  */
 }
 
  .tab-content{
@@ -193,7 +198,7 @@ background-color: #00aeef;
   padding: 11px 0;
 }
 .form-inline .form-control, .form-inline .form-control {
-	background: none repeat scroll 0 0 #eeeeee;
+  background: none repeat scroll 0 0 #eeeeee;
   border-radius: 1px;
   color: #333;
   font-style: italic;
@@ -220,20 +225,28 @@ background-color: #00aeef;
 .page-title {
 	padding-top: 70px;
 }
+
+
 .page-title h5{
 	font-weight: 300;
 	text-transform: uppercase;
 	margin-bottom: 0
 }
+
+
 .page-title h2 {
   font-size: 25px;
   font-weight: 800;
   margin-top: 5px;
   text-transform: uppercase;
 }
+
+
 .page-title h2 span{
 	color: #00ADEF
 }
+
+
 .page-title p {
   color: #666666;
   line-height: 30px;
@@ -499,7 +512,7 @@ background-color: #00aeef;
 	margin-top: 30px
 }
 .more-jobs a {
-   background: none repeat scroll 0 0 #d1d1d1;
+  background: none repeat scroll 0 0 #d1d1d1;
   color: #666666;
   padding: 14px 22px;
   border-radius: 2px;
@@ -524,7 +537,7 @@ background-color: #00aeef;
   text-transform: uppercase;
 }
 .job-add a {
- background: none repeat scroll 0 0 #00aeef;
+  background: none repeat scroll 0 0 #00aeef;
   border-radius: 5px;
   color: #fff;
   display: inline-block;
@@ -578,9 +591,9 @@ background-color: #00aeef;
 }
 
 .footer-area{
-	background: #000;
+	/* background: #000; */
 	border-top: 4px solid #00AEEF;
-	padding-bottom: 20px
+	padding-bottom: 0px
 
 }
 .footer{

@@ -78,5 +78,16 @@
 			USER_ID=#{USER_ID}
 			
 	</delete>
+	
+   <!-- Read Review All 리스트 가져오기 --> 
+	<select id="readReview_all" resultType="Review">
+		SELECT
+			REV_SQ
+			, USER_ID
+			, CONTENT_ID
+			, REV_TXT
+		FROM 
+			SM_REVIEW_TB
+	</select>
 
 </mapper>

@@ -26,4 +26,6 @@ public interface ReviewMapper {
 	
 	public int deleteReview(Review review);
 	
+	public ArrayList<Review> readReview_all();
+	
 }

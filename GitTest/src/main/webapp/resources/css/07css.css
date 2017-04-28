@@ -1,4 +1,8 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumpenscript.css);
+@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css); 
+@import url(//fonts.googleapis.com/earlyaccess/nanumgothiccoding.css); 
 @CHARSET "UTF-8";
+
 
 
 .map {
@@ -92,5 +96,14 @@ pre{
     border: 1px solid #ccc;
     border-radius: 4px;
 	white-space: pre-line;
+}
+
+.col-lg-8 {
+	/* font-family: 'Nanum Pen Script', cursive; */
+	font-family: 'Nanum Gothic Coding', monospace; 
+}
+
+#placeImg {
+	border-radius : 10px;
 }
 
