@@ -451,7 +451,6 @@ html, body {
 	} ];
 
 	function getSigungu(areaCode) {
-		var key = "2pTN6y%2BhCGaVQL97quhdeM%2FW9ezdUvBNytbkKoT323qbc%2Ff5ao8fYoW2C31AgwacBVhy7PYHqvuwcnzprU4%2BNw%3D%3D";
 		var sigunguCode;
 		var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode?ServiceKey="
 				+ key
@@ -563,7 +562,6 @@ html, body {
 	//DB에서 불러온 인기도시
 	function getPoppular_city() {
 		areaCode = "";
-		var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
 		var sigunguCode;
 		var content2 = '';
 		$
@@ -1108,7 +1106,7 @@ html, body {
 					<div id="mainContent">
 						<h2 id ="h2h2">
 							<!-- 내가 사는 이 도시가 <br> 새롭게 보이기 시작했다 -->
-							 문득 <br> 여행이 하고 싶어졌다
+							 익숙한 이 도시를 <br> 새롭게 바라보고 싶어졌다
 						</h2>
 					</div>
 					<br> <br> <br> <br> <br>
@@ -1139,7 +1137,7 @@ html, body {
 				data-wow-delay="1s">
 				<h3>Let's plan with Travel Maker!</h3>
 				<!-- <h2>여행은 하고 싶은데 어디를 가야할지 고민이라면?</h2> -->
-				<h2>여행 계획이 고민이라면?</h2>
+				<h2>여행은 하고싶은데 계획이 고민이라면?</h2>
 				<!-- <p>전국 163개 도시의 10,000개의 관광명소, 음식점, 쇼핑 정보를 확인하세요.</p> -->
 			</div>
 			<div class="row how-it-work text-center">
