@@ -493,20 +493,20 @@
 	</div> -->
 
 
-	<div class="slider-area">
+<!-- 	<div class="slider-area">
 		<div class="slider">
 			<div id="bg-slider1 class="owl-carousel owl-theme">
 
 				<div class="item_12">
 					 <img src="./resources/image/voyage.png" alt=""> 
 				</div>
-			<!-- 	<div class="item">
+				<div class="item">
 					<img src=""
 						alt="The Last of us">
 				</div>
 				<div class="item">
 					<img src="" alt="">
-				</div> -->
+				</div>
 
 			</div>
 		</div>
@@ -516,9 +516,9 @@
 					class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
 					<br>
 					<div id="mainContent">
-						<!-- <h2>
+						<h2>
 							나만의 일정을<br> 쉽게 만들어 보세요 
-						</h2> -->
+						</h2>
 						<br><br>
 					</div>
 					<div class="content-area_1">
@@ -527,8 +527,8 @@
 								data-wow-delay="1s">
 								<a href="new_schedule" class="btn btn-info" role="button">새로운
 									일정 만들기</a> <a href="SC_10" class="btn btn-info" role="button">나의 일정 보기</a>
-								<!-- <button type="button" class="btn btn-primary">Primary</button>
-  <button type="button" class="btn btn-success">Success</button> -->
+								<button type="button" class="btn btn-primary">Primary</button>
+  <button type="button" class="btn btn-success">Success</button>
 							</div>
 						</div>
 					</div>
@@ -536,10 +536,38 @@
 				</div>
 			</div>
 		</div>
+	</div> -->
+	<style type="text/css">
+	 @import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+.section-30 {
+	background-image: url(./resources/image/otherpage/bg_11.png);
+	background-repeat: repeat-y;
+	background-size: 100%;
+}
+h1 {
+	font-family: 'Hanna', serif;
+	color : gray;
+	font-size: -webkit-xxx-large;
+}
+
+</style>
+	<section
+		class="section-30 section-sm-40 section-md-66 section-lg-bottom-90 bg-gray-dark page-title-wrap">
+	<div class="shell">
+		<div class="page-title" style="height: 400px;">
+			<div class="container" style="margin: auto; margin-top: 85px;">
+				<h1 id="sc_10_text"style="text-align:center;">Make a new plan</h1>
+			</div>
+		</div>
 	</div>
+	</section>
+	<br><br><br>
+<center>	
 
-
-	<center><h5>여행 자들의 일정 보기</h5></center>
+	<a href="new_schedule" class="btn btn-info" role="button">새로운
+	일정 만들기</a> <a href="SC_10" class="btn btn-info" role="button">나의 일정 보기</a>
+	<br><br>
+	<h2>다른 일정 둘러보기</h2></center>
 
 <div class="content">
 	<div class="wrap">
