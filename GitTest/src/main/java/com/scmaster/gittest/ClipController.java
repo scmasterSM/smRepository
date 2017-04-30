@@ -51,7 +51,7 @@ public class ClipController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="clipLiked", method=RequestMethod.POST)
+	@RequestMapping(value="insertLiked", method=RequestMethod.POST)
 	public int clipLiked(Liked Liked, HttpSession session){
 		String user_id=(String)session.getAttribute("user_id");
 		Liked.setUSER_ID(user_id);

@@ -55,7 +55,7 @@
 		VALUES
 		(
 			SM_LIKED_TB_LIKED_SQ.nextval
-			, #{LIKED_SQ}
+			
 			, #{USER_ID}
 			, #{SCD_SQ}		 
 		)
