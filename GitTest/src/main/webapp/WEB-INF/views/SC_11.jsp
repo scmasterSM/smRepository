@@ -1396,6 +1396,5 @@ function insertLike(scd_sq) {
 window.onload=function(){
 	read_SCD();
 }
-</script>
-
+</script> 
 </html>
