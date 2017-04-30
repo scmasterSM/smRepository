@@ -6,7 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%-- <%@include file="joinForm.jsp"%> --%>
 
-<title>SC_11화면</title>
+<title>Travle Maker</title>
 <meta name="description" content="company is a free job board template">
 <meta name="author" content="Ohidul">
 <meta name="keyword" content="html, css, bootstrap, job-board">
@@ -33,7 +33,12 @@
 <link rel ="stylesheet" href ="./resources/css/11css.css"> 
 <script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
 <script src="./resources/js/jquery.min.js"></script> 
-
+<!--Stylesheets-->
+	<link href="./resources/css/jquery.modal.css" type="text/css" rel="stylesheet" />
+	
+	<!--jQuery-->
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="./resources/js/jquery.modal.js"></script>
 <script>
 	window.jQuery
 			|| document
@@ -1088,7 +1093,10 @@ function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어
 
 
 //////////////////////////////////////전체 스케줄 호출////////////////////////////
-$(function(){
+/* $(function(){ */
+function read_SCD() {
+		
+	
 	$.ajaxSetup({
         async: false
     });
@@ -1130,7 +1138,7 @@ $(function(){
 							like=l_List[i].liked_SQ							
 						} 
 					}					
-					html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';					
+					html += '</a><div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div>';					
 					html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
 					html += '</div></li>';
 					
@@ -1153,9 +1161,9 @@ $(function(){
 							like=l_List[i].liked_SQ							
 						} 
 					}					
-					html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
-						html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
-						html += '</div></li>';
+					html += '</a><div id="like_box" class="like_box"><a href="javascript:insertLike()" onclick="return false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div>';
+					html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '</div></li>';
 				
 					
 				
@@ -1216,8 +1224,8 @@ $(function(){
 		}
 	}); 
     
-});
-
+/* }); */
+}
 //ajax 페이징
 function paging(page) {
 	
@@ -1355,8 +1363,39 @@ function paging(page) {
 	}); 
     
 }
-
-
+function insertLike(scd_sq) { 
+         
+        $.ajax({
+          type : "POST",
+          url : "insertLiked",
+          data :{
+        	  SCD_SQ : scd_sq 
+          }, 
+          success : function(data){
+             console.log(data);
+              if(data==1){
+             	modal({
+     				type: 'success',
+     				title: '좋아요',
+     				text: '선택한 일정에 좋아요!',
+             	}); 
+             }else{
+          	   modal({
+     				type: 'error',
+     				title: '좋아요 취소',
+     				text: '선택한 일정에 좋아요 해제!',
+     			});
+             }     
+          },
+          error : function(e){
+             console.log(e);
+          } 
+       })
+       read_SCD();
+}
+window.onload=function(){
+	read_SCD();
+}
 </script>
 
 </html>
