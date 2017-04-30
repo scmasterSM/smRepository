@@ -668,6 +668,7 @@
   function ordclick(){
 	  $(".ordlist").on("click", function(){
 			init_search_menu();
+  			msgMarkers = [];
 			
 			var div_id = $(this).attr('id');
 			var target = "#"+div_id;
@@ -1621,6 +1622,7 @@
   	function city_change_event(){
   		$('.item').on('click', function(){
   			init_search_menu();
+  			msgMarkers = [];
   			var areaCode = $(this).attr('data');
   			var sigunguCode = $(this).attr('data2');
   			var name = $(this).attr('data-ci_name');
@@ -1768,6 +1770,7 @@
   		$("#sortable").sortable("enable");
 	  	$('.ordlist:first').trigger('click');
 		init_search_menu();
+		msgMarkers = [];
   	}
   	
   	function daily_date_change(){
