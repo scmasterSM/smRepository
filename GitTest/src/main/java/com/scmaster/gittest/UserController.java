@@ -53,16 +53,17 @@ public class UserController {
 				if(user2.getPassword().equals(password)){
 					session.setAttribute("user_id", user2.getUser_id());
 					return "success";
-				}else{
+				}else {
 					model.addAttribute("loginErr", "비밀번호가 일치 하지 않습니다.");
 					return "fail";
 				}
-			}else{
+			}else {
 				model.addAttribute("loginErr", "로그인 정보가 틀렸습니다.");
 				return "fail";
 		}
 		
 	}
+
 	
 	//현재 로그아웃 시 홈화면으로 돌아가도록 처리되어있음 
 	@RequestMapping(value="logout", method=RequestMethod.GET)

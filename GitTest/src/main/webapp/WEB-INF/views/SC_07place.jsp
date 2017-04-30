@@ -642,7 +642,183 @@ function f_Data(){
          })         
       });
       
-   });
+      
+      $("#joinForm").on("click", function() { /* 조인버튼 클릭시 모달   */
+			$("#regAtag").trigger("click");
+		})
+		$("#loginForm").on("click", function() { /*로그인 버튼 클릭시 모달 */
+			$("#loginAtag").trigger("click");
+		}) 
+      
+		//로그인 
+		$("#submit_button").on("click", function() {
+
+			var user_id1 = $("#user_id").val();
+			var password1 = $("#password").val();
+
+			if (user_id1.length == 0) {
+				alert('아이디를 입력해주세요');
+				return false;
+			}
+			if (password1.length == 0) {
+				alert('비밀번호를 입력해주세요');
+				return false;
+			}
+
+			$.ajax({
+				type : "post",
+				url : "login",
+				data : {
+					user_id : user_id1,
+					password : password1
+				},
+				dataType : 'text',
+
+				success : function(data) {
+					if (data == "success") {
+						$('#myModal').modal('hide');
+						window.location.href = "./";
+
+					} else {
+						alert("비밀번호가 맞지 않습니다.");
+					}
+				},
+				error : function(e) {
+					console(e);
+				}
+			})
+		});
+
+		//조인
+
+		$("#submit_join").on("click", function() {
+
+			var user_id2 = $("#user_id1").val();
+			var password2 = $("#password1").val();
+			var password3 = $("#password2").val();
+			var email1 = $("#email").val();
+			var user_sex1 = $("#user_sex").val();
+
+			var sung = "선택";
+
+			//alert(user_sex1);
+			//$('#user_sex option:selected').val();
+			//$('select[name=user_sex]').val();
+
+			if (user_id2.length == 0) {
+				alert('아이디를 입력해주세요');
+				return false;
+			}
+			if (password2.length == 0) {
+				alert('비밀번호를 입력해주세요');
+				return false;
+			}
+			if (email1.length == 0) {
+				alert('이메일을 입력해주세요');
+				return false;
+			}
+
+			if (user_sex1 == sung) {
+				alert('성별을 입력해주세요');
+				return false;
+			}
+
+			if (password2 != password3) {
+				alert('비밀번호 확인 시 비밀번호가 일치하지 않습니다.');
+				return false;
+			}
+
+			$.ajax({
+				type : "post",
+				url : "join",
+				data : {
+					user_id : user_id2,
+					password : password2,
+					email : email1,
+					user_sex : user_sex1
+				},
+				dataType : 'text',
+
+				success : function(data) {
+					console.log(data);
+					if (data == "success") {
+						alert("가입처리가 완료 되었습니다.");
+						$('#myModal').modal('hide');
+						window.location.href = "./";
+					} else {
+						alert("가입 처리가 되지 않았습니다.");
+					}
+				},
+				error : function(e) {
+					console(e);
+				}
+			})
+		});
+		
+		
+		//정보수정
+		
+		$("#editForm").on("click", function() {
+
+			var user_id2 = $("#user_id_ed").val();
+			var password2 = $("#password1_ed").val();
+			var password3 = $("#password2_ed").val();
+			var email1 = $("#email_ed").val();
+			var user_sex1 = $("#user_sex_ed").val();
+
+
+			//alert(user_sex1);
+			//$('#user_sex option:selected').val();
+			//$('select[name=user_sex]').val();
+
+
+			if (password2.length == 0) {
+				alert('비밀번호를 입력해주세요');
+				return false;
+			}
+			if (email1.length == 0) {
+				alert('이메일을 입력해주세요');
+				return false;
+			}
+
+			if (password2 != password3) {
+				alert('비밀번호 확인 시 비밀번호가 일치하지 않습니다.');
+				return false;
+			}
+
+			$.ajax({
+				type : "post",
+				url : "edit",
+				data : {
+					user_id : user_id2,
+					password : password2,
+					email : email1,
+					//user_sex : user_sex1
+				},
+				dataType : 'text',
+
+				success : function(data) {
+					console.log(data);
+					if (data == "success") {
+						alert("회원 정보 수정 되었습니다.");
+						$('#myModal').modal('hide');
+						window.location.href = "./";
+					} else {
+						alert("정보 수정이 실패하였습니다.");
+					}
+				},
+				error : function(e) {
+					console(e);
+				}
+			})
+		});
+		
+		
+		
+      
+      
+      
+   });//레디펑션 
  
  
 
@@ -869,7 +1045,7 @@ $.ajax({
 						</c:otherwise>
 					</c:choose>
 
-					<!--로그인&조인 모달  -->
+				<!--로그인&조인 모달  -->
 					<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 						aria-labelledby="myLargeModalLabel" aria-hidden="true">
 						<div class="modal-dialog modal-lg">
@@ -1037,14 +1213,13 @@ $.ajax({
 															<div class="col-sm-10">
 																<div class="row">
 																	<div class="col-md-3">
-																		<select class="form-control" id="user_sex_ed">
-																			<option value="m">남성</option>
-																			<option value="f">여성</option>
+																		<select class="form-control" id="user_sex_ed" disabled="disabled">
+																			<option value="">${sessionScope.user_sex}</option>
 																		</select>
 																	</div>
 																	<div class="col-md-9">
 																		<input type="text" class="form-control"
-																			id="user_id_ed" name="user_id_ed" placeholder="ID" />
+																			id="user_id_ed" name="user_id_ed" placeholder="ID" value="${sessionScope.user_id}" disabled="disabled" />
 																	</div>
 																</div>
 															</div>
@@ -1062,7 +1237,7 @@ $.ajax({
 																Password</label>
 															<div class="col-sm-10">
 																<input type="password" class="form-control"
-																	id="password_ed" placeholder="Password" />
+																	id="password1_ed" placeholder="Password" />
 															</div>
 														</div>
 														<div class="form-group">
@@ -1076,10 +1251,10 @@ $.ajax({
 														<div class="row">
 															<div class="col-sm-2"></div>
 															<div class="col-sm-10">
-																<button type="button" class="btn btn-primary btn-sm">
-																	Save & Continue</button>
-																<button type="button" class="btn btn-default btn-sm">
-																	Cancel</button>
+																<button type="button" class="btn btn-primary btn-sm" id="editForm">
+																	Edit</button>
+																<input type="reset" class="btn btn-default btn-sm"
+																	value="Reset" />
 															</div>
 														</div>
 													</form>
@@ -1105,7 +1280,7 @@ $.ajax({
 							</div>
 						</div>
 					</div>
-
+				
 
 				</div>
 
