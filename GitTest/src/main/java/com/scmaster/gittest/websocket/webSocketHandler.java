@@ -1,64 +1,120 @@
 package com.scmaster.gittest.websocket;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.internal.LinkedTreeMap;
+import com.scmaster.gittest.dao.ScheduleDAO;
 import com.scmaster.gittest.dao.ShareDAO;
 
-public class webSocketHandler implements WebSocketHandler {
-	
+public class webSocketHandler extends TextWebSocketHandler {
+
 	private static Logger logger = LoggerFactory.getLogger(webSocketHandler.class);
 
-	private ArrayList<HashMap<String, Object>> sessionList = new ArrayList<>();
+	private final List<WebSocketSession> connectedUsers;
 
 	@Autowired
-	ShareDAO dao;
+	private ShareDAO shareDao;
 
-	@Override
-	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		logger.info(session.getId() + "connection!");
-		logger.info(session.getLocalAddress().getAddress().toString());
-		logger.info(session.getRemoteAddress().getAddress().toString());
+
+	public webSocketHandler() {
+		this.logger.info("create WebSocketHandler Instance!");
+		connectedUsers = new CopyOnWriteArrayList<>();
 	}
 
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-		logger.info(session.getId() + "closed! / status: " + status);
-		WebSocketSession removeSession = null;
-		for (HashMap<String, Object> hashMap : sessionList) {
-			if (hashMap.get("session") == session)
-				removeSession = session;
+		System.out.println(status);
+		try {
+			super.afterConnectionClosed(session, status);
+		} catch (Exception e) {
+			System.out.println("afterConnectionClosed : ");
+			e.printStackTrace();
 		}
-		if (removeSession != null)
-			sessionList.remove(removeSession);
+
+		this.logger.info("remove session!");
+		connectedUsers.remove(session);
 	}
 
 	@Override
-	public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+	public void afterConnectionEstablished(WebSocketSession session) {
+		try {
+			super.afterConnectionEstablished(session);
+		} catch (Exception e) {
+			System.out.println("afterConnectionEstablished : ");
+			e.printStackTrace();
+		}
+		logger.info(session.getId() + " 번 소켓의 remoteAddress : " + session.getRemoteAddress().toString());
+		connectedUsers.add(session);
+	}
+
+	@Override
+	public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) {
 		Gson gson = new Gson();
 		String msg = (String) message.getPayload();
 		Map<String, Object> msgMap = gson.fromJson(msg, Map.class);
-
+		System.out.println(msgMap.get("doWhat"));
+		
 		switch ((String) msgMap.get("doWhat")) {
+		
+		case "sortable" :
+			int daily_ord = changeDailyOrd(msgMap);
+			broadcast(session, "sortable", daily_ord);
+			break;
+
+		case "add_day":
+			broadcast(session, "add_day", "add_day");
+			break;
+
+		case "ordclick":
+			broadcast(session, "ordclick", msgMap.get("data"));
+			break;
+
+		case "delete_place":
+			delete_place(msgMap, session);
+			break;
+
+		case "add_place":
+			daily_ord = changeDailyOrd(msgMap);
+			broadcast(session, "add_place", daily_ord);
+			break;
+
+		case "update_bgt":
+			broadcast(session, "update_bgt", "update_bgt");
+			break;
+
+		case "closeAlt":
+			broadcast(session, "closeAlt", "closeAlt");
+			break;
+
+		case "delete_day":
+			broadcast(session, "delete_day", "delete_day");
+			break;
 
 		case "webSocketlogIn":
 			webSocketlogIn(msgMap, session);
 			break;
-
-		case "addShareAuthority":
-			addShareAuthority(msgMap, session);
+			
+		case "update_scd":
+			broadcast(session, "update_scd", msgMap.get("data"));
+			break;
+			
+		case "chat" :
+			broadcast(session, "chat", msgMap.get("data"));
 			break;
 		}
 
@@ -66,6 +122,7 @@ public class webSocketHandler implements WebSocketHandler {
 
 	@Override
 	public void handleTransportError(WebSocketSession session, Throwable error) {
+		System.out.println("error msg");
 	}
 
 	@Override
@@ -73,64 +130,88 @@ public class webSocketHandler implements WebSocketHandler {
 		return false;
 	}
 
-	private void broadcast(String message) {
-		for (HashMap<String, Object> hashMap : sessionList) {
-			WebSocketSession client = (WebSocketSession) hashMap.get("session");
-			if (client.isOpen()) {
+	private void broadcast(WebSocketSession session, String doWhat, Object obj) {
+		Gson gson = new Gson();
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("doWhat", doWhat);
+		map.put("data", obj);
+		String message = gson.toJson(map);
+		for (WebSocketSession webSocketSession : connectedUsers) {
+			if (webSocketSession.isOpen())
 				try {
-					client.sendMessage(new TextMessage(message));
+					webSocketSession.sendMessage(new TextMessage(message));
 				} catch (IOException e) {
+					System.out.println("broadcast : ");
 					e.printStackTrace();
 				}
-			} // if
 		} // for
 	}
 
-	public void addSessionList(String loginId, WebSocketSession session) {
-		if (sessionList.size() != 0) {
-			for (HashMap<String, Object> hashMap : sessionList) {
-				if (hashMap.get("loginId").equals(loginId)) {
-					hashMap.put("session", session);
-				} else {
-					HashMap<String, Object> newHashMap = new HashMap<>();
-					newHashMap.put("loginId", loginId);
-					newHashMap.put("session", session);
-					sessionList.add(newHashMap);
-				}
-			} // for
+	public Object convertObj(Map<String, Object> msgMap, Object castObj) {
+		Gson gson = new Gson();
+		Object obj = (Object) msgMap.get("data");
+		String str = obj.toString();
+		Object realObj = null;
+		if (castObj instanceof Integer) {
+			HashMap<String, Object> map = gson.fromJson(str, HashMap.class);
+			Object[] objs = map.keySet().toArray();
+			realObj = doubleToInt((Double) map.get(objs[0]));
 		} else {
-			HashMap<String, Object> newHashMap = new HashMap<>();
-			newHashMap.put("loginId", loginId);
-			newHashMap.put("session", session);
-			sessionList.add(newHashMap);
+			try {
+				realObj = gson.fromJson(str, castObj.getClass());
+			} catch (JsonSyntaxException e) {
+				LinkedTreeMap<String, Object> lmap = (LinkedTreeMap<String, Object>) msgMap.get("data");
+				realObj = lmap;
+			}
 		}
-	}
-	
-	public void webSocketlogIn(Map<String, Object> msgMap, WebSocketSession session){
-		String loginId = (String) msgMap.get("loginId");
-		if (loginId != null)
-			addSessionList((String) msgMap.get("loginId"), session);
-		logger.info(loginId + "님이 로그인 하셨습니다.");
-		broadcast(loginId + "님이 로그인 하셨습니다.");
-	}
-	
-	public void addShareAuthority(Map<String, Object> msgMap, WebSocketSession session){
-		String searchId = (String) msgMap.get("searchId");
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("searchId", searchId);
-		Double d = (Double) msgMap.get("scd_sq");
-		map.put("scd_sq", Integer.parseInt(String.valueOf(Math.round(d))));
-		// 저장하기 전에 먼저 있는지 없는지 확인해야함
-		int result = dao.addShareAuthority(map);
-		if(result == 1){
-			logger.info(searchId + "님에게 일정을 공유 권한을 주셨습니다.");
-			broadcast(searchId + "님과 함께 일정을 공유하실 수 있습니다.");
-			
-		}
-		else{
-			logger.info(searchId + "님과 일정 공유 실패");
-			broadcast("공유 실패");
-		}
+		return realObj;
 	}
 
+	public int doubleToInt(Double d) {
+		return Integer.parseInt(String.valueOf(Math.round(d)));
+	}
+
+	public void webSocketlogIn(Map<String, Object> msgMap, WebSocketSession session) {
+		HashMap<String, Object> map = new HashMap<>();
+		map = (HashMap<String, Object>) convertObj(msgMap, map);
+		String userId = (String) map.get("loginId");
+		int scd_sq = doubleToInt((Double) map.get("scd_sq"));
+		String inform = scd_sq + " 의 일정에 " + userId + "님이 로그인 하셨습니다.";
+		logger.info(inform);
+		broadcast(session, "loginSuccess", inform);
+	}
+
+	public void delete_place(Map<String, Object> msgMap, WebSocketSession session) {
+		Object o = msgMap.get("data");
+		int day = 0;
+		if (o instanceof Double)
+			day = doubleToInt((Double) o);
+		else if (o instanceof String)
+			day = Integer.parseInt((String) o);
+		broadcast(session, "delete_place", day);
+	}
+
+	/*public void add_place(Map<String, Object> msgMap, WebSocketSession session) {
+		Object o = msgMap.get("data");
+		int dtl_sq = 0;
+		if (o instanceof String)
+			dtl_sq = Integer.parseInt((String) o);
+		else if (o instanceof Double)
+			dtl_sq = doubleToInt((Double) o);
+		int daily_sq = shareDao.get_Daily_Scd(dtl_sq).getDaily_sq();
+		int daily_ord = shareDao.get_daily_ord(daily_sq);
+		broadcast(session, "add_place", daily_ord);
+	}*/
+	
+	public int changeDailyOrd(Map<String, Object> msgMap){
+		Object o = msgMap.get("data");
+		int dtl_sq = 0;
+		if (o instanceof String)
+			dtl_sq = Integer.parseInt((String) o);
+		else if (o instanceof Double)
+			dtl_sq = doubleToInt((Double) o);
+		int daily_sq = shareDao.get_Daily_Scd(dtl_sq).getDaily_sq();
+		int daily_ord = shareDao.get_daily_ord(daily_sq);
+		return daily_ord;
+	}
 }
