@@ -74,7 +74,7 @@ $('#myModal_Edit').modal('show');
 //로그아웃 버튼 클릭시 처리 함수 
 function logout(){
 	location.href = "logout";
-}
+};
 
 
 window.onload=function(){
@@ -86,8 +86,10 @@ function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어
 	var form=document.getElementById("pagingForm");
 	var page=document.getElementById("page"); 
 	page.value=currentPage; 
-	form.submit();
-}
+	paging(page.value);
+};
+
+var login_id=${sessionScope.user_id};
 
 var check = 0;
 var inner = null;
@@ -99,22 +101,21 @@ function replyUpdateForm(REV_SQ, CONTENT_ID){
       document.getElementById(REV_SQ).innerHTML = inner;
       check=0;
       return;
-   }
+   };
    
    if(updatenum != REV_SQ && updatenum != ''){
       document.getElementById(updatenum).innerHTML = inner;
-   }
+   };
    
    
    updatenum = REV_SQ;
    inner = document.getElementById(REV_SQ).innerHTML;
    
-   document.getElementById(REV_SQ).innerHTML = 
-      "<input type='text' name='text' id='reply' class='replyUpdate' value='"+inner+"'>"
-      +"<input type='button' value='수정' onclick='replyUpdate("+REV_SQ+","+CONTENT_ID+")'>";
-      
+   document.getElementById(REV_SQ).innerHTML =     
+      "<textarea class='form-control' name='text' id='reply' rows='3'>"+inner+"</textarea>"
+      +"<a href='#' class='btn btn-primary' onclick='replyUpdate("+REV_SQ+","+CONTENT_ID+")'>수정</a>";
    check = 1;
-}
+};
 
 function replyUpdate(REV_SQ, CONTENT_ID){
    
@@ -143,13 +144,15 @@ function replyUpdate(REV_SQ, CONTENT_ID){
             html+= '<div class="media-body">';
             html+= '<div class="media-heading"><h4>'+item.USER_ID;
             html+= '<small>'+item.UPD_YMD;
+            if(login_id == item.USER_ID){
             html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
             html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+            }
             html+= "</small></h4></div>";
             html+= "<pre>";
             html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
 			html+= "</pre></div></div>"; 
-          }) 
+          });
           $("#review").html(html); 
              
       },
@@ -160,7 +163,7 @@ function replyUpdate(REV_SQ, CONTENT_ID){
    
    check=0;
    updatenum = 0;
-}
+};
 
 function deleteReply(REV_SQ, CONTENT_ID){
 	
@@ -184,13 +187,15 @@ function deleteReply(REV_SQ, CONTENT_ID){
 	                  html+= '<div class="media-body">';
 	                  html+= '<div class="media-heading"><h4>'+item.USER_ID;
 	                  html+= '<small>'+item.UPD_YMD; 
-	                  html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
-	                  html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+	                  if(login_id == item.USER_ID){
+	                      html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
+	                      html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+	                      }
 	                  html+= "</small></h4></div>";
 	                  html+= "<pre>";
 	                  html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
 	      			  html+= "</pre></div></div>";
-	                })
+	                });
 	                  html2+='<div align="center">';
 	                  var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
 	                  html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
@@ -198,12 +203,12 @@ function deleteReply(REV_SQ, CONTENT_ID){
 	                  html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
 	                  var j=0;
 	                  for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
-	                     j=j+1;
-	                     console.log(j);
-	                      html2+='<a href="javascript:pagingFormSubmit('+data.navi.startPageGroup + 1+')">'+j+' </a>'; 
+	                	  var counter=data.navi.startPageGroup+j;
+	                      j=j+1;
+	                      html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
 	                  } 
-	                  html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + 1+')">▶ </a>';
-	                  html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + data.navi.pagePerGroup+')">▶▶</a></div>';
+	                  html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
+	                  html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
 	                  html2+='<form action="SC_08" method="get" id="pagingForm">';
 	                  html2+='<input type="hidden" id="page" name="page">';
 	                  html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';	                  
@@ -217,9 +222,9 @@ function deleteReply(REV_SQ, CONTENT_ID){
 		error : function(e){
 			console.log(e);
 		}
-	})
+	});
 		
-}
+};
 
  
 var map;
@@ -333,7 +338,7 @@ function l_Data(){
 	    	$("#eventDate").html(html);
 	    }); 
     
-}
+};
 
 //주변 관광지
 function r_Data(){
@@ -409,7 +414,7 @@ function r_Data(){
 		})
 		
 		 });
-}
+};
 //인근 음식점
 function f_Data(){
 	 $.getJSON(url, function(data) {
@@ -651,13 +656,15 @@ function f_Data(){
 		                 html+= '<div class="media-body">';
 		                 html+= '<div class="media-heading"><h4>'+item.USER_ID;
 		                 html+= '<small>'+item.UPD_YMD;
-		                 html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
-		                 html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+		                 if(login_id == item.USER_ID){
+		                     html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
+		                     html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+		                     }
 		                 html+= "</small></h4></div>";
 		                 html+= "<pre>";
 		                 html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
 		      			 html+= "</pre></div></div>";
-					 })
+					 });
 						html2+='<div align="center">';
 						var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
 						html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀</a>';
@@ -665,13 +672,13 @@ function f_Data(){
 						html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀</a>';
 						var j=0;
 						 for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
-							j=j+1;
-							console.log(j);
-							 html2+='<a href="javascript:pagingFormSubmit('+data.navi.startPageGroup + 1+')">'+j+' </a>'; 
+							 var counter=data.navi.startPageGroup+j;
+		                      j=j+1;
+		                      html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
 						} 
-						html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + 1+')">▶</a>';
-						html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + data.navi.pagePerGroup+')">▶▶</a></div>';
-						html2+='<form action="SC_08" method="get" id="pagingForm">';
+						html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶</a>';
+						html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+						html2+='<form action="read_Review" method="post" id="pagingForm">';
 						html2+='<input type="hidden" id="page" name="page">';
 						html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';
 						
@@ -692,7 +699,7 @@ function f_Data(){
 			});
 		});
 		
-	})
+	});
 $(function(){
 		$("#clip").on("click",function(){
 				console.log(contentId);
@@ -738,6 +745,128 @@ function locationObj(){
     var offset = $("#reviewWrite").offset();
     $('html, body').animate({scrollTop : offset.top}, 400);
 }
+
+function paging(page) { 
+	$.ajax({ 
+        type : "post",
+        url : "read_Review",
+        data :{
+           CONTENT_ID : contentId,
+           page : page
+        },
+        
+        success : function(data){
+           
+           console.log(data);
+            var html ="";
+            var html2 ="";
+            $.each(data.rList,function(index,item){
+              console.log(item); 
+              html+= "<div class='media'>";
+              html+= "<a class='pull-left' href='#'>";
+              html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+              html+= '<div class="media-body">';
+              html+= '<div class="media-heading"><h4>'+item.USER_ID;
+              html+= '<small>'+item.UPD_YMD;
+              if(login_id == item.USER_ID){
+                  html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
+                  html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+                  }
+              html+= '</small></h4></div>';
+              html+= '<pre>';
+              html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
+  				html+= "</pre></div></div>";
+            });
+              html2+='<div align="center">';
+              var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+              html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+              var onepageback=data.navi.currentPage -1
+              html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+              var j=0;
+              for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
+            	  var counter=data.navi.startPageGroup+j;
+                  j=j+1;
+                  html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
+              } 
+              html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
+              html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+              html2+='<form action="read_Review" method="post" id="pagingForm">';
+              html2+='<input type="hidden" id="page" name="page">';
+              html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';
+              html2+='<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">';
+              html2+='</form></div>'; 
+            
+            $("#review").html(html);
+            $("#paging").html(html2);
+            $('#reviewWrite').val('');      
+        },
+        error : function(e){
+           console.log(e);
+        }   
+     });
+};
+
+$(function(){	
+
+$.ajax({
+    
+    type : "post",
+    url : "read_Review",
+    data :{
+       CONTENT_ID : contentId            
+    },
+    
+    success : function(data){
+       
+       console.log(data);
+        var html ="";
+        var html2 ="";
+        $.each(data.rList,function(index,item){
+          console.log(item); 
+          html+= "<div class='media'>";
+          html+= "<a class='pull-left' href='#'>";
+          html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+          html+= '<div class="media-body">';
+          html+= '<div class="media-heading"><h4>'+item.USER_ID;
+          html+= '<small>'+item.UPD_YMD;
+          if(login_id == item.USER_ID){
+              html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
+              html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+              }
+          html+= '</small></h4></div>';
+          html+= '<pre>';
+          html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
+				html+= "</pre></div></div>";
+        });
+          html2+='<div align="center">';
+          var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+          html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+          var onepageback=data.navi.currentPage -1
+          html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+          var j=0;
+          for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
+        	  var counter=data.navi.startPageGroup+j;
+              j=j+1;
+              html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
+          } 
+          html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
+          html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+          html2+='<form action="read_Review" method="post" id="pagingForm">';
+          html2+='<input type="hidden" id="page" name="page">';
+          html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';
+          html2+='<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">';
+          html2+='</form></div>'; 
+        
+        $("#review").html(html);
+        $("#paging").html(html2);
+        $('#reviewWrite').val('');      
+    },
+    error : function(e){
+       console.log(e);
+    }   
+ });
+});
+
 </script>
 
 </head>
@@ -1148,7 +1277,7 @@ function locationObj(){
                         <div class="form-group">
                             <textarea class="form-control" id="reviewWrite" rows="3"></textarea>
                         </div>
-                        <a href="#" class="btn btn-primary" id="write">등록</a> 
+                        <a href="#"  onclick="return false" class="btn btn-primary" id="write">등록</a> 
                        <!--  <button type="submit" class="btn btn-primary">Submit</button> -->
                     </form>
                 </div>
@@ -1159,7 +1288,7 @@ function locationObj(){
 
                 <!-- Comment -->
                 <div id="review">
-                <c:forEach var="reply" items="${rList}">
+                <%-- <c:forEach var="reply" items="${rList}">
                 <div class="media">
                     <a class="pull-left" href="#">
                         <img class="media-object" src="http://placehold.it/64x64" alt="">
@@ -1168,21 +1297,21 @@ function locationObj(){
                         <div class="media-heading"><h4>${reply.USER_ID}
                             <small>${reply.INP_YMD}</small>
                             <!-- 아이디 비교 -->
-                            <%-- <c:if test="${ID == reply.USER_ID}"> --%>
+                            <c:if test="${ID == reply.USER_ID}">
                      <small><a href="javascript:replyUpdateForm('${reply.REV_SQ}','${reply.CONTENT_ID}')">수정</a>
                      		<a href="#none" onclick="deleteReply('${reply.REV_SQ}','${reply.CONTENT_ID}')">삭제</a></small>
-                     <%-- </c:if> --%>
+                     </c:if>
                         </h4></div>
                        	<pre>
                         <div id="${reply.REV_SQ}" class="review_txt">${reply.REV_TXT}</div>
                         </pre>
                     </div>
                 </div>
-				</c:forEach>
+				</c:forEach> --%>
 				</div>
 				<div id="paging">
 				
-				<div align="center">
+				<%-- <div align="center">
 					<a href ="javascript:pagingFormSubmit(
 						${navi.currentPage - navi.pagePerGroup})">◀◀</a>
 						<a href ="javascript:pagingFormSubmit(${navi.currentPage -1})">◀</a>
@@ -1202,7 +1331,7 @@ function locationObj(){
 				<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">
 				<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">
 				
-				</form>				
+				</form>	 --%>			
 				</div>
                 <!-- Comment -->
             </div>
