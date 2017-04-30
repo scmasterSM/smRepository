@@ -12,6 +12,7 @@
 		<typeAlias type="com.scmaster.gittest.vo.Daily_Scd" alias="Daily_Scd" />
 		<typeAlias type="com.scmaster.gittest.vo.Dtl_Scd" alias="Dtl_Scd" />
 		<typeAlias type="com.scmaster.gittest.vo.Budget" alias="Budget" />
+		<typeAlias type="com.scmaster.gittest.vo.Liked" alias="Liked" />
 		<!-- <typeAlias type="com.bong.maptest.vo.Countent" alias="Countent" /> -->
 	</typeAliases>
 	<mappers>
@@ -21,6 +22,6 @@
 	    <mapper resource="mappers/UserMapper.xml" />
 	    <mapper resource="mappers/MyScheduleMapper.xml" />
 	    <mapper resource="mappers/ShareMapper.xml" />
-	    <mapper resource="mappers/SearchSchedule.xml" />
+	    <mapper resource="mappers/SearchSchedule.xml" /> 
 	</mappers>
 </configuration>

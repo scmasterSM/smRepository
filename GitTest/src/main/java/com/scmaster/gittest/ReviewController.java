@@ -28,7 +28,7 @@ import com.scmaster.gittest.vo.Review;
 public class ReviewController {
 	
 	final int countPerPage = 5;	//페이지 당 글 수
-	final int pagePerGrop=5;
+	final int pagePerGrop=10;
 	
 	@Autowired
 	private ReviewDao dao;
@@ -61,6 +61,21 @@ public class ReviewController {
 		ArrayList<HashMap<String, Object>>rList=dao.readReview(review);
 		return rList; 
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="read_Review", method=RequestMethod.POST)
+	public HashMap<String, Object> read_Review(Review review,@RequestParam
+			(value="page",defaultValue="1")	int page){ 
+		int count =dao.tCount(review.getCONTENT_ID()); 
+		PageNavigator navi= new PageNavigator(
+				countPerPage, pagePerGrop, page, count);
+		ArrayList<HashMap<String, Object>>rList=dao.readReview(navi.getStartRecord(),navi.getCountPerPage(),review);
+		HashMap<String, Object> hList = new HashMap<String, Object>();
+		hList.put("rList", rList);
+		hList.put("navi", navi);
+		return hList; 
+	}
+	
 	
 	@ResponseBody
 	@RequestMapping(value="deleteReview", method=RequestMethod.POST)
