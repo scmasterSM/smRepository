@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.scmaster.gittest.vo.Clip;
+import com.scmaster.gittest.vo.Liked;
 import com.scmaster.gittest.vo.Schedule;
 
 @Repository
@@ -36,4 +37,22 @@ public class ClipDao {
 		result = mapper.deleteClip(clip);
 		return result;
 	}
+	
+	public int insertLiked(Liked liked){
+		ClipMapper mapper =sqlsession.getMapper(ClipMapper.class);
+		int result;
+		result = mapper.insertLiked(liked);
+		return result;
+	}
+	public List<Liked> readLiked(){
+		ClipMapper mapper =sqlsession.getMapper(ClipMapper.class);
+		List<Liked>l_List=mapper.readLiked();
+		return l_List;
+	}
+	public int deleteLiked(Liked liked){
+		ClipMapper mapper =sqlsession.getMapper(ClipMapper.class);
+		int result=mapper.deleteLiked(liked);
+		return result; 
+	}
+	
 }

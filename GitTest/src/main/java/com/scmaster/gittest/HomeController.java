@@ -36,7 +36,7 @@ public class HomeController {
 	
 	
 	final int countPerPage = 5;	//페이지 당 글 수
-	final int pagePerGrop=5;		//페이지 이동 그룹 당 표시할 페이지수
+	final int pagePerGrop=10;		//페이지 이동 그룹 당 표시할 페이지수
 	
 	
 	@Autowired
