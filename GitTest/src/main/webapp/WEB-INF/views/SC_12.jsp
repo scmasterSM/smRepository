@@ -290,90 +290,88 @@ body.modal-open {
 				</div>
 				<!--로그인&조인 모달 끝 -->
 				<!--정보수정 모달 시작  -->
-				<div class="modal fade" id="myModal_Edit" tabindex="-1"
-					role="dialog" aria-labelledby="myLargeModalLabel"
-					aria-hidden="true">
-					<div class="modal-dialog modal-lg">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal"
-									aria-hidden="true">×</button>
+					<div class="modal fade" id="myModal_Edit" tabindex="-1"
+						role="dialog" aria-labelledby="myLargeModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">×</button>
 
-								<h4 class="modal-title" id="myModalLabel">Edit my
-									information</h4>
-							</div>
-							<div class="modal-body">
-								<div class="row">
-									<div class="col-md-8"
-										style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
-										<!-- Nav tabs -->
-										<ul class="nav nav-tabs headertabs">
-											<li class="active"><a href="#Login" id="loginAtag"
-												data-toggle="tab">Edit</a></li>
-											<!-- <li><a href="#Registration" id="regAtag" data-toggle="tab">Join</a></li> -->
-										</ul>
-										<!-- Tab panes -->
-										<div class="tab-content">
-											<div class="tab-pane active" id="Edit">
-												<form role="form" class="form-horizontal">
-													<div class="form-group">
-														<label for="email" class="col-sm-2 control-label">
-															ID</label>
-														<div class="col-sm-10">
-															<div class="row">
-																<div class="col-md-3">
-																	<select class="form-control" id="user_sex_ed"
-																		disabled="disabled">
-																		<option value="">${sessionScope.user_sex}</option>
-																	</select>
-																</div>
-																<div class="col-md-9">
-																	<input type="text" class="form-control" id="user_id_ed"
-																		name="user_id_ed" placeholder="ID"
-																		value="${sessionScope.user_id}" disabled="disabled" />
+									<h4 class="modal-title" id="myModalLabel">Edit my
+										information</h4>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-md-8"
+											style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
+											<!-- Nav tabs -->
+											<ul class="nav nav-tabs headertabs">
+												<li class="active"><a href="#Login" id="loginAtag"
+													data-toggle="tab">Edit</a></li>
+												<!-- <li><a href="#Registration" id="regAtag" data-toggle="tab">Join</a></li> -->
+											</ul>
+											<!-- Tab panes -->
+											<div class="tab-content">
+												<div class="tab-pane active" id="Edit">
+													<form role="form" class="form-horizontal">
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																ID</label>
+															<div class="col-sm-10">
+																<div class="row">
+																	<div class="col-md-3">
+																		<select class="form-control" id="user_sex_ed" disabled="disabled">
+																			<option value="">${sessionScope.user_sex}</option>
+																		</select>
+																	</div>
+																	<div class="col-md-9">
+																		<input type="text" class="form-control"
+																			id="user_id_ed" name="user_id_ed" placeholder="ID" value="${sessionScope.user_id}" disabled="disabled" />
+																	</div>
 																</div>
 															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<label for="email" class="col-sm-2 control-label">
-															Email</label>
-														<div class="col-sm-10">
-															<input type="email" class="form-control" id="email_ed"
-																placeholder="Email" />
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																Email</label>
+															<div class="col-sm-10">
+																<input type="email" class="form-control" id="email_ed"
+																	placeholder="Email" />
+															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<label for="mobile" class="col-sm-2 control-label">
-															Password</label>
-														<div class="col-sm-10">
-															<input type="password" class="form-control"
-																id="password1_ed" placeholder="Password" />
+														<div class="form-group">
+															<label for="mobile" class="col-sm-2 control-label">
+																Password</label>
+															<div class="col-sm-10">
+																<input type="password" class="form-control"
+																	id="password1_ed" placeholder="Password" />
+															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<label for="password" class="col-sm-2 control-label">
-														</label>
-														<div class="col-sm-10">
-															<input type="password" class="form-control"
-																id="password2_ed" placeholder="Password 확인" />
+														<div class="form-group">
+															<label for="password" class="col-sm-2 control-label">
+															</label>
+															<div class="col-sm-10">
+																<input type="password" class="form-control"
+																	id="password2_ed" placeholder="Password 확인" />
+															</div>
 														</div>
-													</div>
-													<div class="row">
-														<div class="col-sm-2"></div>
-														<div class="col-sm-10">
-															<button type="button" class="btn btn-primary btn-sm"
-																id="editForm">Edit</button>
-															<input type="reset" class="btn btn-default btn-sm"
-																value="Reset" />
+														<div class="row">
+															<div class="col-sm-2"></div>
+															<div class="col-sm-10">
+																<button type="button" class="btn btn-primary btn-sm" id="editForm">
+																	Edit</button>
+																<input type="reset" class="btn btn-default btn-sm"
+																	value="Reset" />
+															</div>
 														</div>
-													</div>
-												</form>
+													</form>
+												</div>
 											</div>
+											<!-- <div id="OR" class="hidden-xs">OR</div> -->
 										</div>
-										<!-- <div id="OR" class="hidden-xs">OR</div> -->
-									</div>
-									<!-- <div class="col-md-4">
+										<!-- <div class="col-md-4">
 											<div class="row text-center sign-with">
 												<div class="col-md-12">
 													<h3>Sign in with</h3>
@@ -386,11 +384,11 @@ body.modal-open {
 												</div>
 											</div>
 										</div> -->
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 
 
 			</div>
@@ -731,7 +729,7 @@ h1 {
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="./resources/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
 		<script type="text/javascript" src="./resources/js/jquery-3.1.1.js"></script>
-        <script src="./resources/js/bootstrap.min.js"></script>
+        <script src="./resources/js/bootstrap.js"></script>
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     	<script type="text/javascript" src="./resources/js/jquery-ui.min.js"></script>
@@ -912,6 +910,70 @@ $(function(){
 			});//ajax
 		}
 	}); 
+	
+	//정보수정
+	
+	$("#editForm").on("click", function() {
+
+		var user_id2 = $("#user_id_ed").val();
+		var password2 = $("#password1_ed").val();
+		var password3 = $("#password2_ed").val();
+		var email1 = $("#email_ed").val();
+		var user_sex1 = $("#user_sex_ed").val();
+
+
+		//alert(user_sex1);
+		//$('#user_sex option:selected').val();
+		//$('select[name=user_sex]').val();
+
+
+		if (password2.length == 0) {
+			alert('비밀번호를 입력해주세요');
+			return false;
+		}
+		if (email1.length == 0) {
+			alert('이메일을 입력해주세요');
+			return false;
+		}
+
+		if (password2 != password3) {
+			alert('비밀번호 확인 시 비밀번호가 일치하지 않습니다.');
+			return false;
+		}
+
+		$.ajax({
+			type : "post",
+			url : "edit",
+			data : {
+				user_id : user_id2,
+				password : password2,
+				email : email1,
+				//user_sex : user_sex1
+			},
+			dataType : 'text',
+
+			success : function(data) {
+				console.log(data);
+				if (data == "success") {
+					alert("회원 정보 수정 되었습니다.");
+					$('#myModal').modal('hide');
+					window.location.href = "./";
+				} else {
+					alert("정보 수정이 실패하였습니다.");
+				}
+			},
+			error : function(e) {
+				console(e);
+			}
+		})
+	});
+	
+	
+	
+	
+	
+	
+	
 })
 
 function ReadApi(contentId) { /* currentPage가 어디서 호출되어 온다 */
