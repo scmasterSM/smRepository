@@ -73,7 +73,7 @@ public class ScheduleController {
 		session.setAttribute("scd_sq", scd_sq);
 		Schedule schedule = dao.select_scd(scd_sq);
 		model.addAttribute("schedule", schedule);
-		return "SC13";
+		return "SC13_websocket";
 	}
 
 	// 지도에서 검색
