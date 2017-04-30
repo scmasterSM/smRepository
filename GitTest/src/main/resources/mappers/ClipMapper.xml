@@ -43,5 +43,32 @@
 	delete from SM_CLIP_TB
 	where 		CONTENT_ID =#{CONTENT_ID}
 			and USER_ID=#{USER_ID}
-	</delete> 
+	</delete>
+	
+	<insert id="insertLiked" parameterType="Liked">
+		INSERT INTO sm_liked_tb
+		(
+			LIKED_SQ,
+			USER_ID,
+			SCD_SQ	 
+		)
+		VALUES
+		(
+			SM_LIKED_TB_LIKED_SQ.nextval
+			
+			, #{USER_ID}
+			, #{SCD_SQ}		 
+		)
+	</insert>
+	<delete id="deleteLiked" parameterType="Liked">
+	delete from sm_liked_tb
+	where 		SCD_SQ =#{SCD_SQ}
+			and USER_ID=#{USER_ID}
+	</delete>
+	<select id="readLiked" resultType="Liked">
+	select 	count(scd_sq) Liked_sq, scd_sq
+	from 	sm_liked_tb
+	group 	by scd_sq
+	</select>
+	 
 </mapper>

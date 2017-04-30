@@ -6,7 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%-- <%@include file="joinForm.jsp"%> --%>
 
-<title>SC_11화면</title>
+<title>Travle Maker</title>
 <meta name="description" content="company is a free job board template">
 <meta name="author" content="Ohidul">
 <meta name="keyword" content="html, css, bootstrap, job-board">
@@ -33,13 +33,18 @@
 <link rel ="stylesheet" href ="./resources/css/11css.css"> 
 <script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
 <script src="./resources/js/jquery.min.js"></script> 
-
+<!--Stylesheets-->
+	<link href="./resources/css/jquery.modal.css" type="text/css" rel="stylesheet" />
+	
+	<!--jQuery-->
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="./resources/js/jquery.modal.js"></script>
 <script>
 	window.jQuery
 			|| document
 					.write('<script src="./resources/js/vendor/jquery-1.10.2.min.js"><\/script>')
 </script>
-<script src="./resources/js/bootstrap.min.js"></script>
+<script src="./resources/js/bootstrap.js"></script>
 <script src="./resources/js/owl.carousel.min.js"></script>
 <script src="./resources/js/wow.js"></script>
 <script src="./resources/js/main.js"></script>
@@ -86,6 +91,64 @@
 
 			$("#loginAtag").trigger("click");
 		})
+		
+		
+		$("#editForm").on("click", function() {
+
+			var user_id2 = $("#user_id_ed").val();
+			var password2 = $("#password1_ed").val();
+			var password3 = $("#password2_ed").val();
+			var email1 = $("#email_ed").val();
+			var user_sex1 = $("#user_sex_ed").val();
+
+
+			//alert(user_sex1);
+			//$('#user_sex option:selected').val();
+			//$('select[name=user_sex]').val();
+
+
+			if (password2.length == 0) {
+				alert('비밀번호를 입력해주세요');
+				return false;
+			}
+			if (email1.length == 0) {
+				alert('이메일을 입력해주세요');
+				return false;
+			}
+
+			if (password2 != password3) {
+				alert('비밀번호 확인 시 비밀번호가 일치하지 않습니다.');
+				return false;
+			}
+
+			$.ajax({
+				type : "post",
+				url : "edit",
+				data : {
+					user_id : user_id2,
+					password : password2,
+					email : email1,
+					//user_sex : user_sex1
+				},
+				dataType : 'text',
+
+				success : function(data) {
+					console.log(data);
+					if (data == "success") {
+						alert("회원 정보 수정 되었습니다.");
+						$('#myModal').modal('hide');
+						window.location.href = "./";
+					} else {
+						alert("정보 수정이 실패하였습니다.");
+					}
+				},
+				error : function(e) {
+					console(e);
+				}
+			})
+		});
+		
+		
 
 	}); //레디펑션 end
 
@@ -96,7 +159,7 @@
 
 		location.href = "logout";
 	} 
-	
+
 </script>
 </head>
 
@@ -174,117 +237,123 @@
 					</c:otherwise>
 				</c:choose>
 
-				<!--로그인&조인 모달  -->
-				<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-					aria-labelledby="myLargeModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-lg">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal"
-									aria-hidden="true">×</button>
+			<!--로그인&조인 모달  -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+						aria-labelledby="myLargeModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">×</button>
 
-								<h4 class="modal-title" id="myModalLabel">Login / Join</h4>
-							</div>
-							<div class="modal-body">
-								<div class="row">
-									<div class="col-md-8"
-										style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
-										<!-- Nav tabs -->
-										<ul class="nav nav-tabs headertabs">
-											<li class="active"><a href="#Login" id="loginAtag"
-												data-toggle="tab">Login</a></li>
-											<li><a href="#Registration" id="regAtag"
-												data-toggle="tab">Join</a></li>
-										</ul>
-										<!-- Tab panes -->
-										<div class="tab-content">
-											<div class="tab-pane active" id="Login">
-												<form role="form" class="form-horizontal">
-													<div class="form-group">
-														<label for="email" class="col-sm-2 control-label">
-															ID</label>
-														<div class="col-sm-10">
-															<input type="text" class="form-control" id="email1"
-																placeholder="ID" />
+									<h4 class="modal-title" id="myModalLabel">Login / Join</h4>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-md-8"
+											style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
+											<!-- Nav tabs -->
+											<ul class="nav nav-tabs headertabs">
+												<li class="active"><a href="#Login" id="loginAtag"
+													data-toggle="tab">Login</a></li>
+												<li><a href="#Registration" id="regAtag"
+													data-toggle="tab">Join</a></li>
+											</ul>
+											<!-- Tab panes -->
+											<div class="tab-content">
+												<div class="tab-pane active" id="Login">
+													<form action="login" role="form" method="post"
+														class="form-horizontal" onsubmit="return login()">
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																ID</label>
+															<div class="col-sm-10">
+																<input type="text" name="user_id" class="form-control"
+																	id="user_id" placeholder="ID" />
+															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<label for="exampleInputPassword1"
-															class="col-sm-2 control-label"> Password</label>
-														<div class="col-sm-10">
-															<input type="text" class="form-control"
-																id="exampleInputPassword1" placeholder="Password" />
+														<div class="form-group">
+															<label for="exampleInputPassword1"
+																class="col-sm-2 control-label"> Password</label>
+															<div class="col-sm-10">
+																<input type="password" name="password"
+																	class="form-control" id="password"
+																	placeholder="Password" />
+															</div>
 														</div>
-													</div>
-													<div class="row">
-														<div class="col-sm-2"></div>
-														<div class="col-sm-10">
-															<button type="submit" class="btn btn-primary btn-sm">
-																Submit</button>
-															<a href="javascript:;">Forgot your password?</a>
+														<div class="row">
+															<div class="col-sm-2"></div>
+															<div class="col-sm-10">
+																<button type="button" class="btn btn-primary btn-sm"
+																	value="submit" id="submit_button">Submit</button>
+																<!-- <a href="javascript:;">Forgot your password?</a> -->
+															</div>
 														</div>
-													</div>
-												</form>
-											</div>
-											<div class="tab-pane" id="Registration">
-												<form role="form" class="form-horizontal">
-													<div class="form-group">
-														<label for="email" class="col-sm-2 control-label">
-															ID</label>
-														<div class="col-sm-10">
-															<div class="row">
-																<div class="col-md-3">
-																	<select class="form-control">
-																		<option>남성</option>
-																		<option>여성</option>
-																	</select>
-																</div>
-																<div class="col-md-9">
-																	<input type="text" class="form-control"
-																		placeholder="ID" />
+													</form>
+												</div>
+												<div class="tab-pane" id="Registration">
+													<form action="join" role="form" method="post"
+														class="form-horizontal" onsubmit="return joinCheck()">
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																ID</label>
+															<div class="col-sm-10">
+																<div class="row">
+																	<div class="col-md-3">
+																		<select class="form-control" name="user_sex"
+																			id="user_sex">
+																			<option value="선택">선택</option>
+																			<option value="m">남성</option>
+																			<option value="f">여성</option>
+																		</select>
+																	</div>
+																	<div class="col-md-9">
+																		<input type="text" class="form-control"
+																			placeholder="ID" name="user_id" id="user_id1" />
+																	</div>
 																</div>
 															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<label for="email" class="col-sm-2 control-label">
-															Email</label>
-														<div class="col-sm-10">
-															<input type="email" class="form-control" id="email"
-																placeholder="Email" />
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																Email</label>
+															<div class="col-sm-10">
+																<input type="email" class="form-control" name="email"
+																	id="email" placeholder="Email" />
+															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<label for="mobile" class="col-sm-2 control-label">
-															Password</label>
-														<div class="col-sm-10">
-															<input type="password" class="form-control"
-																id="password1" placeholder="Password" />
+														<div class="form-group">
+															<label for="mobile" class="col-sm-2 control-label">
+																Password</label>
+															<div class="col-sm-10">
+																<input type="password" class="form-control"
+																	id="password1" name="password" placeholder="Password" />
+															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<label for="password" class="col-sm-2 control-label">
-														</label>
-														<div class="col-sm-10">
-															<input type="password" class="form-control"
-																id="password2" placeholder="Password 확인" />
+														<div class="form-group">
+															<label for="password" class="col-sm-2 control-label">
+															</label>
+															<div class="col-sm-10">
+																<input type="password" class="form-control"
+																	id="password2" name="password2"
+																	placeholder="Password 확인" />
+															</div>
 														</div>
-													</div>
-													<div class="row">
-														<div class="col-sm-2"></div>
-														<div class="col-sm-10">
-															<button type="button" class="btn btn-primary btn-sm">
-																Save & Continue</button>
-															<button type="button" class="btn btn-default btn-sm">
-																Cancel</button>
+														<div class="row">
+															<div class="col-sm-2"></div>
+															<div class="col-sm-10">
+																<button type="button" class="btn btn-primary btn-sm"
+																	id="submit_join">Save & Continue</button>
+																<input type="reset" class="btn btn-default btn-sm"
+																	value="Reset" />
+															</div>
 														</div>
-													</div>
-												</form>
+													</form>
+												</div>
 											</div>
+											<!-- <div id="OR" class="hidden-xs">OR</div> -->
 										</div>
-										<!-- <div id="OR" class="hidden-xs">OR</div> -->
-									</div>
-									<!-- <div class="col-md-4">
+										<!-- <div class="col-md-4">
 											<div class="row text-center sign-with">
 												<div class="col-md-12">
 													<h3>Sign in with</h3>
@@ -297,96 +366,95 @@
 												</div>
 											</div>
 										</div> -->
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<!--로그인&조인 모달 끝 -->
+					<!--로그인&조인 모달 끝 -->
 				<!--정보수정 모달 시작  -->
-				<div class="modal fade" id="myModal_Edit" tabindex="-1"
-					role="dialog" aria-labelledby="myLargeModalLabel"
-					aria-hidden="true">
-					<div class="modal-dialog modal-lg">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal"
-									aria-hidden="true">×</button>
+					<div class="modal fade" id="myModal_Edit" tabindex="-1"
+						role="dialog" aria-labelledby="myLargeModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">×</button>
 
-								<h4 class="modal-title" id="myModalLabel">Edit my
-									information</h4>
-							</div>
-							<div class="modal-body">
-								<div class="row">
-									<div class="col-md-8"
-										style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
-										<!-- Nav tabs -->
-										<ul class="nav nav-tabs headertabs">
-											<li class="active"><a href="#Login" id="loginAtag"
-												data-toggle="tab">Edit</a></li>
-											<!-- <li><a href="#Registration" id="regAtag" data-toggle="tab">Join</a></li> -->
-										</ul>
-										<!-- Tab panes -->
-										<div class="tab-content">
-											<div class="tab-pane active" id="Edit">
-												<form role="form" class="form-horizontal">
-													<div class="form-group">
-														<label for="email" class="col-sm-2 control-label">
-															ID</label>
-														<div class="col-sm-10">
-															<div class="row">
-																<div class="col-md-3">
-																	<select class="form-control">
-																		<option>남성</option>
-																		<option>여성</option>
-																	</select>
-																</div>
-																<div class="col-md-9">
-																	<input type="text" class="form-control"
-																		placeholder="ID" />
+									<h4 class="modal-title" id="myModalLabel">Edit my
+										information</h4>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-md-8"
+											style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
+											<!-- Nav tabs -->
+											<ul class="nav nav-tabs headertabs">
+												<li class="active"><a href="#Login" id="loginAtag"
+													data-toggle="tab">Edit</a></li>
+												<!-- <li><a href="#Registration" id="regAtag" data-toggle="tab">Join</a></li> -->
+											</ul>
+											<!-- Tab panes -->
+											<div class="tab-content">
+												<div class="tab-pane active" id="Edit">
+													<form role="form" class="form-horizontal">
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																ID</label>
+															<div class="col-sm-10">
+																<div class="row">
+																	<div class="col-md-3">
+																		<select class="form-control" id="user_sex_ed" disabled="disabled">
+																			<option value="">${sessionScope.user_sex}</option>
+																		</select>
+																	</div>
+																	<div class="col-md-9">
+																		<input type="text" class="form-control"
+																			id="user_id_ed" name="user_id_ed" placeholder="ID" value="${sessionScope.user_id}" disabled="disabled" />
+																	</div>
 																</div>
 															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<label for="email" class="col-sm-2 control-label">
-															Email</label>
-														<div class="col-sm-10">
-															<input type="email" class="form-control" id="email"
-																placeholder="Email" />
+														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">
+																Email</label>
+															<div class="col-sm-10">
+																<input type="email" class="form-control" id="email_ed"
+																	placeholder="Email" />
+															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<label for="mobile" class="col-sm-2 control-label">
-															Password</label>
-														<div class="col-sm-10">
-															<input type="password" class="form-control"
-																id="password1" placeholder="Password" />
+														<div class="form-group">
+															<label for="mobile" class="col-sm-2 control-label">
+																Password</label>
+															<div class="col-sm-10">
+																<input type="password" class="form-control"
+																	id="password1_ed" placeholder="Password" />
+															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<label for="password" class="col-sm-2 control-label">
-														</label>
-														<div class="col-sm-10">
-															<input type="password" class="form-control"
-																id="password2" placeholder="Password 확인" />
+														<div class="form-group">
+															<label for="password" class="col-sm-2 control-label">
+															</label>
+															<div class="col-sm-10">
+																<input type="password" class="form-control"
+																	id="password2_ed" placeholder="Password 확인" />
+															</div>
 														</div>
-													</div>
-													<div class="row">
-														<div class="col-sm-2"></div>
-														<div class="col-sm-10">
-															<button type="button" class="btn btn-primary btn-sm">
-																Save & Continue</button>
-															<button type="button" class="btn btn-default btn-sm">
-																Cancel</button>
+														<div class="row">
+															<div class="col-sm-2"></div>
+															<div class="col-sm-10">
+																<button type="button" class="btn btn-primary btn-sm" id="editForm">
+																	Edit</button>
+																<input type="reset" class="btn btn-default btn-sm"
+																	value="Reset" />
+															</div>
 														</div>
-													</div>
-												</form>
+													</form>
+												</div>
 											</div>
+											<!-- <div id="OR" class="hidden-xs">OR</div> -->
 										</div>
-										<!-- <div id="OR" class="hidden-xs">OR</div> -->
-									</div>
-									<!-- <div class="col-md-4">
+										<!-- <div class="col-md-4">
 											<div class="row text-center sign-with">
 												<div class="col-md-12">
 													<h3>Sign in with</h3>
@@ -399,12 +467,11 @@
 												</div>
 											</div>
 										</div> -->
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-
 
 			</div>
 			<c:choose>
@@ -441,104 +508,13 @@
 	</div>
 	<!-- /.container-fluid --> </nav>
 
-	<div class="sc_11">
+	 <div class="sc_11">
 		<div id="sc_11_01"></div>
 		<img src="">
+	</div> 
 
-	</div>
-
-
-
-
-	<!-- <a href="new_schedule" class="btn btn-info" role="button">새로운 일정 만들기</a>
-	<a href="#" class="btn btn-info" role="button">나의 일정 보기</a> -->
-
-
-
-	<!-- <div class="slider-area">
-		<div class="slider">
-			<div id="bg-slider" class="owl">
-				<div class="item">
-					<img src="./resources/image/bg_city/bg_korea.jpg" alt="">
-				</div>
-			</div>
-		</div>
-		<div class="container slider-content">
-			<div class="row">
-				<div
-					class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
-					<br>
-					<div id="mainContent">
-						<div class="content-area">
-							
-							
-								<div class="row page-title text-center wow zoomInDown"
-									data-wow-delay="1s">
-									<a href="new_schedule" class="btn btn-info" role="button">새로운
-										일정 만들기</a> <a href="#" class="btn btn-info" role="button">나의
-										일정 보기</a>
-								</div>
-							
-							<div class="container">
-							</div>
-						</div>
-					</div>
-					<br> <br> <br> <br> <br>
-					<div class="search-form wow pulse" data-wow-delay="0.8s">
-						<form action="" class=" form-inline"></form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> -->
-
-
-<!-- 	<div class="slider-area">
-		<div class="slider">
-			<div id="bg-slider1 class="owl-carousel owl-theme">
-
-				<div class="item_12">
-					 <img src="./resources/image/voyage.png" alt=""> 
-				</div>
-				<div class="item">
-					<img src=""
-						alt="The Last of us">
-				</div>
-				<div class="item">
-					<img src="" alt="">
-				</div>
-
-			</div>
-		</div>
-		<div class="container slider-content">
-			<div class="row">
-				<div
-					class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
-					<br>
-					<div id="mainContent">
-						<h2>
-							나만의 일정을<br> 쉽게 만들어 보세요 
-						</h2>
-						<br><br>
-					</div>
-					<div class="content-area_1">
-						<div class="container_1">
-							<div class="row page-title text-center wow zoomInDown"
-								data-wow-delay="1s">
-								<a href="new_schedule" class="btn btn-info" role="button">새로운
-									일정 만들기</a> <a href="SC_10" class="btn btn-info" role="button">나의 일정 보기</a>
-								<button type="button" class="btn btn-primary">Primary</button>
-  <button type="button" class="btn btn-success">Success</button>
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-	</div> -->
-	<style type="text/css">
-	 @import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+<style type="text/css">
+@import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
 .section-30 {
 	background-image: url(./resources/image/otherpage/bg_11.png);
 	background-repeat: repeat-y;
@@ -548,6 +524,12 @@ h1 {
 	font-family: 'Hanna', serif;
 	color : gray;
 	font-size: -webkit-xxx-large;
+}
+
+h2 {
+	font-family: 'Hanna', serif;
+	color : gray;
+	font-size: xx-large;
 }
 
 </style>
@@ -567,7 +549,7 @@ h1 {
 	<a href="new_schedule" class="btn btn-info" role="button">새로운
 	일정 만들기</a> <a href="SC_10" class="btn btn-info" role="button">나의 일정 보기</a>
 	<br><br>
-	<h2>다른 일정 둘러보기</h2></center>
+	<h2>여행자들의 일정 보기</h2></center>
 
 <div class="content">
 	<div class="wrap">
@@ -601,31 +583,31 @@ h1 {
 				주요 여행지			</div>
 			<div class="filter_right" data-sh="area_tab" >
 					<div class="filter_set_btn">
-					<a href ="javascript:areafilter(1,'서울')" onclick="retun false">서울</a>
+					<a href ="javascript:areafilter(1,'서울')" onclick="false">서울</a>
 					</div>
 					<div class="filter_set_btn" >
-					<a href ="javascript:areafilter(6,'부산')" onclick="retun false">부산</a>
+					<a href ="javascript:areafilter(6,'부산')" onclick="false">부산</a>
 					</div>
 					<div class="filter_set_btn">
-					<a href ="javascript:areafilter(39,'제주도')" onclick="retun false">제주도</a>
+					<a href ="javascript:areafilter(39,'제주도')" onclick="false">제주도</a>
 					</div>
 					<div class="filter_set_btn" >
-					<a href ="javascript:areafilter(2,'인천')" onclick="retun false">인천</a>
+					<a href ="javascript:areafilter(2,'인천')" onclick="false">인천</a>
 					</div>
 					<div class="filter_set_btn">
-					<a href ="javascript:areafilter(3,'대전')" onclick="retun false">대전</a>
+					<a href ="javascript:areafilter(3,'대전')" onclick="false">대전</a>
 					</div>
 					<div class="filter_set_btn" >
-					<a href ="javascript:areafilter(4,'대구')" onclick="retun false">대구</a>
+					<a href ="javascript:areafilter(4,'대구')" onclick="false">대구</a>
 					</div>
 					<div class="filter_set_btn">
-					<a href ="javascript:areafilter(5,'광주')" onclick="retun false">광주</a>
+					<a href ="javascript:areafilter(5,'광주')" onclick="false">광주</a>
 					</div>
 					<div class="filter_set_btn" >
-					<a href ="javascript:areafilter(7,'울산')" onclick="retun false">울산</a>
+					<a href ="javascript:areafilter(7,'울산')" onclick="false">울산</a>
 					</div>
 					<div class="filter_set_btn" >
-					<a href ="javascript:areafilter(8,'세종시')" onclick="retun false">세종시</a>
+					<a href ="javascript:areafilter(8,'세종시')" onclick="false">세종시</a>
 					</div>
 					<!-- <div class="filter_set_btn" >
 					<a href ="javascript:plusArea()">더보기</a>
@@ -642,14 +624,14 @@ h1 {
 			<div id="filter_area">
 				<div class='filter_title' id='filter_title city' data-sh='city' >여행지역</div>				
 			<div class='filter_right' data-sh='city'>
-				<div class='filter_set_btn'><a href ="javascript:areafilter(31,'경기도')" onclick="retun false">경기도</a></div>
-				<div class='filter_set_btn'><a href ="javascript:areafilter(32,'강원도')" onclick="retun false">강원도</a></div>
-				<div class='filter_set_btn'><a href ="javascript:areafilter(33,'충청북도')" onclick="retun false">충청북도</a></div>
-				<div class='filter_set_btn'><a href ="javascript:areafilter(34,'충청남도')" onclick="retun false">충청남도</a></div>
-				<div class='filter_set_btn'><a href ="javascript:areafilter(35,'경상북도')" onclick="retun false">경상북도</a></div>
-				<div class='filter_set_btn'><a href ="javascript:areafilter(36,'경상남도')" onclick="retun false">경상남도</a></div>
-				<div class='filter_set_btn'><a href ="javascript:areafilter(37,'전라북도')" onclick="retun false">전라북도</a></div>
-				<div class='filter_set_btn'><a href ="javascript:areafilter(38,'전라남도')" onclick="retun false">전라남도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(31,'경기도')" onclick="false">경기도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(32,'강원도')" onclick="false">강원도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(33,'충청북도')" onclick="false">충청북도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(34,'충청남도')" onclick="false">충청남도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(35,'경상북도')" onclick="false">경상북도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(36,'경상남도')" onclick="false">경상남도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(37,'전라북도')" onclick="false">전라북도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(38,'전라남도')" onclick="false">전라남도</a></div>
 				<div class='clear'></div></div>
 			</div>
 			<div id="sigungu_area"></div>
@@ -658,13 +640,13 @@ h1 {
 			<div class="filter_title" data-sh="tour_day">
 				여행일수			</div>
 			<div class="filter_right" data-sh="tour_day">
-				<div class="filter_set_btn"><a href ="javascript:dayfilter(1,'1일')" onclick="retun false">1일</a></div>
-				<div class="filter_set_btn"><a href ="javascript:dayfilter(2,'2일')" onclick="retun false">2일</a></div>
-				<div class="filter_set_btn"><a href ="javascript:dayfilter(3,'3일')" onclick="retun false">3일</a></div>
-				<div class="filter_set_btn"><a href ="javascript:dayfilter(4,'4일')" onclick="retun false">4일</a></div>
-				<div class="filter_set_btn"><a href ="javascript:dayfilter(5,'5일')" onclick="retun false">5일</a></div>
-				<div class="filter_set_btn"><a href ="javascript:dayfilter(6,'6일')" onclick="retun false">6일</a></div>
-				<div class="filter_set_btn"><a href ="javascript:dayfilter(7,'7일이상')" onclick="retun false">7일이상</a></div>
+				<div class="filter_set_btn"><a href ="javascript:dayfilter(1,'1일')" onclick="false">1일</a></div>
+				<div class="filter_set_btn"><a href ="javascript:dayfilter(2,'2일')" onclick="false">2일</a></div>
+				<div class="filter_set_btn"><a href ="javascript:dayfilter(3,'3일')" onclick="false">3일</a></div>
+				<div class="filter_set_btn"><a href ="javascript:dayfilter(4,'4일')" onclick="false">4일</a></div>
+				<div class="filter_set_btn"><a href ="javascript:dayfilter(5,'5일')" onclick="false">5일</a></div>
+				<div class="filter_set_btn"><a href ="javascript:dayfilter(6,'6일')" onclick="false">6일</a></div>
+				<div class="filter_set_btn"><a href ="javascript:dayfilter(7,'7일이상')" onclick="false">7일이상</a></div>
 				<div class="clear"></div>
 			</div>
 			<div class="clear"></div>
@@ -672,10 +654,10 @@ h1 {
 			<div class="filter_title" data-sh="tour_ss">
 				여행시기			</div>
 			<div class="filter_right" data-sh="tour_ss">
-				<div class="filter_set_btn"><a href ="javascript:seasonfilter('spring','봄')" onclick="retun false">봄</a></div>
-				<div class="filter_set_btn"><a href ="javascript:seasonfilter('summer','여름')" onclick="retun false">여름</a></div>
-				<div class="filter_set_btn"><a href ="javascript:seasonfilter('fall','가을')" onclick="retun false">가을</a></div>
-				<div class="filter_set_btn"><a href ="javascript:seasonfilter('winter','겨울')" onclick="retun false">겨울</a></div>
+				<div class="filter_set_btn"><a href ="javascript:seasonfilter('spring','봄')" onclick="false">봄</a></div>
+				<div class="filter_set_btn"><a href ="javascript:seasonfilter('summer','여름')" onclick="false">여름</a></div>
+				<div class="filter_set_btn"><a href ="javascript:seasonfilter('fall','가을')" onclick="false">가을</a></div>
+				<div class="filter_set_btn"><a href ="javascript:seasonfilter('winter','겨울')" onclick="false">겨울</a></div>
 				<div class="clear"></div>
 			</div>
 			<div class="clear"></div>
@@ -683,10 +665,10 @@ h1 {
 			<div class="filter_title last" data-sh="theme">
 				여행테마			</div>
 			<div class="filter_right last" data-sh="theme">
-				<div class="filter_set_btn"><a href ="javascript:themefilter('alone','나홀로여행')" onclick="retun false">나홀로여행</a></div>
-				<div class="filter_set_btn"><a href ="javascript:themefilter('couple','커플여행')" onclick="retun false">커플여행</a></div>
-				<div class="filter_set_btn"><a href ="javascript:themefilter('family','가족여행')" onclick="retun false">가족여행</a></div>
-				<div class="filter_set_btn"><a href ="javascript:themefilter('group','단체여행')" onclick="retun false">단체여행</a></div>
+				<div class="filter_set_btn"><a href ="javascript:themefilter('alone','나홀로여행')" onclick="false">나홀로여행</a></div>
+				<div class="filter_set_btn"><a href ="javascript:themefilter('couple','커플여행')" onclick="false">커플여행</a></div>
+				<div class="filter_set_btn"><a href ="javascript:themefilter('family','가족여행')" onclick="false">가족여행</a></div>
+				<div class="filter_set_btn"><a href ="javascript:themefilter('group','단체여행')" onclick="false">단체여행</a></div>
 				
 				<div class="clear"></div>
 			</div>
@@ -782,6 +764,8 @@ h1 {
 
 <!-- <script src="./resources/js/jquery-3.1.1.js"></script> -->
 <script>
+var scd_sq_arry=[];
+
 var _areacode='null';
 var _day_cnt='null';
 var _season='null';
@@ -796,7 +780,7 @@ function areafilter(areacode,cite_nm){
 	if(_areacode == 'null'){
 		_areacode = areacode;
 		html_area +='<div class="filter_value" id="filter_value_area">';
-		html_area +="<a href='javascript:filter_cancel(1)' onclick='retun false'><span>"+cite_nm+"</span>";
+		html_area +="<a href='javascript:filter_cancel(1)' onclick='false'><span>"+cite_nm+"</span>";
 		html_area +='<div class="f_line"></div>';
 		html_area +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_areacode != areacode){
@@ -804,7 +788,7 @@ function areafilter(areacode,cite_nm){
 		html_area="";			
 		$("div#filter_value_area").detach();
 		html_area +='<div class="filter_value" id="filter_value_area">';
-		html_area +='<a href="javascript:filter_cancel(1)" onclick="retun false"><span>'+cite_nm+'</span>';
+		html_area +='<a href="javascript:filter_cancel(1)" onclick="false"><span>'+cite_nm+'</span>';
 		html_area +='<div class="f_line"></div>';
 		html_area +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_areacode==areacode){
@@ -822,7 +806,7 @@ function dayfilter(day_cnt,day_nm){
 	if(_day_cnt == 'null'){
 		_day_cnt = day_cnt;
 		html_day +='<div class="filter_value" id="filter_value_day">';
-		html_day +='<a href="javascript:filter_cancel(2)" onclick="retun false"><span>'+day_nm+'</span>';
+		html_day +='<a href="javascript:filter_cancel(2)" onclick="false"><span>'+day_nm+'</span>';
 		html_day +='<div class="f_line"></div>';
 		html_day +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_day_cnt != day_cnt){
@@ -830,7 +814,7 @@ function dayfilter(day_cnt,day_nm){
 		html_day="";
 		$("div#filter_value_day").detach();
 		html_day +='<div class="filter_value" id="filter_value_day">';
-		html_day +='<a href="javascript:filter_cancel(2)" onclick="retun false"><span>'+day_nm+'</span>';
+		html_day +='<a href="javascript:filter_cancel(2)" onclick="false"><span>'+day_nm+'</span>';
 		html_day +='<div class="f_line"></div>';
 		html_day +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_day_cnt==day_cnt){
@@ -848,7 +832,7 @@ function seasonfilter(season,season_nm){
 	if(_season == 'null'){
 		_season = season;
 		html_season +='<div class="filter_value" id="filter_value_season">';
-		html_season +='<a href="javascript:filter_cancel(3)" onclick="retun false"><span>'+season_nm+'</span>';
+		html_season +='<a href="javascript:filter_cancel(3)" onclick="false"><span>'+season_nm+'</span>';
 		html_season +='<div class="f_line"></div>';
 		html_season +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_season != season){
@@ -856,7 +840,7 @@ function seasonfilter(season,season_nm){
 		hhtml_seasontml="";
 		$("div#filter_value_season").detach(); 
 		html +='<div class="filter_value" id="filter_value_season">';
-		html +='<a href="javascript:filter_cancel(3)" onclick="retun false"><span>'+season_nm+'</span>';
+		html +='<a href="javascript:filter_cancel(3)" onclick="false"><span>'+season_nm+'</span>';
 		html +='<div class="f_line"></div>';
 		html +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_season==season){
@@ -873,7 +857,7 @@ function themefilter(theme,theme_nm){
 	if(_theme == 'null'){
 		_theme = theme;
 		html_theme +='<div class="filter_value" id="filter_value_theme">';
-		html_theme +='<a href="javascript:filter_cancel(4)" onclick="retun false"><span>'+theme_nm+'</span>';
+		html_theme +='<a href="javascript:filter_cancel(4)" onclick="false"><span>'+theme_nm+'</span>';
 		html_theme +='<div class="f_line"></div>';
 		html_theme +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_theme != theme){
@@ -881,7 +865,7 @@ function themefilter(theme,theme_nm){
 		html_theme="";
 		$("div#filter_value_theme").detach();
 		html_theme +='<div class="filter_value" id="filter_value_theme">';
-		html_theme +='<a href="javascript:filter_cancel(4)" onclick="retun false"><span>'+theme_nm+'</span>';
+		html_theme +='<a href="javascript:filter_cancel(4)" onclick="false"><span>'+theme_nm+'</span>';
 		html_theme +='<div class="f_line"></div>';
 		html_theme +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_theme==theme){
@@ -915,8 +899,9 @@ function filter_cancel(filter){
 	}
 	filtering();
 }
-
+/////////////////스케줄  필터링 ///////////////
 function filtering(){
+	var html_Like="";
 	var areacode=_areacode;
 	var DAY_CNT=_day_cnt;
 	var SCD_SEASON=_season;
@@ -941,44 +926,55 @@ function filtering(){
 		success : function(data){
 			 console.log(data);
 			 console.log(data.filter_List.length);
+			 
 			if(data.filter_List.length < 1){
 				$("div#all_scd_read").empty();
 				return false;
 			}
-			var html="";
-			var html2 ="";
+			//좋아요 담는 배열
+			var l_List=data.l_List;
+			//페이징 관련 html
+            var html2 ="";
+			//일정 관련 html
+			var html ="";
 			$.each(data.filter_List,function(index,item){
 				console.log(item);
 				var contentId=item.DTL_CONTENT_ID;				
-			     ReadApi(contentId);
-			
-			
-			$.getJSON(url, function(data) {
-				
+			     ReadApi(contentId); 
+			$.getJSON(url, function(data) { 
 			    console.log('success1', data);
 			    var scd_sq=item.SCD_SQ;
-			    
+			    scd_sq_arry=scd_sq;
 			    if (typeof (data.response.body.items.item.firstimage) !== "undefined") {
 			    	contentId=item.DTL_CONTENT_ID;
 			    	ReadApi(contentId);
 			    	$.getJSON(url, function(data) {
 			    	html += '<li>';
+			    	html += '<div class="scd_box" id="scd_box">'
 					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
 					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 						}else{
 							html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
-						};					
-					html += '</a>';
-					html += '</li>';
+						};
+						var like=0;	
+						for(var i=0;i<l_List.length;i++){
+							if(l_List[i].scd_SQ==item.SCD_SQ){
+								like=l_List[i].liked_SQ							
+							} 
+						}					
+						html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
+							html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+							html += '</div></li>';
 				
 			    	});
 			    }else if (typeof (data.response.body.items.item.firstimage) == "undefined") {
 			    	contentId=item.DTL_CONTENT_ID2;
 			    	ReadApi(contentId);
 			    	$.getJSON(url, function(data) {
-			    	html += '<li>'; 
+			    	html += '<li>';
+			    	html += '<div class="scd_box" id="scd_box">'
 					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
 					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
@@ -986,15 +982,20 @@ function filtering(){
 					}else{
 						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
 					};
-					html += '</a>';
-					html += '</li>';
-				
-				
-			    	
+					var like=0;	
+					for(var i=0;i<l_List.length;i++){
+						if(l_List[i].scd_SQ==item.SCD_SQ){
+							like=l_List[i].liked_SQ							
+						} 
+					}					
+					html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
+						html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+						html += '</div></li>'; 
 			    });
 			    	
 			    }else{
-			    	html += '<li>'; 
+			    	html += '<li>';
+			    	html += '<div class="scd_box" id="scd_box">'
 					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
 					html += '<img src="./resources/image/noimage.jpg" width=170 height=190>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
@@ -1002,11 +1003,18 @@ function filtering(){
 					}else{
 						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
 					};
-					html += '</a>';
-					html += '</li>';
-				  
+					var like=0;	
+					for(var i=0;i<l_List.length;i++){
+						if(l_List[i].scd_SQ==item.SCD_SQ){
+							like=l_List[i].liked_SQ							
+						} 
+					}					
+					html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
+						html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+						html += '</div></li>';				  
 			    }			    
 			});
+			
 			});			
 			$("#all_scd_read").html(html);
 			html2+='<div align="center">';
@@ -1037,7 +1045,8 @@ function filtering(){
 			console.log(e);
 		}
 	}); 
-	  
+	
+	
 };
 
 var key = "2pTN6y%2BhCGaVQL97quhdeM%2FW9ezdUvBNytbkKoT323qbc%2Ff5ao8fYoW2C31AgwacBVhy7PYHqvuwcnzprU4%2BNw%3D%3D";
@@ -1061,7 +1070,10 @@ function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어
 
 
 //////////////////////////////////////전체 스케줄 호출////////////////////////////
-$(function(){
+/* $(function(){ */
+function read_SCD() {
+		
+	
 	$.ajaxSetup({
         async: false
     });
@@ -1071,20 +1083,21 @@ $(function(){
 		url : "all_scd_read",
 		async : false,
 		success : function(data){
-			 console.log(data);
-			 console.log(data.navi);
-			
+			//좋아요 담는 배열
+			var l_List=data.l_List;
+			//페이징 관련 html
             var html2 ="";
+			//일정 관련 html
 			var html ="";
 			$.each(data.all_scd_List,function(index,item){
-				console.log(item);
+				 
 				var contentId=item.DTL_CONTENT_ID;				
-			     ReadApi(contentId);
+			    ReadApi(contentId);
 			$.getJSON(url, function(data) {
 				
 			    console.log('success1', data);
 			    var scd_sq=item.SCD_SQ;
-			    
+			    var scd_sq=[];
 			    if (typeof (data.response.body.items.item.firstimage) !== "undefined") {
 			    	
 			    	html += '<li>';
@@ -1095,18 +1108,23 @@ $(function(){
 						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 						}else{
 							html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
-						};
-					html += '<div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">999</div>';
+						};					
+					var like=0;	
+					for(var i=0;i<l_List.length;i++){
+						if(l_List[i].scd_SQ==item.SCD_SQ){
+							like=l_List[i].liked_SQ							
+						} 
+					}					
+					html += '</a><div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div>';					
 					html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
-					html += '</a></div>';
-					html += '</li>';
+					html += '</div></li>';
 					
-			    	
 			    }else if (typeof (data.response.body.items.item.firstimage) == "undefined") {
 			    	contentId=item.DTL_CONTENT_ID2;
 			    	ReadApi(contentId);
 			    $.getJSON(url, function(data) {
-			    	html += '<li>'; 
+			    	html += '<li>';
+			    	html += '<div class="scd_box" id="scd_box">'
 					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
 					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
@@ -1114,15 +1132,23 @@ $(function(){
 					}else{
 						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
 					};
-					html += '</a>';
-					html += '</li>';
+					var like=0;	
+					for(var i=0;i<l_List.length;i++){
+						if(l_List[i].scd_SQ==item.SCD_SQ){
+							like=l_List[i].liked_SQ							
+						} 
+					}					
+					html += '</a><div id="like_box" class="like_box"><a href="javascript:insertLike()" onclick="return false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div>';
+					html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '</div></li>';
 				
 					
 				
 			    });
 			    	
 			    }else{
-			    	html += '<li>'; 
+			    	html += '<li>';
+			    	html += '<div class="scd_box" id="scd_box">'
 					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
 					html += '<img src="./resources/image/noimage.jpg" width=170 height=190>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
@@ -1130,8 +1156,15 @@ $(function(){
 					}else{
 						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
 					};
-					html += '</a>';
-					html += '</li>';				  
+					var like=0;	
+					for(var i=0;i<l_List.length;i++){
+						if(l_List[i].scd_SQ==item.SCD_SQ){
+							like=l_List[i].liked_SQ							
+						} 
+					}					
+					html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
+					html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '</div></li>';				  
 			    }
 			});
 			});
@@ -1168,8 +1201,9 @@ $(function(){
 		}
 	}); 
     
-});
-
+/* }); */
+}
+//ajax 페이징
 function paging(page) {
 	
 	console.log(page);
@@ -1184,12 +1218,13 @@ function paging(page) {
 			page : page
 		}, 
 		success : function(data){
-			 console.log(data);
-			 console.log(data.navi);
-			 var html ="";
-             var html2 ="";
-			$.each(data.all_scd_List,function(index,item){
-				console.log(item);
+			//좋아요 담는 배열
+			var l_List=data.l_List;
+			//페이징 관련 html
+            var html2 ="";
+			//일정 관련 html
+			var html ="";
+			$.each(data.all_scd_List,function(index,item){ 
 				var contentId=item.DTL_CONTENT_ID;				
 			     ReadApi(contentId);
 			$.getJSON(url, function(data) {
@@ -1200,22 +1235,31 @@ function paging(page) {
 			    if (typeof (data.response.body.items.item.firstimage) !== "undefined") {
 			    	
 			    	html += '<li>';
+			    	html += '<div class="scd_box" id="scd_box">'
 					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
 					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 						}else{
 							html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
-						};					
-					html += '</a>';
-					html += '</li>';
+						};
+						var like=0;	
+						for(var i=0;i<l_List.length;i++){
+							if(l_List[i].scd_SQ==item.SCD_SQ){
+								like=l_List[i].liked_SQ							
+							} 
+						}					
+						html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
+						html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+						html += '</div></li>';
 				
 				 
 			    }else if (typeof (data.response.body.items.item.firstimage) == "undefined") {
 			    	contentId=item.DTL_CONTENT_ID2;
 			    	ReadApi(contentId);
 			    $.getJSON(url, function(data) {
-			    	html += '<li>'; 
+			    	html += '<li>';
+			    	html += '<div class="scd_box" id="scd_box">'
 					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
 					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
@@ -1223,15 +1267,29 @@ function paging(page) {
 					}else{
 						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
 					};
-					html += '</a>';
-					html += '</li>';
+					var like=0;	
+					for(var i=0;i<l_List.length;i++){
+						if(l_List[i].scd_SQ==item.SCD_SQ){
+							like=l_List[i].liked_SQ							
+						} 
+					}					
+					var like=0;	
+					for(var i=0;i<l_List.length;i++){
+						if(l_List[i].scd_SQ==item.SCD_SQ){
+							like=l_List[i].liked_SQ							
+						} 
+					}					
+					html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
+					html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '</div></li>';
 				
 				
 			    	
 			    });
 			    	
 			    }else{
-			    	html += '<li>'; 
+			    	html += '<li>';
+			    	html += '<div class="scd_box" id="scd_box">'
 					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
 					html += '<img src="./resources/image/noimage.jpg" width=170 height=190>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
@@ -1239,8 +1297,15 @@ function paging(page) {
 					}else{
 						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
 					};
-					html += '</a>';
-					html += '</li>';				  
+					var like=0;	
+					for(var i=0;i<l_List.length;i++){
+						if(l_List[i].scd_SQ==item.SCD_SQ){
+							like=l_List[i].liked_SQ							
+						} 
+					}					
+					html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
+					html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '</div></li>';				  
 			    }
 			});
 			});
@@ -1275,8 +1340,38 @@ function paging(page) {
 	}); 
     
 }
-
-
-</script>
-
+function insertLike(scd_sq) { 
+         
+        $.ajax({
+          type : "POST",
+          url : "insertLiked",
+          data :{
+        	  SCD_SQ : scd_sq 
+          }, 
+          success : function(data){
+             console.log(data);
+              if(data==1){
+             	modal({
+     				type: 'success',
+     				title: '좋아요',
+     				text: '선택한 일정에 좋아요!',
+             	}); 
+             }else{
+          	   modal({
+     				type: 'error',
+     				title: '좋아요 취소',
+     				text: '선택한 일정에 좋아요 해제!',
+     			});
+             }     
+          },
+          error : function(e){
+             console.log(e);
+          } 
+       })
+       read_SCD();
+}
+window.onload=function(){
+	read_SCD();
+}
+</script> 
 </html>

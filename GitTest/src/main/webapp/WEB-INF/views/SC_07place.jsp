@@ -69,13 +69,14 @@ html, body {
 
  
 <script type="text/javascript">
- 
+var login_id=${sessionScope.user_id};
+
 
 function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어 온다
    var form=document.getElementById("pagingForm");
    var page=document.getElementById("page"); 
-   page.value=currentPage; 
-   form.submit();
+   page.value=currentPage;  
+   paging(page.value);
 }
 
 var check = 0;
@@ -136,8 +137,10 @@ function replyUpdate(REV_SQ, CONTENT_ID){
             html+= "<div class='media-body'>";
             html+= "<div class='media-heading'><h4>"+item.USER_ID;
             html+= "<small>"+item.UPD_YMD;
-            html+= "<a href='javascript:replyUpdateForm("+item.REV_SQ+","+item.CONTENT_ID+")'> 수정 </a> ";
-            html+= "<a href='#none' onclick='deleteReply("+item.REV_SQ+","+item.CONTENT_ID+")'> 삭제 </a>";
+            if(login_id == item.USER_ID){ 		
+        		html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
+                html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+                }
             html+= "</small></h4></div>";
             html+= "<pre>";
             html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
@@ -179,8 +182,10 @@ function deleteReply(REV_SQ, CONTENT_ID){
 	                  html+= '<div class="media-body">';
 	                  html+= '<div class="media-heading"><h4>'+item.USER_ID;
 	                  html+= '<small>'+item.UPD_YMD; 
-	                  html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
-	                  html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+	                  if(login_id == item.USER_ID){ 		
+	              		  html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
+	                      html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+	                      }
 	                  html+= "</small></h4></div>";
 	                  html+= "<pre>";
 	                  html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
@@ -193,12 +198,12 @@ function deleteReply(REV_SQ, CONTENT_ID){
 	                  html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
 	                  var j=0;
 	                  for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
-	                     j=j+1;
-	                     console.log(j);
-	                      html2+='<a href="javascript:pagingFormSubmit('+data.navi.startPageGroup + 1+')">'+j+' </a>'; 
+	                	  var counter=data.navi.startPageGroup+j;
+	                      j=j+1;
+	                      html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
 	                  } 
-	                  html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + 1+')">▶ </a>';
-	                  html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + data.navi.pagePerGroup+')">▶▶</a></div>';
+	                  html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
+	                  html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
 	                  html2+='<form action="SC_07place" method="get" id="pagingForm">';
 	                  html2+='<input type="hidden" id="page" name="page">';
 	                  html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';
@@ -554,8 +559,10 @@ function f_Data(){
                   html+= '<div class="media-body">';
                   html+= '<div class="media-heading"><h4>'+item.USER_ID;
                   html+= '<small>'+item.UPD_YMD;
-                  html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
-                  html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+                  if(login_id == item.USER_ID){ 		
+              		  html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
+                      html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+                      }
                   html+= '</small></h4></div>';
                   html+= '<pre>';
                   html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
@@ -568,13 +575,13 @@ function f_Data(){
                   html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
                   var j=0;
                   for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
-                     j=j+1;
-                     console.log(j);
-                      html2+='<a href="javascript:pagingFormSubmit('+data.navi.startPageGroup + 1+')">'+j+' </a>'; 
+                	  var counter=data.navi.startPageGroup+j;
+                      j=j+1;
+                      html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
                   } 
-                  html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + 1+')">▶ </a>';
-                  html2+='<a href="javascript:pagingFormSubmit('+data.navi.currentPage + data.navi.pagePerGroup+')">▶▶</a></div>';
-                  html2+='<form action="SC_07place" method="get" id="pagingForm">';
+                  html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
+                  html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+                  html2+='<form action="read_Review" method="post" id="pagingForm">';
                   html2+='<input type="hidden" id="page" name="page">';
                   html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';
                   html2+='<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">';
@@ -635,14 +642,320 @@ function f_Data(){
          })         
       });
       
-   });
+      
+      $("#joinForm").on("click", function() { /* 조인버튼 클릭시 모달   */
+			$("#regAtag").trigger("click");
+		})
+		$("#loginForm").on("click", function() { /*로그인 버튼 클릭시 모달 */
+			$("#loginAtag").trigger("click");
+		}) 
+      
+		//로그인 
+		$("#submit_button").on("click", function() {
+
+			var user_id1 = $("#user_id").val();
+			var password1 = $("#password").val();
+
+			if (user_id1.length == 0) {
+				alert('아이디를 입력해주세요');
+				return false;
+			}
+			if (password1.length == 0) {
+				alert('비밀번호를 입력해주세요');
+				return false;
+			}
+
+			$.ajax({
+				type : "post",
+				url : "login",
+				data : {
+					user_id : user_id1,
+					password : password1
+				},
+				dataType : 'text',
+
+				success : function(data) {
+					if (data == "success") {
+						$('#myModal').modal('hide');
+						window.location.href = "./";
+
+					} else {
+						alert("비밀번호가 맞지 않습니다.");
+					}
+				},
+				error : function(e) {
+					console(e);
+				}
+			})
+		});
+
+		//조인
+
+		$("#submit_join").on("click", function() {
+
+			var user_id2 = $("#user_id1").val();
+			var password2 = $("#password1").val();
+			var password3 = $("#password2").val();
+			var email1 = $("#email").val();
+			var user_sex1 = $("#user_sex").val();
+
+			var sung = "선택";
+
+			//alert(user_sex1);
+			//$('#user_sex option:selected').val();
+			//$('select[name=user_sex]').val();
+
+			if (user_id2.length == 0) {
+				alert('아이디를 입력해주세요');
+				return false;
+			}
+			if (password2.length == 0) {
+				alert('비밀번호를 입력해주세요');
+				return false;
+			}
+			if (email1.length == 0) {
+				alert('이메일을 입력해주세요');
+				return false;
+			}
+
+			if (user_sex1 == sung) {
+				alert('성별을 입력해주세요');
+				return false;
+			}
+
+			if (password2 != password3) {
+				alert('비밀번호 확인 시 비밀번호가 일치하지 않습니다.');
+				return false;
+			}
+
+			$.ajax({
+				type : "post",
+				url : "join",
+				data : {
+					user_id : user_id2,
+					password : password2,
+					email : email1,
+					user_sex : user_sex1
+				},
+				dataType : 'text',
+
+				success : function(data) {
+					console.log(data);
+					if (data == "success") {
+						alert("가입처리가 완료 되었습니다.");
+						$('#myModal').modal('hide');
+						window.location.href = "./";
+					} else {
+						alert("가입 처리가 되지 않았습니다.");
+					}
+				},
+				error : function(e) {
+					console(e);
+				}
+			})
+		});
+		
+		
+		//정보수정
+		
+		$("#editForm").on("click", function() {
+
+			var user_id2 = $("#user_id_ed").val();
+			var password2 = $("#password1_ed").val();
+			var password3 = $("#password2_ed").val();
+			var email1 = $("#email_ed").val();
+			var user_sex1 = $("#user_sex_ed").val();
+
+
+			//alert(user_sex1);
+			//$('#user_sex option:selected').val();
+			//$('select[name=user_sex]').val();
+
+
+			if (password2.length == 0) {
+				alert('비밀번호를 입력해주세요');
+				return false;
+			}
+			if (email1.length == 0) {
+				alert('이메일을 입력해주세요');
+				return false;
+			}
+
+			if (password2 != password3) {
+				alert('비밀번호 확인 시 비밀번호가 일치하지 않습니다.');
+				return false;
+			}
+
+			$.ajax({
+				type : "post",
+				url : "edit",
+				data : {
+					user_id : user_id2,
+					password : password2,
+					email : email1,
+					//user_sex : user_sex1
+				},
+				dataType : 'text',
+
+				success : function(data) {
+					console.log(data);
+					if (data == "success") {
+						alert("회원 정보 수정 되었습니다.");
+						$('#myModal').modal('hide');
+						window.location.href = "./";
+					} else {
+						alert("정보 수정이 실패하였습니다.");
+					}
+				},
+				error : function(e) {
+					console(e);
+				}
+			})
+		});
+		
+		
+		
+      
+      
+      
+   });//레디펑션 
+ 
+ 
 
 function locationObj(){
     var offset = $("#reviewWrite").offset();
     $('html, body').animate({scrollTop : offset.top}, 400);
 }
 
+function paging(page) { 
+	$.ajax({ 
+        type : "post",
+        url : "read_Review",
+        data :{
+           CONTENT_ID : contentId,
+           page : page
+        },
+        
+        success : function(data){
+           
+           console.log(data);
+            var html ="";
+            var html2 ="";
+            $.each(data.rList,function(index,item){
+              console.log(item); 
+              html+= "<div class='media'>";
+              html+= "<a class='pull-left' href='#'>";
+              html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+              html+= '<div class="media-body">';
+              html+= '<div class="media-heading"><h4>'+item.USER_ID;
+              html+= '<small>'+item.UPD_YMD;
+              if(login_id == item.USER_ID){ 		
+          		  html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
+                  html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+                  }
+              html+= '</small></h4></div>';
+              html+= '<pre>';
+              html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
+  				html+= "</pre></div></div>";
+            })
+              html2+='<div align="center">';
+              var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+              html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+              var onepageback=data.navi.currentPage -1
+              html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+              var j=0;
+              for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
+            	  var counter=data.navi.startPageGroup+j;
+                  j=j+1;
+                  html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
+              } 
+              html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
+              html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+              html2+='<form action="read_Review" method="post" id="pagingForm">';
+              html2+='<input type="hidden" id="page" name="page">';
+              html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';
+              html2+='<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">';
+              html2+='</form></div>'; 
+            
+            $("#review").html(html);
+            $("#paging").html(html2);
+            $('#reviewWrite').val('');      
+        },
+        error : function(e){
+           console.log(e);
+        }   
+     });
+};
 
+	
+
+
+
+$(function(){	
+	 
+
+	
+$.ajax({
+    
+    type : "post",
+    url : "read_Review",
+    data :{
+       CONTENT_ID : contentId            
+    },
+    
+    success : function(data){
+       
+       console.log(data);
+        var html ="";
+        var html2 ="";
+        $.each(data.rList,function(index,item){
+          console.log(item);
+        
+          html+= "<div class='media'>";
+          html+= "<a class='pull-left' href='#'>";
+          html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+          html+= '<div class="media-body">';
+          html+= '<div class="media-heading"><h4>'+item.USER_ID;
+          html+= '<small>'+item.UPD_YMD;
+          if(login_id == item.USER_ID){ 		
+  		  html+= '<a href="javascript:replyUpdateForm('+item.REV_SQ+','+item.CONTENT_ID+')"> 수정 </a>';
+          html+= '<a href="#none" onclick="deleteReply('+item.REV_SQ+','+item.CONTENT_ID+')"> 삭제 </a>';
+          }
+          html+= '</small></h4></div>';
+          html+= '<pre>';
+          html+= "<div id='"+item.REV_SQ+"'class='review_txt'>"+item.REV_TXT+"</div>"; 
+				html+= "</pre></div></div>";
+        });
+          html2+='<div align="center">';
+          var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+          html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+          var onepageback=data.navi.currentPage -1
+          html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+          var j=0;
+          console.log(data.navi.endPageGroup);
+          for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
+        	  var counter=data.navi.startPageGroup+j;
+        	  console.log(data.navi.startPageGroup);
+              j=j+1;
+              html2+='<a href="javascript:pagingFormSubmit('+j+')">'+j+' </a>'; 
+          } 
+          html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
+          html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+          html2+='<form action="read_Review" method="post" id="pagingForm">';
+          html2+='<input type="hidden" id="page" name="page">';
+          html2+='<input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">';
+          html2+='<input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">';
+          html2+='</form></div>'; 
+        
+        $("#review").html(html);
+        $("#paging").html(html2);
+        $('#reviewWrite').val('');      
+    },
+    error : function(e){
+       console.log(e);
+    }   
+ });
+});
 
 </script>
 
@@ -732,7 +1045,7 @@ function locationObj(){
 						</c:otherwise>
 					</c:choose>
 
-					<!--로그인&조인 모달  -->
+				<!--로그인&조인 모달  -->
 					<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 						aria-labelledby="myLargeModalLabel" aria-hidden="true">
 						<div class="modal-dialog modal-lg">
@@ -900,14 +1213,13 @@ function locationObj(){
 															<div class="col-sm-10">
 																<div class="row">
 																	<div class="col-md-3">
-																		<select class="form-control" id="user_sex_ed">
-																			<option value="m">남성</option>
-																			<option value="f">여성</option>
+																		<select class="form-control" id="user_sex_ed" disabled="disabled">
+																			<option value="">${sessionScope.user_sex}</option>
 																		</select>
 																	</div>
 																	<div class="col-md-9">
 																		<input type="text" class="form-control"
-																			id="user_id_ed" name="user_id_ed" placeholder="ID" />
+																			id="user_id_ed" name="user_id_ed" placeholder="ID" value="${sessionScope.user_id}" disabled="disabled" />
 																	</div>
 																</div>
 															</div>
@@ -925,7 +1237,7 @@ function locationObj(){
 																Password</label>
 															<div class="col-sm-10">
 																<input type="password" class="form-control"
-																	id="password_ed" placeholder="Password" />
+																	id="password1_ed" placeholder="Password" />
 															</div>
 														</div>
 														<div class="form-group">
@@ -939,10 +1251,10 @@ function locationObj(){
 														<div class="row">
 															<div class="col-sm-2"></div>
 															<div class="col-sm-10">
-																<button type="button" class="btn btn-primary btn-sm">
-																	Save & Continue</button>
-																<button type="button" class="btn btn-default btn-sm">
-																	Cancel</button>
+																<button type="button" class="btn btn-primary btn-sm" id="editForm">
+																	Edit</button>
+																<input type="reset" class="btn btn-default btn-sm"
+																	value="Reset" />
 															</div>
 														</div>
 													</form>
@@ -968,7 +1280,7 @@ function locationObj(){
 							</div>
 						</div>
 					</div>
-
+				
 
 				</div>
 
@@ -1058,7 +1370,7 @@ function locationObj(){
                         <div class="form-group">
                             <textarea class="form-control" id="reviewWrite" rows="3"></textarea>
                         </div>
-                        <a href="#" class="btn btn-primary" id="write">등록</a> 
+                        <a href="#" onclick="return false" class="btn btn-primary" id="write">등록</a> 
                        <!--  <button type="submit" class="btn btn-primary">Submit</button> -->
                     </form>
                 </div>
@@ -1069,7 +1381,7 @@ function locationObj(){
 
                 <!-- Comment -->
                 <div id="review">
-                <c:forEach var="reply" items="${rList}">
+                <%-- <c:forEach var="reply" items="${rList}">
                 <div class="media">
                     <a class="pull-left" href="#">
                         <img class="media-object" src="http://placehold.it/64x64" alt="">
@@ -1077,22 +1389,22 @@ function locationObj(){
                     <div class="media-body">
                         <div class="media-heading"><h4>${reply.USER_ID}
                             <small>${reply.UPD_YMD}</small>
-                            <!-- 아이디 비교 -->
-                            <%-- <c:if test="${ID == reply.USER_ID}"> --%>
+                            
+                            <c:if test="${sessionScope.user_id == reply.USER_ID}">
                      <small><a href="javascript:replyUpdateForm('${reply.REV_SQ}','${reply.CONTENT_ID}')">수정</a>
                      		<a href="#none" onclick="deleteReply('${reply.REV_SQ}','${reply.CONTENT_ID}')">삭제</a></small>
-                     <%-- </c:if> --%>
+                     	</c:if> 
                         </h4></div>
                         <pre>
                         <div id="${reply.REV_SQ}" class="review_txt">${reply.REV_TXT}</div>
                         </pre>
                     </div>
                 </div>
-            </c:forEach>
+            </c:forEach> --%>
             </div>
             <div id="paging">
             
-            <div align="center">
+            <%-- <div align="center">
                <a href ="javascript:pagingFormSubmit(
                   ${navi.currentPage - navi.pagePerGroup})">◀◀</a>
                   <a href ="javascript:pagingFormSubmit(${navi.currentPage -1})">◀</a>
@@ -1113,7 +1425,7 @@ function locationObj(){
             <input type="hidden" id="CONTENT_ID" name="CONTENT_ID" value="${contentid}">
             <input type="hidden" id="CONTENT_TYPE_ID" name="CONTENT_TYPE_ID" value="${contypeid}">
             
-            </form>            
+            </form> --%>        
             </div>
                 <!-- Comment -->
             </div>

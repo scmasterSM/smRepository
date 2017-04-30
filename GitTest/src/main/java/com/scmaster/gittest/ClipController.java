@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.scmaster.gittest.dao.ClipDao;
 import com.scmaster.gittest.dao.ReviewDao;
 import com.scmaster.gittest.vo.Clip;
+import com.scmaster.gittest.vo.Liked;
 import com.scmaster.gittest.vo.Schedule;
 
 @Controller
@@ -47,5 +48,21 @@ public class ClipController {
 		String user_id=(String)session.getAttribute("user_id"); 
 		List<Clip>cList = dao.readCLip(user_id); 
 		return cList;
-	}	 
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="insertLiked", method=RequestMethod.POST)
+	public int clipLiked(Liked Liked, HttpSession session){
+		String user_id=(String)session.getAttribute("user_id");
+		Liked.setUSER_ID(user_id);
+		int result=0;
+			
+		result=dao.deleteLiked(Liked);		
+		if(result == 1){
+			result=0;	
+		}else{
+			result=dao.insertLiked(Liked);
+		}
+		return result;
+	}
 }
