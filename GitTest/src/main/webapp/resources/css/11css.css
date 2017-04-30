@@ -108,3 +108,181 @@
     height: 50px;
     overflow-y: scroll;
 }
+.filter_value {
+    float: left;
+    cursor: pointer;
+    background: #f3f3f3;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #808080;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 3px;
+    margin-top: 10px;
+    margin-left: 3px;
+    margin-right: 10px;
+    overflow: hidden;
+}
+
+
+.filter_value span {
+    float: left;
+}
+
+.f_line {
+    background: #dbdbdb;
+    width: 1px;
+    height: 10px;
+    margin-left: 8px;
+    margin-right: 8px;
+    float: left;
+    margin-top: 10px;
+}
+.f_rm {
+    float: left;
+    margin-top: 10px;
+}
+.filter_set_box{
+	width: 13%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    color: #808080;
+    text-align: center;
+    cursor: pointer;
+    float: left;
+}
+.filter_set_box_day{
+	width: 12%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    color: #808080;
+    text-align: center;
+    cursor: pointer;
+    float: left;
+}
+.filter_set_box_theme{
+	width: 14%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    color: #808080;
+    text-align: center;
+    cursor: pointer;
+    float: left;
+}
+
+.all_scd_read> li{
+    display: inline-block;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-bottom: 20px;
+}
+.scd_box{
+	height : 210px;
+	width: 170px;
+}
+.like_box{
+	width: 55px;
+	float :left;
+	overflow: hidden;
+	text-align: left;
+	margin-left: 5px;
+}
+.user_id_box{
+	width: 100px;
+	float :left;
+	overflow: hidden;
+	text-align: right;
+	margin-right: 10px;
+}
+.icon{
+	width :30px;
+	height: 30px;
+}
+
+.page-title {
+    text-align: center;
+}
+
+.page-title > * {
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.page-title .page-title-inner {
+    position: relative;
+    display: inline-block;
+}
+
+.page-title .page-title-left,
+.page-title .page-title-right {
+    position: absolute;
+    top: 50%;
+    width: auto;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.page-title .page-title-left *,
+.page-title .page-title-right * {
+    display: inline;
+    white-space: nowrap;
+}
+
+.page-title .page-title-left {
+    left: 0;
+    text-align: right;
+    -webkit-transform: translate(-100%, -50%);
+    transform: translate(-100%, -50%);
+}
+
+.page-title .page-title-left * {
+    padding-right: .25em;
+}
+
+.page-title .page-title-left *:nth-last-child(odd) {
+    color: rgba(255, 255, 255, 0.1);
+}
+
+.page-title .page-title-left *:nth-last-child(even) {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.page-title .page-title-right {
+    right: 0;
+    text-align: left;
+    -webkit-transform: translate(100%, -50%);
+    transform: translate(100%, -50%);
+}
+
+.page-title .page-title-right * {
+    padding-left: .25em;
+}
+
+.page-title .page-title-right *:nth-child(odd) {
+    color: rgba(255, 255, 255, 0.1);
+}
+
+.page-title .page-title-right *:nth-child(even) {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.page-title-wrap {
+    background: #000;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center 80%;
+}
+
+@media (min-width: 768px) {
+    .page-title {
+        text-align: left;
+    }
+}
+
+

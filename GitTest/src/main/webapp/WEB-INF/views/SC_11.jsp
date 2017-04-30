@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="./resources/css/responsive.css">
 <link rel ="stylesheet" href ="./resources/css/11css.css"> 
 <script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
-<script src="./resources/js/jquery.min.js"></script>
+<script src="./resources/js/jquery.min.js"></script> 
 
 <script>
 	window.jQuery
@@ -57,6 +57,12 @@
 
 
 <!-- <script src="./resources/js/jquery-3.1.1.js"></script> -->
+
+<style type="text/css">
+	html,  body {
+		overflow-x: hidden;
+	}
+</style>
 
 <script type="text/javascript">
 	/* var areacode = ${areacode}; */
@@ -89,98 +95,7 @@
 	function logout() {
 
 		location.href = "logout";
-	}
-	
-	/* function plusArea() {
-		var inner = document.getElementById("filter_area");
-		inner.innerHTML =
-				"<div class='filter_title city' id='filter_title city' data-sh='city' >여행지역</div>"				
-			+	"<div class='filter_right' data-sh='tour_day'>"
-			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:sigunguArea(31)'>경기도</a></div>"
-			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:filter(32)'>강원도</a></div>"
-			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:getAreaCode(33)'>충청북도</a></div>"
-			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:getAreaCode(34)'>충청남도</a></div>"
-			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:getAreaCode(35)'>경상북도</a></div>"
-			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:getAreaCode(36)'>경상남도</a></div>"
-			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:getAreaCode(37)'>전라북도</a></div>"
-			+	"<div class='filter_set_btn'><a href ='#' onclick='javascript:getAreaCode(38)'>전라남도</a></div>"
-			+	"<div class='clear'></div></div>"; <a href='#' onclick='javascript:sigunguArea()'>접기</a> 	
-	} */
-	
-	/* function sigunguArea(cities){
-		
-		 console.log(check);
-		console.log(area);
-		if(check == 1){
-		      document.getElementById('sigungu_area").innerHTML = inner;
-		      console.log(inner);
-		      check=0;
-		      return;
-		   }
-		if(area != "sigungu_area" && area != null){
-		      document.getElementById(area).innerHTML = inner;
-		   } 
-		   
-		console.log(area);
-		
-		area = "sigungu_area";		   
-		inner = document.getElementById('sigungu_area').innerHTML; 
-		var inner = document.getElementById('sigungu_area');
-		var output="";
-			
-			output +="<div class='filter_title city' data-sh='city' >상세지역</div>";
-			output	+=	"<div class='filter_right city' data-sh='city'>";
-			output	+=	"<div class='city_box'>";
-			if(cities!=null){
-			for(var i=0;i<cities.length;i++){
-				output	+=	"<div class='filter_set_btn'><a href ='#'>"+cities[i].name+"</a></div>";	
-			}
-			}
-			output	+=	"</div><div class='city_btn' data-on='off'></div>";
-			output	+=	"<div class='clear'></div></div>";
-		inner.innerHTML += output;
-		check =1;
-		console.log(cities);
-	} */
-	
-
-	
-/* 	function getAreaCode(areaCode){
-		
-		  var sigunguCode;
-	      var url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode?ServiceKey="
-	            + key + "&areaCode=" + areaCode 
-	            + "&numOfRows=100&MobileOS=ETC&MobileApp=AppTesting&_type=json";
-	      $.ajax({
-	         type : "GET",
-	         url : url,
-	         async : false,
-	         success : function(result){
-	        	var cities = [];
-	      	  	 
-	                console.log(result);
-	            $.each(result.response.body.items.item, function(index, val) {	      
-	            	console.log(val);
-	          		var city = {
-                            "index" : val.rnum,
-                            "areaCode" : areaCode,
-                            "sigunguCode" : val.code,
-                            "name" : val.name, 
-                         };
-                    cities.push(city);
-	                console.log(cities)
-	                             
-                   
-	               	});//each
-	                
-	            sigunguArea(cities);
-	            }, error : function(e){
-	               console.log(e);
-	            }
-	      });//ajax
-	            check=0;
-	            area = null;
-	   }	 */
+	} 
 	
 </script>
 </head>
@@ -578,20 +493,20 @@
 	</div> -->
 
 
-	<div class="slider-area">
+<!-- 	<div class="slider-area">
 		<div class="slider">
 			<div id="bg-slider1 class="owl-carousel owl-theme">
 
 				<div class="item_12">
 					 <img src="./resources/image/voyage.png" alt=""> 
 				</div>
-			<!-- 	<div class="item">
+				<div class="item">
 					<img src=""
 						alt="The Last of us">
 				</div>
 				<div class="item">
 					<img src="" alt="">
-				</div> -->
+				</div>
 
 			</div>
 		</div>
@@ -601,9 +516,9 @@
 					class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
 					<br>
 					<div id="mainContent">
-						<!-- <h2>
+						<h2>
 							나만의 일정을<br> 쉽게 만들어 보세요 
-						</h2> -->
+						</h2>
 						<br><br>
 					</div>
 					<div class="content-area_1">
@@ -612,8 +527,8 @@
 								data-wow-delay="1s">
 								<a href="new_schedule" class="btn btn-info" role="button">새로운
 									일정 만들기</a> <a href="SC_10" class="btn btn-info" role="button">나의 일정 보기</a>
-								<!-- <button type="button" class="btn btn-primary">Primary</button>
-  <button type="button" class="btn btn-success">Success</button> -->
+								<button type="button" class="btn btn-primary">Primary</button>
+  <button type="button" class="btn btn-success">Success</button>
 							</div>
 						</div>
 					</div>
@@ -621,10 +536,38 @@
 				</div>
 			</div>
 		</div>
+	</div> -->
+	<style type="text/css">
+	 @import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+.section-30 {
+	background-image: url(./resources/image/otherpage/bg_11.png);
+	background-repeat: repeat-y;
+	background-size: 100%;
+}
+h1 {
+	font-family: 'Hanna', serif;
+	color : gray;
+	font-size: -webkit-xxx-large;
+}
+
+</style>
+	<section
+		class="section-30 section-sm-40 section-md-66 section-lg-bottom-90 bg-gray-dark page-title-wrap">
+	<div class="shell">
+		<div class="page-title" style="height: 400px;">
+			<div class="container" style="margin: auto; margin-top: 85px;">
+				<h1 id="sc_10_text"style="text-align:center;">Make a new plan</h1>
+			</div>
+		</div>
 	</div>
+	</section>
+	<br><br><br>
+<center>	
 
-
-	<center><h5>여행 자들의 일정 보기</h5></center>
+	<a href="new_schedule" class="btn btn-info" role="button">새로운
+	일정 만들기</a> <a href="SC_10" class="btn btn-info" role="button">나의 일정 보기</a>
+	<br><br>
+	<h2>다른 일정 둘러보기</h2></center>
 
 <div class="content">
 	<div class="wrap">
@@ -642,39 +585,47 @@
 			<input type="hidden" id="tour_type">
 			<div class="filter_title f_title" >
 				필터			</div>
-			<div class="filter_right f_content" >
-							</div>
+			<div class="filter_right f_content" id="filter_content">
+			<div class="filter_set_btn" id="filter_set_btn">여행지 : </div>
+			<div class="filter_set_box" id="filter_set_area"></div>
+			<div class="filter_set_btn" id="filter_set_btn">여행일수 : </div>
+			<div class="filter_set_box_day" id="filter_set_day"></div>
+			<div class="filter_set_btn" id="filter_set_btn">여행시기 : </div>
+			<div class="filter_set_box_day" id="filter_set_season"></div>
+			<div class="filter_set_btn" id="filter_set_btn">여행테마 : </div>
+			<div class="filter_set_box_theme" id="filter_set_theme"></div>
+			</div>
 			<div class="clear"></div>
 
 			<div class="filter_title" data-sh="area_tab" >
 				주요 여행지			</div>
 			<div class="filter_right" data-sh="area_tab" >
 					<div class="filter_set_btn">
-					<a href ="#" onclick="javascript:areafilter(1)">서울</a>
+					<a href ="javascript:areafilter(1,'서울')" onclick="retun false">서울</a>
 					</div>
 					<div class="filter_set_btn" >
-					<a href ="#" onclick="javascript:areafilter(6)">부산</a>
+					<a href ="javascript:areafilter(6,'부산')" onclick="retun false">부산</a>
 					</div>
 					<div class="filter_set_btn">
-					<a href ="#" onclick="javascript:areafilter(39)">제주도</a>
+					<a href ="javascript:areafilter(39,'제주도')" onclick="retun false">제주도</a>
 					</div>
 					<div class="filter_set_btn" >
-					<a href ="#" onclick="javascript:areafilter(2)">인천</a>
+					<a href ="javascript:areafilter(2,'인천')" onclick="retun false">인천</a>
 					</div>
 					<div class="filter_set_btn">
-					<a href ="#" onclick="javascript:areafilter(3)">대전</a>
+					<a href ="javascript:areafilter(3,'대전')" onclick="retun false">대전</a>
 					</div>
 					<div class="filter_set_btn" >
-					<a href ="#" onclick="javascript:areafilter(4)">대구</a>
+					<a href ="javascript:areafilter(4,'대구')" onclick="retun false">대구</a>
 					</div>
 					<div class="filter_set_btn">
-					<a href ="#" onclick="javascript:areafilter(5)">광주</a>
+					<a href ="javascript:areafilter(5,'광주')" onclick="retun false">광주</a>
 					</div>
 					<div class="filter_set_btn" >
-					<a href ="#" onclick="javascript:areafilter(7)">울산</a>
+					<a href ="javascript:areafilter(7,'울산')" onclick="retun false">울산</a>
 					</div>
 					<div class="filter_set_btn" >
-					<a href ="#" onclick="javascript:areafilter(8)">세종시</a>
+					<a href ="javascript:areafilter(8,'세종시')" onclick="retun false">세종시</a>
 					</div>
 					<!-- <div class="filter_set_btn" >
 					<a href ="javascript:plusArea()">더보기</a>
@@ -691,29 +642,29 @@
 			<div id="filter_area">
 				<div class='filter_title' id='filter_title city' data-sh='city' >여행지역</div>				
 			<div class='filter_right' data-sh='city'>
-				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(31)'>경기도</a></div>
-				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(32)'>강원도</a></div>
-				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(33)'>충청북도</a></div>
-				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(34)'>충청남도</a></div>
-				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(35)'>경상북도</a></div>
-				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(36)'>경상남도</a></div>
-				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(37)'>전라북도</a></div>
-				<div class='filter_set_btn'><a href ='#' onclick='javascript:areafilter(38)'>전라남도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(31,'경기도')" onclick="retun false">경기도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(32,'강원도')" onclick="retun false">강원도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(33,'충청북도')" onclick="retun false">충청북도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(34,'충청남도')" onclick="retun false">충청남도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(35,'경상북도')" onclick="retun false">경상북도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(36,'경상남도')" onclick="retun false">경상남도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(37,'전라북도')" onclick="retun false">전라북도</a></div>
+				<div class='filter_set_btn'><a href ="javascript:areafilter(38,'전라남도')" onclick="retun false">전라남도</a></div>
 				<div class='clear'></div></div>
 			</div>
 			<div id="sigungu_area"></div>
 			<div class="clear"></div>
 
 			<div class="filter_title" data-sh="tour_day">
-				여행일			</div>
+				여행일수			</div>
 			<div class="filter_right" data-sh="tour_day">
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:dayfilter(1)'>1일</a></div>
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:dayfilter(2)'>2일</a></div>
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:dayfilter(3)'>3일</a></div>
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:dayfilter(4)'>4일</a></div>
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:dayfilter(5)'>5일</a></div>
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:dayfilter(6)'>6일</a></div>
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:dayfilter(7)'>7일이상</a></div>
+				<div class="filter_set_btn"><a href ="javascript:dayfilter(1,'1일')" onclick="retun false">1일</a></div>
+				<div class="filter_set_btn"><a href ="javascript:dayfilter(2,'2일')" onclick="retun false">2일</a></div>
+				<div class="filter_set_btn"><a href ="javascript:dayfilter(3,'3일')" onclick="retun false">3일</a></div>
+				<div class="filter_set_btn"><a href ="javascript:dayfilter(4,'4일')" onclick="retun false">4일</a></div>
+				<div class="filter_set_btn"><a href ="javascript:dayfilter(5,'5일')" onclick="retun false">5일</a></div>
+				<div class="filter_set_btn"><a href ="javascript:dayfilter(6,'6일')" onclick="retun false">6일</a></div>
+				<div class="filter_set_btn"><a href ="javascript:dayfilter(7,'7일이상')" onclick="retun false">7일이상</a></div>
 				<div class="clear"></div>
 			</div>
 			<div class="clear"></div>
@@ -721,10 +672,10 @@
 			<div class="filter_title" data-sh="tour_ss">
 				여행시기			</div>
 			<div class="filter_right" data-sh="tour_ss">
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:seasonfilter("spring")'>봄</a></div>
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:seasonfilter("summer")'>여름</a></div>
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:seasonfilter("fall")'>가을</a></div>
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:seasonfilter("winter")'>겨울</a></div>
+				<div class="filter_set_btn"><a href ="javascript:seasonfilter('spring','봄')" onclick="retun false">봄</a></div>
+				<div class="filter_set_btn"><a href ="javascript:seasonfilter('summer','여름')" onclick="retun false">여름</a></div>
+				<div class="filter_set_btn"><a href ="javascript:seasonfilter('fall','가을')" onclick="retun false">가을</a></div>
+				<div class="filter_set_btn"><a href ="javascript:seasonfilter('winter','겨울')" onclick="retun false">겨울</a></div>
 				<div class="clear"></div>
 			</div>
 			<div class="clear"></div>
@@ -732,10 +683,10 @@
 			<div class="filter_title last" data-sh="theme">
 				여행테마			</div>
 			<div class="filter_right last" data-sh="theme">
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:themefilter("alone")'>나홀로여행</a></div>
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:themefilter("couple")'>커플여행</a></div>
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:themefilter("family")'>가족여행</a></div>
-				<div class="filter_set_btn"><a href ='#' onclick='javascript:themefilter("group")'>단체여행</a></div>
+				<div class="filter_set_btn"><a href ="javascript:themefilter('alone','나홀로여행')" onclick="retun false">나홀로여행</a></div>
+				<div class="filter_set_btn"><a href ="javascript:themefilter('couple','커플여행')" onclick="retun false">커플여행</a></div>
+				<div class="filter_set_btn"><a href ="javascript:themefilter('family','가족여행')" onclick="retun false">가족여행</a></div>
+				<div class="filter_set_btn"><a href ="javascript:themefilter('group','단체여행')" onclick="retun false">단체여행</a></div>
 				
 				<div class="clear"></div>
 			</div>
@@ -746,8 +697,36 @@
 		
 		</div>
 	</div>
-</div>
 	
+
+
+					<div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="job-seekers">
+                            <ul class="list-inline job-seeker" >
+                             	<!-- 클립보드 탭 -->
+                             <div id="all_scd_read" class="all_scd_read">  
+                                
+                             </div> 
+                            </ul>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="employeers">
+                            <ul class="list-inline">
+                            <!-- 여행일정 -->
+                                <div id="myPlan" class="myPlan"></div>
+                                
+                                
+                            </ul>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="shared">
+                            <ul class="list-inline">
+                            <!-- 여행일정 -->
+                                <div id="sharedPlan" class="sharedPlan"></div>
+                                
+                                
+                            </ul>
+                        </div>
+                      </div>
+	<div id="paging"></div>
 	
 	
 	
@@ -801,50 +780,139 @@
 	</div>
 </body>
 
-<script src="./resources/js/jquery-3.1.1.js"></script>
+<!-- <script src="./resources/js/jquery-3.1.1.js"></script> -->
 <script>
 var _areacode='null';
 var _day_cnt='null';
 var _season='null';
 var _theme='null';
-function areafilter(areacode){ 
+
+var html_area="";
+var html_day="";
+var html_season="";
+var html_theme="";
+function areafilter(areacode,cite_nm){ 
+	
 	if(_areacode == 'null'){
-		_areacode = areacode;		
+		_areacode = areacode;
+		html_area +='<div class="filter_value" id="filter_value_area">';
+		html_area +="<a href='javascript:filter_cancel(1)' onclick='retun false'><span>"+cite_nm+"</span>";
+		html_area +='<div class="f_line"></div>';
+		html_area +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_areacode != areacode){
 		_areacode = areacode;
+		html_area="";			
+		$("div#filter_value_area").detach();
+		html_area +='<div class="filter_value" id="filter_value_area">';
+		html_area +='<a href="javascript:filter_cancel(1)" onclick="retun false"><span>'+cite_nm+'</span>';
+		html_area +='<div class="f_line"></div>';
+		html_area +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_areacode==areacode){
-		_areacode ='null';		
-	} 
+		_areacode ='null';
+		html_area="";
+		$("div#filter_value_area").detach();
+		filtering();
+		return true;
+	}
+	$("#filter_set_area").html(html_area);
 	filtering();
 }
-function dayfilter(day_cnt){
+function dayfilter(day_cnt,day_nm){
+	
 	if(_day_cnt == 'null'){
-		_day_cnt = day_cnt;		
+		_day_cnt = day_cnt;
+		html_day +='<div class="filter_value" id="filter_value_day">';
+		html_day +='<a href="javascript:filter_cancel(2)" onclick="retun false"><span>'+day_nm+'</span>';
+		html_day +='<div class="f_line"></div>';
+		html_day +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_day_cnt != day_cnt){
 		_day_cnt = day_cnt;
+		html_day="";
+		$("div#filter_value_day").detach();
+		html_day +='<div class="filter_value" id="filter_value_day">';
+		html_day +='<a href="javascript:filter_cancel(2)" onclick="retun false"><span>'+day_nm+'</span>';
+		html_day +='<div class="f_line"></div>';
+		html_day +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_day_cnt==day_cnt){
-		_day_cnt ='null';		
+		_day_cnt ='null';
+		html_day="";
+		$("div#filter_value_day").detach();
+		filtering();
+		return false;
 	}
+	$("#filter_set_day").html(html_day);
 	filtering();
 }
-function seasonfilter(season){
+ 
+function seasonfilter(season,season_nm){
 	if(_season == 'null'){
-		_season = season;		
+		_season = season;
+		html_season +='<div class="filter_value" id="filter_value_season">';
+		html_season +='<a href="javascript:filter_cancel(3)" onclick="retun false"><span>'+season_nm+'</span>';
+		html_season +='<div class="f_line"></div>';
+		html_season +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_season != season){
 		_season = season;
+		hhtml_seasontml="";
+		$("div#filter_value_season").detach(); 
+		html +='<div class="filter_value" id="filter_value_season">';
+		html +='<a href="javascript:filter_cancel(3)" onclick="retun false"><span>'+season_nm+'</span>';
+		html +='<div class="f_line"></div>';
+		html +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_season==season){
-		_season ='null';		
+		_season ='null';
+		html_season="";
+		$("div#filter_value_season").detach();
+		filtering();
+		return false;
 	}
+	$("#filter_set_season").html(html_season);
 	filtering();
 }
-function themefilter(theme){
+function themefilter(theme,theme_nm){
 	if(_theme == 'null'){
-		_theme = theme;		
+		_theme = theme;
+		html_theme +='<div class="filter_value" id="filter_value_theme">';
+		html_theme +='<a href="javascript:filter_cancel(4)" onclick="retun false"><span>'+theme_nm+'</span>';
+		html_theme +='<div class="f_line"></div>';
+		html_theme +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_theme != theme){
 		_theme = theme;
+		html_theme="";
+		$("div#filter_value_theme").detach();
+		html_theme +='<div class="filter_value" id="filter_value_theme">';
+		html_theme +='<a href="javascript:filter_cancel(4)" onclick="retun false"><span>'+theme_nm+'</span>';
+		html_theme +='<div class="f_line"></div>';
+		html_theme +='<img class="f_rm" src="./resources/img/icon/filter_rm.gif"><a/></div>';
 	}else if(_theme==theme){
-		_theme ='null';		
-	}	 
+		_theme ='null';
+		html_theme="";
+		$("div#filter_value_theme").detach();
+		filtering();
+		return false;
+	}
+	$("#filter_set_theme").html(html_theme);
+	filtering();
+}
+function filter_cancel(filter){
+	
+	if(filter==1){
+		html_area="";
+		$("div#filter_value_area").detach();
+		_areacode='null';		
+	}else if(filter==2){
+		html_day="";
+		$("div#filter_value_day").detach();
+		_day_cnt='null';
+	}else if(filter==3){
+		html_season="";
+		$("div#filter_value_season").detach();
+		_season='null';
+	}else if(filter==4){
+		html_theme="";
+		$("div#filter_value_theme").detach();
+		_theme='null';
+	}
 	filtering();
 }
 
@@ -856,8 +924,10 @@ function filtering(){
 	 
 	 
 	console.log("지역코드 : "+areacode+"여행일수 : "+DAY_CNT+", 계절 :"+SCD_SEASON+", 테마 : "+SCD_THEME);
-	 
-	dataType: "json",
+	$.ajaxSetup({
+        async: false
+    });
+	
 	$.ajax({
 		type : "get",
 		url : "filtering",
@@ -869,18 +939,343 @@ function filtering(){
 			,area_code : areacode
 		},
 		success : function(data){
-			 
-			console.log(data);
-			 
+			 console.log(data);
+			 console.log(data.filter_List.length);
+			if(data.filter_List.length < 1){
+				$("div#all_scd_read").empty();
+				return false;
+			}
+			var html="";
+			var html2 ="";
+			$.each(data.filter_List,function(index,item){
+				console.log(item);
+				var contentId=item.DTL_CONTENT_ID;				
+			     ReadApi(contentId);
+			
+			
+			$.getJSON(url, function(data) {
+				
+			    console.log('success1', data);
+			    var scd_sq=item.SCD_SQ;
+			    
+			    if (typeof (data.response.body.items.item.firstimage) !== "undefined") {
+			    	contentId=item.DTL_CONTENT_ID;
+			    	ReadApi(contentId);
+			    	$.getJSON(url, function(data) {
+			    	html += '<li>';
+					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+						}else{
+							html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+						};					
+					html += '</a>';
+					html += '</li>';
+				
+			    	});
+			    }else if (typeof (data.response.body.items.item.firstimage) == "undefined") {
+			    	contentId=item.DTL_CONTENT_ID2;
+			    	ReadApi(contentId);
+			    	$.getJSON(url, function(data) {
+			    	html += '<li>'; 
+					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+					}else{
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+					};
+					html += '</a>';
+					html += '</li>';
+				
+				
+			    	
+			    });
+			    	
+			    }else{
+			    	html += '<li>'; 
+					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
+					html += '<img src="./resources/image/noimage.jpg" width=170 height=190>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+					}else{
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+					};
+					html += '</a>';
+					html += '</li>';
+				  
+			    }			    
+			});
+			});			
+			$("#all_scd_read").html(html);
+			html2+='<div align="center">';
+            var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+            console.log(bigpageback);
+            html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+            var onepageback=data.navi.currentPage -1
+            console.log(onepageback);
+            html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+            var j=0;
+            for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){                   
+               var counter=data.navi.startPageGroup+j;
+               j=j+1;
+               html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>';
+                
+            } 
+            html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
+            html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+            html2+='<form action="filtering" method="get" id="pagingForm">';
+            html2+='<input type="hidden" id="page" name="page">';                
+            html2+='</form></div>';
+            html2+='</div';
+		    
+         $("#paging").html(html2);
+				
+		},
+		error : function(e){
+			console.log(e);
+		}
+	}); 
+	  
+};
+
+var key = "2pTN6y%2BhCGaVQL97quhdeM%2FW9ezdUvBNytbkKoT323qbc%2Ff5ao8fYoW2C31AgwacBVhy7PYHqvuwcnzprU4%2BNw%3D%3D";
+var url;
+function ReadApi(contentId,contentTypeId) {
+	url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
+	url += "&mapX&mapY";
+	url += "&contentTypeId"+contentTypeId+"&contentId="+contentId+"&areaCode&sigunguCode&cat1=&cat2=&cat3=&listYN=Y";
+	url += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&transGuideYN=Y&_type=json";
+	
+}
+
+function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어 온다
+	   var form=document.getElementById("pagingForm");
+	   var page=document.getElementById("page"); 
+	   page.value=currentPage; 
+	   /* form.submit(); */
+	   console.log(page.value);
+	   paging(page.value);
+	}
+
+
+//////////////////////////////////////전체 스케줄 호출////////////////////////////
+$(function(){
+	$.ajaxSetup({
+        async: false
+    });
+	
+	$.ajax({
+		type : "get",
+		url : "all_scd_read",
+		async : false,
+		success : function(data){
+			 console.log(data);
+			 console.log(data.navi);
+			
+            var html2 ="";
+			var html ="";
+			$.each(data.all_scd_List,function(index,item){
+				console.log(item);
+				var contentId=item.DTL_CONTENT_ID;				
+			     ReadApi(contentId);
+			$.getJSON(url, function(data) {
+				
+			    console.log('success1', data);
+			    var scd_sq=item.SCD_SQ;
+			    
+			    if (typeof (data.response.body.items.item.firstimage) !== "undefined") {
+			    	
+			    	html += '<li>';
+					html += '<div class="scd_box" id="scd_box">'
+					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+						}else{
+							html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+						};
+					html += '<div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">999</div>';
+					html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '</a></div>';
+					html += '</li>';
+					
+			    	
+			    }else if (typeof (data.response.body.items.item.firstimage) == "undefined") {
+			    	contentId=item.DTL_CONTENT_ID2;
+			    	ReadApi(contentId);
+			    $.getJSON(url, function(data) {
+			    	html += '<li>'; 
+					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+					}else{
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+					};
+					html += '</a>';
+					html += '</li>';
+				
+					
+				
+			    });
+			    	
+			    }else{
+			    	html += '<li>'; 
+					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
+					html += '<img src="./resources/image/noimage.jpg" width=170 height=190>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+					}else{
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+					};
+					html += '</a>';
+					html += '</li>';				  
+			    }
+			});
+			});
+			    $("#all_scd_read").html(html);
+			    
+			    html2+='<div align="center">';
+                var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+                console.log(bigpageback);
+                html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+                var onepageback=data.navi.currentPage -1
+                console.log(onepageback);
+                html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+                var j=0;
+                for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){                   
+                   var counter=data.navi.startPageGroup+j;
+                   j=j+1;
+                   html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>';
+                    
+                } 
+                html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
+                html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+                html2+='<form action="all_scd_read" method="get" id="pagingForm">';
+                html2+='<input type="hidden" id="page" name="page">';                
+                html2+='</form></div>';
+                html2+='</div';
+			    
+             $("#paging").html(html2);   
+			
 			
 				
 		},
 		error : function(e){
 			console.log(e);
 		}
-	}) 
-	  
+	}); 
+    
+});
+
+function paging(page) {
+	
+	console.log(page);
+	$.ajaxSetup({
+        async: false
+    });
+	$.ajax({
+		type : "get",
+		url : "all_scd_read",
+		data : {	
+			
+			page : page
+		}, 
+		success : function(data){
+			 console.log(data);
+			 console.log(data.navi);
+			 var html ="";
+             var html2 ="";
+			$.each(data.all_scd_List,function(index,item){
+				console.log(item);
+				var contentId=item.DTL_CONTENT_ID;				
+			     ReadApi(contentId);
+			$.getJSON(url, function(data) {
+				
+			    console.log('success1', data);
+			    var scd_sq=item.SCD_SQ;
+			    
+			    if (typeof (data.response.body.items.item.firstimage) !== "undefined") {
+			    	
+			    	html += '<li>';
+					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+						}else{
+							html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+						};					
+					html += '</a>';
+					html += '</li>';
+				
+				 
+			    }else if (typeof (data.response.body.items.item.firstimage) == "undefined") {
+			    	contentId=item.DTL_CONTENT_ID2;
+			    	ReadApi(contentId);
+			    $.getJSON(url, function(data) {
+			    	html += '<li>'; 
+					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+					}else{
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+					};
+					html += '</a>';
+					html += '</li>';
+				
+				
+			    	
+			    });
+			    	
+			    }else{
+			    	html += '<li>'; 
+					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
+					html += '<img src="./resources/image/noimage.jpg" width=170 height=190>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+					}else{
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+					};
+					html += '</a>';
+					html += '</li>';				  
+			    }
+			});
+			});
+			    $("#all_scd_read").html(html);
+			    
+			    html2+='<div align="center">';
+                var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+                console.log(bigpageback);
+                html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+                var onepageback=data.navi.currentPage -1
+                console.log(onepageback);
+                html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+                var j=0;
+                for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){                   
+                   var counter=data.navi.startPageGroup+j;
+                   j=j+1;
+                   html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>';
+                    
+                } 
+                html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
+                html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+                html2+='<form action="all_scd_read" method="get" id="pagingForm">';
+                html2+='<input type="hidden" id="page" name="page">';                
+                html2+='</form></div>';
+			    
+			    
+             $("#paging").html(html2);    
+		},
+		error : function(e){
+			console.log(e);
+		}
+	}); 
+    
 }
+
 
 </script>
 

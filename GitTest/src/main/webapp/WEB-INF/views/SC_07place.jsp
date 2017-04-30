@@ -1189,9 +1189,6 @@ function locationObj(){
 
         </div>
         <!-- /.row -->
-
-        
-
         <!-- Footer -->
        </div> 
         <footer>
