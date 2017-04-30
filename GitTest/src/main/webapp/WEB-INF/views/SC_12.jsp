@@ -483,8 +483,8 @@ h1 {
                   <div class="plan-menu">
                   <a data-toggle="modal" href="#myModal_share">공유하기</a>&emsp;&emsp;
                   <a href="javascript:copy_schedule(${scd_sq });">복사하기</a>&emsp;&emsp;
-                  <a data-toggle="modal" href="#myModal_edit">수정하기</a>&emsp;&emsp;
-                 <%--  <a href="edit_schedule?scd_sq=${scd_sq }">수정하기</a>&emsp;&emsp; --%>
+                  <!-- <a data-toggle="modal" href="#myModal_edit">수정하기</a>&emsp;&emsp; -->
+                 <a href="edit_schedule?scd_sq=${scd_sq }">수정하기</a>&emsp;&emsp;
                   <a href="">다운로드</a>
                   </div>
                </ul>
