@@ -48,6 +48,16 @@
 	</update>
 	
 	<!-- scd_sq 가져오기 -->
+	<select id="get_shared_users" parameterType="int" resultType="HashMap">
+		select
+			user_id
+		from
+			SM_SHARED_USER_TB
+		where
+			scd_sq = #{scd_sq}
+	</select>
+	
+	<!-- shared users 가져오기 -->
 	<select id="getScd_Sq" parameterType="string" resultType="int">
 		select
 			max(scd_sq)
