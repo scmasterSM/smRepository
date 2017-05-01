@@ -487,7 +487,7 @@ h1 {
                   		<a data-toggle="modal" href="#myModal_share">공유하기</a>&emsp;&emsp;
 		                <a href="javascript:copy_schedule(${scd_sq });">복사하기</a>&emsp;&emsp;
 		                <a data-toggle="modal" href="#myModal_edit">수정하기</a>&emsp;&emsp;
-		                <a href="">삭제하기</a>
+		                <a href="javascript:delete_schedule(${scd_sq });">삭제하기</a>
                   	</c:when>
                   	<c:otherwise>
                   		<a href="javascript:copy_schedule(${scd_sq });">복사하기</a>&emsp;&emsp;
@@ -1158,6 +1158,26 @@ function show_myMarkers(daily_ord){
 				console.log(e);
 			} 
 	});//ajax
+ }
+ 
+ function delete_schedule(scd_sq){
+	 var del = confirm("정말 삭제하시겠습니까?");
+	 if(del){
+		 $.ajax({
+			type : "post",
+			url : "delete_to_home",
+			data : { 
+				scd_sq: scd_sq
+			}
+			,success : function(data){
+				alert("일정이 삭제되었습니다!");
+				location.href="SC_10";
+			},
+			error : function(e){
+				console.log(e);
+			} 
+		 });//ajax
+	 }
  }
  
  function edit_form(){
