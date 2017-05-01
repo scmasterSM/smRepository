@@ -181,22 +181,25 @@
     padding-bottom: 20px;
 }
 .scd_box{
-	height : 217px;
-	width: 170px;
-}
-.like_box{
-	width: 55px;
-	float :left;
-	overflow: hidden;
-	text-align: left;
-	margin-left: 5px;
+	height : 230px;
+	width: 300px;
 }
 .user_id_box{
-	width: 100px;
-	float :left;
-	overflow: hidden;
-	text-align: right;
-	margin-right: 10px;
+	width: auto;
+    float: right;
+    overflow: hidden;
+    margin-right: 10px;
+}
+.like_box{
+	width: auto;
+    float: right;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.info_box {
+	width: 300px;
+    height: 30px; 
 }
 .icon{
 	width :30px;
