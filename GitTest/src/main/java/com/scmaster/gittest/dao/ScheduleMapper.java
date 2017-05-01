@@ -15,6 +15,7 @@ public interface ScheduleMapper {
 	public void edit_start_ymd(Schedule schedule);
 	public int getScd_Sq(String user_id);
 	public Schedule select_scd(int scd_sq);
+	public void delete_scd(int scd_sq);
 	public void update_scd(Schedule schedule);
 	public void insert_daily(Daily_Scd daily);
 	public int getDaily(Daily_Scd daily);

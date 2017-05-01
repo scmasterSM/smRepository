@@ -41,6 +41,12 @@ public class ScheduleDAO {
 		mapper.update_scd_info(schedule);
 	}
 
+	// 메인 스케줄  삭제
+	public void delete_scd(int scd_sq) {
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		mapper.delete_scd(scd_sq);
+	}
+
 
 	// 메인 스케줄 가져오기
 	public Schedule select_scd(int scd_sq) {
