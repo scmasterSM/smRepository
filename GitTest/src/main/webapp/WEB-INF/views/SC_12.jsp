@@ -482,18 +482,27 @@ h1 {
                   <li role="presentation"><a href="#employeers"
                      aria-controls="profile" role="tab" data-toggle="tab">댓글</a></li>
                   <div class="plan-menu">
-                  <c:choose>
-                  	<c:when test="${sessionScope.user_id == schedule.user_id}">
-                  		<a data-toggle="modal" href="#myModal_share">공유하기</a>&emsp;&emsp;
-		                <a href="javascript:copy_schedule(${scd_sq });">복사하기</a>&emsp;&emsp;
-		                <a data-toggle="modal" href="#myModal_edit">수정하기</a>&emsp;&emsp;
-		                <a href="javascript:delete_schedule(${scd_sq });">삭제하기</a>
-                  	</c:when>
-                  	<c:otherwise>
-                  		<a href="javascript:copy_schedule(${scd_sq });">복사하기</a>&emsp;&emsp;
-				  		<a href="javascript:insertLike();">좋아요</a>&emsp;&emsp;	
-                  	</c:otherwise>
-                  </c:choose>
+                  <c:set var="check" value="0"/>
+                  <c:forEach var="shared" items="${sharedList }">
+                  		<c:if test="${sessionScope.user_id == shared.USER_ID}">
+							<c:set var="check" value="1"/>
+						</c:if>
+                  </c:forEach>
+                  <c:if test="${sessionScope.user_id == schedule.user_id}">
+					   <c:set var="check" value="1"/>
+				  </c:if>
+	                  <c:choose>
+	                  	<c:when test="${check == 1}">
+	                  		<a data-toggle="modal" href="#myModal_share">공유하기</a>&emsp;&emsp;
+			                <a href="javascript:copy_schedule(${scd_sq });">복사하기</a>&emsp;&emsp;
+			                <a data-toggle="modal" href="#myModal_edit">수정하기</a>&emsp;&emsp;
+			                <a href="javascript:delete_schedule(${scd_sq });">삭제하기</a>
+	                  	</c:when>
+	                  	<c:otherwise>
+	                  		<a href="javascript:copy_schedule(${scd_sq });">복사하기</a>&emsp;&emsp;
+					  		<a href="javascript:insertLike();">좋아요</a>&emsp;&emsp;	
+	                  	</c:otherwise>
+	                  </c:choose>
 <%--                   <a href="edit_schedule?scd_sq=${scd_sq }">수정하기</a>&emsp;&emsp; --%>                  
                   </div>
                </ul>
