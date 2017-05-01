@@ -604,7 +604,7 @@
   		sigungu = [];
   		$.each(pop_cities, function(index, val){
       	  html += '<div class="item" data="'+ val.areaCode +'" data-ci_name="'+ val.name +'" data-lat="'+ val.lat +'" data-lng="' + val.lng + '" data-is_state="'+ val.is_state +'">';
-            html += '<div class="img_box"><img src="./resources/img/city/'+val.areaCode+'.jpg"></div>';
+            html += '<div class="img_box"><img src="./resources/img/city/'+areaCode+'/'+val.name+'.jpg"></div>';
             html += '<div class="info_box"><div class="info_title">'+val.name+'</div><div class="info_sub_title">'+val.name_en+'</div></div>';
             html += '<div class="clear"></div></div>';
             if(sigungu.length < 100){
@@ -1608,7 +1608,7 @@
 		   		for (var i in sigungu) {
 					if(sigungu[i].name.includes(searchText)){
 						content += '<div class="item" data="'+ sigungu[i].areaCode +'" data2="'+ sigungu[i].sigunguCode +'" data-ci_name="'+ sigungu[i].name +'" data-lat="'+ sigungu[i].lat +'" data-lng="' + sigungu[i].lng + '" data-is_state="'+ sigungu[i].is_state +'">'
-							+ '<div class="img_box"><img src="./resources/img/city/'+sigungu[i].areaCode+'.jpg"></div>'
+							+ '<div class="img_box"><img src="./resources/img/city/'+sigungu[i].areaCode+'/'+sigungu[i].name+'.jpg"></div>'
 						 	+ '<div class="info_box"><div class="info_title">'+sigungu[i].name+'</div><div class="info_sub_title">'+sigungu[i].name_en+'</div></div>'
 							+ '<div class="clear"></div></div>';
 					}
@@ -1633,7 +1633,7 @@
   				for(var i in sigungu){
   					if(sigungu[i].areaCode == areaCode){
   						html += '<div class="item" data="'+ sigungu[i].areaCode +'" data2="'+ sigungu[i].sigunguCode +'" data-ci_name="'+ sigungu[i].name +'" data-lat="'+ sigungu[i].lat +'" data-lng="' + sigungu[i].lng + '" data-is_state="'+ sigungu[i].is_state +'">';
-  			            html += '<div class="img_box"><img src="./resources/img/city/'+sigungu[i].areaCode+'.jpg"></div>';
+  			            html += '<div class="img_box"><img src="./resources/img/city/'+sigungu[i].areaCode+sigungu[i].name+'.jpg"></div>';
   			            html += '<div class="info_box"><div class="info_title">'+sigungu[i].name+'</div><div class="info_sub_title">'+sigungu[i].name_en+'</div></div>';
   			            html += '<div class="clear"></div></div>';
   					}
