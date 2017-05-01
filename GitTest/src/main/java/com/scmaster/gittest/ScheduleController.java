@@ -67,6 +67,14 @@ public class ScheduleController {
 		dao.update_scd_info(schedule);
 	}
 
+	// 일정 삭제
+	@ResponseBody
+	@RequestMapping(value = "delete_to_home", method = RequestMethod.POST)
+	public void delete_to_home(int scd_sq, HttpSession session) {
+		dao.delete_scd(scd_sq);
+		session.removeAttribute("scd_sq");
+	}
+
 	// SC_13으로 이동
 	@RequestMapping(value = "edit_schedule", method = RequestMethod.GET)
 	public String edit_schedule(int scd_sq, HttpSession session, Model model) {

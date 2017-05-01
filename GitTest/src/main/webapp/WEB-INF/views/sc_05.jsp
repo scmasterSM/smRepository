@@ -397,9 +397,11 @@ html, body {
 		                             content += '<li><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width="300" height="200" alt="">';
 		                              content += '<div class="overlay"><h3>'
 		                             + data.response.body.items.item[val].title
-		                             + '</h3><p>'
-		                             + data.response.body.items.item[val].addr1.split(" ", 3)
-		                             + '</p></div></a></li>'; 
+		                             + '</h3><p>';
+		                             if(typeof(data.response.body.items.item[val].addr1) != 'undefined'){
+		                             	content += data.response.body.items.item[val].addr1.split(" ", 3);
+		                             }
+		                             content += '</p></div></a></li>'; 
 		                       } else {
 		                           i--;
 		                        }
