@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.scmaster.gittest.dao.ReplyMapper">
+	<select id="readReply" resultType="HashMap" parameterType="Reply">
+		SELECT
+			R.REPLY_SQ
+			, R.SCD_SQ
+			, R.USER_ID
+			, R.REPLY_TXT
+			, R.INP_YMD
+			, to_char(R.UPD_YMD,'YYYY-MM-DD HH24:MI:SS') as "UPD_YMD"
+			, upper(U.USER_SEX) as USER_SEX
+		FROM 
+			SM_REPLY_TB R, SM_USER_TB U
+		where 
+			R.SCD_SQ = #{SCD_SQ}  and R.USER_ID = U.USER_ID
+		ORDER BY
+			R.INP_YMD DESC , R.REPLY_SQ
+
+	</select>
+	
+	<!-- 페이징 관련 리뷰글수 -->
+	<select id="tCount" parameterType="int" resultType="int">
+		select count(*)
+		from SM_REPLY_TB
+		where SCD_SQ = #{SCD_SQ}
+	</select>
+	
+
+	<!-- 2) Review 저장 -->
+	<insert id="writeReply" parameterType="Reply">
+		INSERT INTO SM_REPLY_TB
+		(
+			REPLY_SQ
+			, SCD_SQ
+			, USER_ID
+			, REPLY_TXT
+			, INP_YMD
+			, UPD_YMD
+		)
+		VALUES
+		(
+			SM_REPLY_TB_REPLY_SQ.nextval
+			, #{SCD_SQ}
+			, #{USER_ID}
+			, #{REPLY_TXT}
+			, sysdate
+			, sysdate
+			
+		)
+	</insert>
+	<update id="updateReply" parameterType="Reply">
+	update
+		SM_REPLY_TB
+		set 
+		REPLY_TXT = #{REPLY_TXT}	
+		,UPD_YMD = sysdate
+	where 
+		REPLY_SQ=#{REPLY_SQ}
+	and	
+		SCD_SQ = #{SCD_SQ}
+	and 
+		USER_ID=#{USER_ID}
+	</update>
+	
+	<delete id="deleteReply" parameterType="Reply">
+	delete
+		from
+			SM_REPLY_TB
+		where
+			REPLY_SQ=#{REPLY_SQ}
+		and	
+			SCD_SQ = #{SCD_SQ}
+		and 
+			USER_ID=#{USER_ID}
+			
+	</delete>
+
+</mapper>
