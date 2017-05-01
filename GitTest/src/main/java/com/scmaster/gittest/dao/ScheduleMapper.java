@@ -19,6 +19,7 @@ public interface ScheduleMapper {
 	public void update_scd(Schedule schedule);
 	public void insert_daily(Daily_Scd daily);
 	public int getDaily(Daily_Scd daily);
+	public List<HashMap<String, Object>> get_shared_users(int scd_sq);
 	public void insert_city(Daily_Scd new_daily);
 	public List<HashMap<String, Object>> getDailyList(int scd_sq);
 	public int insert_dtl(Dtl_Scd dtl_scd);

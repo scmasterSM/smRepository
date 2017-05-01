@@ -113,6 +113,8 @@ public class HomeController {
 		String[] date = schedule.getStart_ymd().split(" ");
 		schedule.setStart_ymd(date[0]);
 		model.addAttribute("schedule", schedule);
+		List<HashMap<String, Object>> sharedList = scd_dao.get_shared_users(scd_sq);
+		model.addAttribute("sharedList", sharedList);
 		return "SC_12";
 	}
 	
