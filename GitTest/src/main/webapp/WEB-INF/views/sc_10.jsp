@@ -541,7 +541,7 @@ h1 {
         
     </body>
 <script type="text/javascript">
-var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
+var key = "2pTN6y%2BhCGaVQL97quhdeM%2FW9ezdUvBNytbkKoT323qbc%2Ff5ao8fYoW2C31AgwacBVhy7PYHqvuwcnzprU4%2BNw%3D%3D";
 var url;
 function ReadApi(contentId,contentTypeId) { /* currentPage가 어디서 호출되어 온다 */
 	url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
@@ -553,7 +553,9 @@ function ReadApi(contentId,contentTypeId) { /* currentPage가 어디서 호출되어 온�
 
 
  $(function(){
-
+	 $.ajaxSetup({
+	        async: false
+	    });
 	$.ajax({
 		type : "get",
 		url : "readClip",
@@ -594,7 +596,9 @@ function ReadApi(contentId,contentTypeId) { /* currentPage가 어디서 호출되어 온�
 	}) 
 	
 $(function(){
-
+	$.ajaxSetup({
+        async: false
+    });
 	$.ajax({
 		type : "get",
 		url : "read_scd",
@@ -658,7 +662,9 @@ $(function(){
 	}) 
  
 $(function(){
-
+	$.ajaxSetup({
+        async: false
+    });
 	$.ajax({
 		type : "get",
 		url : "shared_read_scd",
