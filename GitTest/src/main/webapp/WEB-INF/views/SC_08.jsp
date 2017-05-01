@@ -854,8 +854,8 @@ $.ajax({
 						<c:otherwise>
 							<div class="header-half header-social">
 								<ul class="list-inline">
-									<li><img src="./resources/image/login_img.png">
-										${sessionScope.user_id }</li>
+									<li>welcome! <img src="./resources/image/icon.png" width="27px" height="27px">
+										${sessionScope.user_id } </li>
 								</ul>
 							</div>
 						</c:otherwise>
