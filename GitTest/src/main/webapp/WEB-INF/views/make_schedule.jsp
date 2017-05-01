@@ -390,7 +390,7 @@ hr {
                                 "is_state" : 0
                              };
                         html += '<div class="item" data-no="'+ val.rnum +'" data="'+ areaCode +'" data-ci_name="'+ val.name +'" data-lat="'+ location.lat +'" data-lng="'+ location.lng +'" data-is_state="'+ 0 +'">';
-                        html += '<div class="img_box fl"><img src="./resources/img/city/'+areaCode+'.jpg"></div>';
+                        html += '<div class="img_box fl"><img src="./resources/img/city/'+areaCode+'/'+val.name+'.jpg"></div>';
                         html += '<div class="info_box fl"><div class="info_title">'+val.name+'</div><div class="info_sub_title">'+""+'</div></div>';
                         html += '<div class="clear"></div></div>';
                         $('#city_list_box').html(html);
