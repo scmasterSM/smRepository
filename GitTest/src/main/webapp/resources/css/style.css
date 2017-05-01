@@ -334,6 +334,7 @@ background-color: #00aeef;
 .tab-content ul li {
 	margin-right: 14px;
 	overflow: hidden;
+	padding-bottom: 5px;
 }
 .tab-content ul li:last-child{
 	margin-right: 0;

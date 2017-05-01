@@ -61,13 +61,34 @@
 html, body {
 	overflow-x: hidden;
 }
+.modal-backdrop {
+   z-index: 0;
+}
 </style>
 
   		
 <script type="text/javascript">
+function shuffle(array) {
+	  var currentIndex = array.length, temporaryValue, randomIndex;
 
-//로그인& 조인 모달 
-$('#myModal').modal('show');
+	  // While there remain elements to shuffle...
+	  while (0 !== currentIndex) {
+
+	    // Pick a remaining element...
+	    randomIndex = Math.floor(Math.random() * currentIndex);
+	    currentIndex -= 1;
+
+	    // And swap it with the current element.
+	    temporaryValue = array[currentIndex];
+	    array[currentIndex] = array[randomIndex];
+	    array[randomIndex] = temporaryValue;
+	  }
+
+	  return array;
+	}
+
+
+
 //정보수정 모달
 $('#myModal_Edit').modal('show');
 
@@ -89,7 +110,7 @@ function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어
 	paging(page.value);
 };
 
-var login_id=${sessionScope.user_id};
+var login_id='${sessionScope.user_id}';
 
 var check = 0;
 var inner = null;
@@ -113,7 +134,7 @@ function replyUpdateForm(REV_SQ, CONTENT_ID){
    
    document.getElementById(REV_SQ).innerHTML =     
       "<textarea class='form-control' name='text' id='reply' rows='3'>"+inner+"</textarea>"
-      +"<a href='#' class='btn btn-primary' onclick='replyUpdate("+REV_SQ+","+CONTENT_ID+")'>수정</a>";
+      +"<a href='#' class='btn btn-primary' onclick='replyUpdate("+REV_SQ+","+CONTENT_ID+"); return false'>수정</a>";
    check = 1;
 };
 
@@ -140,7 +161,11 @@ function replyUpdate(REV_SQ, CONTENT_ID){
              
             html+= "<div class='media'>";
             html+= "<a class='pull-left' href='#'>";
-            html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+            if(item.USER_SEX=='M'){
+  	          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+  	          }else if(item.USER_SEX=='F'){
+  	          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+  	          }
             html+= '<div class="media-body">';
             html+= '<div class="media-heading"><h4>'+item.USER_ID;
             html+= '<small>'+item.UPD_YMD;
@@ -183,7 +208,11 @@ function deleteReply(REV_SQ, CONTENT_ID){
 					   
 	                  html+= "<div class='media'>";
 	                  html+= "<a class='pull-left' href='#'>";
-	                  html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+	                  if(item.USER_SEX=='M'){
+	        	          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+	        	          }else if(item.USER_SEX=='F'){
+	        	          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+	        	          }
 	                  html+= '<div class="media-body">';
 	                  html+= '<div class="media-heading"><h4>'+item.USER_ID;
 	                  html+= '<small>'+item.UPD_YMD; 
@@ -205,7 +234,7 @@ function deleteReply(REV_SQ, CONTENT_ID){
 	                  for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
 	                	  var counter=data.navi.startPageGroup+j;
 	                      j=j+1;
-	                      html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
+	                      html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+i+' </a>'; 
 	                  } 
 	                  html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
 	                  html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
@@ -230,8 +259,8 @@ function deleteReply(REV_SQ, CONTENT_ID){
 var map;
 var myLatLng;
 var CONTENT_ID;
-var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
-	
+//var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
+var key = "2pTN6y%2BhCGaVQL97quhdeM%2FW9ezdUvBNytbkKoT323qbc%2Ff5ao8fYoW2C31AgwacBVhy7PYHqvuwcnzprU4%2BNw%3D%3D";	
     //장소바꿀때 전 단계에서 contentId를 받아와서 바꾸면 될듯
 	
     var contentId=${contentid};
@@ -259,8 +288,8 @@ function l_Data(){
     console.log(url);
     $.getJSON(url, function(data) {
     	myLatLng={
-    			lat : data.response.body.items.item.mapy,
-    			lng : data.response.body.items.item.mapx
+    			lat : parseFloat(data.response.body.items.item.mapy),
+    			lng : parseFloat(data.response.body.items.item.mapx)
     	}
     	
     	var CONTENT_ID=data.response.body.items.item.title;
@@ -283,30 +312,39 @@ function l_Data(){
        if(addr1[0] == '서울특별시'){
     	    addr1[0] = 'SEOUL';
         	addr1[1] = '서울';
+        	sigungucode = '%27%27';
         }else if(addr1[0] == '인천광역시'){
         	addr1[0] = 'INCHEON';
         	addr1[1] = '인천';
+        	sigungucode = '%27%27';
         }else if(addr1[0] == '부산광역시'){
         	addr1[0] = 'BUSAN';
         	addr1[1] = '부산';
+        	sigungucode = '%27%27';
         }else if(addr1[0] == '대전광역시'){
         	addr1[0] = 'DEAJOEN';
         	addr1[1] = '대전';
+        	sigungucode = '%27%27';
         }else if(addr1[0] == '대구광역시'){
         	addr1[0] = 'DEAGU';
         	addr1[1] = '대구';
+        	sigungucode = '%27%27';
         }else if(addr1[0] == '광주광역시'){
         	addr1[0] = 'GWANGJU';
         	addr1[1] = '광주';
+        	sigungucode = '%27%27';
         }else if(addr1[0] == '울산광역시'){
         	addr1[0] = 'ULSAN';
         	addr1[1] = '울산';
+        	sigungucode = '%27%27';
         }else if(addr1[0] == '제주특별자치도'){
         	addr1[0] = 'JEJUDO';
         	addr1[1] = '제주도';
+        	sigungucode = '%27%27';
         }else if(addr1[0] == '세종특별자치시'){
         	addr1[0] = 'SEJONG';
         	addr1[1] = '세종시';
+        	sigungucode = '%27%27';
         }
         
         
@@ -355,63 +393,45 @@ function r_Data(){
 		url3 += "&contentTypeId=12&areaCode=" + areacode + "&sigunguCode=" + sigungucode + "&cat1=&cat2=&cat3=&listYN=Y";
 		url3 += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=Q&numOfRows=100"; 
 	    
-	    
 		$.getJSON(url3, function(data) {
 			var length=data.response.body.items.item.length
 			//console.log('success', data);
 			var j=0;
-			
-			
-		        var outputArray = []; //내가 넣은 것
-           		for( var i = 0 ; i < 3 ; i++){
-				var j=j+1;
-		         	//console.log( data.response.body.items.item.length);
-		           	var val = Math.floor( Math.random()*length);
-		           	var repeat = false; //내가 넣은 것 
-		           	var k = 0; //내가 넣은 것 
+		    console.log( data.response.body.items.item.length);
+		        var tempArray = []; //내가 넣은 것
+		        var outputArray = [];
+		        
+		        for(var l=0; l < length; l++){       	
+		        tempArray.push(data.response.body.items.item[l]);
+		        //console.log(tempArray);
+		        }
+		        //console.log(tempArray);
+		        tempArray = shuffle(tempArray);
+		        console.log(tempArray);
+		                
+				for( var i = 0 ; i < 3 ; i++){
+					var j=j+1;
+					var con= tempArray[i].contentid;
+		           	var conType=tempArray[i].contenttypeid;
+		           /* 	var con= data.response.body.items.item[i].contentid; */
+		           /* 	var conType=data.response.body.items.item[i].contenttypeid; */
 		           	
- 		           	//console.log(con);
-					//console.log(val);
-					//console.log( data.response.body.items.item[val].title);
-					
-					for(k =0; k< outputArray.length;k++){
-						 if(outputArray[k] == data.response.body.items.item[val].title){
-           					
-              				 repeat = true;
-              			 	 break; 
-						}
-					}
-					if(repeat){
-						i--;
-						continue;
-					}else{
-						outputArray[k] = data.response.body.items.item[val].title;
-						
-					} //for k 부터 여기까지 내가 넣은 것 
-					
-					var con=data.response.body.items.item[val].contentid;
-		           	var conType=data.response.body.items.item[val].contenttypeid;
-					
 		           	
-		        	if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
-		        		$("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
-		        		$("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
-						$("#rplaceaddr"+ j).html(data.response.body.items.item[val].addr1); 
-		        	} else {
-		   			i--;
-		           	 }
-	
-					/* if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
-				
+		           	console.log(con);
+		           	console.log(conType);
+					if (typeof (tempArray[i].firstimage) !== "undefined") {
+						$("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+tempArray[i].firstimage+' width=60 height=60></a>');
+		        		$("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+tempArray[i].title.split("(",1))+'</a>';
+						$("#rplaceaddr"+ j).html(tempArray[i].addr1); 
 					}else{
-						$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
+						$("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
+		        		$("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+tempArray[i].title.split("(",1))+'</a>';
+						$("#rplaceaddr"+ j).html(tempArray[i].addr1); 
 					}
-					
-					$("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
-					$("#rplaceaddr"+ j).html(data.response.body.items.item[val].addr1); */
-					
- 		           	}//for 
-		})
+				}//for
+		  })// joson
+	    
+		
 		
 		 });
 };
@@ -433,59 +453,39 @@ function f_Data(){
    
 	$.getJSON(url3, function(data) {
 		var length=data.response.body.items.item.length
-		console.log('success', data);
+		//console.log('success', data);
 		var j=0;
-		
-		   var outputArray = []; //내가 넣은 것
-      		for( var i = 0 ; i < 3 ; i++){
-			var j=j+1;
-	         	//console.log( data.response.body.items.item.length);
-	           	var val = Math.floor( Math.random()*length);
-	           	var con=data.response.body.items.item[val].contentid;
-	           	var conType=data.response.body.items.item[val].contenttypeid;
-	           	//console.log(con);
-				//console.log(val);
-				//console.log( data.response.body.items.item[val].title);
-				var repeat = false; //내가 넣은 것 
-		        var k = 0; //내가 넣은 것 
-				
-				
-				
-	           	for(k =0; k< outputArray.length;k++){
-					 if(outputArray[k] == data.response.body.items.item[val].title){
-      					
-         				 repeat = true;
-         			 	 break; 
-					}
-				}
-				if(repeat){
-					i--;
-					continue;
-				}else{
-					outputArray[k] = data.response.body.items.item[val].title;
-					
-				} //for k 부터 여기까지 내가 넣은 것 
-				
-				
-			  	if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
-			  		$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
-			  		$("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
-					$("#resaddr"+ j).html(data.response.body.items.item[val].addr1);
-			  	} else {
-	   			i--;
-	           	 }
-				
-				/* if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
-				$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
+	    console.log( data.response.body.items.item.length);
+	        var tempArray = []; //내가 넣은 것
+	        var outputArray = [];
+	        
+	        for(var l=0; l < length; l++){       	
+	        tempArray.push(data.response.body.items.item[l]);
+	        //console.log(tempArray);
+	        }
+	        //console.log(tempArray);
+	        tempArray = shuffle(tempArray);
+	        console.log(tempArray);
+	                
+			for( var i = 0 ; i < 3 ; i++){
+				var j=j+1;
+				var con= tempArray[i].contentid;
+	           	var conType=tempArray[i].contenttypeid;
+	           /* 	var con= data.response.body.items.item[i].contentid; */
+	           /* 	var conType=data.response.body.items.item[i].contenttypeid; */
+	           	console.log(con);
+	           	console.log(conType);
+				if (typeof (tempArray[i].firstimage) !== "undefined") {
+					$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+tempArray[i].firstimage+' width=60 height=60></a>');
+	        		$("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+tempArray[i].title.split("(",1))+'</a>';
+					$("#resaddr"+ j).html(tempArray[i].addr1); 
 				}else{
 					$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
-				} */
-				
-				/* $("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID=1131275"><img src='+data.response.body.items.item[val].firstimage+' width=200 height=180></a>'); */
-				/* $("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
-				$("#resaddr"+ j).html(data.response.body.items.item[val].addr1); */
-	           	}
-	})
+	        		$("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+tempArray[i].title.split("(",1))+'</a>';
+					$("#resaddr"+ j).html(tempArray[i].addr1); 
+				}
+			}//for
+	  })// joson
 	
 	 });
 }
@@ -508,118 +508,63 @@ function f_Data(){
  }
  
  $(function(){
-	
-		$("#joinForm").on("click",function(){ /* 조인버튼 클릭시 모달   */
-			$("#regAtag").trigger("click");
-		})
-		$("#loginForm").on("click",function(){  /*로그인 버튼 클릭시 모달 */
-			$("#loginAtag").trigger("click");
-		})
-	 
-		$("#submit_button").on("click",function(){ 
-			
-			var user_id1 = $("#user_id").val();
-			var password1 = $("#password").val();
-			
-			if(user_id1.length == 0){
-				alert('아이디를 입력해주세요');
-				return false;
-			}
-			if(password1.length ==0){
-				alert('비밀번호를 입력해주세요');
-				return false;
-			} 
-
-			$.ajax({
-				type:"post",
-				url:"login",
-				data : {
-					user_id : user_id1,
-					password : password1
-				},
-				dataType : 'text',
-				
-				success : function(data){
-					if(data == "success"){
-						$('#myModal').modal('hide');
-						window.location.href = "./";
-						
-					}else{
-						alert("비밀번호가 맞지 않습니다.");
-					}
-				},
-				error : function(e){
-					console(e);
-				}
-			})
-		});
-	 
-//조인
 		
-		$("#submit_join").on("click",function(){
-			
-			var user_id2 = $("#user_id1").val();
-			var password2 = $("#password1").val();
-			var password3 = $("#password2").val();
-			var email1 = $("#email").val();
-			var user_sex1 = $("#user_sex").val();
-			
-			var sung = "선택";
-			
+	//정보수정
+		
+		$("#editForm").on("click", function() {
+
+			var user_id2 = $("#user_id_ed").val();
+			var password2 = $("#password1_ed").val();
+			var password3 = $("#password2_ed").val();
+			var email1 = $("#email_ed").val();
+			var user_sex1 = $("#user_sex_ed").val();
+
+
 			//alert(user_sex1);
-				//$('#user_sex option:selected').val();
-				//$('select[name=user_sex]').val();
-			
-			if(user_id2.length == 0){
-				alert('아이디를 입력해주세요');
-				return false;
-			}
-			if(password2.length ==0){
+			//$('#user_sex option:selected').val();
+			//$('select[name=user_sex]').val();
+
+
+			if (password2.length == 0) {
 				alert('비밀번호를 입력해주세요');
 				return false;
-			} 
-			if(email1.length == 0){
+			}
+			if (email1.length == 0) {
 				alert('이메일을 입력해주세요');
 				return false;
 			}
-			
-		    if(user_sex1 == sung ){
-				alert('성별을 입력해주세요');
-				return false;
-			} 
-			
-			if(password2 != password3){
+
+			if (password2 != password3) {
 				alert('비밀번호 확인 시 비밀번호가 일치하지 않습니다.');
 				return false;
-			} 
-			
+			}
+
 			$.ajax({
-				type:"post",
-				url:"join",
+				type : "post",
+				url : "edit",
 				data : {
 					user_id : user_id2,
 					password : password2,
 					email : email1,
-					user_sex : user_sex1
+					//user_sex : user_sex1
 				},
 				dataType : 'text',
-				
-				success : function(data){
+
+				success : function(data) {
 					console.log(data);
-					if(data == "success"){
-						alert("가입처리가 완료 되었습니다.");
+					if (data == "success") {
+						alert("회원 정보 수정 되었습니다.");
 						$('#myModal').modal('hide');
 						window.location.href = "./";
-					}else{
-						alert("가입 처리가 되지 않았습니다.");
+					} else {
+						alert("정보 수정이 실패하였습니다.");
 					}
 				},
-				error : function(e){
+				error : function(e) {
 					console(e);
 				}
 			})
 		});
-		
 	 
 	 $("#write").on("click",function(){ 
 
@@ -652,7 +597,11 @@ function f_Data(){
 						  
 						 html+= "<div class='media'>";
 		                 html+= "<a class='pull-left' href='#'>";
-		                 html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+		                 if(item.USER_SEX=='M'){
+		       	          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+		       	          }else if(item.USER_SEX=='F'){
+		       	          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+		       	          }
 		                 html+= '<div class="media-body">';
 		                 html+= '<div class="media-heading"><h4>'+item.USER_ID;
 		                 html+= '<small>'+item.UPD_YMD;
@@ -674,7 +623,7 @@ function f_Data(){
 						 for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
 							 var counter=data.navi.startPageGroup+j;
 		                      j=j+1;
-		                      html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
+		                      html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+i+' </a>'; 
 						} 
 						html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶</a>';
 						html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
@@ -764,7 +713,11 @@ function paging(page) {
               console.log(item); 
               html+= "<div class='media'>";
               html+= "<a class='pull-left' href='#'>";
-              html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+              if(item.USER_SEX=='M'){
+    	          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+    	          }else if(item.USER_SEX=='F'){
+    	          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+    	          }
               html+= '<div class="media-body">';
               html+= '<div class="media-heading"><h4>'+item.USER_ID;
               html+= '<small>'+item.UPD_YMD;
@@ -786,7 +739,7 @@ function paging(page) {
               for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
             	  var counter=data.navi.startPageGroup+j;
                   j=j+1;
-                  html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
+                  html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+i+' </a>'; 
               } 
               html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
               html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
@@ -825,7 +778,11 @@ $.ajax({
           console.log(item); 
           html+= "<div class='media'>";
           html+= "<a class='pull-left' href='#'>";
-          html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+          if(item.USER_SEX=='M'){
+	          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+	          }else if(item.USER_SEX=='F'){
+	          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+	          }
           html+= '<div class="media-body">';
           html+= '<div class="media-heading"><h4>'+item.USER_ID;
           html+= '<small>'+item.UPD_YMD;
@@ -847,7 +804,7 @@ $.ajax({
           for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
         	  var counter=data.navi.startPageGroup+j;
               j=j+1;
-              html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
+              html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+i+' </a>'; 
           } 
           html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
           html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
@@ -897,8 +854,8 @@ $.ajax({
 						<c:otherwise>
 							<div class="header-half header-social">
 								<ul class="list-inline">
-									<li><img src="./resources/image/login_img.png">
-										${sessionScope.user_id }</li>
+									<li>welcome! <img src="./resources/image/icon.png" width="27px" height="27px">
+										${sessionScope.user_id } </li>
 								</ul>
 							</div>
 						</c:otherwise>
@@ -953,80 +910,46 @@ $.ajax({
 								data-wow-delay="0.6s" onclick="logout()">logout</button>
 						</c:otherwise>
 					</c:choose>
-
-					<!--로그인&조인 모달  -->
-					<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-						aria-labelledby="myLargeModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-lg">
+					<!--정보수정 모달 시작  -->
+					<div class="modal fade" id="myModal_Edit" tabindex="-1"
+						role="dialog" aria-labelledby="myLargeModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog modal-lg editModal">
 							<div class="modal-content">
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal"
 										aria-hidden="true">×</button>
 
-									<h4 class="modal-title" id="myModalLabel">Login / Join</h4>
+									<h4 class="modal-title" id="myModalLabel">Edit my
+										information</h4>
 								</div>
 								<div class="modal-body">
 									<div class="row">
-										<div class="col-md-8"
-											style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
+										<div class="col-md-12"
+											style="padding-right: 30px;">
 											<!-- Nav tabs -->
 											<ul class="nav nav-tabs headertabs">
 												<li class="active"><a href="#Login" id="loginAtag"
-													data-toggle="tab">Login</a></li>
-												<li><a href="#Registration" id="regAtag"
-													data-toggle="tab">Join</a></li>
+													data-toggle="tab">Edit</a></li>
+												<!-- <li><a href="#Registration" id="regAtag" data-toggle="tab">Join</a></li> -->
 											</ul>
 											<!-- Tab panes -->
 											<div class="tab-content">
-												<div class="tab-pane active" id="Login">
-													<form action="login" role="form" method="post"
-														class="form-horizontal" onsubmit="return login()">
-														<div class="form-group">
-															<label for="email" class="col-sm-2 control-label">
-																ID</label>
-															<div class="col-sm-10">
-																<input type="text" name="user_id" class="form-control"
-																	id="user_id" placeholder="ID" />
-															</div>
-														</div>
-														<div class="form-group">
-															<label for="exampleInputPassword1"
-																class="col-sm-2 control-label"> Password</label>
-															<div class="col-sm-10">
-																<input type="password" name="password"
-																	class="form-control" id="password"
-																	placeholder="Password" />
-															</div>
-														</div>
-														<div class="row">
-															<div class="col-sm-2"></div>
-															<div class="col-sm-10">
-																<button type="button" class="btn btn-primary btn-sm"
-																	value="submit" id="submit_button">Submit</button>
-																<!-- <a href="javascript:;">Forgot your password?</a> -->
-															</div>
-														</div>
-													</form>
-												</div>
-												<div class="tab-pane" id="Registration">
-													<form action="join" role="form" method="post"
-														class="form-horizontal" onsubmit="return joinCheck()">
+												<div class="tab-pane active" id="Edit">
+													<form role="form" class="form-horizontal">
 														<div class="form-group">
 															<label for="email" class="col-sm-2 control-label">
 																ID</label>
 															<div class="col-sm-10">
 																<div class="row">
 																	<div class="col-md-3">
-																		<select class="form-control" name="user_sex"
-																			id="user_sex">
-																			<option value="선택">선택</option>
-																			<option value="m">남성</option>
-																			<option value="f">여성</option>
+																		<select class="form-control" id="user_sex_ed" disabled="disabled">
+																			<option value="">${sessionScope.user_sex}</option>
 																		</select>
 																	</div>
 																	<div class="col-md-9">
 																		<input type="text" class="form-control"
-																			placeholder="ID" name="user_id" id="user_id1" />
+																			id="user_id_ed" name="user_id_ed" placeholder="ID" value="${sessionScope.user_id}" disabled="disabled" />
 																	</div>
 																</div>
 															</div>
@@ -1035,8 +958,8 @@ $.ajax({
 															<label for="email" class="col-sm-2 control-label">
 																Email</label>
 															<div class="col-sm-10">
-																<input type="email" class="form-control" name="email"
-																	id="email" placeholder="Email" />
+																<input type="email" class="form-control" id="email_ed"
+																	placeholder="Email" />
 															</div>
 														</div>
 														<div class="form-group">
@@ -1044,7 +967,7 @@ $.ajax({
 																Password</label>
 															<div class="col-sm-10">
 																<input type="password" class="form-control"
-																	id="password1" name="password" placeholder="Password" />
+																	id="password1_ed" placeholder="Password" />
 															</div>
 														</div>
 														<div class="form-group">
@@ -1052,15 +975,14 @@ $.ajax({
 															</label>
 															<div class="col-sm-10">
 																<input type="password" class="form-control"
-																	id="password2" name="password2"
-																	placeholder="Password 확인" />
+																	id="password2_ed" placeholder="Password 확인" />
 															</div>
 														</div>
 														<div class="row">
 															<div class="col-sm-2"></div>
 															<div class="col-sm-10">
-																<button type="button" class="btn btn-primary btn-sm"
-																	id="submit_join">Save & Continue</button>
+																<button type="button" class="btn btn-primary btn-sm" id="editForm">
+																	Edit</button>
 																<input type="reset" class="btn btn-default btn-sm"
 																	value="Reset" />
 															</div>
@@ -1088,109 +1010,6 @@ $.ajax({
 							</div>
 						</div>
 					</div>
-					<!--로그인&조인 모달 끝 -->
-					<!--정보수정 모달 시작  -->
-					<div class="modal fade" id="myModal_Edit" tabindex="-1"
-						role="dialog" aria-labelledby="myLargeModalLabel"
-						aria-hidden="true">
-						<div class="modal-dialog modal-lg">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal"
-										aria-hidden="true">×</button>
-
-									<h4 class="modal-title" id="myModalLabel">Edit my
-										information</h4>
-								</div>
-								<div class="modal-body">
-									<div class="row">
-										<div class="col-md-8"
-											style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
-											<!-- Nav tabs -->
-											<ul class="nav nav-tabs headertabs">
-												<li class="active"><a href="#Login" id="loginAtag"
-													data-toggle="tab">Edit</a></li>
-												<!-- <li><a href="#Registration" id="regAtag" data-toggle="tab">Join</a></li> -->
-											</ul>
-											<!-- Tab panes -->
-											<div class="tab-content">
-												<div class="tab-pane active" id="Edit">
-													<form role="form" class="form-horizontal">
-														<div class="form-group">
-															<label for="email" class="col-sm-2 control-label">
-																ID</label>
-															<div class="col-sm-10">
-																<div class="row">
-																	<div class="col-md-3">
-																		<select class="form-control" id="user_sex_ed">
-																			<option value="m">남성</option>
-																			<option value="f">여성</option>
-																		</select>
-																	</div>
-																	<div class="col-md-9">
-																		<input type="text" class="form-control"
-																			id="user_id_ed" name="user_id_ed" placeholder="ID" />
-																	</div>
-																</div>
-															</div>
-														</div>
-														<div class="form-group">
-															<label for="email" class="col-sm-2 control-label">
-																Email</label>
-															<div class="col-sm-10">
-																<input type="email" class="form-control" id="email_ed"
-																	placeholder="Email" />
-															</div>
-														</div>
-														<div class="form-group">
-															<label for="mobile" class="col-sm-2 control-label">
-																Password</label>
-															<div class="col-sm-10">
-																<input type="password" class="form-control"
-																	id="password_ed" placeholder="Password" />
-															</div>
-														</div>
-														<div class="form-group">
-															<label for="password" class="col-sm-2 control-label">
-															</label>
-															<div class="col-sm-10">
-																<input type="password" class="form-control"
-																	id="password2_ed" placeholder="Password 확인" />
-															</div>
-														</div>
-														<div class="row">
-															<div class="col-sm-2"></div>
-															<div class="col-sm-10">
-																<button type="button" class="btn btn-primary btn-sm">
-																	Save & Continue</button>
-																<button type="button" class="btn btn-default btn-sm">
-																	Cancel</button>
-															</div>
-														</div>
-													</form>
-												</div>
-											</div>
-											<!-- <div id="OR" class="hidden-xs">OR</div> -->
-										</div>
-										<!-- <div class="col-md-4">
-											<div class="row text-center sign-with">
-												<div class="col-md-12">
-													<h3>Sign in with</h3>
-												</div>
-												<div class="col-md-12">
-													<div class="btn-group btn-group-justified">
-														<a href="#" class="btn btn-primary">Facebook</a> <a
-															href="#" class="btn btn-danger"> Google</a>
-													</div>
-												</div>
-											</div>
-										</div> -->
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
 
 				</div>
 

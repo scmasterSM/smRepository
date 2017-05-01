@@ -184,7 +184,8 @@
 						<c:otherwise>
 							<div class="header-half header-social">
 								<ul class="list-inline">
-									<li><img src="./resources/image/login_img.png">${sessionScope.user_id }</li>
+									<li>welcome! <img src="./resources/image/icon.png" width="27px" height="27px">
+										${sessionScope.user_id } </li>
 								</ul>
 							</div>
 						</c:otherwise>
@@ -951,8 +952,8 @@ function filtering(){
 			    	$.getJSON(url, function(data) {
 			    	html += '<li>';
 			    	html += '<div class="scd_box" id="scd_box">'
-					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
-					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					html += '<a href="SC_12?scd_sq='+item.SCD_SQ+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=300px height=200px>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 						}else{
@@ -964,9 +965,9 @@ function filtering(){
 								like=l_List[i].liked_SQ							
 							} 
 						}					
-						html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
-							html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
-							html += '</div></li>';
+						html += '</a><div class="info_box"><div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+						html += '<div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div></div>';
+						html += '</div></li>';
 				
 			    	});
 			    }else if (typeof (data.response.body.items.item.firstimage) == "undefined") {
@@ -975,8 +976,8 @@ function filtering(){
 			    	$.getJSON(url, function(data) {
 			    	html += '<li>';
 			    	html += '<div class="scd_box" id="scd_box">'
-					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
-					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					html += '<a href="SC_12?scd_sq='+item.SCD_SQ+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=300px height=200px>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 					}else{
@@ -988,16 +989,16 @@ function filtering(){
 							like=l_List[i].liked_SQ							
 						} 
 					}					
-					html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
-						html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
-						html += '</div></li>'; 
+					html += '</a><div class="info_box"><div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '<div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div></div>';
+					html += '</div></li>'; 
 			    });
 			    	
 			    }else{
 			    	html += '<li>';
 			    	html += '<div class="scd_box" id="scd_box">'
-					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
-					html += '<img src="./resources/image/noimage.jpg" width=170 height=190>';
+					html += '<a href="SC_12?scd_sq='+item.SCD_SQ+'">'; 
+					html += '<img src="./resources/image/noimage.jpg" width=300px height=200px>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 					}else{
@@ -1009,8 +1010,8 @@ function filtering(){
 							like=l_List[i].liked_SQ							
 						} 
 					}					
-					html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
-						html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '</a><div class="info_box"><div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '<div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div></div>';
 						html += '</div></li>';				  
 			    }			    
 			});
@@ -1020,19 +1021,19 @@ function filtering(){
 			html2+='<div align="center">';
             var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
             console.log(bigpageback);
-            html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+            html2+='<a href ="javascript:pagingFormSubmitF('+bigpageback +')">◀◀ </a>';
             var onepageback=data.navi.currentPage -1
             console.log(onepageback);
-            html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+            html2+='<a href ="javascript:pagingFormSubmitF('+onepageback+')">◀ </a>';
             var j=0;
             for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){                   
                var counter=data.navi.startPageGroup+j;
                j=j+1;
-               html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>';
+               html2+='<a href="javascript:pagingFormSubmitF('+counter+')">'+i+' </a>';
                 
             } 
-            html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
-            html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+            html2+='<a href="javascript:pagingFormSubmitF('+(data.navi.currentPage + 1)+')">▶ </a>';
+            html2+='<a href="javascript:pagingFormSubmitF('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
             html2+='<form action="filtering" method="get" id="pagingForm">';
             html2+='<input type="hidden" id="page" name="page">';                
             html2+='</form></div>';
@@ -1049,7 +1050,7 @@ function filtering(){
 	
 };
 
-var key = "2pTN6y%2BhCGaVQL97quhdeM%2FW9ezdUvBNytbkKoT323qbc%2Ff5ao8fYoW2C31AgwacBVhy7PYHqvuwcnzprU4%2BNw%3D%3D";
+var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 var url;
 function ReadApi(contentId,contentTypeId) {
 	url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
@@ -1066,6 +1067,15 @@ function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어
 	   /* form.submit(); */
 	   console.log(page.value);
 	   paging(page.value);
+	}
+
+function pagingFormSubmitF(currentPage) { //currentPage가 어디서 호출되어 온다
+	   var form=document.getElementById("pagingForm");
+	   var page=document.getElementById("page"); 
+	   page.value=currentPage; 
+	   /* form.submit(); */
+	   console.log(page.value);
+	   Fpaging(page.value);
 	}
 
 
@@ -1102,8 +1112,8 @@ function read_SCD() {
 			    	
 			    	html += '<li>';
 					html += '<div class="scd_box" id="scd_box">'
-					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
-					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					html += '<a href="SC_12?scd_sq='+item.SCD_SQ+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=300px height=200px>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 						}else{
@@ -1115,8 +1125,8 @@ function read_SCD() {
 							like=l_List[i].liked_SQ							
 						} 
 					}					
-					html += '</a><div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div>';					
-					html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '</a><div class="info_box"><div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '<div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div></div>';
 					html += '</div></li>';
 					
 			    }else if (typeof (data.response.body.items.item.firstimage) == "undefined") {
@@ -1125,8 +1135,8 @@ function read_SCD() {
 			    $.getJSON(url, function(data) {
 			    	html += '<li>';
 			    	html += '<div class="scd_box" id="scd_box">'
-					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
-					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					html += '<a href="SC_12?scd_sq='+item.SCD_SQ+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=300px height=200px>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 					}else{
@@ -1138,8 +1148,8 @@ function read_SCD() {
 							like=l_List[i].liked_SQ							
 						} 
 					}					
-					html += '</a><div id="like_box" class="like_box"><a href="javascript:insertLike()" onclick="return false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div>';
-					html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '</a><div class="info_box"><div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '<div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div></div>';
 					html += '</div></li>';
 				
 					
@@ -1149,8 +1159,8 @@ function read_SCD() {
 			    }else{
 			    	html += '<li>';
 			    	html += '<div class="scd_box" id="scd_box">'
-					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
-					html += '<img src="./resources/image/noimage.jpg" width=170 height=190>';
+					html += '<a href="SC_12?scd_sq='+item.SCD_SQ+'">'; 
+					html += '<img src="./resources/image/noimage.jpg" width=300px height=200px>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 					}else{
@@ -1162,8 +1172,8 @@ function read_SCD() {
 							like=l_List[i].liked_SQ							
 						} 
 					}					
-					html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
-					html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '</a><div class="info_box"><div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '<div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div></div>';
 					html += '</div></li>';				  
 			    }
 			});
@@ -1181,7 +1191,7 @@ function read_SCD() {
                 for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){                   
                    var counter=data.navi.startPageGroup+j;
                    j=j+1;
-                   html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>';
+                   html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+i+' </a>';
                     
                 } 
                 html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
@@ -1236,8 +1246,8 @@ function paging(page) {
 			    	
 			    	html += '<li>';
 			    	html += '<div class="scd_box" id="scd_box">'
-					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
-					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					html += '<a href="SC_12?scd_sq='+item.SCD_SQ+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=300px height=200px>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 						}else{
@@ -1249,8 +1259,8 @@ function paging(page) {
 								like=l_List[i].liked_SQ							
 							} 
 						}					
-						html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
-						html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+						html += '</a><div class="info_box"><div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+						html += '<div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div></div>';
 						html += '</div></li>';
 				
 				 
@@ -1260,8 +1270,8 @@ function paging(page) {
 			    $.getJSON(url, function(data) {
 			    	html += '<li>';
 			    	html += '<div class="scd_box" id="scd_box">'
-					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
-					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					html += '<a href="SC_12?scd_sq='+item.SCD_SQ+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+'width=300px height=200px>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 					}else{
@@ -1279,8 +1289,8 @@ function paging(page) {
 							like=l_List[i].liked_SQ							
 						} 
 					}					
-					html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
-					html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '</a><div class="info_box"><div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '<div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div></div>';
 					html += '</div></li>';
 				
 				
@@ -1290,8 +1300,8 @@ function paging(page) {
 			    }else{
 			    	html += '<li>';
 			    	html += '<div class="scd_box" id="scd_box">'
-					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
-					html += '<img src="./resources/image/noimage.jpg" width=170 height=190>';
+					html += '<a href="SC_12?scd_sq='+item.SCD_SQ+'">'; 
+					html += '<img src="./resources/image/noimage.jpg" width=300px height=200px>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 					}else{
@@ -1303,8 +1313,8 @@ function paging(page) {
 							like=l_List[i].liked_SQ							
 						} 
 					}					
-					html += '</a><div id="like_box" class="like_box"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</div>';
-					html += '<div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '</a><div class="info_box"><div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '<div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div></div>';
 					html += '</div></li>';				  
 			    }
 			});
@@ -1322,7 +1332,7 @@ function paging(page) {
                 for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){                   
                    var counter=data.navi.startPageGroup+j;
                    j=j+1;
-                   html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>';
+                   html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+i+' </a>';
                     
                 } 
                 html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
@@ -1340,6 +1350,154 @@ function paging(page) {
 	}); 
     
 }
+function Fpaging(page) {
+	var html_Like="";
+	var areacode=_areacode;
+	var DAY_CNT=_day_cnt;
+	var SCD_SEASON=_season;
+	var SCD_THEME=_theme;
+	 
+	 
+	console.log("지역코드 : "+areacode+"여행일수 : "+DAY_CNT+", 계절 :"+SCD_SEASON+", 테마 : "+SCD_THEME);
+	$.ajaxSetup({
+        async: false
+    });
+	
+	$.ajax({
+		type : "get",
+		url : "filtering",
+		data : {	
+			
+			 day_cnt : DAY_CNT
+			,scd_season : SCD_SEASON
+			,scd_theme : SCD_THEME 
+			,area_code : areacode
+			,page :page
+		},
+		success : function(data){
+			 console.log(data);
+			 console.log(data.filter_List.length);
+			 
+			if(data.filter_List.length < 1){
+				$("div#all_scd_read").empty();
+				return false;
+			}
+			//좋아요 담는 배열
+			var l_List=data.l_List;
+			//페이징 관련 html
+            var html2 ="";
+			//일정 관련 html
+			var html ="";
+			$.each(data.filter_List,function(index,item){
+				console.log(item);
+				var contentId=item.DTL_CONTENT_ID;				
+			     ReadApi(contentId); 
+			$.getJSON(url, function(data) { 
+			    console.log('success1', data);
+			    var scd_sq=item.SCD_SQ;
+			    scd_sq_arry=scd_sq;
+			    if (typeof (data.response.body.items.item.firstimage) !== "undefined") {
+			    	contentId=item.DTL_CONTENT_ID;
+			    	ReadApi(contentId);
+			    	$.getJSON(url, function(data) {
+			    	html += '<li>';
+			    	html += '<div class="scd_box" id="scd_box">'
+					html += '<a href="SC_12?scd_sq='+item.SCD_SQ+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=300px height=200px>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+						}else{
+							html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+						};
+						var like=0;	
+						for(var i=0;i<l_List.length;i++){
+							if(l_List[i].scd_SQ==item.SCD_SQ){
+								like=l_List[i].liked_SQ							
+							} 
+						}					
+						html += '</a><div class="info_box"><div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+						html += '<div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div></div>';
+						html += '</div></li>';
+				
+			    	});
+			    }else if (typeof (data.response.body.items.item.firstimage) == "undefined") {
+			    	contentId=item.DTL_CONTENT_ID2;
+			    	ReadApi(contentId);
+			    	$.getJSON(url, function(data) {
+			    	html += '<li>';
+			    	html += '<div class="scd_box" id="scd_box">'
+					html += '<a href="SC_12?scd_sq='+item.SCD_SQ+'">'; 
+					html += '<img src='+data.response.body.items.item.firstimage+' width=300px height=200px>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+					}else{
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+					};
+					var like=0;	
+					for(var i=0;i<l_List.length;i++){
+						if(l_List[i].scd_SQ==item.SCD_SQ){
+							like=l_List[i].liked_SQ							
+						} 
+					}					
+					html += '</a><div class="info_box"><div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '<div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div></div>';
+					html += '</div></li>'; 
+			    });
+			    	
+			    }else{
+			    	html += '<li>';
+			    	html += '<div class="scd_box" id="scd_box">'
+					html += '<a href="SC_12?scd_sq='+item.SCD_SQ+'">'; 
+					html += '<img src="./resources/image/noimage.jpg" width=300px height=200px>';
+					if (typeof (item.SCD_DESC) !== "undefined") {
+					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
+					}else{
+						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'</h3></div>';	
+					};
+					var like=0;	
+					for(var i=0;i<l_List.length;i++){
+						if(l_List[i].scd_SQ==item.SCD_SQ){
+							like=l_List[i].liked_SQ							
+						} 
+					}					
+					html += '</a><div class="info_box"><div id="user_id_box" class="user_id_box"><img class="icon" src="./resources/img/icon/user_icon.png">'+item.USER_ID+'</div>';
+					html += '<div id="like_box" class="like_box"><a href="javascript:insertLike('+item.SCD_SQ+')" onclick="false"><img class="icon" src="./resources/img/icon/like_icon.png">'+like+'</a></div></div>';
+					html += '</div></li>';				  
+			    }			    
+			});
+			
+			});			
+			$("#all_scd_read").html(html);
+			html2+='<div align="center">';
+            var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+            console.log(bigpageback);
+            html2+='<a href ="javascript:pagingFormSubmitF('+bigpageback +')">◀◀ </a>';
+            var onepageback=data.navi.currentPage -1
+            console.log(onepageback);
+            html2+='<a href ="javascript:pagingFormSubmitF('+onepageback+')">◀ </a>';
+            var j=0;
+            for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){                   
+               var counter=data.navi.startPageGroup+j;
+               j=j+1;
+               html2+='<a href="javascript:pagingFormSubmitF('+counter+')">'+i+' </a>';
+                
+            } 
+            html2+='<a href="javascript:pagingFormSubmitF('+(data.navi.currentPage + 1)+')">▶ </a>';
+            html2+='<a href="javascript:pagingFormSubmitF('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+            html2+='<form action="filtering" method="get" id="pagingForm">';
+            html2+='<input type="hidden" id="page" name="page">';                
+            html2+='</form></div>';
+            html2+='</div';
+		    
+         $("#paging").html(html2);
+				
+		},
+		error : function(e){
+			console.log(e);
+		}
+	}); 
+} 
+
 function insertLike(scd_sq) { 
          
         $.ajax({

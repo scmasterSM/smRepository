@@ -85,8 +85,8 @@
 						<c:otherwise>
 							<div class="header-half header-social">
 								<ul class="list-inline">
-									<li><img src="./resources/image/login_img.png">
-										${sessionScope.user_id }</li>
+									<li>welcome! <img src="./resources/image/icon.png" width="27px" height="27px">
+										${sessionScope.user_id } </li>
 								</ul>
 							</div>
 						</c:otherwise>
@@ -541,7 +541,7 @@ h1 {
         
     </body>
 <script type="text/javascript">
-var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
+var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 var url;
 function ReadApi(contentId,contentTypeId) { /* currentPage가 어디서 호출되어 온다 */
 	url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
@@ -553,7 +553,9 @@ function ReadApi(contentId,contentTypeId) { /* currentPage가 어디서 호출되어 온�
 
 
  $(function(){
-
+	 $.ajaxSetup({
+	        async: false
+	    });
 	$.ajax({
 		type : "get",
 		url : "readClip",
@@ -594,7 +596,9 @@ function ReadApi(contentId,contentTypeId) { /* currentPage가 어디서 호출되어 온�
 	}) 
 	
 $(function(){
-
+	$.ajaxSetup({
+        async: false
+    });
 	$.ajax({
 		type : "get",
 		url : "read_scd",
@@ -658,7 +662,9 @@ $(function(){
 	}) 
  
 $(function(){
-
+	$.ajaxSetup({
+        async: false
+    });
 	$.ajax({
 		type : "get",
 		url : "shared_read_scd",

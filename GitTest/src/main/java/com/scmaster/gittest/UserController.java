@@ -122,7 +122,7 @@ public class UserController {
 			//System.out.println("도시 순위 불러오는 함수");
 			ArrayList<Daily_City> bList = new ArrayList<>();
 			bList = dao.bestcity();
-			//System.out.println(bList);
+			System.out.println(bList);
 			return bList;
 		}
 		

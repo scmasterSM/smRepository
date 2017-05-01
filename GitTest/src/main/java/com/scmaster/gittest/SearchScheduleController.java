@@ -20,8 +20,8 @@ import com.scmaster.gittest.vo.Schedule;
 @Controller
 public class SearchScheduleController {
 
-	final int countPerPage = 10;	//페이지 당 글 수
-	final int pagePerGrop=10;
+	final int countPerPage = 9;	//페이지 당 글 수
+	final int pagePerGrop=5;
 	
 	@Autowired
 	private SearchScheduleDao dao;

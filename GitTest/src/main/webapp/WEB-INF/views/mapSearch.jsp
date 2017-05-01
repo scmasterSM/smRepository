@@ -178,7 +178,8 @@ html, body {
       
       $.each(city, function(index, val){
     	  html += '<div class="item" data-no="'+ index +'" data="'+ val.areaCode +'" data-ci_name="'+ val.name +'" data-lat="'+ val.lat +'" data-lng="' + '" data-is_state="'+ val.is_state +'">';
-          html += '<div class="img_box fl"><img src="./resources/img/city/'+val.areaCode+'.jpg"></div>';
+          html += '<div class="img_box fl"><img src="./resources/img/city/'+val.areaCode;
+          html += '.jpg"></div>';
           html += '<div class="info_box fl"><div class="info_title">'+val.name+'</div><div class="info_sub_title">'+val.name_en+'</div></div>';
           html += '<div class="clear"></div></div>';
           makeMarker(val);
@@ -306,7 +307,7 @@ html, body {
                              };
                         cities.push(city);
                         html += '<div class="item" data-no="'+ val.rnum +'" data="'+ areaCode +'" data-ci_name="'+ val.name +'" data-lat="'+ location.lat +'" data-lng="'+ location.lng +'" data-is_state="'+ 0 +'">';
-                        html += '<div class="img_box fl"><img src="./resources/img/city/'+areaCode+'.jpg"></div>';
+                        html += '<div class="img_box fl"><img src="./resources/img/city/'+areaCode+'/'+val.name+'.jpg"></div>';
                         html += '<div class="info_box fl"><div class="info_title">'+val.name+'</div><div class="info_sub_title">'+""+'</div></div>';
                         html += '<div class="clear"></div></div>';
                         $('#city_list_box').html(html);
