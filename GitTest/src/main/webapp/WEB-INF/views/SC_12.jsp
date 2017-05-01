@@ -19,6 +19,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800' rel='stylesheet' type='text/css'>
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+            
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 		<link rel="stylesheet" href="./resources/css/bootstrap.css">
 		<link rel="stylesheet" href="./resources/css/jquery-ui.min.css" type="text/css" media="screen" />
@@ -34,7 +35,9 @@
         <link rel="stylesheet" href="./resources/css/style.css">
         <link rel="stylesheet" href="./resources/css/responsive.css">
         <script src="./resources/js/vendor/modernizr-2.6.2.min.js"></script>
-          <link rel="stylesheet" href="./resources/css/12css.css">
+        <link rel="stylesheet" href="./resources/css/12css.css">
+    
+		
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_azK-PpKrUbRSAlyccxLXpUGnwagdJhQ"></script>
 <style type="text/css">
 html, body {
@@ -479,11 +482,19 @@ h1 {
                   <li role="presentation"><a href="#employeers"
                      aria-controls="profile" role="tab" data-toggle="tab">댓글</a></li>
                   <div class="plan-menu">
-                  <a data-toggle="modal" href="#myModal_share">공유하기</a>&emsp;&emsp;
-                  <a href="javascript:copy_schedule(${scd_sq });">복사하기</a>&emsp;&emsp;
-                  <a data-toggle="modal" href="#myModal_edit">수정하기</a>&emsp;&emsp;
-<%--                  <a href="edit_schedule?scd_sq=${scd_sq }">수정하기</a>&emsp;&emsp;
- --%>                  <a href="">다운로드</a>
+                  <c:choose>
+                  	<c:when test="${sessionScope.user_id == schedule.user_id}">
+                  		<a data-toggle="modal" href="#myModal_share">공유하기</a>&emsp;&emsp;
+		                <a href="javascript:copy_schedule(${scd_sq });">복사하기</a>&emsp;&emsp;
+		                <a data-toggle="modal" href="#myModal_edit">수정하기</a>&emsp;&emsp;
+		                <a href="">삭제하기</a>
+                  	</c:when>
+                  	<c:otherwise>
+                  		<a href="javascript:copy_schedule(${scd_sq });">복사하기</a>&emsp;&emsp;
+				  		<a href="javascript:insertLike();">좋아요</a>&emsp;&emsp;	
+                  	</c:otherwise>
+                  </c:choose>
+<%--                   <a href="edit_schedule?scd_sq=${scd_sq }">수정하기</a>&emsp;&emsp; --%>                  
                   </div>
                </ul>
 
@@ -575,44 +586,24 @@ h1 {
                      </ul>
                   </div>
                   <div role="tabpanel" class="tab-pane fade" id="employeers">
-                     <ul class="list-inline">
-                        <li><a href=""> <img
-                              src="./resources/img/employee4.png" alt="">
-                              <div class="overlay">
-                                 <h3>Instagram</h3>
-                              </div>
-                        </a></li>
-                        <li><a href=""> <img
-                              src="./resources/img/employee5.png" alt="">
-                              <div class="overlay">
-                                 <h3>Microsoft</h3>
-                              </div>
-                        </a></li>
-                        <li><a href=""> <img
-                              src="./resources/img/employee6.png" alt="">
-                              <div class="overlay">
-                                 <h3>Dribbble</h3>
-                              </div>
-                        </a></li>
-                        <li><a href=""> <img
-                              src="./resources/img/employee1.png" alt="">
-                              <div class="overlay">
-                                 <h3>Beats Music</h3>
-                              </div>
-                        </a></li>
-                        <li><a href=""> <img
-                              src="./resources/img/employee2.png" alt="">
-                              <div class="overlay">
-                                 <h3>Facebook</h3>
-                              </div>
-                        </a></li>
-                        <li><a href=""> <img
-                              src="./resources/img/employee3.png" alt="">
-                              <div class="overlay">
-                                 <h3>Twitter</h3>
-                              </div>
-                        </a></li>
-                     </ul>
+                   <div class="well">
+                    <h4>일정댓글</h4>
+                    <form role="form">
+                        <div class="form-group">
+                            <textarea class="form-control" id="reviewWrite" rows="3"></textarea>
+                        </div>
+                        <a href="#" onclick="return false" class="btn btn-primary" id="write">등록</a> 
+                       <!--  <button type="submit" class="btn btn-primary">Submit</button> -->
+                    </form>
+                </div>
+
+                <hr>
+                   
+                   <div id="review">
+                   	댓글 페이지
+                   	</div>
+                   	<div id="paging">
+                   	</div>
                   </div>
                </div>
 
@@ -724,7 +715,7 @@ h1 {
     </div>
   </div>
 
-
+       
 
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="./resources/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
@@ -736,6 +727,12 @@ h1 {
         <script src="./resources/js/owl.carousel.min.js"></script>
         <script src="./resources/js/wow.js"></script>
         <script src="./resources/js/main.js"></script>
+         <!--Stylesheets-->
+		<link href="./resources/css/jquery.modal.css" type="text/css" rel="stylesheet" />
+	
+		<!--jQuery-->
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript" src="./resources/js/jquery.modal.js"></script>
 </body>
 <script>
 var scd_sq=${scd_sq};
@@ -976,6 +973,11 @@ $(function(){
 	
 })
 
+//로그아웃 버튼 클릭시 처리 함수 
+	function logout() {
+		location.href = "logout";
+	}
+
 function ReadApi(contentId) { /* currentPage가 어디서 호출되어 온다 */
    url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;
    url += "&mapX&mapY";
@@ -992,7 +994,7 @@ function ReadApi(contentId) { /* currentPage가 어디서 호출되어 온다 */
 		}
 		
 		var data = {
-				"scd_sq" : ${scd_sq}
+				"scd_sq" : scd_sq
 				,"searchId" : checkId
 		}
 		ws.send(JSON.stringify(data));
@@ -1195,6 +1197,413 @@ function show_myMarkers(daily_ord){
 		window.location.href = "edit_schedule?scd_sq="+scd_sq;	
 		return false;
  }
+ function insertLike() { 
+     var scd_sq=${scd_sq}
+     $.ajax({
+       type : "POST",
+       url : "insertLiked",
+       data :{
+     	  SCD_SQ : scd_sq 
+       }, 
+       success : function(data){
+          console.log(data);
+           if(data==1){
+          	modal({
+  				type: 'success',
+  				title: '좋아요',
+  				text: '선택한 일정에 좋아요!',
+          	}); 
+          }else{
+       	   modal({
+  				type: 'error',
+  				title: '좋아요 취소',
+  				text: '선택한 일정에 좋아요 해제!',
+  			});
+          }     
+       },
+       error : function(e){
+          console.log(e);
+       } 
+    }) 
+}
+///////////////////////////////////댓글 페이징 구역///////////////////////////////////
+
+//////페이징///////////
+ function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어 온다
+	   var form=document.getElementById("pagingForm");
+	   var page=document.getElementById("page"); 
+	   page.value=currentPage;  
+	   paging(page.value);
+	}
+ 	var scd_sq=${scd_sq}
+	var check = 0;
+	var inner = null;
+	var updatenum = 0;
+	
+	
+//////리플 수정//////////////////////////////////////////////
+	function replyUpdateForm(REPLY_SQ, SCD_SQ){
+	   
+	   if(check == 1 && REPLY_SQ == updatenum){
+	      document.getElementById(REPLY_SQ).innerHTML = inner;
+	      check=0;
+	      return;
+	   }
+	   
+	   if(updatenum != REPLY_SQ && updatenum != ''){
+	      document.getElementById(updatenum).innerHTML = inner;
+	   }
+	   
+	   
+	   updatenum = REPLY_SQ;
+	   console.log(REPLY_SQ);
+	   inner = document.getElementById(REPLY_SQ).innerHTML;
+	   console.log(inner);
+	   
+	   document.getElementById(REPLY_SQ).innerHTML = 
+		   "<textarea class='form-control' name='text' id='reply' rows='3'>"+inner+"</textarea>"
+	      +"<a href='#' class='btn btn-primary' onclick='replyUpdate("+REPLY_SQ+","+SCD_SQ+"); return false'>수정</a>";
+	        
+	      
+	      
+	   check = 1;
+	}
+/////////////////////리플 읽어오기	//////////////////////////
+var login_id=${sessionScope.user_id};
+	$(function(){	
+		 
+		console.log(scd_sq);
+		
+		$.ajax({
+		    
+		    type : "post",
+		    url : "read_reply",
+		    data :{
+		    	SCD_SQ : scd_sq          
+		    },
+		    
+		    success : function(data){
+		       
+		       console.log(data);
+		        var html ="";
+		        var html2 ="";
+		        $.each(data.rList,function(index,item){
+		          console.log(item);
+		        
+		          html+= "<div class='media'>";
+		          html+= "<a class='pull-left' href='#'>";
+		          if(item.USER_SEX=='M'){
+		          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+		          }else if(item.USER_SEX=='F'){
+		          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+		          }
+		          html+= '<div class="media-body">';
+		          html+= '<div class="media-heading"><h4>'+item.USER_ID;
+		          html+= '<small>'+item.UPD_YMD;
+		          if(login_id == item.USER_ID){
+		  		  html+= '<a href="javascript:replyUpdateForm('+item.REPLY_SQ+','+item.SCD_SQ+')" onclick="false"> 수정 </a>';
+		          html+= '<a href="#none" onclick="deleteReply('+item.REPLY_SQ+','+item.SCD_SQ+')"> 삭제 </a>';
+		          }
+		          html+= '</small></h4></div>';
+		          html+= '<pre>';
+		          html+= "<div id='"+item.REPLY_SQ+"'class='review_txt'>"+item.REPLY_TXT+"</div>"; 
+						html+= "</pre></div></div>";
+		        });
+		          html2+='<div align="center">';
+		          var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+		          html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+		          var onepageback=data.navi.currentPage -1
+		          html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+		          var j=0;
+		          console.log(data.navi.endPageGroup);
+		          for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
+		        	  var counter=data.navi.startPageGroup+j;
+		        	  j=j+1;
+		              html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+i+' </a>'; 
+		          } 
+		          html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
+		          html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+		          html2+='<form action="read_reply" method="post" id="pagingForm">';
+		          html2+='<input type="hidden" id="page" name="page">';		          
+		          html2+='</form></div>'; 
+		        
+		        $("#review").html(html);
+		        $("#paging").html(html2);
+		        $('#reviewWrite').val(''); 
+		    },
+		    error : function(e){
+		       console.log(e);
+		    }   
+		 });
+		});	
+	
+	
+ 
+ //리플달기
+ $(function(){
+     $("#write").on("click",function(){ 
+
+        $.getJSON(url, function(data) {
+        console.log(data.response.body.items.item)
+        var REPLY_TXT = $("#reviewWrite").val();
+        var SCD_SQ = ${scd_sq};
+        
+        if(REPLY_TXT.length ==0 || SCD_SQ.length ==0) {
+           alert("데이터를 입력해 주세요");
+           return;
+        } 
+      
+     
+        $.ajax({
+           
+           type : "post",
+           url : "writeReply",
+           data :{
+        	   SCD_SQ : SCD_SQ
+              ,REPLY_TXT : REPLY_TXT   
+           },
+           
+           success : function(data){
+              
+              console.log(data);
+              var html ="";
+               var html2 ="";
+               $.each(data.rList,function(index,item){
+                 console.log(item); 
+                 html+= "<div class='media'>";
+                 html+= "<a class='pull-left' href='#'>";
+                 if(item.USER_SEX=='M'){
+   		          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+   		          }else if(item.USER_SEX=='F'){
+   		          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+   		          }
+                 html+= '<div class="media-body">';
+                 html+= '<div class="media-heading"><h4>'+item.USER_ID;
+                 html+= '<small>'+item.UPD_YMD;
+                 if(login_id == item.USER_ID){ 		
+             		  html+= '<a href="javascript:replyUpdateForm('+item.REPLY_SQ+','+item.SCD_SQ+')"> 수정 </a>';
+                     html+= '<a href="#none" onclick="deleteReply('+item.REPLY_SQ+','+item.SCD_SQ+')"> 삭제 </a>';
+                     }
+                 html+= '</small></h4></div>';
+                 html+= '<pre>';
+                 html+= "<div id='"+item.REPLY_SQ+"'class='review_txt'>"+item.REPLY_TXT+"</div>"; 
+     				html+= "</pre></div></div>";
+               })
+                 html2+='<div align="center">';
+                 var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+                 html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+                 var onepageback=data.navi.currentPage -1
+                 html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+                 var j=0;
+                 for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
+               	  var counter=data.navi.startPageGroup+j;
+                     j=j+1;
+                     html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+i+' </a>'; 
+                 } 
+                 html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
+                 html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+                 html2+='<form action="read_reply" method="post" id="pagingForm">';
+                 html2+='<input type="hidden" id="page" name="page">';                
+                 html2+='</form></div>'; 
+               
+               $("#review").html(html);
+               $("#paging").html(html2);
+               $('#reviewWrite').val(''); 
+           },
+           error : function(e){
+              console.log(e);
+           }   
+        });
+        });
+     });
+     
+  });
+ 
+ 
+
+///////////리플 업데이트//////////////////
+	function replyUpdate(REPLY_SQ, SCD_SQ){
+	   
+	   text = $("#reply").val();
+	   console.log(text);
+	   $.ajax({
+	      
+	      type : "post",
+	      url : "updateReply",
+	      data : {
+	    	  REPLY_TXT : text,
+	    	 REPLY_SQ : REPLY_SQ,
+	    	 SCD_SQ : SCD_SQ
+	      },
+	      success : function(data){
+	         
+	         console.log(data);
+	          var html ="";
+	         
+	          $.each(data,function(index,item){
+	             console.log(item);
+	             
+	            html+= "<div class='media'>";
+	            html+= "<a class='pull-left' href='#'>";
+	            if(item.USER_SEX=='M'){
+	   		          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+	   		          }else if(item.USER_SEX=='F'){
+	   		          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+	   		          }
+	            html+= "<div class='media-body'>";
+	            html+= "<div class='media-heading'><h4>"+item.USER_ID;
+	            html+= "<small>"+item.UPD_YMD;
+	            if(login_id == item.USER_ID){ 		
+	        		html+= '<a href="javascript:replyUpdateForm('+item.REPLY_SQ+','+item.SCD_SQ+')"> 수정 </a>';
+	                html+= '<a href="#none" onclick="deleteReply('+item.REPLY_SQ+','+item.SCD_SQ+')"> 삭제 </a>';
+	                }
+	            html+= "</small></h4></div>";
+	            html+= "<pre>";
+	            html+= "<div id='"+item.REPLY_SQ+"'class='review_txt'>"+item.REPLY_TXT+"</div>"; 
+				html+= "</pre></div></div>"; 
+	          }) 
+	          $("#review").html(html);
+	          
+	          
+	              
+	      },
+	      error : function(e){
+	         console.log(e);
+	         }
+	   })   
+	   
+	   check=0;
+	   updatenum = 0;
+	}
+//////////////////리플 삭제////////////////
+	function deleteReply(REPLY_SQ, SCD_SQ){
+		
+		$.ajax({
+			
+			type : "post",
+			url : "deleteReply",
+			data : {
+				REPLY_SQ : REPLY_SQ,
+				SCD_SQ : SCD_SQ
+			},
+			success : function(data){
+				console.log(data);
+				var html ="";
+				var html2 ="";
+					$.each(data.rList, function(index,item){
+						   
+		                  html+= "<div class='media'>";
+		                  html+= "<a class='pull-left' href='#'>";
+		                  if(item.USER_SEX=='M'){
+		       		          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+		       		          }else if(item.USER_SEX=='F'){
+		       		          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+		       		          }
+		                  html+= '<div class="media-body">';
+		                  html+= '<div class="media-heading"><h4>'+item.USER_ID;
+		                  html+= '<small>'+item.UPD_YMD; 
+		                  if(login_id == item.USER_ID){ 		
+		              		  html+= '<a href="javascript:replyUpdateForm('+item.REPLY_SQ+','+item.SCD_SQ+')"> 수정 </a>';
+		                      html+= '<a href="#none" onclick="deleteReply('+item.REPLY_SQ+','+item.SCD_SQ+')"> 삭제 </a>';
+		                      }
+		                  html+= "</small></h4></div>";
+		                  html+= "<pre>";
+		                  html+= "<div id='"+item.REPLY_SQ+"'class='review_txt'>"+item.REPLY_TXT+"</div>"; 
+		      			  html+= "</pre></div></div>";
+		                })
+		                  html2+='<div align="center">';
+		                  var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+		                  html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+		                  var onepageback=data.navi.currentPage -1
+		                  html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+		                  var j=0;
+		                  for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
+		                	  var counter=data.navi.startPageGroup+j;
+		                      j=j+1;
+		                      html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+i+' </a>'; 
+		                  } 
+		                  html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
+		                  html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+		                  html2+='<form action="read_reply" method="post" id="pagingForm">';
+		                  html2+='<input type="hidden" id="page" name="page">';		                  
+		                  html2+='</form></div>'; 
+		                
+		                $("#review").html(html);
+		                $("#paging").html(html2);
+
+				$("#replytable").html(html);
+			},
+			error : function(e){
+				console.log(e);
+			}
+		})
+			
+	}
+	
+	
+////////////페이징 ajax 처리////////////////////////	
+	function paging(page) { 
+	console.log(page);
+		$.ajax({ 
+	        type : "post",
+	        url : "read_reply",
+	        data :{
+	        	SCD_SQ : scd_sq,
+	           page : page
+	        },
+	        
+	        success : function(data){
+	           
+	           console.log(data);
+	            var html ="";
+	            var html2 ="";
+	            $.each(data.rList,function(index,item){
+	              console.log(item); 
+	              html+= "<div class='media'>";
+	              html+= "<a class='pull-left' href='#'>";
+	              if(item.USER_SEX=='M'){
+	   		          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+	   		          }else if(item.USER_SEX=='F'){
+	   		          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+	   		          }
+	              html+= '<div class="media-body">';
+	              html+= '<div class="media-heading"><h4>'+item.USER_ID;
+	              html+= '<small>'+item.UPD_YMD;
+	              if(login_id == item.USER_ID){ 		
+	          		  html+= '<a href="javascript:replyUpdateForm('+item.REPLY_SQ+','+item.SCD_SQ+')"> 수정 </a>';
+	                  html+= '<a href="#none" onclick="deleteReply('+item.REPLY_SQ+','+item.SCD_SQ+')"> 삭제 </a>';
+	                  }
+	              html+= '</small></h4></div>';
+	              html+= '<pre>';
+	              html+= "<div id='"+item.REPLY_SQ+"'class='review_txt'>"+item.REPLY_TXT+"</div>"; 
+	  				html+= "</pre></div></div>";
+	            })
+	              html2+='<div align="center">';
+	              var bigpageback=data.navi.currentPage - data.navi.pagePerGroup;
+	              html2+='<a href ="javascript:pagingFormSubmit('+bigpageback +')">◀◀ </a>';
+	              var onepageback=data.navi.currentPage -1
+	              html2+='<a href ="javascript:pagingFormSubmit('+onepageback+')">◀ </a>';
+	              var j=0;
+	              for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
+	            	  var counter=data.navi.startPageGroup+j;
+	                  j=j+1;
+	                  html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+i+' </a>'; 
+	              } 
+	              html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
+	              html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
+	              html2+='<form action="read_reply" method="post" id="pagingForm">';
+	              html2+='<input type="hidden" id="page" name="page">';	              
+	              html2+='</form></div>'; 
+	            
+	            $("#review").html(html);
+	            $("#paging").html(html2);
+	            $('#reviewWrite').val('');      
+	        },
+	        error : function(e){
+	           console.log(e);
+	        }   
+	     });
+	};	
 </script>
 
 </html>
