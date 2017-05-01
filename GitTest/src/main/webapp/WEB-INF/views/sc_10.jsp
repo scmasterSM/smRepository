@@ -85,8 +85,8 @@
 						<c:otherwise>
 							<div class="header-half header-social">
 								<ul class="list-inline">
-									<li><img src="./resources/image/login_img.png">
-										${sessionScope.user_id }</li>
+									<li>welcome! <img src="./resources/image/icon.png" width="27px" height="27px">
+										${sessionScope.user_id } </li>
 								</ul>
 							</div>
 						</c:otherwise>
@@ -541,7 +541,7 @@ h1 {
         
     </body>
 <script type="text/javascript">
-var key = "2pTN6y%2BhCGaVQL97quhdeM%2FW9ezdUvBNytbkKoT323qbc%2Ff5ao8fYoW2C31AgwacBVhy7PYHqvuwcnzprU4%2BNw%3D%3D";
+var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
 var url;
 function ReadApi(contentId,contentTypeId) { /* currentPage가 어디서 호출되어 온다 */
 	url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey="+key;

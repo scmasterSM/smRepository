@@ -101,8 +101,8 @@ body.modal-open {
 						<c:otherwise>
 							<div class="header-half header-social">
 								<ul class="list-inline">
-									<li><img src="./resources/image/login_img.png">
-										${sessionScope.user_id }</li>
+									<li>welcome! <img src="./resources/image/icon.png" width="27px" height="27px">
+										${sessionScope.user_id } </li>
 								</ul>
 							</div>
 						</c:otherwise>
@@ -995,22 +995,29 @@ function ReadApi(contentId) { /* currentPage가 어디서 호출되어 온다 */
    
 }
   
-  function whoWithShare(){
-		var checkId = $('#shareId').val();
-		if(checkId == ''){
-			alert("일정을 함께 공유하실 분의 아이디를 입력해주세요.");
-			return false;
-		}
-		
-		var data = {
-				"scd_sq" : scd_sq
-				,"searchId" : checkId
-		}
-		ws.send(JSON.stringify(data));
-		
-		return false;
-	}
+function whoWithShare(){
+    var checkId = $('#shareId').val();
+    if(checkId == ''){
+       alert("일정을 함께 공유하실 분의 아이디를 입력해주세요.");
+       return false;
+    }
+    $.ajax({
+        type : "post",
+        url : "addShareAuthority",
+        data : {
+			  scd_sq : '${scd_sq}',
+			  searchId : checkId
+    	},
+        success : function(inform){
+           alert(inform);
+           //모달 꺼야함
+        },
+        error : function(e){
+           console.log(e);
+        }
+    });//ajax
 
+ }
 	function deleteElement(){
 		document.getElementById('shareId').value = '';
 		var html = '';

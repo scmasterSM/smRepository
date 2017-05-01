@@ -116,6 +116,10 @@ public class webSocketHandler extends TextWebSocketHandler {
 		case "chat" :
 			broadcast(session, "chat", msgMap.get("data"));
 			break;
+			
+		case "addShareAuthority" :
+			
+			break;
 		}
 
 	}
