@@ -82,7 +82,8 @@ html, body {
 <script type="text/javascript">
 	//관광API 키값 
 	var key = "2pTN6y%2BhCGaVQL97quhdeM%2FW9ezdUvBNytbkKoT323qbc%2Ff5ao8fYoW2C31AgwacBVhy7PYHqvuwcnzprU4%2BNw%3D%3D";
-
+    //var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
+	
 	function padDigits(number) {
 		if (number < 10) {
 			return "0" + number;
@@ -732,8 +733,8 @@ html, body {
 						<c:otherwise>
 							<div class="header-half header-social">
 								<ul class="list-inline">
-									<li><img src="./resources/image/login_img.png">
-										${sessionScope.user_id }</li>
+									<li>welcome! <img src="./resources/image/icon.png" width="27px" height="27px">
+										${sessionScope.user_id } </li>
 								</ul>
 							</div>
 						</c:otherwise>
@@ -1238,7 +1239,7 @@ html, body {
 								</h4>   
 							</div>  
 							<div class="client-face wow fadeInRight" data-wow-delay=".9s">
-								<img src="./resources/image/bg_city/review_1.png" alt="">
+								<img src="./resources/image/bg_city/review_1.jpg" alt="">
 							</div>
 						</div>
 						 <div class="item">
@@ -1247,11 +1248,11 @@ html, body {
 									투어를 하거나 스쿠터, 도보 등으로 즐기기에도 부담없는 여행지입니다. 우도로 가는 접근성도 나쁘지 않고 주변의
 									성산일출봉이나 섭지코지를 함께 볼수있어 개인적으로 가장 선호하는 코스입니다.</p>
 								<h4>
-									<strong><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">제주도 우도</a> / </strong><i>2013tessie </i>
+									<strong><a href="sc_05?areacode=39&sigungucode=%27%27&city_nm=제주도">제주도 우도</a> / </strong><i>2013tessie </i>
 								</h4> 
 							</div> 
 							<div class="client-face">
-								<img src="./resources/img/client-face2.png" alt="">
+								<img src="./resources/image/bg_city/udo.jpg" alt="">
 							</div>
 						</div>
 						<div class="item">
@@ -1263,7 +1264,7 @@ html, body {
 								</h4>  
 							</div> 
 							<div class="client-face">
-								<img src="./resources/img/client-face1.png" alt="">
+								<img src="./resources/image/bg_city/damyang.jpg" alt="">
 							</div>
 						</div> 
 						 <div class="item">
@@ -1272,11 +1273,11 @@ html, body {
 									마을이 나타납니다.겉으로 보는모습과는 다르게 마을안으로 들어서면 아기자기하고 이쁜 벽화와 조형물을 만날수있습니다.
 									어린왕자는 사진찍는 필수 코스 입니다</p>
 								<h4>
-									<strong><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">부산 감천문화마을</a> / </strong><i>seoulbangi</i>
+									<strong><a href="sc_05?areacode=6&sigungucode=%27%27&city_nm=부산">부산 감천문화마을</a> / </strong><i>seoulbangi</i>
 								</h4>  
 							</div>
 							<div class="client-face">
-								<img src="./resources/img/client-face2.png" alt="">
+								<img src="./resources/image/bg_city/gch.jpg" alt="">
 							</div>
 						</div> 
 					</div>
