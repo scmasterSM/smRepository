@@ -5819,6 +5819,13 @@ button.close {
   .modal-lg {
     width: 900px;
   }
+  .modal-lg.loginModal {
+  	width: 500px !important;
+  }
+  .modal-lg.editModal {
+  	width: 500px !important;
+  
+  }
 }
 .tooltip {
   position: absolute;

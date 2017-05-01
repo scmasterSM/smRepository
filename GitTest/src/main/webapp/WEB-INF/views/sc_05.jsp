@@ -342,7 +342,7 @@ html, body {
         	var url2 ="";
             url2 = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="
                    +key;
-            url2 += "&contentTypeId=&areaCode="+areacode+"&sigunguCode="+sigungucode+"&cat1="+themecode+"&cat3=&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=11&pageNo=1";
+            url2 += "&contentTypeId=&areaCode="+areacode+"&sigunguCode="+sigungucode+"&cat1="+themecode+"&cat3=&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=30&pageNo=1";
             url2 += "&_type=json";
 
             //alert(url2);
@@ -351,7 +351,10 @@ html, body {
             
                var content = ""; 
                content += '<ul class="list-inline job-seeker">';
-               var length=data.response.body.items.item.length;
+               
+               var length=0;
+
+           	   if(typeof(data.response.body.items.item) != 'undefined') length=data.response.body.items.item.length;
                
                // var addr = data.response.body.items.item.addr1;
                    // var addr1=addr.split(" ",1); //시의 정보를 가져오는 변수
@@ -359,9 +362,10 @@ html, body {
                //console.log(data);   
                
                var outputArray = [];
+               //console.log(data.response.body.items.item);
                for (var i = 0; i < 6; i++) {
                    if(outputArray.length == 6) break;
-                   if(data.response.body.items.item.length == outputArray.length) break;
+                   if(typeof(data.response.body.items.item) != 'undefined' && data.response.body.items.item.length == outputArray.length) break;
                 //컨텐트아이디 추출
                   //console.log(con);
                      /* alert('테마 6개를 가져오는 첫 for문 들어옴'); */
@@ -370,30 +374,37 @@ html, body {
                 var j = 0;
                 //alert(outputArray.length);
                  for(j = 0; j < outputArray.length; j++){
-                       if(outputArray[j] == data.response.body.items.item[val].title){
-                            /* alert('이름 중복 들어왔나 '); */
-                          data.response.body.items.item.splice(val, 1);
-                          repeat = true;
-                          break; 
-                       }
+					   if(typeof(data.response.body.items.item[val]) != 'undefined'){              	 
+	                       if(outputArray[j] == data.response.body.items.item[val].title){
+	                            /* alert('이름 중복 들어왔나 '); */
+	                          data.response.body.items.item.splice(val, 1);
+	                          repeat = true;
+	                          break; 
+	                       }
+					   }  
                     }
                  if(repeat){
                        i--;
                     }else{
-                     if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
-                          outputArray.push(data.response.body.items.item[val].title);
-                          var con = data.response.body.items.item[val].contentid;
-                          var conType=data.response.body.items.item[val].contenttypeid;
-                            
-                             content += '<li><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width="300" height="200" alt="">';
-                              content += '<div class="overlay"><h3>'
-                             + data.response.body.items.item[val].title
-                             + '</h3><p>'
-                             + data.response.body.items.item[val].addr1.split(" ", 3)
-                             + '</p></div></a></li>'; 
-                       } else {
-                           i--;
-                        }
+                    	if(typeof(data.response.body.items.item) != 'undefined'){
+                    	if(typeof(data.response.body.items.item[val]) != 'undefined'){     
+		                      if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
+		                    	 //console.log(val);
+		                          outputArray.push(data.response.body.items.item[val].title);
+		                          var con = data.response.body.items.item[val].contentid;
+		                          var conType=data.response.body.items.item[val].contenttypeid;
+		                            
+		                             content += '<li><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width="300" height="200" alt="">';
+		                              content += '<div class="overlay"><h3>'
+		                             + data.response.body.items.item[val].title
+		                             + '</h3><p>'
+		                             + data.response.body.items.item[val].addr1.split(" ", 3)
+		                             + '</p></div></a></li>'; 
+		                       } else {
+		                           i--;
+		                        }
+                    	}
+                    	}
                     }
                 }//outer for
                
