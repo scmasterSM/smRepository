@@ -58,6 +58,7 @@
 		group by city_nm,area_code
 		order by city_cnt desc) c
 		where b.city_nm = c.city_nm and rownum <![CDATA[ < ]]> 7
+		order by c.city_cnt desc
 	</select>
 	
 	<!-- SC_05 detail 화면   -->
