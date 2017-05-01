@@ -572,6 +572,7 @@ html, body {
 						//console.log(result);
 						content2 += '<ul class="list-inline job-seeker">';
 						$.each(result,function(index, val) {
+							//console.log(result);
 											if (val.sigungu_code == null) {
 												content2 += '<li><a href="sc_05?areacode='
 														+ val.area_code
@@ -791,18 +792,18 @@ html, body {
 					<!--로그인&조인 모달  -->
 					<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 						aria-labelledby="myLargeModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-lg">
+						<div class="modal-dialog modal-lg loginModal">
 							<div class="modal-content">
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal"
 										aria-hidden="true">×</button>
 
-									<h4 class="modal-title" id="myModalLabel">Login / Join</h4>
+									<h4 class="modal-title" id="myModalLabel">Travel Maker</h4>
 								</div>
 								<div class="modal-body">
 									<div class="row">
-										<div class="col-md-8"
-											style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
+										<div class="col-md-12"
+											style="padding-right: 30px;"> <!--border-right: 1px dotted #C2C2C2;  -->
 											<!-- Nav tabs -->
 											<ul class="nav nav-tabs headertabs">
 												<li class="active"><a href="#Login" id="loginAtag"
@@ -927,7 +928,7 @@ html, body {
 					<div class="modal fade" id="myModal_Edit" tabindex="-1"
 						role="dialog" aria-labelledby="myLargeModalLabel"
 						aria-hidden="true">
-						<div class="modal-dialog modal-lg">
+						<div class="modal-dialog modal-lg editModal">
 							<div class="modal-content">
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal"
@@ -938,8 +939,8 @@ html, body {
 								</div>
 								<div class="modal-body">
 									<div class="row">
-										<div class="col-md-8"
-											style="border-right: 1px dotted #C2C2C2; padding-right: 30px;">
+										<div class="col-md-12"
+											style="padding-right: 30px;">
 											<!-- Nav tabs -->
 											<ul class="nav nav-tabs headertabs">
 												<li class="active"><a href="#Login" id="loginAtag"

@@ -55,6 +55,9 @@
 html, body {
 	overflow-x: hidden;
 }
+.modal-backdrop {
+   z-index: 0;
+}
 </style>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW-Yin1kq0i_E_hqmkCdFXNWIaJLRoUN8"></script>
 <script>
@@ -69,8 +72,30 @@ html, body {
 
  
 <script type="text/javascript">
-var login_id=${sessionScope.user_id};
+var login_id='${sessionScope.user_id}';
 
+function shuffle(array) {
+	  var currentIndex = array.length, temporaryValue, randomIndex;
+
+	  // While there remain elements to shuffle...
+	  while (0 !== currentIndex) {
+
+	    // Pick a remaining element...
+	    randomIndex = Math.floor(Math.random() * currentIndex);
+	    currentIndex -= 1;
+
+	    // And swap it with the current element.
+	    temporaryValue = array[currentIndex];
+	    array[currentIndex] = array[randomIndex];
+	    array[randomIndex] = temporaryValue;
+	  }
+
+	  return array;
+	}
+
+//정보수정 모달
+$('#myModal_Edit').modal('show');
+	
 
 function pagingFormSubmit(currentPage) { //currentPage가 어디서 호출되어 온다
    var form=document.getElementById("pagingForm");
@@ -97,13 +122,13 @@ function replyUpdateForm(REV_SQ, CONTENT_ID){
    
    
    updatenum = REV_SQ;
-   console.log(REV_SQ);
+   //console.log(REV_SQ);
    inner = document.getElementById(REV_SQ).innerHTML;
-   console.log(inner);
+   //console.log(inner);
    
    document.getElementById(REV_SQ).innerHTML = 
 	   "<textarea class='form-control' name='text' id='reply' rows='3'>"+inner+"</textarea>"
-      +"<a href='#' class='btn btn-primary' onclick='replyUpdate("+REV_SQ+","+CONTENT_ID+")'>수정</a>";
+      +"<a href='#' class='btn btn-primary' onclick='replyUpdate("+REV_SQ+","+CONTENT_ID+"); return false'>수정</a>";
         
       
       
@@ -113,7 +138,7 @@ function replyUpdateForm(REV_SQ, CONTENT_ID){
 function replyUpdate(REV_SQ, CONTENT_ID){
    
    text = $("#reply").val();
-   console.log(text);
+   //console.log(text);
    $.ajax({
       
       type : "post",
@@ -125,7 +150,7 @@ function replyUpdate(REV_SQ, CONTENT_ID){
       },
       success : function(data){
          
-         console.log(data);
+         //console.log(data);
           var html ="";
          
           $.each(data,function(index,item){
@@ -226,8 +251,8 @@ function deleteReply(REV_SQ, CONTENT_ID){
 var map;
 var myLatLng;
 var CONTENT_ID;
-    var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
-   
+    //var key = "mAI%2FYXQZ6r2tOuKRb5BjfkHXavB%2BYidXtnLge18Ft%2Fzx2OvvU2Eq7za7nmbfumFdLtG7IOLQSoDYF2pAcMd3aw%3D%3D";
+    var key = "2pTN6y%2BhCGaVQL97quhdeM%2FW9ezdUvBNytbkKoT323qbc%2Ff5ao8fYoW2C31AgwacBVhy7PYHqvuwcnzprU4%2BNw%3D%3D";
     //장소바꿀때 전 단계에서 contentId를 받아와서 바꾸면 될듯
     var contentTypeId = ${contypeid}; 
     var contentId = ${contentid};
@@ -270,41 +295,50 @@ function l_Data(){
          if(addr1[0] == '서울특별시'){
      	    addr1[0] = 'SEOUL';
          	addr1[1] = '서울';
+         	sigungucode = '%27%27';
          }else if(addr1[0] == '인천광역시'){
          	addr1[0] = 'INCHEON';
          	addr1[1] = '인천';
+         	sigungucode = '%27%27';
          }else if(addr1[0] == '부산광역시'){
          	addr1[0] = 'BUSAN';
          	addr1[1] = '부산';
+         	sigungucode = '%27%27';
          }else if(addr1[0] == '대전광역시'){
          	addr1[0] = 'DEAJOEN';
          	addr1[1] = '대전';
+         	sigungucode = '%27%27';
          }else if(addr1[0] == '대구광역시'){
          	addr1[0] = 'DEAGU';
          	addr1[1] = '대구';
+         	sigungucode = '%27%27';
          }else if(addr1[0] == '광주광역시'){
          	addr1[0] = 'GWANGJU';
          	addr1[1] = '광주';
+         	sigungucode = '%27%27';
          }else if(addr1[0] == '울산광역시'){
          	addr1[0] = 'ULSAN';
          	addr1[1] = '울산';
+         	sigungucode = '%27%27';
          }else if(addr1[0] == '제주특별자치도'){
          	addr1[0] = 'JEJUDO';
          	addr1[1] = '제주도';
+         	sigungucode = '%27%27';
          }else if(addr1[0] == '세종특별자치시'){
          	addr1[0] = 'SEJONG';
          	addr1[1] = '세종시';
+         	sigungucode = '%27%27';
          }
          
        
        initMap(myLatLng,data);
-        console.log('sucess', data);
+       // console.log('sucess', data);
         /* for( var i = 0 ; i < data.response.body.totalCount ; i++){
             console.log( data.response.body.items.item[i] );
         }    */
         
 
-        console.log(data.response.body.items.item);
+        //console.log(data.response.body.items.item);
         $("#placeName").html(data.response.body.items.item.title);
         if (typeof (data.response.body.items.item.firstimage) !== "undefined") {
         $("#placeImg").html('<img src='+data.response.body.items.item.firstimage+'>');           
@@ -324,7 +358,7 @@ function l_Data(){
    
     $.getJSON(url2, function(data) {
        
-      console.log('success', data);
+      //console.log('success', data);
       
       
    if (typeof (data.response.body.items.item.treatmenu) !== "undefined") {
@@ -356,78 +390,52 @@ function r_Data(){
           
        
       var cTypeId; 
-      console.log(areacode); 
-      console.log(sigungucode); 
+     // console.log(areacode); 
+      //console.log(sigungucode); 
       
       var url3= "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key;
       url3 += "&contentTypeId=12&areaCode=" + areacode + "&sigunguCode=" + sigungucode + "&cat1=&cat2=&cat3=&listYN=Y";
       url3 += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=Q&numOfRows=100"; 
        
-       
       $.getJSON(url3, function(data) {
-         var length=data.response.body.items.item.length
-         console.log('success', data);
-         var j=0;
-         
-         var outputArray = []; //내가 넣은 것
-            for( var i = 0 ; i < 3 ; i++){
-            var j=j+1;
-                  console.log( data.response.body.items.item.length);
-                    var val = Math.floor( Math.random()*length);
-                    var repeat = false; //내가 넣은 것 
-		           	var k = 0; //내가 넣은 것 
-                   // var con=data.response.body.items.item[val].contentid;
-                     console.log(con);
-               console.log(val);
-               console.log( data.response.body.items.item[val].title);
-               //var conType=data.response.body.items.item[val].contenttypeid;
-               
-          	 	 for(k =0; k< outputArray.length;k++){
-					 if(outputArray[k] == data.response.body.items.item[val].title){
-  					
-     				 repeat = true;
-     			 	 break; 
+			var length=data.response.body.items.item.length
+			//console.log('success', data);
+			var j=0;
+		    console.log( data.response.body.items.item.length);
+		        var tempArray = []; //내가 넣은 것
+		        var outputArray = [];
+		        
+		        for(var l=0; l < length; l++){       	
+		        tempArray.push(data.response.body.items.item[l]);
+		        //console.log(tempArray);
+		        }
+		        //console.log(tempArray);
+		        tempArray = shuffle(tempArray);
+		        console.log(tempArray);
+		                
+				for( var i = 0 ; i < 3 ; i++){
+					var j=j+1;
+					var con= tempArray[i].contentid;
+		           	var conType=tempArray[i].contenttypeid;
+		           /* 	var con= data.response.body.items.item[i].contentid; */
+		           /* 	var conType=data.response.body.items.item[i].contenttypeid; */
+		           	
+		           	
+		           	//console.log(con);
+		           	//console.log(conType);
+					if (typeof (tempArray[i].firstimage) !== "undefined") {
+						$("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+tempArray[i].firstimage+' width=60 height=60></a>');
+		        		$("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+tempArray[i].title.split("(",1))+'</a>';
+						$("#rplaceaddr"+ j).html(tempArray[i].addr1); 
+					}else{
+						$("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
+		        		$("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+tempArray[i].title.split("(",1))+'</a>';
+						$("#rplaceaddr"+ j).html(tempArray[i].addr1); 
 					}
-				}
-				if(repeat){
-					i--;
-					continue;
-				}else{
-					outputArray[k] = data.response.body.items.item[val].title;
-				
-				}  //for k 부터 여기까지 내가 넣은 것 
-               
-				var con=data.response.body.items.item[val].contentid;
-				var conType=data.response.body.items.item[val].contenttypeid;
-				
-               
-				 if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
-                   	
-					 $("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
-					 $("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
-		              $("#rplaceaddr"+ j).html(data.response.body.items.item[val].addr1);
-                 
-                 } else {
-       			i--;
-                 }
-				
-				
-				
-				
-				
-				/* 
-				if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
-               $("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
-               }else{
-                  $("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
-               }
-               
-               $("#rplacetitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
-               $("#rplaceaddr"+ j).html(data.response.body.items.item[val].addr1); */
-                     }
-      })
+				}//for
+		  })// inner joson
       
-       });
+       }); //outer 
 }
 //인근 음식점
 function f_Data(){
@@ -437,72 +445,48 @@ function f_Data(){
        
     
    var cTypeId; 
-   console.log(areacode); 
-   console.log(sigungucode); 
+  // console.log(areacode); 
+   //console.log(sigungucode); 
    
    var url3= "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key;
    url3 += "&contentTypeId=39&areaCode=" + areacode + "&sigunguCode=" + sigungucode + "&cat1=&cat2=&cat3=&listYN=Y";
    url3 += "&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=Q&numOfRows=100"; 
    
-   
    $.getJSON(url3, function(data) {
-      var length=data.response.body.items.item.length
-      console.log('success', data);
-      var j=0;
-      
-         var outputArray = []; //내가 넣은 것
-         for( var i = 0 ; i < 3 ; i++){
-         var j=j+1;
-               console.log( data.response.body.items.item.length);
-                 var val = Math.floor( Math.random()*length);
-             	var repeat = false; //내가 넣은 것 
-	           	var k = 0; //내가 넣은 것 
-                 var con=data.response.body.items.item[val].contentid;
-                 console.log(con);
-            console.log(val);
-            console.log( data.response.body.items.item[val].title);
-            
-            for(k =0; k< outputArray.length;k++){
-				 if(outputArray[k] == data.response.body.items.item[val].title){
-  					
-     				 repeat = true;
-     			 	 break; 
+		var length=data.response.body.items.item.length
+		//console.log('success', data);
+		var j=0;
+	    console.log( data.response.body.items.item.length);
+	        var tempArray = []; //내가 넣은 것
+	        var outputArray = [];
+	        console.log(length);
+	        for(var l=0; l < length; l++){       	
+	        tempArray.push(data.response.body.items.item[l]);
+	        //console.log(tempArray);
+	        }
+	        //console.log(tempArray);
+	        tempArray = shuffle(tempArray);
+	        console.log(tempArray);
+	                
+			for( var i = 0 ; i < 3 ; i++){
+				var j=j+1;
+				var con= tempArray[i].contentid;
+	           	var conType=tempArray[i].contenttypeid;
+	           /* 	var con= data.response.body.items.item[i].contentid; */
+	           /* 	var conType=data.response.body.items.item[i].contenttypeid; */
+	           //	console.log(con);
+	           //	console.log(conType);
+				if (typeof (tempArray[i].firstimage) !== "undefined") {
+					$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+tempArray[i].firstimage+' width=60 height=60></a>');
+	        		$("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+tempArray[i].title.split("(",1))+'</a>';
+					$("#resaddr"+ j).html(tempArray[i].addr1); 
+				}else{
+					$("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
+	        		$("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+tempArray[i].title.split("(",1))+'</a>';
+					$("#resaddr"+ j).html(tempArray[i].addr1); 
 				}
-			}
-			if(repeat){
-				i--;
-				continue;
-			}else{
-				outputArray[k] = data.response.body.items.item[val].title;
-				
-			} //for k 부터 여기까지 내가 넣은 것 
-
-            var conType=data.response.body.items.item[val].contenttypeid;
-           
-			
-       	 	if (typeof (data.response.body.items.item[val].firstimage) !== 'undefined') {
-       	 	 $("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
-	       	 $("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
-	         $("#resaddr"+ j).html(data.response.body.items.item[val].addr1);
-         
-        	 } else {
-			i--;
-        	 }
-			
-			
-			
-	/* 		if (typeof (data.response.body.items.item[val].firstimage) !== "undefined") {
-            $("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width=60 height=60></a>');
-            }else{
-               $("#resImg"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src="./resources/image/noimage.jpg" width=60 height=60></a>');
-            }
-            
-            /* $("#rplaceImg"+ j).html('<a href="SC_07place?CONTENT_ID=1131275"><img src='+data.response.body.items.item[val].firstimage+' width=200 height=180></a>'); */
-            /* $("#restitle"+ j).html('<a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'">'+data.response.body.items.item[val].title.split("(",1))+'</a>';
-            $("#resaddr"+ j).html(data.response.body.items.item[val].addr1); */
-                 }
-   })
-   
+			}//for
+	  })// joson
     });
 }
 
@@ -527,7 +511,7 @@ function f_Data(){
       $("#write").on("click",function(){ 
 
          $.getJSON(url, function(data) {
-         console.log(data.response.body.items.item)
+        // console.log(data.response.body.items.item)
          var REV_TXT = $("#reviewWrite").val();
          var CONTENT_ID = data.response.body.items.item.contentid;
          
@@ -548,7 +532,7 @@ function f_Data(){
             
             success : function(data){
                
-               console.log(data);
+              // console.log(data);
                 var html ="";
                 var html2 ="";
                 $.each(data.rList,function(index,item){
@@ -604,7 +588,7 @@ function f_Data(){
  
  $(function(){
       $("#clip").on("click",function(){
-            console.log(contentId);
+            //console.log(contentId);
             var conID = contentId;
             var conTypeID=contentTypeId;
             
@@ -617,7 +601,7 @@ function f_Data(){
             },
             
             success : function(data){
-               console.log(data);
+            //   console.log(data);
                if(data==1){
                	modal({
        				type: 'success',
@@ -642,120 +626,6 @@ function f_Data(){
          })         
       });
       
-      
-      $("#joinForm").on("click", function() { /* 조인버튼 클릭시 모달   */
-			$("#regAtag").trigger("click");
-		})
-		$("#loginForm").on("click", function() { /*로그인 버튼 클릭시 모달 */
-			$("#loginAtag").trigger("click");
-		}) 
-      
-		//로그인 
-		$("#submit_button").on("click", function() {
-
-			var user_id1 = $("#user_id").val();
-			var password1 = $("#password").val();
-
-			if (user_id1.length == 0) {
-				alert('아이디를 입력해주세요');
-				return false;
-			}
-			if (password1.length == 0) {
-				alert('비밀번호를 입력해주세요');
-				return false;
-			}
-
-			$.ajax({
-				type : "post",
-				url : "login",
-				data : {
-					user_id : user_id1,
-					password : password1
-				},
-				dataType : 'text',
-
-				success : function(data) {
-					if (data == "success") {
-						$('#myModal').modal('hide');
-						window.location.href = "./";
-
-					} else {
-						alert("비밀번호가 맞지 않습니다.");
-					}
-				},
-				error : function(e) {
-					console(e);
-				}
-			})
-		});
-
-		//조인
-
-		$("#submit_join").on("click", function() {
-
-			var user_id2 = $("#user_id1").val();
-			var password2 = $("#password1").val();
-			var password3 = $("#password2").val();
-			var email1 = $("#email").val();
-			var user_sex1 = $("#user_sex").val();
-
-			var sung = "선택";
-
-			//alert(user_sex1);
-			//$('#user_sex option:selected').val();
-			//$('select[name=user_sex]').val();
-
-			if (user_id2.length == 0) {
-				alert('아이디를 입력해주세요');
-				return false;
-			}
-			if (password2.length == 0) {
-				alert('비밀번호를 입력해주세요');
-				return false;
-			}
-			if (email1.length == 0) {
-				alert('이메일을 입력해주세요');
-				return false;
-			}
-
-			if (user_sex1 == sung) {
-				alert('성별을 입력해주세요');
-				return false;
-			}
-
-			if (password2 != password3) {
-				alert('비밀번호 확인 시 비밀번호가 일치하지 않습니다.');
-				return false;
-			}
-
-			$.ajax({
-				type : "post",
-				url : "join",
-				data : {
-					user_id : user_id2,
-					password : password2,
-					email : email1,
-					user_sex : user_sex1
-				},
-				dataType : 'text',
-
-				success : function(data) {
-					console.log(data);
-					if (data == "success") {
-						alert("가입처리가 완료 되었습니다.");
-						$('#myModal').modal('hide');
-						window.location.href = "./";
-					} else {
-						alert("가입 처리가 되지 않았습니다.");
-					}
-				},
-				error : function(e) {
-					console(e);
-				}
-			})
-		});
-		
-		
 		//정보수정
 		
 		$("#editForm").on("click", function() {
@@ -813,10 +683,7 @@ function f_Data(){
 			})
 		});
 		
-		
-		
-      
-      
+
       
    });//레디펑션 
  
