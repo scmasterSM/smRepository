@@ -205,7 +205,7 @@ function deleteReply(REV_SQ, CONTENT_ID){
 	                  for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
 	                	  var counter=data.navi.startPageGroup+j;
 	                      j=j+1;
-	                      html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
+	                      html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+i+' </a>'; 
 	                  } 
 	                  html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
 	                  html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
@@ -674,7 +674,7 @@ function f_Data(){
 						 for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
 							 var counter=data.navi.startPageGroup+j;
 		                      j=j+1;
-		                      html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
+		                      html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+i+' </a>'; 
 						} 
 						html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶</a>';
 						html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
@@ -786,7 +786,7 @@ function paging(page) {
               for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
             	  var counter=data.navi.startPageGroup+j;
                   j=j+1;
-                  html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
+                  html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+i+' </a>'; 
               } 
               html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
               html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
@@ -847,7 +847,7 @@ $.ajax({
           for( var i = data.navi.startPageGroup ; i <= data.navi.endPageGroup ; i++){
         	  var counter=data.navi.startPageGroup+j;
               j=j+1;
-              html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+j+' </a>'; 
+              html2+='<a href="javascript:pagingFormSubmit('+counter+')">'+i+' </a>'; 
           } 
           html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + 1)+')">▶ </a>';
           html2+='<a href="javascript:pagingFormSubmit('+(data.navi.currentPage + data.navi.pagePerGroup)+')">▶▶</a></div>';
