@@ -158,7 +158,11 @@ function replyUpdate(REV_SQ, CONTENT_ID){
              
             html+= "<div class='media'>";
             html+= "<a class='pull-left' href='#'>";
-            html+= "<img class='media-object' src='http://placehold.it/64x64' alt=''></a>";
+            if(item.USER_SEX=='M'){
+  	          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+  	          }else if(item.USER_SEX=='F'){
+  	          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+  	          }
             html+= "<div class='media-body'>";
             html+= "<div class='media-heading'><h4>"+item.USER_ID;
             html+= "<small>"+item.UPD_YMD;
@@ -203,7 +207,11 @@ function deleteReply(REV_SQ, CONTENT_ID){
 					   
 	                  html+= "<div class='media'>";
 	                  html+= "<a class='pull-left' href='#'>";
-	                  html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+	                  if(item.USER_SEX=='M'){
+	        	          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+	        	          }else if(item.USER_SEX=='F'){
+	        	          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+	        	          }
 	                  html+= '<div class="media-body">';
 	                  html+= '<div class="media-heading"><h4>'+item.USER_ID;
 	                  html+= '<small>'+item.UPD_YMD; 
@@ -539,7 +547,11 @@ function f_Data(){
                   console.log(item); 
                   html+= "<div class='media'>";
                   html+= "<a class='pull-left' href='#'>";
-                  html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+                  if(item.USER_SEX=='M'){
+        	          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+        	          }else if(item.USER_SEX=='F'){
+        	          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+        	          }
                   html+= '<div class="media-body">';
                   html+= '<div class="media-heading"><h4>'+item.USER_ID;
                   html+= '<small>'+item.UPD_YMD;
@@ -712,7 +724,11 @@ function paging(page) {
               console.log(item); 
               html+= "<div class='media'>";
               html+= "<a class='pull-left' href='#'>";
-              html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+              if(item.USER_SEX=='M'){
+    	          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+    	          }else if(item.USER_SEX=='F'){
+    	          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+    	          }
               html+= '<div class="media-body">';
               html+= '<div class="media-heading"><h4>'+item.USER_ID;
               html+= '<small>'+item.UPD_YMD;
@@ -780,7 +796,11 @@ $.ajax({
         
           html+= "<div class='media'>";
           html+= "<a class='pull-left' href='#'>";
-          html+= '<img class="media-object" src="http://placehold.it/64x64" alt=""></a>';
+          if(item.USER_SEX=='M'){
+	          html+= '<img class="media-object" src="./resources/img/icon/manicon.png" width=64 height=64 alt=""></a>';		        	  
+	          }else if(item.USER_SEX=='F'){
+	          html+= '<img class="media-object" src="./resources/img/icon/womanicon.png" width=64 height=64 alt=""></a>';
+	          }
           html+= '<div class="media-body">';
           html+= '<div class="media-heading"><h4>'+item.USER_ID;
           html+= '<small>'+item.UPD_YMD;
