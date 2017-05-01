@@ -28,7 +28,7 @@ import com.scmaster.gittest.vo.Review;
 public class ReviewController {
 	
 	final int countPerPage = 5;	//페이지 당 글 수
-	final int pagePerGrop=10;
+	final int pagePerGrop=5;
 	
 	@Autowired
 	private ReviewDao dao;
