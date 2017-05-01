@@ -25,7 +25,35 @@
 		SM_SHARED_USER_TB
 	where
 		USER_ID = #{userId}
+</select>
 
+<select id="authorityDupChk" resultType="Shared_Scd" parameterType="HashMap">
+	select 
+		SHARED_SQ
+	from
+		SM_SHARED_USER_TB
+	where
+		USER_ID = #{searchId}
+	and
+		scd_sq = #{scd_sq}
+</select>
+
+<select id="get_Dtl_Scd" resultType="Daily_Scd" parameterType="int">
+	select
+		*
+	from 
+		SM_DTL_SCD_TB
+	where
+		DTL_SQ = #{dtl_sq}
+</select>
+
+<select id="get_daily_ord" resultType="int" parameterType="int">
+	select
+		daily_ord
+	from
+		SM_DAILY_SCD_TB
+	where
+		DAILY_SQ = #{daily_sq}	
 </select>
 
 </mapper>
