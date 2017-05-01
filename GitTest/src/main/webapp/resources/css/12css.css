@@ -309,4 +309,6 @@ plan_sub.css:1071
     border-radius: .3rem;
     background: url(../image/otherpage/sc_10.png) no-repeat center left;
 } */
-
+.pull-left{
+	padding-top: 20px;
+}
