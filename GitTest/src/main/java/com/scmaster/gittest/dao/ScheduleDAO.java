@@ -41,6 +41,12 @@ public class ScheduleDAO {
 		mapper.update_scd_info(schedule);
 	}
 
+	// 메인 스케줄  삭제
+	public void delete_scd(int scd_sq) {
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		mapper.delete_scd(scd_sq);
+	}
+
 
 	// 메인 스케줄 가져오기
 	public Schedule select_scd(int scd_sq) {
@@ -59,6 +65,14 @@ public class ScheduleDAO {
 	public void edit_start_ymd(Schedule schedule) {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
 		mapper.edit_start_ymd(schedule);
+	}
+
+	// 공유 사용자 가져오기
+	public List<HashMap<String, Object>> get_shared_users(int scd_sq) {
+		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
+		List<HashMap<String, Object>> sharedList = mapper.get_shared_users(scd_sq);
+		System.out.println(sharedList);
+		return sharedList;
 	}
 
 	// 일차 스케줄 저장

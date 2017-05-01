@@ -48,6 +48,16 @@
 	</update>
 	
 	<!-- scd_sq 가져오기 -->
+	<select id="get_shared_users" parameterType="int" resultType="HashMap">
+		select
+			user_id
+		from
+			SM_SHARED_USER_TB
+		where
+			scd_sq = #{scd_sq}
+	</select>
+	
+	<!-- shared users 가져오기 -->
 	<select id="getScd_Sq" parameterType="string" resultType="int">
 		select
 			max(scd_sq)
@@ -76,6 +86,14 @@
 		where
  			scd_sq = #{scd_sq}
 	</update>
+	
+	<!-- 스케줄 삭제 -->
+	<delete id="delete_scd" parameterType="int">
+ 		delete from
+ 			SM_SCD_TB
+ 		where
+ 			scd_sq = #{scd_sq}
+ 	</delete>
 	
 	<!-- 메인 스케줄 시작일 수정 -->
 	<update id="edit_start_ymd" parameterType="Schedule">
