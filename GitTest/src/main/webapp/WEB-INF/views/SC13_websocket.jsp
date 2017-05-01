@@ -560,11 +560,11 @@
 				  break;
 					
 			  case 'add_day' : 
-				  init_daily_list();
+				  /* init_daily_list();
 			  	  $(".ordlist").off("click");
 			  	  ordclick();
 			  	  $("#alterlist").sortable("disable");
-			  	  $("#sortable").sortable("enable");
+			  	  $("#sortable").sortable("enable");*/
 			  	  $('.ordlist:last').trigger('click');
 			  	  init_search_menu();
 				  break;
@@ -612,7 +612,7 @@
 	  ws.send(JSON.stringify(data));
   }
   
-  var key = "fHPwwCqceBLnLCExz65uYIYEAdiAs6xOwv79o6FcLHh7x6iPmxITE9Wk7TqH1q%2F1%2FeSw9j%2FUxPbGiQYcnVa0zw%3D%3D";
+  var key = "kfupvY3Myl8FHox4srLxSuu86iEx8egaMeeg8xn8PAlWG4QTHGBmI%2FhHznRSRyiPl9bLqx0LjdR6FcOsjGDgnw%3D%3D";
   var map;
   var myMarkers;
   var myloc_path;
@@ -655,6 +655,7 @@
                     url : gUrl,
                     async : false,
                     success : function(data){
+                       console.log(data);
                        var location = data.results[0].geometry.location;
                        sigungu.push({
                           "areaCode" : areaCode,
@@ -987,13 +988,13 @@
 	        			url: "sort_change",
 	        			data: sort_change,
 	        			success : function(e){
-	        				wsComms("delete_place", day);
 	        			},
 	        			error: function(e){
 	        				console.log(e);
 	        			}
 	        		})//ajax
 	        	})
+    			wsComms("delete_place", day);
 	    		delete_myMarkers();
 				},
 				error: function(e){
@@ -2261,16 +2262,22 @@
            alert("일정을 함께 공유하실 분의 아이디를 입력해주세요.");
            return false;
         }
-        
-        var data = {
-              "doWhat"   : "addShareAuthority",      
-              "scd_sq" : ${scd_sq},
-              "searchId" : checkId
-        }
-        console.log(data);
-        ws.send(JSON.stringify(data));
-        
-        return false;
+        $.ajax({
+            type : "post",
+            url : "addShareAuthority",
+            data : {
+   			  scd_sq : '${scd_sq}',
+   			  searchId : checkId
+        	},
+            success : function(inform){
+               alert(inform);
+               //모달 꺼야함
+            },
+            error : function(e){
+               console.log(e);
+            }
+        });//ajax
+
      }
 
      function deleteElement(){
