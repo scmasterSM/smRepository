@@ -61,6 +61,17 @@
 html, body {
 	overflow-x: hidden;
 }
+body.modal-open {
+    overflow: hidden;
+}
+.modal-header {
+	background-color: #00AEF0;
+	color: #fff;
+}
+.btn-default {
+	background-color: #00AEF0;
+	color: #fff;
+}
 
 </style>
 
@@ -538,9 +549,11 @@ html, body {
 		                                  content2 += '<li><a href="SC_07place?CONTENT_ID='+con+'&CONTENT_TYPE_ID='+conType+'"><img src='+data.response.body.items.item[val].firstimage+' width="300" height="200" alt="">';
 		                                  content2 += '<div class="overlay"><h3>'
 												+ data.response.body.items.item[val].title
-												+ '</h3><p>'
-												+ data.response.body.items.item[val].addr1.split(" ", 3)
-												+ '</p></div></a></li>'; 
+												+ '</h3><p>';
+												if(typeof(data.response.body.items.item[val].addr1) != 'undefined'){
+													content2 += data.response.body.items.item[val].addr1.split(" ", 3)
+												}
+												content2 += '</p></div></a></li>'; 
 		                              
 		                              } else {
 		                    			i--;

@@ -54,6 +54,17 @@
 html, body {
 	overflow-x: hidden;
 }
+body.modal-open {
+    overflow: hidden;
+}
+.modal-header {
+	background-color: #00AEF0;
+	color: #fff;
+}
+.btn-default {
+	background-color: #00AEF0;
+	color: #fff;
+}
 
 /* div#OR {
 	height: 30px;
@@ -1122,8 +1133,7 @@ html, body {
 							<input type="submit" class="btn" value="Search"><br>
 
 							<div id="searchformap">
-								<a href="mapSearch"><button type="button"
-										class="btn btn-default btn-xs">지도에서 검색</button></a>
+								<a href="mapSearch"><button type="button" class="btn btn-xs" style="color:black;">지도에서 검색</button></a>
 							</div>
 
 						</form>
