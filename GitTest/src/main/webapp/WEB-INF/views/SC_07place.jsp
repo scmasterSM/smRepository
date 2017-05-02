@@ -55,6 +55,17 @@
 html, body {
 	overflow-x: hidden;
 }
+body.modal-open {
+    overflow: hidden;
+}
+.modal-header {
+	background-color: #00AEF0;
+	color: #fff;
+}
+.btn-default {
+	background-color: #00AEF0;
+	color: #fff;
+}
 .modal-backdrop {
    z-index: 0;
 }
