@@ -646,8 +646,8 @@ h1 {
         </div>
         <div class="modal-footer">
         <div id="existId" class="existId"></div>
-         <button type="button" class="btn btn-default btn_invite" onclick="return whoWithShare();">Invite</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="return deleteElement();">Close</button>
+         <button type="button" id="invite_btn" class="btn btn-default btn_invite" onclick="">Invite</button>
+          <button type="button" id="close_btn" class="btn btn-default" data-dismiss="modal" onclick="deleteElement();">Close</button>
         </div>
       </div>
       
@@ -726,7 +726,7 @@ h1 {
 
        
 
-      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+      	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="./resources/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
 		<script type="text/javascript" src="./resources/js/jquery-3.1.1.js"></script>
         <script src="./resources/js/bootstrap.js"></script>
@@ -740,7 +740,6 @@ h1 {
 		<link href="./resources/css/jquery.modal.css" type="text/css" rel="stylesheet" />
 	
 		<!--jQuery-->
-		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 		<script type="text/javascript" src="./resources/js/jquery.modal.js"></script>
 </body>
 <script>
@@ -906,8 +905,10 @@ $(function(){
 				,success : function(data){
 					if(data == '1'){
 						$('#existId').html("<span>해당 아이디가 존재합니다. 일정을 공유하시겠습니까?</span>");
+						$('#invite_btn').attr('onclick', 'return whoWithShare();');
 					}else{
 						$('#existId').html("<span>해당 아이디가 존재하지 않습니다. 다시 입력해주세요</span>");
+						$('#invite_btn').attr('onclick', '');
 					}
 				},
 				error : function(e){
@@ -1010,7 +1011,7 @@ function whoWithShare(){
     	},
         success : function(inform){
            alert(inform);
-           //모달 꺼야함
+           $('#close_btn').trigger('click');
         },
         error : function(e){
            console.log(e);
@@ -1022,7 +1023,6 @@ function whoWithShare(){
 		document.getElementById('shareId').value = '';
 		var html = '';
 		$('#existId').html(html);
-		return false;
 	}
 
 
