@@ -92,6 +92,24 @@
 	$('#myModal_Edit').modal('show');
 
 	$(function() {
+		$('#my_scd').on('mouseenter', function(){
+			 if($('#my_scd').attr('class') == 'active'){
+				 $('#my_scd').attr('class', '');
+				 //$('#make_scd').attr('class', 'active');
+			 }else{
+				 $('#my_scd').attr('class', 'active');
+				 $('#make_scd').attr('class', '');
+			 }
+		 });
+		 $('#my_scd').on('mouseleave', function(){
+			 if($('#my_scd').attr('class') == 'active'){
+				 $('#my_scd').attr('class', '');
+				 $('#make_scd').attr('class', 'active');
+			 }else{
+				 $('#my_scd').attr('class', 'active');
+				 $('#make_scd').attr('class', '');
+			 }
+		 }); 
 
 		$("#joinForm").on("click", function() {
 
@@ -491,8 +509,8 @@
 
 					<ul class="main-nav nav navbar-nav navbar-right">
 						<li class="wow fadeInDown" data-wow-delay="0s"><a
-							class="active" href="#">일정 만들기</a></li>
-						<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#">나의
+							id="make_scd" class="active" href="#">일정 만들기</a></li>
+						<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#" id="my_scd">나의
 								일정 보기</a></li>
 						<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
 							Own Schedule</a></li>
@@ -503,9 +521,9 @@
 				<c:otherwise>
 					<ul class="main-nav nav navbar-nav navbar-right">
 						<li class="wow fadeInDown" data-wow-delay="0s"><a
-							class="active" href="#">일정 만들기</a></li>
+							id="make_scd" class="active" href="#">일정 만들기</a></li>
 						<li class="wow fadeInDown" data-wow-delay="0.1s"><a
-							href="SC_10">나의 일정 보기</a></li>
+							id="my_scd" href="SC_10">나의 일정 보기</a></li>
 						<!-- 	<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">나의 일정</a>
 					</li> -->
 						<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
