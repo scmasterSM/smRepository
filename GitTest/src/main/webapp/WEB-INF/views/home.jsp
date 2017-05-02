@@ -54,6 +54,17 @@
 html, body {
 	overflow-x: hidden;
 }
+body.modal-open {
+    overflow: hidden;
+}
+.modal-header {
+	background-color: #00AEF0;
+	color: #fff;
+}
+.btn-default {
+	background-color: #00AEF0;
+	color: #fff;
+}
 
 /* div#OR {
 	height: 30px;
@@ -1033,10 +1044,10 @@ html, body {
 					<c:when test="${sessionScope.user_id == null }">
 
 						<ul class="main-nav nav navbar-nav navbar-right">
-							<li class="wow fadeInDown" data-wow-delay="0s"><a
-								class="active" href="#" onclick="checkId();">일정 만들기</a></li>
-							<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#"
-								onclick="checkId();">나의 일정 보기</a></li>
+							<li class="wow fadeInDown" data-wow-delay="0s">
+							<a href="#" onclick="checkId();">일정 만들기</a></li>
+							<li class="wow fadeInDown" data-wow-delay="0.1s">
+							<a href="#" onclick="checkId();">나의 일정 보기</a></li>
 							<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
 							Own Schedule</a></li>
 					<li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">City
@@ -1046,7 +1057,7 @@ html, body {
 					<c:otherwise>
 						<ul class="main-nav nav navbar-nav navbar-right">
 							<li class="wow fadeInDown" data-wow-delay="0s"><a
-								class="active" href="SC_11">일정 만들기</a></li>
+								href="SC_11">일정 만들기</a></li>
 							<li class="wow fadeInDown" data-wow-delay="0.1s"><a
 								href="SC_10">나의 일정 보기</a></li>
 							<!-- <li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">나의 일정</a>
@@ -1122,8 +1133,7 @@ html, body {
 							<input type="submit" class="btn" value="Search"><br>
 
 							<div id="searchformap">
-								<a href="mapSearch"><button type="button"
-										class="btn btn-default btn-xs">지도에서 검색</button></a>
+								<a href="mapSearch"><button type="button" class="btn btn-xs" style="color:black;">지도에서 검색</button></a>
 							</div>
 
 						</form>

@@ -70,7 +70,7 @@
 	FROM 	SM_CITY_TB
 	where 	areacode = #{area_code}
 	<if test="sigungu_code != ''">
-	and 	sigungu_code = #{sigungu_code)
+	and 	sigungu_code = #{sigungu_code}
 	</if>
 	</select>
  </mapper>
