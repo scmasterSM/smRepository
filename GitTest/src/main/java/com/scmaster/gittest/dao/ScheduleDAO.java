@@ -78,8 +78,10 @@ public class ScheduleDAO {
 	// 일차 스케줄 저장
 	public void insert_daily(Daily_Scd daily) {
 		ScheduleMapper mapper = sqlSession.getMapper(ScheduleMapper.class);
-		mapper.insert_daily(daily);
 		//System.out.println(daily);
+		String[] arr = daily.getDaily_ymd().split(" ");
+		daily.setDaily_ymd(arr[0]);
+		mapper.insert_daily(daily);
 		int daily_sq = mapper.getDaily(daily);
 		daily.setDaily_sq(daily_sq);
 		if (daily.getArea_code() != null) {
