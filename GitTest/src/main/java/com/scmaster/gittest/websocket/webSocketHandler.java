@@ -116,10 +116,6 @@ public class webSocketHandler extends TextWebSocketHandler {
 		case "chat" :
 			broadcast(session, "chat", msgMap.get("data"));
 			break;
-			
-		case "addShareAuthority" :
-			
-			break;
 		}
 
 	}
@@ -182,7 +178,8 @@ public class webSocketHandler extends TextWebSocketHandler {
 		int scd_sq = doubleToInt((Double) map.get("scd_sq"));
 		String inform = scd_sq + " 의 일정에 " + userId + "님이 로그인 하셨습니다.";
 		logger.info(inform);
-		broadcast(session, "loginSuccess", inform);
+		broadcast(session, "loginSuccess", userId + " 님이 입장하셨습니다.");
+		//broadcast(session, "chat", userId + " 님이 입장하셨습니다.");
 	}
 
 	public void delete_place(Map<String, Object> msgMap, WebSocketSession session) {
