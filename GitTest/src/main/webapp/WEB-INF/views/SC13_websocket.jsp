@@ -354,8 +354,8 @@
   var ws = null;
   
   $(function(){
+	
 	add_day();
-
 	init_daily_date();
     init_daily_list();
     ordclick();
@@ -444,7 +444,7 @@
                 title : "chat",
                 messageSent : function(id, user, msg) {
                 	//$("#log").append(id + " said: " + msg + "<br/>");
-                   // $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
+                   //$("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
                    data = {
                 		   id : id,
                 		   msg : msg
@@ -478,18 +478,14 @@
 			var obj = JSON.parse(event.data);
 			  console.log(obj);
 			  switch(obj.doWhat){
-			  case 'loginSuccess' : 
+			  case 'loginSuccess' :
 				  $('.ordlist:first').trigger('click');
-				  var data = {
-				    		id : '${user_id}',
-				    		msg : "님이 입장하셨습니다."
-				  }
-				  wsComms("chat", data);
+				  var msg = obj.data;
+				  $("#chat_div").chatbox("option", "boxManager").addMsg('', msg);
 				  break;
 				  
 			  case 'sortable' :
-				  var day = obj.data;
-				  $("#Day"+day).trigger('click');
+				  $("#Day"+obj.data).trigger('click');
 				  break;
 			  
 			  case 'closeAlt' : 
@@ -522,6 +518,7 @@
 					var name = $(target+" > .day_city_name").val();
 					var ymd = $(target+" > .ymd").val();
 					var day = "DAY " + $(target+" > .day").val();
+					console.log(name);
 					if((name != "" || areaCode != "") && name.length < 4){
 						$('#city_name').text(name);
 						$('#day_city_name').val(name);
@@ -560,11 +557,11 @@
 				  break;
 					
 			  case 'add_day' : 
-				  /* init_daily_list();
+				  init_daily_list();
 			  	  $(".ordlist").off("click");
 			  	  ordclick();
 			  	  $("#alterlist").sortable("disable");
-			  	  $("#sortable").sortable("enable");*/
+			  	  $("#sortable").sortable("enable");
 			  	  $('.ordlist:last').trigger('click');
 			  	  init_search_menu();
 				  break;
@@ -655,7 +652,6 @@
                     url : gUrl,
                     async : false,
                     success : function(data){
-                       console.log(data);
                        var location = data.results[0].geometry.location;
                        sigungu.push({
                           "areaCode" : areaCode,
@@ -836,7 +832,7 @@
 				success: function(data){
 					get_daily_budget();
 					get_budget_total();
-					wsComms("ordclick", div_id);
+					//wsComms("ordclick", div_id);
 					if(data.length != 0) set_places(data);
 					else theme2_change('', '');
 				},
@@ -2295,7 +2291,6 @@
 <input type="hidden" id="day_city_name" value="">
 <input type="hidden" id="init_start_ymd" value="${schedule.start_ymd }">
 <input type="hidden" id="init_day_cnt" value="${schedule.day_cnt }">
-
 <div class="header">
 		<div class="fl" id="logoimg"><a href="./"><img src="./resources/image/logoedit.png" style="margin-top:5px;margin-left:20px;width:60px;height:50px;"></a></div>
 		<div class="fl" style="width:410px;border-right:solid #ebebeb 1px;height:100%;font-size:22px;"><div class="fl" id="plan_title"></div><div class="clear"></div></div>
