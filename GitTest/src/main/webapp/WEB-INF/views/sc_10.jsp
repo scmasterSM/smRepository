@@ -579,7 +579,7 @@ function ReadApi(contentId,contentTypeId) { /* currentPage가 어디서 호출되어 온�
 			    html += '<li>';
 				html += '<a href="SC_07place?CONTENT_ID='+contentId+'&CONTENT_TYPE_ID='+contentTypeId+'">';
 				
-				html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+				html += '<img src='+data.response.body.items.item.firstimage+' width=300 height=200>';
 				html += '<div class="overlay"><h3>'+data.response.body.items.item.title+'<br>'+data.response.body.items.item.addr1.split(" ", 2)+'</h3></div>';
 				html += '</a>';
 				html += '</li>';
@@ -619,7 +619,7 @@ $(function(){
 			    	
 			    	html += '<li>';
 					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
-					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					html += '<img src='+data.response.body.items.item.firstimage+' width=300 height=200>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 						}else{
@@ -635,7 +635,7 @@ $(function(){
 			    $.getJSON(url, function(data) {
 			    	html += '<li>'; 
 					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
-					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					html += '<img src='+data.response.body.items.item.firstimage+' width=300 height=200>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 					}else{
@@ -685,7 +685,7 @@ $(function(){
 			    	
 			    	html += '<li>';
 					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
-					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					html += '<img src='+data.response.body.items.item.firstimage+' width=300 height=200>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 						html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 						}else{
@@ -701,7 +701,7 @@ $(function(){
 			    $.getJSON(url, function(data) {
 			    	html += '<li>'; 
 					html += '<a href="SC_12?scd_sq='+scd_sq+'">'; 
-					html += '<img src='+data.response.body.items.item.firstimage+' width=170 height=190>';
+					html += '<img src='+data.response.body.items.item.firstimage+' width=300 height=200>';
 					if (typeof (item.SCD_DESC) !== "undefined") {
 					html += '<div class="overlay"><h3>'+item.SCD_TITLE+'<br>'+item.SCD_DESC+'</h3></div>';	
 					}else{
