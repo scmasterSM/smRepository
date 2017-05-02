@@ -174,12 +174,12 @@
 
 	.sidenav {
 		padding: 15px 15px 15px 15px;
-	    height: 91.9%;
+	    height: 92%;
 	    width: 0;
 	    position: fixed;
 	    pointer-events: none;
 	    z-index: 1;
-	    top: 8.1%;
+	    top: 8%;
 	    left: 25%;
 	    background-color: white;
 	    overflow-x: hidden;	
@@ -419,8 +419,10 @@
               ,success : function(data){
                  if(data == '1'){
                     $('#existId').html("<span>해당 아이디가 존재합니다. 일정을 공유하시겠습니까?</span>");
+                    $('#invite_btn').attr('onclick', 'return whoWithShare();');
                  }else{
                     $('#existId').html("<span>해당 아이디가 존재하지 않습니다. 다시 입력해주세요</span>");
+                    $('#invite_btn').attr('onclick', '');
                  }
               },
               error : function(e){
@@ -2267,7 +2269,7 @@
         	},
             success : function(inform){
                alert(inform);
-               //모달 꺼야함
+               $('#close_btn').trigger('click');
             },
             error : function(e){
                console.log(e);
@@ -2280,7 +2282,6 @@
         document.getElementById('shareId').value = '';
         var html = '';
         $('#existId').html(html);
-        return false;
      }
   </script>
 </head>
@@ -2329,8 +2330,8 @@
         </div>
         <div class="modal-footer">
         <div id="existId" class="existId"></div>
-         <button type="button" class="btn btn-default btn_invite" onclick="return whoWithShare();">Invite</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="return deleteElement();">Close</button>
+         <button type="button" id="invite_btn" class="btn btn-default btn_invite" onclick="">Invite</button>
+          <button type="button" id="close_btn" class="btn btn-default" data-dismiss="modal" onclick="deleteElement();">Close</button>
         </div>
       </div>
       
