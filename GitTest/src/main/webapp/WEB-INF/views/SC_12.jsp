@@ -401,7 +401,7 @@ body.modal-open {
 
 					<ul class="main-nav nav navbar-nav navbar-right">
 						<li class="wow fadeInDown" data-wow-delay="0s"><a
-							class="active" href="#" onclick="checkId();">일정 만들기</a></li>
+							href="#" onclick="checkId();">일정 만들기</a></li>
 						<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#"
 							onclick="checkId();">나의 일정 보기</a></li>
 						<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
@@ -413,7 +413,7 @@ body.modal-open {
 				<c:otherwise>
 					<ul class="main-nav nav navbar-nav navbar-right">
 						<li class="wow fadeInDown" data-wow-delay="0s"><a
-							class="active" href="SC_11">일정 만들기</a></li>
+							href="SC_11">일정 만들기</a></li>
 						<li class="wow fadeInDown" data-wow-delay="0.1s"><a
 							href="SC_10">나의 일정 보기</a></li>
 						<!-- <li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">나의 일정</a>
