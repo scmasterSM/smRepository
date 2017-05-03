@@ -42,6 +42,17 @@
 		html, body {
 			overflow-x: hidden;
 		}
+		body.modal-open {
+		    overflow: hidden;
+		}
+		.modal-header {
+			background-color: #00AEF0;
+			color: #fff;
+		}
+		.btn-default {
+			background-color: #00AEF0;
+			color: #fff;
+		}
         </style>
         
         <script type="text/javascript">
@@ -386,9 +397,9 @@
 
 						<ul class="main-nav nav navbar-nav navbar-right">
 							<li class="wow fadeInDown" data-wow-delay="0s"><a
-								class="active" href="#" onclick="checkId();">일정 만들기</a></li>
+								id="make_scd" href="#" onclick="checkId();">일정 만들기</a></li>
 							<li class="wow fadeInDown" data-wow-delay="0.1s"><a href="#"
-								onclick="checkId();">나의 일정 보기</a></li>
+								id="my_scd" class="active" onclick="checkId();">나의 일정 보기</a></li>
 							<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
 							Own Schedule</a></li>
 					<li class="wow fadeInDown" data-wow-delay="0.3s"><a href="#">City
@@ -398,9 +409,9 @@
 					<c:otherwise>
 						<ul class="main-nav nav navbar-nav navbar-right">
 							<li class="wow fadeInDown" data-wow-delay="0s"><a
-								class="active" href="SC_11">일정 만들기</a></li>
+								id="make_scd" href="SC_11">일정 만들기</a></li>
 							<li class="wow fadeInDown" data-wow-delay="0.1s"><a
-								href="SC_10">나의 일정 보기</a></li>
+								id="my_scd" class="active" href="SC_10">나의 일정 보기</a></li>
 							<!-- <li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">나의 일정</a>
 					</li> -->
 							<!-- 					<li class="wow fadeInDown" data-wow-delay="0.2s"><a href="#">My
@@ -551,8 +562,45 @@ function ReadApi(contentId,contentTypeId) { /* currentPage가 어디서 호출되어 온�
 	
 }
 
-
  $(function(){
+	 $('#my_scd').on('mouseenter', function(){
+		 if($('#my_scd').attr('class') == 'active'){
+			 $('#my_scd').attr('class', '');
+			 //$('#make_scd').attr('class', 'active');
+		 }else{
+			 $('#my_scd').attr('class', 'active');
+			 $('#make_scd').attr('class', '');
+		 }
+	 });
+	 $('#my_scd').on('mouseleave', function(){
+		 if($('#my_scd').attr('class') == 'active'){
+			 $('#my_scd').attr('class', '');
+			 $('#make_scd').attr('class', 'active');
+		 }else{
+			 $('#my_scd').attr('class', 'active');
+			 $('#make_scd').attr('class', '');
+		 }
+	 }); 
+	 
+	 $('#make_scd').on('mouseenter', function(){
+		 if($('#make_scd').attr('class') == 'active'){
+			 $('#make_scd').attr('class', '');
+			 $('#my_scd').attr('class', 'active');
+		 }else{
+			 $('#make_scd').attr('class', 'active');
+			 $('#my_scd').attr('class', '');
+		 }
+	 });
+	 $('#make_scd').on('mouseleave', function(){
+		 if($('#make_scd').attr('class') == 'active'){
+			 $('#make_scd').attr('class', '');
+			 $('#my_scd').attr('class', 'active');
+		 }else{
+			 $('#make_scd').attr('class', 'active');
+			 $('#my_scd').attr('class', '');
+		 }
+	 }); 
+	 
 	 $.ajaxSetup({
 	        async: false
 	    });

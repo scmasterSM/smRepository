@@ -174,12 +174,12 @@
 
 	.sidenav {
 		padding: 15px 15px 15px 15px;
-	    height: 91.9%;
+	    height: 92%;
 	    width: 0;
 	    position: fixed;
 	    pointer-events: none;
 	    z-index: 1;
-	    top: 8.1%;
+	    top: 8%;
 	    left: 25%;
 	    background-color: white;
 	    overflow-x: hidden;	
@@ -354,8 +354,8 @@
   var ws = null;
   
   $(function(){
+	
 	add_day();
-
 	init_daily_date();
     init_daily_list();
     ordclick();
@@ -419,8 +419,10 @@
               ,success : function(data){
                  if(data == '1'){
                     $('#existId').html("<span>해당 아이디가 존재합니다. 일정을 공유하시겠습니까?</span>");
+                    $('#invite_btn').attr('onclick', 'return whoWithShare();');
                  }else{
                     $('#existId').html("<span>해당 아이디가 존재하지 않습니다. 다시 입력해주세요</span>");
+                    $('#invite_btn').attr('onclick', '');
                  }
               },
               error : function(e){
@@ -444,7 +446,7 @@
                 title : "chat",
                 messageSent : function(id, user, msg) {
                 	//$("#log").append(id + " said: " + msg + "<br/>");
-                   // $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
+                   //$("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
                    data = {
                 		   id : id,
                 		   msg : msg
@@ -466,7 +468,7 @@
   });
   
   function connectWebSocket(){
-	  ws = new WebSocket("ws://10.10.6.61:8888/gittest/webSocket");
+	  ws = new WebSocket("ws://10.10.6.13:8888/gittest/webSocket");
 		
 		var data = {
 				"loginId" : "${user_id}",
@@ -478,18 +480,14 @@
 			var obj = JSON.parse(event.data);
 			  console.log(obj);
 			  switch(obj.doWhat){
-			  case 'loginSuccess' : 
+			  case 'loginSuccess' :
 				  $('.ordlist:first').trigger('click');
-				  var data = {
-				    		id : '${user_id}',
-				    		msg : "님이 입장하셨습니다."
-				  }
-				  wsComms("chat", data);
+				  var msg = obj.data;
+				  $("#chat_div").chatbox("option", "boxManager").addMsg('', msg);
 				  break;
 				  
 			  case 'sortable' :
-				  var day = obj.data;
-				  $("#Day"+day).trigger('click');
+				  $("#Day"+obj.data).trigger('click');
 				  break;
 			  
 			  case 'closeAlt' : 
@@ -522,6 +520,7 @@
 					var name = $(target+" > .day_city_name").val();
 					var ymd = $(target+" > .ymd").val();
 					var day = "DAY " + $(target+" > .day").val();
+					console.log(name);
 					if((name != "" || areaCode != "") && name.length < 4){
 						$('#city_name').text(name);
 						$('#day_city_name').val(name);
@@ -560,11 +559,11 @@
 				  break;
 					
 			  case 'add_day' : 
-				  /* init_daily_list();
+				  init_daily_list();
 			  	  $(".ordlist").off("click");
 			  	  ordclick();
 			  	  $("#alterlist").sortable("disable");
-			  	  $("#sortable").sortable("enable");*/
+			  	  $("#sortable").sortable("enable");
 			  	  $('.ordlist:last').trigger('click');
 			  	  init_search_menu();
 				  break;
@@ -655,7 +654,6 @@
                     url : gUrl,
                     async : false,
                     success : function(data){
-                       console.log(data);
                        var location = data.results[0].geometry.location;
                        sigungu.push({
                           "areaCode" : areaCode,
@@ -836,7 +834,7 @@
 				success: function(data){
 					get_daily_budget();
 					get_budget_total();
-					wsComms("ordclick", div_id);
+					//wsComms("ordclick", div_id);
 					if(data.length != 0) set_places(data);
 					else theme2_change('', '');
 				},
@@ -2271,7 +2269,7 @@
         	},
             success : function(inform){
                alert(inform);
-               //모달 꺼야함
+               $('#close_btn').trigger('click');
             },
             error : function(e){
                console.log(e);
@@ -2284,7 +2282,6 @@
         document.getElementById('shareId').value = '';
         var html = '';
         $('#existId').html(html);
-        return false;
      }
   </script>
 </head>
@@ -2295,7 +2292,6 @@
 <input type="hidden" id="day_city_name" value="">
 <input type="hidden" id="init_start_ymd" value="${schedule.start_ymd }">
 <input type="hidden" id="init_day_cnt" value="${schedule.day_cnt }">
-
 <div class="header">
 		<div class="fl" id="logoimg"><a href="./"><img src="./resources/image/logoedit.png" style="margin-top:5px;margin-left:20px;width:60px;height:50px;"></a></div>
 		<div class="fl" style="width:410px;border-right:solid #ebebeb 1px;height:100%;font-size:22px;"><div class="fl" id="plan_title"></div><div class="clear"></div></div>
@@ -2334,8 +2330,8 @@
         </div>
         <div class="modal-footer">
         <div id="existId" class="existId"></div>
-         <button type="button" class="btn btn-default btn_invite" onclick="return whoWithShare();">Invite</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="return deleteElement();">Close</button>
+         <button type="button" id="invite_btn" class="btn btn-default btn_invite" onclick="">Invite</button>
+          <button type="button" id="close_btn" class="btn btn-default" data-dismiss="modal" onclick="deleteElement();">Close</button>
         </div>
       </div>
       
