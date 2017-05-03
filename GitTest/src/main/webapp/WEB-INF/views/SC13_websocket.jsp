@@ -468,7 +468,7 @@
   });
   
   function connectWebSocket(){
-	  ws = new WebSocket("ws://10.10.6.61:8888/gittest/webSocket");
+	  ws = new WebSocket("ws://10.10.6.13:8888/gittest/webSocket");
 		
 		var data = {
 				"loginId" : "${user_id}",
