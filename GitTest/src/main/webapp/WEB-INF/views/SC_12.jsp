@@ -1305,7 +1305,7 @@ function show_myMarkers(daily_ord){
 	   check = 1;
 	}
 /////////////////////리플 읽어오기	//////////////////////////
-var login_id=${sessionScope.user_id};
+var login_id='${sessionScope.user_id}';
 	$(function(){	
 		 
 		console.log(scd_sq);
